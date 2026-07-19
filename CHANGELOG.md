@@ -14,6 +14,12 @@
 
 ### [Improvement]
 
+- The Page template no longer adds its own 32px padding under the content.
+  The space before the footer now comes from one place — the last block's
+  Spacing setting — instead of two stacked sources. Pages that end in a
+  full-width color band can sit flush against the footer with the section's
+  "No gap below" switch; on other pages the gap is the last block's spacing
+  (16px by default, adjustable per block).
 - Spacing tokens below 16px (spacing-01 to spacing-04) now produce the exact
   gap they promise. WordPress adds a 16px layout margin above every block,
   which used to override the smaller tokens — the gap never went below 16px.
