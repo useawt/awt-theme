@@ -3581,3 +3581,20 @@ body.editor-styles-wrapper .wp-block-awt-icon   + .wp-block-awt-icon {
 mark.has-inline-color {
 	background-color: transparent;
 }
+
+/* ============================================================
+ * Media captions — zone-aware color
+ * ============================================================
+ *
+ * Core paints figure/table captions with a fixed gray
+ * (`:root :where(.wp-block-image figcaption) { color: #555 }` and
+ * equivalents per media block). Inside a dark zone (cds--g90/g100
+ * sections, dark style variations) #555 on the dark surface is
+ * unreadable (~1.6:1). Route captions through Carbon's secondary text
+ * token instead — it resolves per zone (#525252 light / #c6c6c6 dark),
+ * keeping WCAG 1.4.3 contrast in both schemes. Element + class
+ * (0,1,1) outspecifies core's :root :where(...) (0,1,0). */
+figcaption.wp-element-caption,
+caption.wp-element-caption {
+	color: var(--cds-text-secondary, #525252);
+}
