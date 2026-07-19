@@ -21,7 +21,7 @@
 <!-- /wp:heading -->
 
 <!-- wp:paragraph {"className":"awt-hero__description"} -->
-<p class="awt-hero__description">Carbon Design System components, paired light/dark variants, and a real accessibility commitment — all in a free, GPL-licensed theme.</p>
+<p class="awt-hero__description">Carbon Design System components, paired light/dark variants, and a real accessibility commitment, all in a free, GPL-licensed theme.</p>
 <!-- /wp:paragraph -->
 
 <!-- wp:awt/inline-set -->
@@ -43,7 +43,7 @@
 <h3 class="wp-block-heading">Accessible</h3>
 <!-- /wp:heading -->
 <!-- wp:paragraph -->
-<p>Every block ships semantically correct HTML and is validated against WCAG 2.2 AA.</p>
+<p>Every block outputs semantically correct HTML and is validated against WCAG 2.2 AA.</p>
 <!-- /wp:paragraph -->
 <!-- /wp:awt/tile -->
 
@@ -53,7 +53,7 @@
 <h3 class="wp-block-heading">Carbon Design System</h3>
 <!-- /wp:heading -->
 <!-- wp:paragraph -->
-<p>Battle-tested visual system from IBM, paired light/dark variants out of the box.</p>
+<p>Proven visual system from IBM, paired light/dark variants out of the box.</p>
 <!-- /wp:paragraph -->
 <!-- /wp:awt/tile -->
 
@@ -77,7 +77,7 @@
 <!-- wp:awt/accordion {"singleOpen":true} -->
 <!-- wp:awt/faq-item {"question":"Is this product really free?","level":"3"} -->
 <!-- wp:paragraph -->
-<p>Yes. The base product is GPL-2.0-or-later and ships via WordPress.org with no telemetry, no callbacks, and no license keys. Premium adds optional capabilities; the free tier is feature-complete for typical sites.</p>
+<p>Yes. The base product is GPL-2.0-or-later and is published on WordPress.org with no telemetry, no callbacks, and no license keys. Premium adds optional capabilities; the free theme and plugin are the complete product.</p>
 <!-- /wp:paragraph -->
 <!-- /wp:awt/faq-item -->
 
@@ -89,7 +89,7 @@
 
 <!-- wp:awt/faq-item {"question":"Does it support dark mode?","level":"3"} -->
 <!-- wp:paragraph -->
-<p>Yes — visitors switch between paired light and dark Carbon variants via the header toggle. Site owners pick the pairing at design time.</p>
+<p>Yes. Visitors switch between paired light and dark Carbon variants via the header toggle. Site owners pick the pairing at design time.</p>
 <!-- /wp:paragraph -->
 <!-- /wp:awt/faq-item -->
 <!-- /wp:awt/accordion -->

@@ -16,7 +16,7 @@
 <!-- /wp:heading -->
 
 <!-- wp:paragraph -->
-<p>One- or two-paragraph introduction. Who you are, what you do, why it matters. Keep it concise — the team grid below carries the rest.</p>
+<p>One- or two-paragraph introduction. Who you are, what you do, why it matters. Keep it concise. The team grid below carries the rest.</p>
 <!-- /wp:paragraph -->
 
 <!-- wp:paragraph -->

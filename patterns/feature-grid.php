@@ -22,7 +22,7 @@
 <h3 class="wp-block-heading">Accessible</h3>
 <!-- /wp:heading -->
 <!-- wp:paragraph -->
-<p>Every block ships semantically correct HTML and is validated against WCAG 2.2 AA.</p>
+<p>Every block outputs semantically correct HTML and is validated against WCAG 2.2 AA.</p>
 <!-- /wp:paragraph -->
 <!-- /wp:awt/tile -->
 
@@ -32,7 +32,7 @@
 <h3 class="wp-block-heading">Carbon Design System</h3>
 <!-- /wp:heading -->
 <!-- wp:paragraph -->
-<p>Battle-tested visual system from IBM, paired light/dark variants out of the box.</p>
+<p>Proven visual system from IBM, paired light/dark variants out of the box.</p>
 <!-- /wp:paragraph -->
 <!-- /wp:awt/tile -->
 

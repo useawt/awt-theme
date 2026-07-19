@@ -18,7 +18,7 @@
 <!-- wp:awt/accordion {"singleOpen":true} -->
 <!-- wp:awt/faq-item {"question":"Is this product really free?","level":"3"} -->
 <!-- wp:paragraph -->
-<p>Yes. The base product is GPL-2.0-or-later and ships via WordPress.org with no telemetry, no callbacks, and no license keys. Premium adds optional capabilities; the free tier is feature-complete for typical sites.</p>
+<p>Yes. The base product is GPL-2.0-or-later and is published on WordPress.org with no telemetry, no callbacks, and no license keys. Premium adds optional capabilities; the free theme and plugin are the complete product.</p>
 <!-- /wp:paragraph -->
 <!-- /wp:awt/faq-item -->
 
@@ -30,7 +30,7 @@
 
 <!-- wp:awt/faq-item {"question":"Does it support dark mode?","level":"3"} -->
 <!-- wp:paragraph -->
-<p>Yes — visitors switch between paired light and dark Carbon variants via the header toggle. Site owners pick the pairing at design time.</p>
+<p>Yes. Visitors switch between paired light and dark Carbon variants via the header toggle. Site owners pick the pairing at design time.</p>
 <!-- /wp:paragraph -->
 <!-- /wp:awt/faq-item -->
 <!-- /wp:awt/accordion -->

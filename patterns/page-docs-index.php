@@ -16,7 +16,7 @@
 <!-- /wp:heading -->
 
 <!-- wp:paragraph -->
-<p>Pick a topic to get started. Each section is grouped by what you're trying to do — explore by task, not by component.</p>
+<p>Pick a topic to get started. Each section is grouped by what you're trying to do: explore by task, not by component.</p>
 <!-- /wp:paragraph -->
 
 <!-- wp:columns -->

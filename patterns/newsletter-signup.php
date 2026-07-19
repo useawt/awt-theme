@@ -16,7 +16,7 @@
 <!-- /wp:heading -->
 
 <!-- wp:paragraph -->
-<p>One email per release. New blocks, accessibility-linter changes, and what we're shipping next. No marketing fluff.</p>
+<p>One email per release. New blocks, accessibility-linter changes, and what's coming next. No marketing fluff.</p>
 <!-- /wp:paragraph -->
 
 <!-- wp:awt/form -->

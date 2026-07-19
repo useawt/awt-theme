@@ -21,7 +21,7 @@
 <!-- /wp:heading -->
 
 <!-- wp:paragraph {"className":"awt-hero__description"} -->
-<p class="awt-hero__description">Carbon Design System components, paired light/dark variants, and a real accessibility commitment — all in a free, GPL-licensed theme.</p>
+<p class="awt-hero__description">Carbon Design System components, paired light/dark variants, and a real accessibility commitment, all in a free, GPL-licensed theme.</p>
 <!-- /wp:paragraph -->
 
 <!-- wp:awt/inline-set -->

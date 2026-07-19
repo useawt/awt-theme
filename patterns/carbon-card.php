@@ -16,7 +16,7 @@
 <!-- /wp:heading -->
 
 <!-- wp:paragraph -->
-<p>Short supporting copy. Cards are containers for related content — group a heading, body, and one optional action.</p>
+<p>Short supporting copy. Cards are containers for related content: group a heading, body, and one optional action.</p>
 <!-- /wp:paragraph -->
 
 <!-- wp:awt/link {"text":"Learn more","href":"#","iconName":"arrow--right","iconPosition":"trailing"} /-->

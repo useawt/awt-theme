@@ -14,6 +14,9 @@
 
 ### [Improvement]
 
+- Pattern placeholder copy rewritten in plainer language: "ship" wording and
+  em dashes are gone, and the free-product FAQ answer now matches the
+  promise that the free theme and plugin are the complete product.
 - Automatic breadcrumbs now render through the Breadcrumb block when the AWT
   Blocks plugin is active, so their Carbon styling (including the "/"
   separators) loads on every page — not just pages that already contain a

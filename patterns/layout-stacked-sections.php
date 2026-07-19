@@ -26,7 +26,7 @@
 <!-- /wp:heading -->
 
 <!-- wp:paragraph -->
-<p>Tinted background section — alternates with the previous to create visual rhythm. Replace with a testimonial, pricing table, or stats bar.</p>
+<p>Tinted background section. It alternates with the previous one to create visual rhythm. Replace with a testimonial, pricing table, or stats bar.</p>
 <!-- /wp:paragraph -->
 <!-- /wp:awt/section -->
 

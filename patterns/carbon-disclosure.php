@@ -25,7 +25,7 @@
 
 <!-- wp:awt/accordion-item {"title":"Section three"} -->
 <!-- wp:paragraph -->
-<p>Set the parent accordion's singleOpen to true to make this behave like a radio group — only one row open at a time.</p>
+<p>Set the parent accordion's singleOpen to true to make this behave like a radio group: only one row open at a time.</p>
 <!-- /wp:paragraph -->
 <!-- /wp:awt/accordion-item -->
 <!-- /wp:awt/accordion -->

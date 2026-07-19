@@ -18,7 +18,7 @@
 <!-- /wp:heading -->
 
 <!-- wp:paragraph {"align":"center"} -->
-<p class="has-text-align-center">There's nothing here yet. Create your first item to get started — you can always come back and edit later.</p>
+<p class="has-text-align-center">There's nothing here yet. Create your first item to get started. You can always come back and edit later.</p>
 <!-- /wp:paragraph -->
 
 <!-- wp:awt/button {"text":"Create new","kind":"primary","size":"md","href":"#","iconName":"add","iconPosition":"leading"} /-->

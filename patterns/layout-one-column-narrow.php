@@ -12,6 +12,6 @@
 ?>
 <!-- wp:awt/section {"paddingBlock":"08","maxWidth":"narrow"} -->
 <!-- wp:paragraph -->
-<p>Single-column narrow container. Width is capped at 42rem — the Carbon-recommended reading line length for long-form prose.</p>
+<p>Single-column narrow container. Width is capped at 42rem, the Carbon-recommended reading line length for long-form prose.</p>
 <!-- /wp:paragraph -->
 <!-- /wp:awt/section -->
