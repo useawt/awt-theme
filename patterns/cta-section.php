@@ -19,5 +19,7 @@
 <p class="has-text-align-center">Install the theme and the blocks plugin from WordPress.org. No license keys, no telemetry, no callbacks. The accessibility linter is built in.</p>
 <!-- /wp:paragraph -->
 
+<!-- wp:awt/inline-set {"align":"center"} -->
 <!-- wp:awt/button {"text":"Get started","kind":"primary","size":"lg","href":"#"} /-->
+<!-- /wp:awt/inline-set -->
 <!-- /wp:awt/section -->
