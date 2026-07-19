@@ -65,13 +65,6 @@ function register_menu(): void {
  * function (render_tab_*) — keeps this file readable as the surface grows.
  */
 function tabs(): array {
-	// §A: the design system's name labels its dedicated tab (the
-	// "appearance" slug is preserved so its self-forms + save handler keep
-	// working — only the label comes from the registry).
-	$ds_name = 'Carbon';
-	if ( class_exists( '\\AWT\\Theme\\DesignSystem\\Registry' ) ) {
-		$ds_name = \AWT\Theme\DesignSystem\Registry::get_active()->name();
-	}
 	// Identity leads — it's the first thing most authors set (logo, site
 	// icon, brand). Being first also makes it the default tab. Typography
 	// is no longer a top-level tab: it now lives as a sub-section inside the
@@ -86,7 +79,7 @@ function tabs(): array {
 			'render' => __NAMESPACE__ . '\\render_tab_design_system',
 		),
 		'appearance'    => array(
-			'label'  => $ds_name,
+			'label'  => __( 'Appearance', 'awt' ),
 			'render' => __NAMESPACE__ . '\\render_tab_appearance',
 		),
 		'navigation'    => array(
@@ -474,26 +467,12 @@ function premium_badge( ?string $label = null ): string {
  * appears.
  */
 function render_tab_design_system(): void {
-	$name        = 'Carbon';
-	$description = __( "IBM's open-source design system for products and digital experiences.", 'awt' );
-	if ( class_exists( '\\AWT\\Theme\\DesignSystem\\Registry' ) ) {
-		$ds          = \AWT\Theme\DesignSystem\Registry::get_active();
-		$name        = $ds->name();
-		$description = $ds->description();
-	}
 	?>
 	<p class="awt-field-help" style="margin-block: 1em 1.5em; max-inline-size: 50em;">
 		<?php esc_html_e( 'A design system sets the look of every AWT block: colors, fonts, spacing, and component style.', 'awt' ); ?>
 	</p>
-	<div style="max-inline-size:36em; padding:1em; border:2px solid #0073aa; border-radius:6px; background:#f0f6fc;">
-		<span style="display:flex; align-items:flex-start; gap:.5em;">
-			<strong style="flex:1 1 auto; min-inline-size:0;"><?php echo esc_html( $name ); ?></strong>
-			<span style="flex-shrink:0; white-space:nowrap; font-size:11px; font-weight:600; color:#0073aa;"><?php esc_html_e( 'Active', 'awt' ); ?></span>
-		</span>
-		<span style="display:block; margin-block-start:.5em; color:#646970; font-size:13px;"><?php echo esc_html( $description ); ?></span>
-	</div>
-	<p style="max-inline-size:50em; margin-block-start:1.5em;">
-		<?php esc_html_e( 'AWT is built on Carbon. Every block follows Carbon\'s components, spacing, and type scale, comes with matching light and dark themes, and meets the WCAG 2.2 AA accessibility standard.', 'awt' ); ?>
+	<p style="max-inline-size:50em;">
+		<?php esc_html_e( 'AWT is built on Carbon, IBM\'s open-source design system for products and digital experiences. Every block follows Carbon\'s components, spacing, and type scale, comes with matching light and dark themes, and meets the WCAG 2.2 AA accessibility standard.', 'awt' ); ?>
 	</p>
 	<p>
 		<a href="https://carbondesignsystem.com/" target="_blank" rel="noopener noreferrer">
