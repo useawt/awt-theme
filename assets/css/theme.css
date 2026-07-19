@@ -69,6 +69,14 @@
 .awt-spacing-11 { margin-block-end: var(--cds-spacing-11, 5rem) !important; }
 .awt-spacing-12 { margin-block-end: var(--cds-spacing-12, 6rem) !important; }
 .awt-spacing-13 { margin-block-end: var(--cds-spacing-13, 10rem) !important; }
+/* awt/section's "No gap below" switch: the section sits flush against
+   whatever follows (stacked full-bleed bands). Emitted instead of the
+   token class by the plugin's global-controls render filter. The gap
+   between top-level siblings has TWO sources — this block's bottom margin
+   and the next sibling's flow-layout margin-block-start (WordPress
+   blockGap) — so both are zeroed. */
+.awt-spacing-none { margin-block-end: 0 !important; }
+.awt-spacing-none + * { margin-block-start: 0 !important; }
 /* Children of a horizontal inline-set are laid out by the set's flex `gap`;
    suppress the per-block bottom margin there so it doesn't add vertical
    space inside the row (matches the existing editor reset). */
