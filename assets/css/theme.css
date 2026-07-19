@@ -69,6 +69,21 @@
 .awt-spacing-11 { margin-block-end: var(--cds-spacing-11, 5rem) !important; }
 .awt-spacing-12 { margin-block-end: var(--cds-spacing-12, 6rem) !important; }
 .awt-spacing-13 { margin-block-end: var(--cds-spacing-13, 10rem) !important; }
+/* Tokens BELOW the theme blockGap (05 = 1rem) need one more rule: the gap
+   between top-level siblings has TWO sources — this block's bottom margin
+   and the next sibling's flow-layout margin-block-start (WordPress blockGap,
+   1rem in this theme) — and adjacent margins collapse to the LARGER one, so
+   without this the real gap never goes below 1rem and spacing-01…04 silently
+   render as 16px. Zeroing the next sibling's top margin makes the chosen
+   token the actual gap. Deliberately NOT applied to 05+: there the collapsed
+   result already equals the token, and blanket-zeroing every follower's top
+   margin would kill intended rhythm rules (e.g. `.cds--content > h2`'s 2rem
+   top margin) after every default-spaced paragraph. Same two-source logic as
+   `.awt-spacing-none + *` below. */
+.awt-spacing-01 + *,
+.awt-spacing-02 + *,
+.awt-spacing-03 + *,
+.awt-spacing-04 + * { margin-block-start: 0 !important; }
 /* awt/section's "No gap below" switch: the section sits flush against
    whatever follows (stacked full-bleed bands). Emitted instead of the
    token class by the plugin's global-controls render filter. The gap

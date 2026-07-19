@@ -14,6 +14,9 @@
 
 ### [Improvement]
 
+- Spacing tokens below 16px (spacing-01 to spacing-04) now produce the exact
+  gap they promise. WordPress adds a 16px layout margin above every block,
+  which used to override the smaller tokens — the gap never went below 16px.
 - Pattern placeholder copy rewritten in plainer language: "ship" wording and
   em dashes are gone, and the free-product FAQ answer now matches the
   promise that the free theme and plugin are the complete product.
