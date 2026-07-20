@@ -1472,7 +1472,31 @@ function render_tab_navigation(): void {
 	$home_text      = Settings\get( 'navigation.homeItemText' );
 	$not_found_text = Settings\get( 'navigation.pageNotFoundItemText' );
 	$breadcrumb     = Settings\get( 'navigation.breadcrumbAutoEmit' );
+
+	// Deep link straight into the header template part in the Site Editor.
+	// Built from get_stylesheet() so it points at the active theme's header
+	// on any AWT site, not a hard-coded slug.
+	$header_edit_url = add_query_arg(
+		array(
+			'p'      => '/wp_template_part/' . get_stylesheet() . '//header',
+			'canvas' => 'edit',
+		),
+		admin_url( 'site-editor.php' )
+	);
 	?>
+	<h2><?php esc_html_e( 'Menu', 'awt' ); ?></h2>
+	<table class="form-table" role="presentation">
+		<tr>
+			<th scope="row"><?php esc_html_e( 'Header menu', 'awt' ); ?></th>
+			<td>
+				<p style="margin-block-start: 0;"><?php esc_html_e( 'Your header menu lives in the header, which you edit in the Site Editor. Open it to add, remove, reorder, or rename links, and to change the buttons on the right.', 'awt' ); ?></p>
+				<p>
+					<a href="<?php echo esc_url( $header_edit_url ); ?>" class="button button-secondary"><?php esc_html_e( 'Edit the header', 'awt' ); ?></a>
+				</p>
+			</td>
+		</tr>
+	</table>
+
 	<h2><?php esc_html_e( 'Skip link', 'awt' ); ?></h2>
 	<table class="form-table" role="presentation">
 		<tr>
