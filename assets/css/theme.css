@@ -467,6 +467,17 @@ body.cds--white {
 	block-size: 100%;
 }
 
+/* A trailing/leading icon (e.g. the "Get AWT" download glyph) is
+ * `position: absolute`, so the label's flex recentering above doesn't reach it.
+ * Carbon pins the icon at `(intended-height - 16px) / 2` — calibrated to the
+ * button's natural layout height (40px for md), not the taller header bar the
+ * `block-size: 100%` above stretches it to — leaving the icon a few px high.
+ * Recenter it on the button's actual height so it lines up with the label. */
+.cds--header__global .cds--btn .cds--btn__icon {
+	inset-block-start: 50%;
+	transform: translateY(-50%);
+}
+
 /* Stage 0 dogfood: keep the WP search input visible inside the dark header. */
 .cds--header__global .wp-block-search__input {
 	background: var(--cds-field-01, #393939);
