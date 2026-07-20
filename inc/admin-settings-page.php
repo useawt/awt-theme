@@ -774,7 +774,7 @@ function render_tab_appearance(): void {
 
 			<h2><?php esc_html_e( 'Header preset', 'awt' ); ?></h2>
 			<p class="awt-field-help">
-				<?php esc_html_e( 'Replaces your current header with one of five ready-made layouts.', 'awt' ); ?>
+				<?php esc_html_e( 'Replaces your current header with one of four ready-made layouts.', 'awt' ); ?>
 			</p>
 			<div style="margin-block: 1em 2.5em;">
 				<?php \AWT\Theme\HeaderPresets\picker_ui( $active_preset ); ?>
@@ -1771,7 +1771,7 @@ function render_tab_tools(): void {
 	?>
 	<h2><?php esc_html_e( 'Welcome wizard', 'awt' ); ?></h2>
 	<p class="awt-field-help">
-		<?php esc_html_e( 'Runs the five-step setup wizard again. Your current settings are kept as the starting point.', 'awt' ); ?>
+		<?php esc_html_e( 'Runs the six-step setup wizard again. Your current settings are kept as the starting point.', 'awt' ); ?>
 	</p>
 	<p>
 		<a href="<?php echo esc_url( $rerun_url ); ?>" class="button button-secondary">

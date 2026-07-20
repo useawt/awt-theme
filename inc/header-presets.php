@@ -4,7 +4,7 @@
  *
  * Two responsibilities:
  *
- *   1. preset_content( $slug ) — canonical block markup for each of the 5
+ *   1. preset_content( $slug ) — canonical block markup for each of the four
  *      header presets. Kept here (not read from the pattern files) so the
  *      auto-apply path doesn't depend on stripping a pattern docblock.
  *      Patterns under /patterns/header-preset-* are for the Site Editor's
@@ -32,7 +32,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 /**
  * Return the canonical block markup for a preset slug.
  *
- * The 5 presets mirror the §1 spec verbatim. Each composition is a single
+ * The four presets mirror the §1 spec verbatim. Each composition is a single
  * `core/group` with `tagName: header`, `className: cds--header`, and flex
  * layout — matching what `parts/header.html` produces, so the visual frame
  * is consistent regardless of which preset is active.
@@ -70,7 +70,7 @@ function preset_metadata(): array {
 }
 
 /**
- * Vertical list of 5 preset cards with SVG schematic previews. Used by
+ * Vertical list of four preset cards with SVG schematic previews. Used by
  * the welcome wizard step 2 and the AWT Settings → Appearance tab.
  * Emits the cards-list markup only — caller wraps in its own `<form>`
  * and adds submit/back/skip buttons.
