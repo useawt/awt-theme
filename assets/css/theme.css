@@ -102,8 +102,10 @@
    generated `> .aligncenter { margin-inline: auto }` rules. awt/section
    renders its own wrapper, so those rules never match inside a Section and
    a centered, resized image sticks to the left edge. Mirror the core rule
-   for Section children. */
+   for Section children — and again for the editor canvas, where the section
+   has no `__inner` div and children sit in the InnerBlocks layout list. */
 .awt-section__inner > .aligncenter { margin-inline: auto; }
+.editor-styles-wrapper .awt-section > .block-editor-block-list__layout > .aligncenter { margin-inline: auto; }
 
 /* UI-shell layout containers (the header bar + the side nav) are fixed-height
    / structurally laid out, so a content block dropped inside them (e.g. a
