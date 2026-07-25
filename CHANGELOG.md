@@ -26,6 +26,13 @@
 
 ### [Improvement]
 
+- Links typed into content now show the same color in the editor as on the
+  published page. The theme's link color now follows Carbon's link token, so
+  a link inside a dark section correctly previews in the light blue that the
+  published page already used, instead of a dark blue that was hard to read
+  on the dark background. Site-wide token overrides (for example a brand
+  link color set through AWT Settings → Custom CSS) now reach the editor
+  preview too.
 - Blocks set to "Align center" inside a Section now actually center, both on
   the page and in the editor. WordPress only centers such blocks inside its
   own layout containers, so a centered, resized image in a Section used to

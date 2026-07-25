@@ -191,7 +191,7 @@
 		},
 		"elements": {
 			"link": {
-				"color": { "text": "var(--wp--preset--color--link-primary)" }
+				"color": { "text": "var(--cds-link-primary,#0f62fe)" }
 			},
 			"h1": { "typography": { "fontSize": "var(--wp--preset--font-size--heading-06)", "fontWeight": "300", "lineHeight": "1.199" } },
 			"h2": { "typography": { "fontSize": "var(--wp--preset--font-size--heading-05)", "fontWeight": "300", "lineHeight": "1.25" } },
