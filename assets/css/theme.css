@@ -107,6 +107,26 @@
 .awt-section__inner > .aligncenter { margin-inline: auto; }
 .editor-styles-wrapper .awt-section > .block-editor-block-list__layout > .aligncenter { margin-inline: auto; }
 
+/* Reading measure for body copy. Carbon's long-form pages set text on a
+   reading column (~768px — 8 of 12 grid columns on carbondesignsystem.com),
+   not the full content width. Mirror that: paragraphs sitting DIRECTLY in a
+   Section are capped at 48rem so default body copy keeps a readable line
+   length (long lines are a barrier for low-vision and dyslexic readers —
+   WCAG 1.4.8 recommends ≤80 characters). Direct children only: text inside
+   columns, tiles, heroes, and other blocks is already constrained by its
+   container. Center/right-aligned paragraphs move the capped box so the text
+   keeps its visual alignment. Escape hatches: put a paragraph in a Group to
+   span the full section, or set the whole Section's max width to
+   "Reading (48rem)" to align every block with the text measure. Second
+   selector block mirrors the rules for the editor canvas, where the section
+   has no __inner div (see the aligncenter note above). */
+.awt-section__inner > p { max-inline-size: 48rem; }
+.awt-section__inner > p.has-text-align-center { margin-inline: auto; }
+.awt-section__inner > p.has-text-align-right { margin-inline-start: auto; }
+.editor-styles-wrapper .awt-section > .block-editor-block-list__layout > p { max-inline-size: 48rem; }
+.editor-styles-wrapper .awt-section > .block-editor-block-list__layout > p.has-text-align-center { margin-inline: auto; }
+.editor-styles-wrapper .awt-section > .block-editor-block-list__layout > p.has-text-align-right { margin-inline-start: auto; }
+
 /* UI-shell layout containers (the header bar + the side nav) are fixed-height
    / structurally laid out, so a content block dropped inside them (e.g. a
    Button in the header's global slot) must not carry the per-block Spacing
