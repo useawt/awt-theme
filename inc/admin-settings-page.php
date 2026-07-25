@@ -1473,12 +1473,19 @@ function render_tab_navigation(): void {
 	$not_found_text = Settings\get( 'navigation.pageNotFoundItemText' );
 	$breadcrumb     = Settings\get( 'navigation.breadcrumbAutoEmit' );
 
-	// Deep link straight into the header template part in the Site Editor.
-	// Built from get_stylesheet() so it points at the active theme's header
-	// on any AWT site, not a hard-coded slug.
+	// Deep links straight into the header / footer template parts in the
+	// Site Editor. Built from get_stylesheet() so they point at the active
+	// theme's parts on any AWT site, not a hard-coded slug.
 	$header_edit_url = add_query_arg(
 		array(
 			'p'      => '/wp_template_part/' . get_stylesheet() . '//header',
+			'canvas' => 'edit',
+		),
+		admin_url( 'site-editor.php' )
+	);
+	$footer_edit_url = add_query_arg(
+		array(
+			'p'      => '/wp_template_part/' . get_stylesheet() . '//footer',
 			'canvas' => 'edit',
 		),
 		admin_url( 'site-editor.php' )
@@ -1492,6 +1499,15 @@ function render_tab_navigation(): void {
 				<p style="margin-block-start: 0;"><?php esc_html_e( 'Your header menu lives in the header, which you edit in the Site Editor. Open it to add, remove, reorder, or rename links, and to change the buttons on the right.', 'awt' ); ?></p>
 				<p>
 					<a href="<?php echo esc_url( $header_edit_url ); ?>" class="button button-secondary"><?php esc_html_e( 'Edit the header', 'awt' ); ?></a>
+				</p>
+			</td>
+		</tr>
+		<tr>
+			<th scope="row"><?php esc_html_e( 'Footer', 'awt' ); ?></th>
+			<td>
+				<p style="margin-block-start: 0;"><?php esc_html_e( 'The links and text at the bottom of every page live in the footer, which you also edit in the Site Editor.', 'awt' ); ?></p>
+				<p>
+					<a href="<?php echo esc_url( $footer_edit_url ); ?>" class="button button-secondary"><?php esc_html_e( 'Edit the footer', 'awt' ); ?></a>
 				</p>
 			</td>
 		</tr>

@@ -32,6 +32,14 @@
 
 ### [Improvement]
 
+- Footer section headings now get the theme's default heading gap: 16px
+  (spacing-05) between the heading and its links. Before, the heading sat
+  flush on the first link.
+
+- AWT Settings → Navigation has a new "Edit the footer" button under the
+  existing "Edit the header" one. It opens the footer in the Site Editor,
+  where the footer's links and text are edited.
+
 - The core List block renders as a proper list again: bullets (numbers for
   ordered lists), indentation, and the same line height as body text.
   Carbon's CSS reset removes native list styling because Carbon components

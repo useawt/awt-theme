@@ -630,6 +630,14 @@ ol.wp-block-list {
 	margin-block-start: 0.5rem;
 }
 
+/* Footer section headings sat flush on their link list (Carbon's reset zeroes
+ * heading margins). Give them the theme's default heading gap — spacing-05,
+ * 16px — matching the editorial-rhythm default headings carry in content. */
+
+.cds--footer__heading {
+	margin-block-end: var(--cds-spacing-05, 1rem);
+}
+
 /* --------------------------------------------------------------------------
    Breadcrumb — Carbon scopes the <nav> to display: inline, which lets the <ol>
    pop out as a block in unpredictable ways. Force block display + flex on the
