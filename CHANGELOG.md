@@ -34,7 +34,8 @@
 
 - Footer section headings now get the theme's default heading gap: 16px
   (spacing-05) between the heading and its links. Before, the heading sat
-  flush on the first link.
+  flush on the first link. Their weight is also pinned (regular, 400) so
+  the Site Editor shows the same heading the published footer renders.
 
 - AWT Settings → Navigation has a new "Edit the footer" button under the
   existing "Edit the header" one. It opens the footer in the Site Editor,

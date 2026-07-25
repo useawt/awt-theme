@@ -635,6 +635,10 @@ ol.wp-block-list {
  * 16px — matching the editorial-rhythm default headings carry in content. */
 
 .cds--footer__heading {
+	/* Pinned weight: the editor canvas's global styles give h2 a different
+	 * weight than the front end resolves — explicit 400 keeps the Site
+	 * Editor preview identical to the published footer. */
+	font-weight: 400;
 	margin-block-end: var(--cds-spacing-05, 1rem);
 }
 
