@@ -26,6 +26,14 @@
 
 ### [Improvement]
 
+- The core List block renders as a proper list again: bullets (numbers for
+  ordered lists), indentation, and the same line height as body text.
+  Carbon's CSS reset removes native list styling because Carbon components
+  bring their own; the plain List block isn't a Carbon component, so its
+  lists rendered flat — no markers, no indent, cramped lines. Nested lists
+  get the standard circle and square markers, and ordered-list settings
+  (start value, reversed) keep working. The AWT List block's Carbon look
+  (en-dash markers) is unchanged.
 - Links typed into content now show the same color in the editor as on the
   published page. The theme's link color now follows Carbon's link token, so
   a link inside a dark section correctly previews in the light blue that the

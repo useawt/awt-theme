@@ -575,6 +575,28 @@ body.cds--white {
  * inner list still gets its own padding-inline-start, producing a visual
  * indent matching Carbon's nested-list reference (no extra rules needed). */
 
+/* Core List block — Carbon's reset strips native list styling site-wide
+ * (`ol, ul { list-style: none }`, padding zeroed, `font: inherit` down to the
+ * body's line-height: 1) on the assumption that every list is a Carbon
+ * component that re-adds its own look. The core List block isn't one, so
+ * restore it: `list-style: revert` brings back the user-agent markers —
+ * disc/decimal at the top level, circle/square on nested lists, and the
+ * ordered list's `start`/`reversed`/`type` attributes keep working — while
+ * the indent and item spacing match the AWT List block above, and the
+ * line-height matches body copy (theme.json's 1.5). Each nested list is its
+ * own List block carrying .wp-block-list, so nesting indents naturally. */
+
+ul.wp-block-list,
+ol.wp-block-list {
+	padding-inline-start: 1.5rem;
+	line-height: 1.5;
+	list-style: revert;
+}
+
+.wp-block-list > li {
+	margin-block-end: 0.25rem;
+}
+
 /* --------------------------------------------------------------------------
    Link icon — Carbon's compiled CSS sets `.cds--link__icon > svg` to 1.25rem
    (20px), which is larger than the surrounding 14px md-link text and ends up
