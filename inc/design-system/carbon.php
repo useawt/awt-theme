@@ -1996,10 +1996,17 @@ SVG;
 				return 'cds--toggletip-label';
 			case 'button':
 				return 'cds--toggletip-button';
+			case 'popover':
+				return 'cds--popover';
+			case 'popover-content':
+				return 'cds--popover-content';
 			case 'content':
 				return 'cds--toggletip-content';
+			case 'caret':
+				return 'cds--popover-caret';
 			default:
-				return 'cds--toggletip';
+				$align = $v['align'] ?? 'bottom';
+				return 'cds--popover-container cds--popover--caret cds--popover--high-contrast cds--popover--' . $align . ' cds--toggletip';
 		}
 	}
 
