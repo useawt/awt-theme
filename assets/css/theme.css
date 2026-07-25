@@ -2432,6 +2432,15 @@ body.editor-styles-wrapper .wp-block-awt-icon   + .wp-block-awt-icon {
 	border-inline-start: 3px solid transparent;
 }
 
+/* Dismissed state (close button, wired via the Interactivity API): the
+ * `hidden` attribute must win over the base `display: flex` above — author
+ * styles beat the UA's [hidden] rule, so make it explicit. Removes the
+ * notification from the accessibility tree. */
+.cds--inline-notification[hidden],
+.cds--toast-notification[hidden] {
+	display: none;
+}
+
 /* High-contrast (default) per-kind border + icon color uses Carbon's
  * `--inverse` token family, which is the brighter variant designed for the
  * dark notification background. */

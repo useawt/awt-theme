@@ -14,6 +14,10 @@
 
 ### [A11y]
 
+- A dismissed Notification block now fully disappears: an explicit
+  `[hidden]` rule makes sure the notification's flex layout can't keep it
+  visible after its close button (wired in awt-blocks) hides it.
+
 - Footer links are now easier to tap: each link is at least 32px tall with
   an 8px gap between rows. Before, the links stacked with no spacing at all,
   so on touch screens it was easy to hit the wrong one — below the WCAG
