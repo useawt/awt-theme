@@ -1,6 +1,6 @@
 <?php
 /**
- * Title: AWT — Card (Carbon pattern)
+ * Title: AWT — Card
  * Slug: awt/carbon-card
  * Design system: carbon
  * Description: Carbon's content-tile pattern. Heading + body + optional footer action. Built from awt/tile.

@@ -1,31 +1,17 @@
 <?php
 /**
- * Title: AWT — Disclosure (Carbon pattern)
+ * Title: AWT — Disclosure
  * Slug: awt/carbon-disclosure
  * Design system: carbon
- * Description: Collapsible sections built on Carbon's accordion. Use for FAQ-style content where space is scarce.
+ * Description: Click-triggered pop-ups that reveal more in place: a toggletip for supporting detail next to a label, and a menu button that discloses a set of actions.
  * Categories: awt-section
- * Keywords: disclosure, accordion, collapsible, expand
+ * Keywords: disclosure, toggletip, popover, menu button, reveal
  * Block Types: core/post-content
  * Inserter: yes
  */
 ?>
-<!-- wp:awt/accordion {"singleOpen":false} -->
-<!-- wp:awt/accordion-item {"title":"Section one"} -->
-<!-- wp:paragraph -->
-<p>The disclosure pattern hides supporting detail behind a click. Use it for content the reader may not need on first scan, like FAQ answers or expanded specifications.</p>
-<!-- /wp:paragraph -->
-<!-- /wp:awt/accordion-item -->
+<!-- wp:awt/section {"paddingBlock":"07","maxWidth":"content"} -->
+<!-- wp:awt/toggletip {"label":"Data retention","description":"Backups are kept for 30 days on every plan. Ask support if you need them kept longer.","ariaLabel":"More about data retention"} /-->
 
-<!-- wp:awt/accordion-item {"title":"Section two"} -->
-<!-- wp:paragraph -->
-<p>Each disclosure item carries its own keyboard target. Tab navigates between rows; Enter and Space toggle the active row.</p>
-<!-- /wp:paragraph -->
-<!-- /wp:awt/accordion-item -->
-
-<!-- wp:awt/accordion-item {"title":"Section three"} -->
-<!-- wp:paragraph -->
-<p>Set the parent accordion's singleOpen to true to make this behave like a radio group: only one row open at a time.</p>
-<!-- /wp:paragraph -->
-<!-- /wp:awt/accordion-item -->
-<!-- /wp:awt/accordion -->
+<!-- wp:awt/menu-button {"label":"Export","kind":"tertiary","size":"md","items":[{"label":"Export as CSV","value":"csv"},{"label":"Export as PDF","value":"pdf"},{"label":"Copy share link","value":"link"}]} /-->
+<!-- /wp:awt/section -->

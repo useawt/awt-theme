@@ -1,6 +1,6 @@
 <?php
 /**
- * Title: AWT — Empty state (Carbon pattern)
+ * Title: AWT — Empty state
  * Slug: awt/carbon-empty-states
  * Design system: carbon
  * Description: Centered "no results" / "no data" composition. Heading + supporting paragraph + optional action.

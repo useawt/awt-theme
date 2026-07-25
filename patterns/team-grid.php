@@ -18,7 +18,7 @@
 <!-- wp:columns -->
 <div class="wp-block-columns"><!-- wp:column -->
 <div class="wp-block-column"><!-- wp:image {"sizeSlug":"medium","style":{"border":{"radius":"50%"}}} -->
-<figure class="wp-block-image size-medium has-custom-border"><img alt="Photo of team member 1" style="border-radius:50%" /></figure>
+<figure class="wp-block-image size-medium has-custom-border"><img src="<?php echo esc_url( get_theme_file_uri( 'assets/images/avatar-1.svg' ) ); ?>" alt="Placeholder portrait of team member 1" style="border-radius:50%"/></figure>
 <!-- /wp:image -->
 
 <!-- wp:heading {"level":3} -->
@@ -32,7 +32,7 @@
 
 <!-- wp:column -->
 <div class="wp-block-column"><!-- wp:image {"sizeSlug":"medium","style":{"border":{"radius":"50%"}}} -->
-<figure class="wp-block-image size-medium has-custom-border"><img alt="Photo of team member 2" style="border-radius:50%" /></figure>
+<figure class="wp-block-image size-medium has-custom-border"><img src="<?php echo esc_url( get_theme_file_uri( 'assets/images/avatar-2.svg' ) ); ?>" alt="Placeholder portrait of team member 2" style="border-radius:50%"/></figure>
 <!-- /wp:image -->
 
 <!-- wp:heading {"level":3} -->
@@ -46,7 +46,7 @@
 
 <!-- wp:column -->
 <div class="wp-block-column"><!-- wp:image {"sizeSlug":"medium","style":{"border":{"radius":"50%"}}} -->
-<figure class="wp-block-image size-medium has-custom-border"><img alt="Photo of team member 3" style="border-radius:50%" /></figure>
+<figure class="wp-block-image size-medium has-custom-border"><img src="<?php echo esc_url( get_theme_file_uri( 'assets/images/avatar-3.svg' ) ); ?>" alt="Placeholder portrait of team member 3" style="border-radius:50%"/></figure>
 <!-- /wp:image -->
 
 <!-- wp:heading {"level":3} -->

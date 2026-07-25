@@ -1,6 +1,6 @@
 <?php
 /**
- * Title: AWT — Form (Carbon pattern)
+ * Title: AWT — Form
  * Slug: awt/carbon-forms
  * Design system: carbon
  * Description: Carbon form-layout pattern. Stacked labelled inputs + checkbox + submit. Foundation for any form scenario.

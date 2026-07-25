@@ -51,6 +51,10 @@ Copyright IBM Corp. 2017, 2026
 License: SIL Open Font License 1.1, https://opensource.org/licenses/OFL-1.1
 Source: https://github.com/IBM/plex
 
+Placeholder images (assets/images/logo-*.svg, assets/images/avatar-*.svg)
+Created for this theme, (C) 2026 AWT. The company names shown are fictional.
+License: GPLv2 or later, https://www.gnu.org/licenses/gpl-2.0.html
+
 == Accessibility statement ==
 
 <!-- ACCESSIBILITY_START -->

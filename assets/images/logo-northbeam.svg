@@ -1,0 +1,5 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="200" height="60" viewBox="0 0 200 60" fill="none">
+	<path d="M14 34 30 12l16 22-6 4.5L30 23.5 20 38.5 14 34Z" fill="#757575"/>
+	<path d="M14 48h32v-6H14v6Z" fill="#757575"/>
+	<text x="56" y="38" fill="#757575" font-family="'IBM Plex Sans', ui-sans-serif, system-ui, sans-serif" font-size="22" font-weight="600">Northbeam</text>
+</svg>
