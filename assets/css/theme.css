@@ -612,6 +612,25 @@ ol.wp-block-list {
 }
 
 /* --------------------------------------------------------------------------
+   Footer links — WCAG 2.5.8 (Target Size, minimum). Carbon ships no footer
+   component, so the awt/footer-link list renders bare: 14px links whose
+   ~18px-tall boxes stack with zero gap — undersized touch targets with no
+   spacing (Lighthouse's target-size audit fails on them). Give each link a
+   32px minimum target and an 8px gap between rows. Spacing only, no colors —
+   both schemes unaffected.
+   -------------------------------------------------------------------------- */
+
+.cds--footer__link > .cds--link {
+	display: inline-flex;
+	align-items: center;
+	min-block-size: 2rem;
+}
+
+.cds--footer__link + .cds--footer__link {
+	margin-block-start: 0.5rem;
+}
+
+/* --------------------------------------------------------------------------
    Breadcrumb — Carbon scopes the <nav> to display: inline, which lets the <ol>
    pop out as a block in unpredictable ways. Force block display + flex on the
    list so items lay out horizontally with Carbon's "/" separators.

@@ -14,6 +14,12 @@
 
 ### [A11y]
 
+- Footer links are now easier to tap: each link is at least 32px tall with
+  an 8px gap between rows. Before, the links stacked with no spacing at all,
+  so on touch screens it was easy to hit the wrong one — below the WCAG
+  2.5.8 minimum target size, and flagged by Lighthouse. The links look the
+  same, they just breathe.
+
 - Paragraphs placed directly in a Section now keep a readable line length:
   they are capped at the reading measure (48rem, about 90 characters),
   matching how the Carbon Design System site sets its own body text. Very
