@@ -14,6 +14,10 @@
 
 ### [Improvement]
 
+- Blocks set to "Align center" inside a Section now actually center, both on
+  the page and in the editor. WordPress only centers such blocks inside its
+  own layout containers, so a centered, resized image in a Section used to
+  stick to the left edge.
 - The Page template no longer adds its own 32px padding under the content.
   The space before the footer now comes from one place — the last block's
   Spacing setting — instead of two stacked sources. Pages that end in a
