@@ -450,6 +450,45 @@ body.cds--white {
 	}
 }
 
+/* Editor canvas: preview a side nav below the header, not squeezed into it.
+ *
+ * The Documentation preset reaches the side nav by referencing the `sidebar`
+ * template part from inside the header part. On the published page that is right —
+ * Carbon puts `.cds--side-nav` inside `header.cds--header` and it is
+ * `position: fixed`, so the header's flex row costs it nothing. In the editor the
+ * block editor replaces that fixed positioning with `position: relative` on every
+ * block it renders, which drops the nav INTO the flex row: it came out as a small
+ * box jammed against the right-hand end of a 48px header bar, nothing like what it
+ * renders as.
+ *
+ * Pin it under the header at its real width so the canvas reads the way the page
+ * does. Editor-only: the `.editor-styles-wrapper` scope never matches on the front
+ * end, where Carbon's own `--ux` rule already handles this. */
+   Position the template-part WRAPPER, not the nav inside it. The editor gives
+   every block it renders `position: relative`, so that wrapper — a 0x0 flex item
+   parked at the right-hand end of the row — becomes the containing block for
+   anything absolute inside it, and an absolutely-positioned nav anchors to that
+   instead of to the header. Moving the wrapper and letting the nav fill it in
+   normal flow also leaves the wrapper's block overlay (the thing that makes a
+   nested part select as one unit) covering the right area. */
+.editor-styles-wrapper .cds--header {
+	position: relative;
+}
+
+.editor-styles-wrapper .cds--header > .wp-block-template-part {
+	position: absolute;
+	inset-block-start: 100%;
+	inset-inline-start: 0;
+	inline-size: 16rem;
+	max-inline-size: 100%;
+}
+
+.editor-styles-wrapper .cds--header .cds--side-nav {
+	position: static;
+	inline-size: 100%;
+	block-size: auto;
+}
+
 /* Narrow screens: a persistent side-nav steps aside entirely.
 
    Two things are wrong with letting Carbon handle this on its own. First,
@@ -864,7 +903,21 @@ ol.wp-block-list {
  *    flat 32px: a flat value would pull the nav back up over the
  *    header, which is what it read before the nav ever rendered.
  */
-.cds--side-nav__heading + .cds--side-nav__menu {
+/* Keyed on the SECTION, not on a heading being next to the list.
+ *
+ * This used to read `.cds--side-nav__heading + .cds--side-nav__menu`, which tied
+ * "show the links" to "the section has a title" — two unrelated things. A section
+ * with no title renders no heading element at all (render.php emits it only when
+ * there is one), so the rule matched nothing and Carbon's collapse won: the links
+ * were in the DOM at zero height and hidden, but each `<a>` keeps its own 2rem box
+ * and stays focusable, so a keyboard user tabbed into links nobody could see. It
+ * also broke the editor canvas, where the heading carried a different class.
+ *
+ * Our sections never render Carbon's `__submenu` toggle button — they are static
+ * groups — so the collapse this overrides has nothing that could ever open it, and
+ * scoping to `__section >` is enough. Carbon's own collapsible submenus live on
+ * `.cds--side-nav__item` and are untouched. */
+.cds--side-nav__section > .cds--side-nav__menu {
 	max-block-size: none;
 	visibility: inherit;
 }

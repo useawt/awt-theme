@@ -1501,6 +1501,17 @@ function render_tab_navigation(): void {
 		),
 		admin_url( 'site-editor.php' )
 	);
+	// The side nav is a template part like the other two, but it is reached from
+	// inside the header, and a part nested in a part is not editable where it is
+	// drawn — so without this button an author has to know to look under
+	// Patterns → Template Parts for it.
+	$sidebar_edit_url = add_query_arg(
+		array(
+			'p'      => '/wp_template_part/' . get_stylesheet() . '//sidebar',
+			'canvas' => 'edit',
+		),
+		admin_url( 'site-editor.php' )
+	);
 	?>
 	<h2><?php esc_html_e( 'Menu', 'awt' ); ?></h2>
 	<table class="form-table" role="presentation">
@@ -1519,6 +1530,15 @@ function render_tab_navigation(): void {
 				<p style="margin-block-start: 0;"><?php esc_html_e( 'The links and text at the bottom of every page live in the footer, which you also edit in the Site Editor.', 'awt' ); ?></p>
 				<p>
 					<a href="<?php echo esc_url( $footer_edit_url ); ?>" class="button button-secondary"><?php esc_html_e( 'Edit the footer', 'awt' ); ?></a>
+				</p>
+			</td>
+		</tr>
+		<tr>
+			<th scope="row"><?php esc_html_e( 'Side navigation', 'awt' ); ?></th>
+			<td>
+				<p style="margin-block-start: 0;"><?php esc_html_e( 'The menu down the left of every page on wide screens, if your header preset includes one. Open it to add, remove, or rename its sections and links. On narrow screens these same links appear in the header menu.', 'awt' ); ?></p>
+				<p>
+					<a href="<?php echo esc_url( $sidebar_edit_url ); ?>" class="button button-secondary"><?php esc_html_e( 'Edit the side navigation', 'awt' ); ?></a>
 				</p>
 			</td>
 		</tr>

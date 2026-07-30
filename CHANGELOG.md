@@ -29,6 +29,13 @@
   landmark heard the site header twice in a row, and the footer twice, with
   nothing to tell the pair apart. Nothing about how the page looks changes.
 
+- A side navigation section with no title now shows its links. Untitled
+  sections hid them completely: the links were in the page but drawn at no
+  height, and each one still took keyboard focus, so someone tabbing through
+  landed on links nobody could see. Titled sections were never affected, which
+  is why this went unnoticed — showing the links had been tied to the section
+  having a title, two things that have nothing to do with each other.
+
 - The side navigation works on phones and small tablets. It used to open as a
   full-height panel over your content with no way to close it, and its links
   stayed focusable while off-screen, so keyboard users could tab into things
@@ -106,6 +113,16 @@
 - AWT Settings → Navigation has a new "Edit the footer" button under the
   existing "Edit the header" one. It opens the footer in the Site Editor,
   where the footer's links and text are edited.
+
+- AWT Settings → Navigation also has an "Edit the side navigation" button
+  beside those two. The side navigation is reached from inside the header, and
+  WordPress does not let you edit one template part from inside another, so
+  without this you had to know to go looking for it under Patterns → Template
+  Parts.
+
+- The side navigation now previews in the Site Editor the way it renders. When
+  you edit the header, it appears below the header bar at its real width
+  instead of squeezed into a small box at the right-hand end of the bar.
 
 - The core List block renders as a proper list again: bullets (numbers for
   ordered lists), indentation, and the same line height as body text.

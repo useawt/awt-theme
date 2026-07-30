@@ -1760,10 +1760,9 @@ SVG;
 			case 'link-text':
 				return 'cds--side-nav__link-text';
 			case 'section':
-				$c = 'cds--side-nav__section';
-				if ( ! empty( $v['defaultExpanded'] ) ) {
-					$c .= ' cds--side-nav__section--expanded'; }
-				return $c;
+				// No `--expanded` variant: nothing defines that class, in Carbon
+				// or here, so it changed nothing. A section is a static group.
+				return 'cds--side-nav__section';
 			case 'heading':
 				return 'cds--side-nav__heading';
 			case 'menu':
