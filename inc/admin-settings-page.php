@@ -502,6 +502,9 @@ function render_tab_identity(): void {
 	<p class="awt-field-help">
 		<?php esc_html_e( 'These defaults apply to every Header brand block on your site. A setting on an individual block overrides them.', 'awt' ); ?>
 	</p>
+	<p class="awt-field-help">
+		<?php esc_html_e( 'Your logo appears in the header beside your site title as soon as you set one here. To show it on its own instead, or to hide it, change "Default brand mode" under AWT Settings → Appearance → Header.', 'awt' ); ?>
+	</p>
 	<table class="form-table" role="presentation">
 		<tr>
 			<th scope="row"><label for="awt-identity-logoUrl"><?php esc_html_e( 'Logo for light mode', 'awt' ); ?></label></th>
@@ -741,6 +744,7 @@ function render_tab_appearance(): void {
 		$brand_mode    = (string) \AWT\Theme\Settings\get( 'identity.brandMode' );
 		$brand_prefix  = (string) \AWT\Theme\Settings\get( 'identity.prefix' );
 		$brand_modes   = array(
+			'auto'                      => __( 'Automatic — use the logo and prefix you have set', 'awt' ),
 			'text-only'                 => __( 'Site Title only', 'awt' ),
 			'logo-with-text'            => __( 'Logo + Site Title', 'awt' ),
 			'logo-only'                 => __( 'Logo only', 'awt' ),
@@ -869,6 +873,7 @@ function render_tab_appearance(): void {
 								<option value="<?php echo esc_attr( $value ); ?>" <?php selected( $brand_mode, $value ); ?>><?php echo esc_html( $label ); ?></option>
 							<?php endforeach; ?>
 						</select>
+						<p class="awt-field-help"><?php esc_html_e( 'Automatic follows the Identity tab: your logo shows as soon as you set one, next to your site title, and your prefix shows as soon as you type one. Pick any other option to always show the same thing.', 'awt' ); ?></p>
 					</td>
 				</tr>
 				<tr>
@@ -1041,9 +1046,9 @@ function save_tab_appearance(): void {
 
 		// phpcs:ignore WordPress.Security.NonceVerification.Missing, WordPress.Security.ValidatedSanitizedInput.InputNotSanitized -- nonce verified in handle_form_submission(); unslashed here, values validated against the brand-mode whitelist and re-sanitized by Settings\sanitize() on save.
 		$input       = wp_unslash( (array) ( $_POST['identity'] ?? array() ) );
-		$brand_modes = array( 'text-only', 'logo-with-text', 'logo-only', 'text-with-prefix', 'logo-with-text-and-prefix' );
-		$mode        = (string) ( $input['brandMode'] ?? 'text-only' );
-		\AWT\Theme\Settings\set( 'identity.brandMode', in_array( $mode, $brand_modes, true ) ? $mode : 'text-only' );
+		$brand_modes = array( 'auto', 'text-only', 'logo-with-text', 'logo-only', 'text-with-prefix', 'logo-with-text-and-prefix' );
+		$mode        = (string) ( $input['brandMode'] ?? 'auto' );
+		\AWT\Theme\Settings\set( 'identity.brandMode', in_array( $mode, $brand_modes, true ) ? $mode : 'auto' );
 		\AWT\Theme\Settings\set( 'identity.prefix', (string) ( $input['prefix'] ?? '' ) );
 		return;
 	}

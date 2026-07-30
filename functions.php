@@ -405,6 +405,13 @@ add_action(
  *
  * Per phase-1 spec §1 "Visitor color-scheme behavior → Performance": hand-
  * written, dependency-free, ≤ 1 KB (size enforced in CI in production builds).
+ *
+ * <body> does not exist yet while this runs in <head>, so the scope class is
+ * applied by the companion `wp_body_open` script below — the earliest moment
+ * <body> exists, and still before any content has been parsed, so before any
+ * contentful paint. The DOMContentLoaded listener stays as a fallback for
+ * documents that never fire `wp_body_open` (a custom template, a plugin that
+ * builds its own <body>); it is idempotent, so running twice is harmless.
  */
 add_action(
 	'wp_head',
@@ -426,8 +433,31 @@ add_action(
 		echo 'var c="";if(A){var m=document.cookie.match(/(?:^|; )awt_color_scheme=(light|dark|auto)/);if(m){c=m[1]}}';
 		echo 'var s=D;if(A&&(c==="light"||c==="dark")){s=c}else if(H){try{if(window.matchMedia&&matchMedia("(prefers-color-scheme: dark)").matches){s="dark"}}catch(e){}}';
 		echo 'var html=document.documentElement;html.setAttribute("data-awt-color-scheme",s);';
-		echo 'var apply=function(){var b=document.body;if(!b){return}["white","g10","g90","g100"].forEach(function(x){b.classList.remove("cds--"+x)});b.classList.add("cds--"+(s==="dark"?v.dark:v.light))};';
-		echo 'if(document.body){apply()}else{document.addEventListener("DOMContentLoaded",apply)}})();</script>';
+		echo 'var apply=window.AWT_APPLY_SCHEME=function(){var b=document.body;if(!b){return false}["white","g10","g90","g100"].forEach(function(x){b.classList.remove("cds--"+x)});b.classList.add("cds--"+(s==="dark"?v.dark:v.light));return true};';
+		echo 'if(!apply()){document.addEventListener("DOMContentLoaded",apply)}})();</script>';
+	},
+	0
+);
+
+/**
+ * Apply the resolved Carbon scope class to <body> the instant <body> opens.
+ *
+ * The server renders a best-guess scope class (`active_scheme_server_guess()`),
+ * which is exact whenever the visitor has an `awt_color_scheme` cookie. It
+ * cannot be exact for a first-time visitor with no cookie, because
+ * `prefers-color-scheme` is a client-only fact — so a visitor whose device is
+ * set to dark was served the light scope and only got the dark one at
+ * DOMContentLoaded, which on a throttled connection lands well after first
+ * paint. That is the flash-of-wrong-theme this closes: reconciling here means
+ * the correct scope is in place before any page content has been parsed, let
+ * alone painted.
+ *
+ * Priority 0 so it runs ahead of the Custom code → after body open injection.
+ */
+add_action(
+	'wp_body_open',
+	static function (): void {
+		echo '<script id="awt-color-scheme-scope">window.AWT_APPLY_SCHEME&&window.AWT_APPLY_SCHEME();</script>';
 	},
 	0
 );
@@ -679,7 +709,10 @@ add_action(
 		$data   = array(
 			'skipLinkText'      => (string) Settings\get( 'navigation.skipLinkText' ),
 			'skipLinkDefault'   => __( 'Skip to main content', 'awt' ),
-			'brandMode'         => (string) ( Settings\get( 'identity.brandMode' ) ? Settings\get( 'identity.brandMode' ) : 'text-only' ),
+			// Sent unresolved: 'auto' means "use the logo/prefix that are set",
+			// and edit.js resolves it against the block's own logo + prefix
+			// attributes the same way render.php does.
+			'brandMode'         => (string) ( Settings\get( 'identity.brandMode' ) ? Settings\get( 'identity.brandMode' ) : 'auto' ),
 			'prefix'            => (string) Settings\get( 'identity.prefix' ),
 			'logoUrl'           => (string) Settings\get( 'identity.logoUrl' ),
 			'logoUrlDark'       => (string) Settings\get( 'identity.logoUrlDark' ),

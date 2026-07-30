@@ -33,7 +33,39 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 const OPTION_KEY     = 'awt_settings';
-const SCHEMA_VERSION = 1;
+const SCHEMA_VERSION = 2;
+
+/**
+ * Bring a stored payload up to the current schema shape.
+ *
+ * A pure transform applied on every read — it performs no database write, so a
+ * site is correct from the very next page load, and the migrated value persists
+ * naturally the next time anything is saved (both `save()` and `sanitize()`
+ * stamp the current SCHEMA_VERSION).
+ *
+ * **v1 → v2 — `identity.brandMode` gains `auto` and defaults to it.** Under v1
+ * the sanitizer always wrote a concrete mode, filling in `text-only` even when
+ * the site owner had never opened the setting. A stored v1 `text-only`
+ * therefore carries no information about intent, so it is rewritten to `auto`.
+ * For a site with no logo that renders identically; for a site that had
+ * uploaded a logo it is the entire point of the change, because the logo was
+ * being saved and then silently not drawn.
+ *
+ * @param array $stored Decoded payload straight from the option.
+ * @return array Payload at the current schema version.
+ */
+function migrate( array $stored ): array {
+	$version = isset( $stored['schemaVersion'] ) ? (int) $stored['schemaVersion'] : 1;
+
+	if ( $version < 2 ) {
+		if ( ( $stored['identity']['brandMode'] ?? '' ) === 'text-only' ) {
+			$stored['identity']['brandMode'] = 'auto';
+		}
+		$stored['schemaVersion'] = 2;
+	}
+
+	return $stored;
+}
 
 /**
  * Default shape — every key the rest of the codebase may read MUST have a
@@ -84,7 +116,17 @@ function defaults(): array {
 			// backgrounds. Empty → fall back to the light-mode logo.
 			'logoUrlDark' => '',
 			'logoAlt'     => '',
-			'brandMode'   => 'text-only', // One of: text-only | logo-with-text | logo-only | text-with-prefix | logo-with-text-and-prefix.
+			// One of: auto | text-only | logo-with-text | logo-only |
+			// text-with-prefix | logo-with-text-and-prefix.
+			//
+			// 'auto' is the default and means "show what I have set": the logo
+			// appears once a logo URL is saved, and the prefix appears once a
+			// prefix is typed. Without it, a logo uploaded during the welcome
+			// wizard was stored but never drawn, because the mode that draws it
+			// lives on a different settings tab. Resolved at render time in
+			// `awt/header-brand` (render.php + edit.js), never stored resolved,
+			// so the site keeps following the logo/prefix fields as they change.
+			'brandMode'   => 'auto',
 			'prefix'      => '',
 		),
 		'navigation'    => array(
@@ -142,7 +184,7 @@ function all(): array {
 	} elseif ( ! is_array( $raw ) ) {
 		$raw = array();
 	}
-	$cache = deep_merge( defaults(), $raw );
+	$cache = deep_merge( defaults(), migrate( $raw ) );
 	return $cache;
 }
 
@@ -298,12 +340,12 @@ function sanitize( array $settings ): array {
 
 	// Identity.
 	$identity        = $settings['identity'] ?? array();
-	$brand_modes     = array( 'text-only', 'logo-with-text', 'logo-only', 'text-with-prefix', 'logo-with-text-and-prefix' );
+	$brand_modes     = array( 'auto', 'text-only', 'logo-with-text', 'logo-only', 'text-with-prefix', 'logo-with-text-and-prefix' );
 	$out['identity'] = array(
 		'logoUrl'     => isset( $identity['logoUrl'] ) ? esc_url_raw( (string) $identity['logoUrl'] ) : '',
 		'logoUrlDark' => isset( $identity['logoUrlDark'] ) ? esc_url_raw( (string) $identity['logoUrlDark'] ) : '',
 		'logoAlt'     => isset( $identity['logoAlt'] ) ? sanitize_text_field( (string) $identity['logoAlt'] ) : '',
-		'brandMode'   => in_array( $identity['brandMode'] ?? '', $brand_modes, true ) ? $identity['brandMode'] : 'text-only',
+		'brandMode'   => in_array( $identity['brandMode'] ?? '', $brand_modes, true ) ? $identity['brandMode'] : 'auto',
 		'prefix'      => isset( $identity['prefix'] ) ? sanitize_text_field( (string) $identity['prefix'] ) : '',
 	);
 

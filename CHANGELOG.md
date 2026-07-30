@@ -14,6 +14,12 @@
 
 ### [A11y]
 
+- Your site no longer flashes the wrong theme before it settles. If your
+  device is set to dark mode and you have not used the light/dark toggle
+  yet, the page used to paint light first and switch to dark a moment
+  later. On a slow connection that flash was clearly visible. Dark now
+  applies before anything is drawn.
+
 - A dismissed Notification block now fully disappears: an explicit
   `[hidden]` rule makes sure the notification's flex layout can't keep it
   visible after its close button (wired in awt-blocks) hides it.
@@ -35,6 +41,13 @@
   text column, use the Section's new "Reading (48rem)" max width.
 
 ### [Improvement]
+
+- A logo you upload now shows up on its own. Adding a logo during setup, or
+  on AWT Settings → Identity, saved it but left your header showing only the
+  site title, because showing a logo needed a second setting on another tab.
+  Brand mode now starts on "Automatic", which shows the logo and prefix you
+  have set. Pick any other option on AWT Settings → Appearance → Header to
+  always show the same thing.
 
 - Footer section headings now get the theme's default heading gap: 16px
   (spacing-05) between the heading and its links. Before, the heading sat
