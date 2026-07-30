@@ -114,11 +114,17 @@
   existing "Edit the header" one. It opens the footer in the Site Editor,
   where the footer's links and text are edited.
 
+- The side navigation can now be edited. It is a normal block inside the
+  header: it shows up in List View, you can click it, and it has its own
+  settings. Until now the Documentation preset pulled it in from a separate
+  "Side navigation" template part, and WordPress does not let you edit one
+  template part from inside another — so the side nav appeared in the header
+  but could not be selected or changed at all. Its links live in the header
+  template part now, and the separate part is gone.
+
 - AWT Settings → Navigation also has an "Edit the side navigation" button
-  beside those two. The side navigation is reached from inside the header, and
-  WordPress does not let you edit one template part from inside another, so
-  without this you had to know to go looking for it under Patterns → Template
-  Parts.
+  beside the header and footer ones. It opens the header, where the side nav
+  is, so you do not have to know that is where to look.
 
 - The side navigation now previews in the Site Editor the way it renders. When
   you edit the header, it appears below the header bar at its real width

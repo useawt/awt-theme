@@ -464,29 +464,29 @@ body.cds--white {
  * Pin it under the header at its real width so the canvas reads the way the page
  * does. Editor-only: the `.editor-styles-wrapper` scope never matches on the front
  * end, where Carbon's own `--ux` rule already handles this. */
-   Position the template-part WRAPPER, not the nav inside it. The editor gives
-   every block it renders `position: relative`, so that wrapper — a 0x0 flex item
-   parked at the right-hand end of the row — becomes the containing block for
-   anything absolute inside it, and an absolutely-positioned nav anchors to that
-   instead of to the header. Moving the wrapper and letting the nav fill it in
-   normal flow also leaves the wrapper's block overlay (the thing that makes a
-   nested part select as one unit) covering the right area. */
+   The nav is a real block inside the header part, so `.cds--header` — made a
+   containing block here — is what it anchors to. (This targeted a nested
+   template-part wrapper until the Documentation preset stopped nesting one; if a
+   `.wp-block-template-part` ever wraps the nav again, that wrapper becomes the
+   containing block and this rule will pin the nav to it instead of to the
+   header.) */
 .editor-styles-wrapper .cds--header {
 	position: relative;
 }
 
-.editor-styles-wrapper .cds--header > .wp-block-template-part {
+.editor-styles-wrapper .cds--header .cds--side-nav {
 	position: absolute;
 	inset-block-start: 100%;
 	inset-inline-start: 0;
 	inline-size: 16rem;
 	max-inline-size: 100%;
-}
-
-.editor-styles-wrapper .cds--header .cds--side-nav {
-	position: static;
-	inline-size: 100%;
-	block-size: auto;
+	/* `fit-content`, not `auto`: Carbon's base rule gives the nav a height that
+	   `auto` does not override here, leaving a 16px box — and with Carbon's
+	   `overflow: hidden` (there to clip the panel while it animates its width)
+	   the sections inside were clipped to that sliver, so the author saw an
+	   outline with nothing in it even though the inner `<nav>` measured 208px. */
+	block-size: fit-content;
+	overflow: visible;
 }
 
 /* Narrow screens: a persistent side-nav steps aside entirely.

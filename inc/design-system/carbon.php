@@ -183,16 +183,23 @@ class Carbon implements DesignSystemInterface {
 	/**
 	 * Canonical block markup for a preset slug (wrapper + body).
 	 *
-	 * Documentation is the one preset whose description promises a persistent
-	 * side nav, so its body ends with a reference to the `sidebar` template
-	 * part. That keeps the side nav's own content in the one place authors edit
-	 * it (Site Editor → Template Parts → "Side navigation") instead of
-	 * duplicating it here, and it puts `.cds--side-nav` inside
-	 * `header.cds--header` — where Carbon's own UI Shell puts it (verified
-	 * against the React reference: `.cds--side-nav` is a direct child of
-	 * `header.cds--header`, after `.cds--header__global`). The side nav is
+	 * Documentation is the one preset whose description promises a side nav, so
+	 * its body ends with an `awt/side-nav` and its sections. That puts
+	 * `.cds--side-nav` inside `header.cds--header` — where Carbon's own UI Shell
+	 * puts it (verified against the React reference: `.cds--side-nav` is a direct
+	 * child of `header.cds--header`, after `.cds--header__global`). The nav is
 	 * `position: fixed`, so sitting inside the header's flex row costs it
 	 * nothing; theme.css offsets `.cds--content` to clear its 16rem footprint.
+	 *
+	 * The blocks are written out here rather than pulled in with a
+	 * `wp:template-part` reference to a `sidebar` part, which is what this did
+	 * first. Nesting a template part inside another makes the nav **uneditable
+	 * where the author sees it**: WordPress gives a nested part a block overlay so
+	 * it selects as a single unit, and its inner blocks never appear in the outer
+	 * part's List View or block inspector. So the author got a side nav they could
+	 * see in the header canvas and could not select, click or configure. Inline,
+	 * it is an ordinary block — in List View, selectable, with its own settings —
+	 * and the header part is where they are already editing header content.
 	 *
 	 * @param string $slug Header preset slug.
 	 * @return string Block markup; '' for unknown slugs (callers treat '' as "no such preset").
@@ -242,7 +249,17 @@ class Carbon implements DesignSystemInterface {
 <!-- wp:awt/header-action {"iconName":"logo--github","label":"View on GitHub","href":"#"} /-->
 <!-- /wp:awt/header-global -->
 
-<!-- wp:template-part {"slug":"sidebar"} /-->',
+<!-- wp:awt/side-nav -->
+<!-- wp:awt/side-nav-section {"title":"Get started"} -->
+<!-- wp:awt/side-nav-link {"text":"Overview","href":"/overview"} /-->
+<!-- wp:awt/side-nav-link {"text":"Quick start","href":"/quick-start"} /-->
+<!-- /wp:awt/side-nav-section -->
+
+<!-- wp:awt/side-nav-section {"title":"Reference"} -->
+<!-- wp:awt/side-nav-link {"text":"Blocks","href":"/reference/blocks","matchMode":"prefix"} /-->
+<!-- wp:awt/side-nav-link {"text":"Patterns","href":"/reference/patterns","matchMode":"prefix"} /-->
+<!-- /wp:awt/side-nav-section -->
+<!-- /wp:awt/side-nav -->',
 
 			'application' => '<!-- wp:awt/skip-link /-->
 

@@ -9,11 +9,12 @@
  * Block Types: core/template-part/header
  * Inserter: yes
  *
- * Mirrors §1 "Header style presets → 2. Documentation". The side nav's own
- * links live in the `sidebar` template part; this preset references that part
- * rather than repeating its contents, so there is exactly one place to edit
- * them. Carbon's UI Shell puts `.cds--side-nav` inside `header.cds--header`,
- * which is where the reference lands it.
+ * Mirrors §1 "Header style presets → 2. Documentation". The side nav's blocks
+ * are written out here rather than pulled in from a `sidebar` template part:
+ * a part nested inside another part gets a block overlay, so the nav would be
+ * visible in the header canvas but impossible to select or configure. Carbon's
+ * UI Shell puts `.cds--side-nav` inside `header.cds--header`, which is where
+ * this lands it.
  */
 ?>
 <!-- wp:awt/skip-link /-->
@@ -32,4 +33,13 @@
 <!-- wp:awt/color-scheme-toggle {"kind":"icon-only"} /-->
 <!-- wp:awt/header-action {"iconName":"logo--github","label":"View on GitHub","href":"#"} /-->
 <!-- /wp:awt/header-global -->
-<!-- wp:template-part {"slug":"sidebar"} /-->
+<!-- wp:awt/side-nav -->
+<!-- wp:awt/side-nav-section {"title":"Get started"} -->
+<!-- wp:awt/side-nav-link {"text":"Overview","href":"/overview"} /-->
+<!-- wp:awt/side-nav-link {"text":"Quick start","href":"/quick-start"} /-->
+<!-- /wp:awt/side-nav-section -->
+<!-- wp:awt/side-nav-section {"title":"Reference"} -->
+<!-- wp:awt/side-nav-link {"text":"Blocks","href":"/reference/blocks","matchMode":"prefix"} /-->
+<!-- wp:awt/side-nav-link {"text":"Patterns","href":"/reference/patterns","matchMode":"prefix"} /-->
+<!-- /wp:awt/side-nav-section -->
+<!-- /wp:awt/side-nav -->

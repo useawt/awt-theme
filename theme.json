@@ -182,8 +182,7 @@
 	},
 	"templateParts": [
 		{ "name": "header",  "area": "header", "title": "Header" },
-		{ "name": "footer",  "area": "footer", "title": "Footer" },
-		{ "name": "sidebar", "area": "uncategorized", "title": "Side navigation" }
+		{ "name": "footer",  "area": "footer", "title": "Footer" }
 	],
 	"customTemplates": [
 		{
