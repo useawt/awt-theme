@@ -1757,8 +1757,6 @@ SVG;
 				return $c;
 			case 'icon':
 				return 'cds--side-nav__icon';
-			case 'icon-initial-fallback':
-				return 'cds--side-nav__icon cds--side-nav__icon--initial-fallback';
 			case 'link-text':
 				return 'cds--side-nav__link-text';
 			case 'section':
@@ -1775,19 +1773,21 @@ SVG;
 				$c    = 'cds--side-nav';
 				if ( $mode ) {
 					$c .= ' cds--side-nav--' . $mode; }
-				// `persistent` / `rail` / `overlay` are AWT's mode names; the
+				// `persistent` is AWT's name for the one mode a side nav has; the
 				// class that carries Carbon's actual "docked under the UI Shell
-				// header" layout is `--ux`, and persistent is the mode that
-				// means exactly that. It supplies `inset-block-start: 3rem` (so
-				// the nav starts below the 3rem header instead of covering the
-				// brand) and `inline-size: 0` below Carbon's lg breakpoint (so a
-				// phone isn't covered by a 16rem panel with no way to dismiss
-				// it). Reusing Carbon's own class rather than restating those
-				// values keeps us on whatever Carbon does next.
+				// header" layout is `--ux`. It supplies `inset-block-start: 3rem`
+				// (so the nav starts below the 3rem header instead of covering the
+				// brand) and `inline-size: 0` below Carbon's lg breakpoint. Reusing
+				// Carbon's own class rather than restating those values keeps us on
+				// whatever Carbon does next.
+				//
+				// No `--expanded`: Carbon adds it as the runtime open state of a
+				// collapsible nav, and ours is not collapsible — `--ux` already
+				// gives the docked panel its 16rem. Emitting it also broke the
+				// narrow screen, since `--expanded`'s unconditional 16rem beat
+				// `--ux`'s media-query 0.
 				if ( $mode === 'persistent' ) {
 					$c .= ' cds--side-nav--ux'; }
-				if ( ! empty( $v['expanded'] ) ) {
-					$c .= ' cds--side-nav--expanded'; }
 				return $c;
 		}
 	}

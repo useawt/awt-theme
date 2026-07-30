@@ -24,11 +24,21 @@
 
 ### [A11y]
 
-- The side navigation no longer covers the page on phones and small tablets.
-  It used to open as a full-height panel over your content with no way to
-  close it, and its links stayed focusable while off-screen, so keyboard
-  users could tab into things they could not see. Below 1056px it now steps
-  aside and the header menu takes over.
+- Every page now has one header landmark and one footer landmark instead of
+  two of each, nested inside one another. Screen reader users navigating by
+  landmark heard the site header twice in a row, and the footer twice, with
+  nothing to tell the pair apart. Nothing about how the page looks changes.
+
+- The side navigation works on phones and small tablets. It used to open as a
+  full-height panel over your content with no way to close it, and its links
+  stayed focusable while off-screen, so keyboard users could tab into things
+  they could not see. Below 1056px the panel now steps aside — there is no room
+  for it — and its links move into the header menu, under the site's main menu
+  items and separated from them by a rule, so nothing becomes unreachable. On a
+  documentation site those links are the documentation. The rule uses the design
+  system's border token, so it is correct in both light and dark mode, and the
+  links keep their own name for screen readers ("Side navigation") instead of
+  being folded into the main menu's.
 
 - Your site no longer flashes the wrong theme before it settles. If your
   device is set to dark mode and you have not used the light/dark toggle

@@ -438,18 +438,15 @@ body.cds--white {
    part, so without this it runs the full width of the viewport and its first
    16rem sits behind the nav (symptom: a clipped copyright line). Carbon's UI
    Shell has no footer of its own, so there is no reference rule to copy —
-   everything right of the nav belongs to the content region, footer included. */
+   everything right of the nav belongs to the content region, footer included.
+
+   Match the footer by its `.cds--footer` class, not by its element type and
+   position in the tree. The template-part block wraps every part in a plain
+   `div`, so a `> .wp-site-blocks > footer` selector would match nothing. */
 @media (min-width: 66rem) {
 	body:has(.cds--side-nav--persistent) .cds--content,
-	body:has(.cds--side-nav--persistent) > .wp-site-blocks > footer,
-	body:has(.cds--side-nav--rail) .cds--content,
-	body:has(.cds--side-nav--rail) > .wp-site-blocks > footer {
+	body:has(.cds--side-nav--persistent) .cds--footer {
 		margin-inline-start: 16rem;
-	}
-
-	body:has(.cds--side-nav--rail:not(.cds--side-nav--expanded)) .cds--content,
-	body:has(.cds--side-nav--rail:not(.cds--side-nav--expanded)) > .wp-site-blocks > footer {
-		margin-inline-start: 3rem;       /* rail collapsed = icon-only width */
 	}
 }
 
@@ -466,18 +463,44 @@ body.cds--white {
    links stay in the accessibility tree and stay focusable, so a keyboard user
    tabs into a clipped, invisible 0-wide nav (a WCAG 2.4.7 failure), and a
    screen-reader user hears navigation a sighted user on the same phone cannot
-   see. Hiding it outright removes both, and costs nothing a visitor needs:
-   below this width the header nav collapses into its own slide-out panel, and
-   that panel is the navigation.
+   see. Hiding it outright removes both.
 
-   The honest limitation is that the side nav's own links are not reachable on a
-   narrow screen — Carbon's guidance is to put them behind the header's
-   hamburger, which needs a real toggle the free theme doesn't have yet. The
-   Documentation preset's description says "on wide screens" for that reason,
-   rather than promising something a phone doesn't get. */
+   Hiding the panel must not take the links with it, though — on the
+   Documentation preset those links are the docs pages, and for a while they were
+   simply unreachable on a phone. Carbon's guidance is that a persistent side nav
+   collapses into the header's menu button, and `awt/side-nav`'s view.js now does
+   that: below this breakpoint it moves the nav's `<nav>` element into the
+   header's slide-out menu, so what stays hidden here is the empty `<aside>`.
+   Everything below styles that folded-in copy. */
 @media (max-width: 65.98rem) {
 	.cds--side-nav--persistent {
 		display: none;
+	}
+
+	/* The folded-in nav, sitting under the header menu's own links.
+
+	   Almost nothing needs restating: Carbon's `__link` / `__item` / `__menu`
+	   rules are not scoped to `.cds--side-nav`, so the links carry their own
+	   look into the drawer. What is missing is the boundary between the two
+	   navigations — without it the docs links read as more primary-nav items.
+	   The geometry copies Carbon's own `.cds--side-nav__header-divider::after`
+	   (the divider Carbon draws for exactly this pairing, in the opposite
+	   direction), so the rule sits at 1rem in from the panel edge and stops
+	   32px short of its width. `--cds-border-subtle` resolves per theme scope,
+	   so this is correct in light and dark without a second rule. */
+	.awt-side-nav--in-header-menu {
+		position: relative;
+		margin-block-start: 2rem;
+	}
+
+	.awt-side-nav--in-header-menu::before {
+		position: absolute;
+		background: var(--cds-border-subtle, #e0e0e0);
+		block-size: 0.0625rem;
+		content: "";
+		inline-size: calc(100% - 32px);
+		inset-block-start: -1rem;
+		inset-inline-start: 1rem;
 	}
 }
 
@@ -816,7 +839,7 @@ ol.wp-block-list {
    viewport edges automatically.
    -------------------------------------------------------------------------- */
 
-/* Side nav — three Stage-0 misalignments with Carbon's compiled CSS.
+/* Side nav — two Stage-0 misalignments with Carbon's compiled CSS.
  *
  * 1. Menu collapsed by default. Carbon's `.cds--side-nav__menu` rule is
  *    `max-block-size: 0; visibility: hidden`, and a sibling button
@@ -828,16 +851,11 @@ ol.wp-block-list {
  *    wrong because the empty hidden menus left blank space below each
  *    heading. Open the menu wherever a `__heading` sibling exists.
  *
- * 2. Rail-mode initial-fallback char visible in expanded mode. The
- *    render injects `<span class="...icon--initial-fallback">{first
- *    char}</span>` as a fallback icon for when the nav is collapsed to
- *    rail mode. That span is meant to ONLY appear in rail mode; in
- *    expanded mode the actual text label takes its place. Carbon
- *    doesn't ship a rule that hides it on expansion — Carbon's React
- *    component doesn't render the initial-fallback in the first place.
- *    Add the missing visibility toggle ourselves.
+ *    (A third used to live here: hiding the rail-mode initial-fallback
+ *    character in expanded mode. Both the character and rail mode are
+ *    gone — see awt/side-nav-link's render.php.)
  *
- * 3. Admin-bar overlap. WP's logged-in admin bar is fixed at top: 0
+ * 2. Admin-bar overlap. WP's logged-in admin bar is fixed at top: 0
  *    with z-index above the page, so a fixed side-nav gets its top
  *    edge clipped behind it. Same pattern the header had — push the
  *    side-nav down when `.admin-bar` is on the body (32px, or 46px in
@@ -870,11 +888,6 @@ ol.wp-block-list {
 	font-weight: var(--cds-heading-compact-01-font-weight, 600);
 	line-height: var(--cds-heading-compact-01-line-height, 1.28572);
 	letter-spacing: var(--cds-heading-compact-01-letter-spacing, 0.16px);
-}
-
-.cds--side-nav--expanded .cds--side-nav__icon--initial-fallback,
-.cds--side-nav--persistent .cds--side-nav__icon--initial-fallback {
-	display: none;
 }
 
 .admin-bar .cds--side-nav--ux {
