@@ -11,8 +11,9 @@
  *
  * Mirrors §1 "Header style presets → 3. Application". The leading
  * `awt/header-action` button toggles the side-nav panel; remove it if
- * the site doesn't use a side nav. Style variations carry
- * `sideNav.mode: overlay` for this preset by default.
+ * the site doesn't use a side nav. This preset's own description calls the
+ * side nav optional, so — unlike Documentation — it does not reference the
+ * `sidebar` template part; an author who wants one adds it themselves.
  */
 ?>
 <!-- wp:awt/skip-link /-->

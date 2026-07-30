@@ -145,27 +145,6 @@
 					"default": "light",
 					"honorSystemPreference": true,
 					"allowVisitorOverride": true
-				},
-				"header": {
-					"position": "sticky",
-					"height": "default",
-					"themeScope": "inherit"
-				},
-				"sideNav": {
-					"mode": "persistent",
-					"width": "16rem",
-					"railWidth": "3rem",
-					"collapseBreakpoint": "672px"
-				},
-				"content": {
-					"maxWidth": "66rem",
-					"padding": {
-						"block": "2rem",
-						"inline": "1rem"
-					}
-				},
-				"footer": {
-					"themeScope": "dark"
 				}
 			}
 		}

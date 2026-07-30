@@ -12,7 +12,23 @@
 
 ## Unreleased
 
+### [Breaking]
+
+- theme.json no longer lists header, side navigation, content and footer
+  options under `settings.custom.ui-shell`. Nothing read them, so changing
+  them changed nothing, and leaving them there implied a configurable header
+  height and position that does not exist. The two live keys, `colorScheme`
+  and `themeScope`, stay. (Breaking because the matching
+  `--wp--custom--ui-shell--*` CSS variables are no longer generated; custom
+  CSS that referenced them should use its own values.)
+
 ### [A11y]
+
+- The side navigation no longer covers the page on phones and small tablets.
+  It used to open as a full-height panel over your content with no way to
+  close it, and its links stayed focusable while off-screen, so keyboard
+  users could tab into things they could not see. Below 1056px it now steps
+  aside and the header menu takes over.
 
 - Your site no longer flashes the wrong theme before it settles. If your
   device is set to dark mode and you have not used the light/dark toggle
@@ -41,6 +57,29 @@
   text column, use the Section's new "Reading (48rem)" max width.
 
 ### [Improvement]
+
+- The Documentation header preset now gives you the side navigation its
+  description promises. Picking it adds a side navigation down the left of
+  every page on wide screens; edit its links in the Site Editor under
+  Patterns → Template Parts → Side navigation. Before, the preset described a
+  side navigation and none ever appeared, because nothing on the site
+  referenced that template part.
+
+- Where a side navigation is present, the page content and the footer both sit
+  clear of it. The footer used to run the full width of the window, so the text
+  at its left edge was hidden behind the side navigation. The side navigation
+  also starts below the header now instead of on top of it, so it no longer
+  covers your logo or site title.
+
+- Section titles in the side navigation now look like titles: bold, sized to
+  match the links, and lined up with them. They used to sit flush against the
+  left edge in plain body text.
+
+- AWT Settings → Appearance → Header now tells you what the header's size and
+  position are — a bar 48 pixels tall, fixed to the top of the screen — and
+  that they come from the Carbon Design System layout, so there is no setting
+  to change them. Before, an author looking for a height or position control
+  found nothing and no explanation.
 
 - A logo you upload now shows up on its own. Adding a logo during setup, or
   on AWT Settings → Identity, saved it but left your header showing only the

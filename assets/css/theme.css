@@ -429,16 +429,55 @@ body.cds--white {
    styling; we replicate it here at the theme level since we render through
    WordPress block templates rather than Carbon's React `<Content>` component.
 
-   Only applied at the side-nav collapse breakpoint (672px / Carbon md) and
-   above — below that, side-nav becomes overlay-only and content is full-width. */
-@media (min-width: 672px) {
+   The breakpoint is Carbon's lg (66rem), because that is the width at which
+   Carbon's own `.cds--side-nav--ux` rule stops collapsing the nav to
+   `inline-size: 0`. It used to read 672px (Carbon md), which offset the content
+   by 16rem across a 384px band where the nav wasn't 16rem wide at all.
+
+   The footer takes the same offset as the content: it is a sibling template
+   part, so without this it runs the full width of the viewport and its first
+   16rem sits behind the nav (symptom: a clipped copyright line). Carbon's UI
+   Shell has no footer of its own, so there is no reference rule to copy —
+   everything right of the nav belongs to the content region, footer included. */
+@media (min-width: 66rem) {
 	body:has(.cds--side-nav--persistent) .cds--content,
-	body:has(.cds--side-nav--rail) .cds--content {
+	body:has(.cds--side-nav--persistent) > .wp-site-blocks > footer,
+	body:has(.cds--side-nav--rail) .cds--content,
+	body:has(.cds--side-nav--rail) > .wp-site-blocks > footer {
 		margin-inline-start: 16rem;
 	}
 
-	body:has(.cds--side-nav--rail:not(.cds--side-nav--expanded)) .cds--content {
+	body:has(.cds--side-nav--rail:not(.cds--side-nav--expanded)) .cds--content,
+	body:has(.cds--side-nav--rail:not(.cds--side-nav--expanded)) > .wp-site-blocks > footer {
 		margin-inline-start: 3rem;       /* rail collapsed = icon-only width */
+	}
+}
+
+/* Narrow screens: a persistent side-nav steps aside entirely.
+
+   Two things are wrong with letting Carbon handle this on its own. First,
+   Carbon's `--ux` collapses the nav to `inline-size: 0` below lg (66rem), but
+   `.cds--side-nav--expanded { inline-size: 16rem }` is unconditional and lands
+   later in Carbon's sheet at equal specificity — so it wins the media query
+   back, and since a persistent nav is expanded by default, every phone got a
+   16rem panel over the page with no way to dismiss it.
+
+   Second, `inline-size: 0` plus `overflow: hidden` is not actually hidden: the
+   links stay in the accessibility tree and stay focusable, so a keyboard user
+   tabs into a clipped, invisible 0-wide nav (a WCAG 2.4.7 failure), and a
+   screen-reader user hears navigation a sighted user on the same phone cannot
+   see. Hiding it outright removes both, and costs nothing a visitor needs:
+   below this width the header nav collapses into its own slide-out panel, and
+   that panel is the navigation.
+
+   The honest limitation is that the side nav's own links are not reachable on a
+   narrow screen — Carbon's guidance is to put them behind the header's
+   hamburger, which needs a real toggle the free theme doesn't have yet. The
+   Documentation preset's description says "on wide screens" for that reason,
+   rather than promising something a phone doesn't get. */
+@media (max-width: 65.98rem) {
+	.cds--side-nav--persistent {
+		display: none;
 	}
 }
 
@@ -799,14 +838,38 @@ ol.wp-block-list {
  *    Add the missing visibility toggle ourselves.
  *
  * 3. Admin-bar overlap. WP's logged-in admin bar is fixed at top: 0
- *    with z-index above the page, so the side-nav (also fixed at
- *    top: 0) gets its first 32px clipped behind the admin bar. Same
- *    pattern the header had — push the side-nav down 32px when
- *    `.admin-bar` is on the body (46px in the mobile admin-bar size).
+ *    with z-index above the page, so a fixed side-nav gets its top
+ *    edge clipped behind it. Same pattern the header had — push the
+ *    side-nav down when `.admin-bar` is on the body (32px, or 46px in
+ *    the mobile admin-bar size). The offset stacks on Carbon's own
+ *    `--ux` inset of 3rem, so it is `calc(32px + 3rem)` rather than a
+ *    flat 32px: a flat value would pull the nav back up over the
+ *    header, which is what it read before the nav ever rendered.
  */
 .cds--side-nav__heading + .cds--side-nav__menu {
 	max-block-size: none;
 	visibility: inherit;
+}
+
+/* 4. Section title had no styling at all. `__heading` is our class, not
+ *    Carbon's — Carbon's section title is `.cds--side-nav__submenu`, a
+ *    real toggle button, and it gets its look from rules keyed to that
+ *    class. Ours is a static div, so it matched nothing: no indent, no
+ *    height, body weight and size, sitting flush against the nav's left
+ *    edge while the links below it were indented 2rem. Restate what
+ *    Carbon gives `.cds--side-nav__submenu` (measured off the reference:
+ *    32px tall, 1rem inline padding, heading-compact-01, text-secondary)
+ *    so the title reads as a title in both light and dark scopes. */
+.cds--side-nav__heading {
+	display: flex;
+	align-items: center;
+	min-block-size: 2rem;
+	padding-inline: 1rem;
+	color: var(--cds-text-secondary, #525252);
+	font-size: var(--cds-heading-compact-01-font-size, 0.875rem);
+	font-weight: var(--cds-heading-compact-01-font-weight, 600);
+	line-height: var(--cds-heading-compact-01-line-height, 1.28572);
+	letter-spacing: var(--cds-heading-compact-01-letter-spacing, 0.16px);
 }
 
 .cds--side-nav--expanded .cds--side-nav__icon--initial-fallback,
@@ -814,11 +877,19 @@ ol.wp-block-list {
 	display: none;
 }
 
-.admin-bar .cds--side-nav {
+.admin-bar .cds--side-nav--ux {
+	inset-block-start: calc(32px + 3rem);
+	block-size: calc(100% - 32px - 3rem);
+}
+.admin-bar .cds--side-nav:not(.cds--side-nav--ux) {
 	inset-block-start: 32px;
 }
 @media screen and (max-width: 782px) {
-	.admin-bar .cds--side-nav {
+	.admin-bar .cds--side-nav--ux {
+		inset-block-start: calc(46px + 3rem);
+		block-size: calc(100% - 46px - 3rem);
+	}
+	.admin-bar .cds--side-nav:not(.cds--side-nav--ux) {
 		inset-block-start: 46px;
 	}
 }

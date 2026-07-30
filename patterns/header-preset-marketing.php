@@ -10,10 +10,9 @@
  * Inserter: yes
  *
  * Composition mirrors the §1 "Header style presets → 1. Marketing"
- * pseudocode exactly. UI shell parameter overrides (header.position,
- * sideNav.mode, content.maxWidth) live in theme.json — switching to this
- * preset only replaces template-part content; layout overrides come from
- * the active style variation.
+ * pseudocode exactly. Switching preset only replaces the header template
+ * part's content — the header bar itself is Carbon's fixed 3rem UI Shell
+ * header on every preset, and no preset changes that.
  */
 ?>
 <!-- wp:awt/skip-link /-->

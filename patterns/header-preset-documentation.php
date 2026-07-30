@@ -3,15 +3,17 @@
  * Title: AWT — Header preset: Documentation
  * Slug: awt/header-preset-documentation
  * Design system: carbon
- * Description: Brand + horizontal section nav + search + persistent side nav. Designed for technical product docs, knowledge bases, and reference sites.
+ * Description: Brand + horizontal section nav + search + a side nav on wide screens. Designed for technical product docs, knowledge bases, and reference sites.
  * Categories: awt-section, header
  * Keywords: header, preset, docs, knowledge base, reference
  * Block Types: core/template-part/header
  * Inserter: yes
  *
- * Mirrors §1 "Header style presets → 2. Documentation". The side-nav is
- * configured in the sidebar template part (not here) — this preset is
- * header-only. Style variations carry `sideNav.mode: persistent`.
+ * Mirrors §1 "Header style presets → 2. Documentation". The side nav's own
+ * links live in the `sidebar` template part; this preset references that part
+ * rather than repeating its contents, so there is exactly one place to edit
+ * them. Carbon's UI Shell puts `.cds--side-nav` inside `header.cds--header`,
+ * which is where the reference lands it.
  */
 ?>
 <!-- wp:awt/skip-link /-->
@@ -30,3 +32,4 @@
 <!-- wp:awt/color-scheme-toggle {"kind":"icon-only"} /-->
 <!-- wp:awt/header-action {"iconName":"logo--github","label":"View on GitHub","href":"#"} /-->
 <!-- /wp:awt/header-global -->
+<!-- wp:template-part {"slug":"sidebar"} /-->

@@ -51,6 +51,21 @@ add_action( 'after_setup_theme', '\\AWT\\Theme\\DesignSystem\\bootstrap', 5 );
  * Resolve the active ui-shell settings block from theme.json
  * (settings.custom.ui-shell), including any style-variation overrides.
  *
+ * The block holds exactly two keys, and both have a reader:
+ *
+ *   - `colorScheme` — read here, by color_scheme_settings().
+ *   - `themeScope`  — the declared light/dark variant pairing. Style variations
+ *     restate it; theme_scopes() carries the same default, and explains below
+ *     why it cannot read this key back for a user-applied variation.
+ *
+ * Nothing else belongs in it. `header`, `sideNav`, `content` and `footer` blocks
+ * lived here until 2026-07-30 and were read by nothing at all, which made
+ * theme.json advertise knobs (a configurable header height and position, a
+ * side-nav width, a content max-width) that turning did nothing to. The header
+ * is Carbon's UI Shell header — `position: fixed`, 3rem tall — and that is a
+ * design-system invariant, not a site setting. Add a key here only alongside
+ * the code that reads it.
+ *
  * Cached per request — repeated calls return the same array reference.
  *
  * @return array

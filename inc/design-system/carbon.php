@@ -156,7 +156,7 @@ class Carbon implements DesignSystemInterface {
 			),
 			'documentation' => array(
 				'label'       => __( 'Documentation', 'awt' ),
-				'description' => __( 'Brand + horizontal section nav + search + persistent side nav. Knowledge bases, reference sites.', 'awt' ),
+				'description' => __( 'Brand + horizontal section nav + search + a side nav on wide screens. Knowledge bases, reference sites.', 'awt' ),
 			),
 			'application'   => array(
 				'label'       => __( 'Application', 'awt' ),
@@ -182,6 +182,17 @@ class Carbon implements DesignSystemInterface {
 
 	/**
 	 * Canonical block markup for a preset slug (wrapper + body).
+	 *
+	 * Documentation is the one preset whose description promises a persistent
+	 * side nav, so its body ends with a reference to the `sidebar` template
+	 * part. That keeps the side nav's own content in the one place authors edit
+	 * it (Site Editor → Template Parts → "Side navigation") instead of
+	 * duplicating it here, and it puts `.cds--side-nav` inside
+	 * `header.cds--header` — where Carbon's own UI Shell puts it (verified
+	 * against the React reference: `.cds--side-nav` is a direct child of
+	 * `header.cds--header`, after `.cds--header__global`). The side nav is
+	 * `position: fixed`, so sitting inside the header's flex row costs it
+	 * nothing; theme.css offsets `.cds--content` to clear its 16rem footprint.
 	 *
 	 * @param string $slug Header preset slug.
 	 * @return string Block markup; '' for unknown slugs (callers treat '' as "no such preset").
@@ -229,7 +240,9 @@ class Carbon implements DesignSystemInterface {
 <!-- wp:awt/header-action {"iconName":"search","label":"Search docs","href":"/?s="} /-->
 <!-- wp:awt/color-scheme-toggle {"kind":"icon-only"} /-->
 <!-- wp:awt/header-action {"iconName":"logo--github","label":"View on GitHub","href":"#"} /-->
-<!-- /wp:awt/header-global -->',
+<!-- /wp:awt/header-global -->
+
+<!-- wp:template-part {"slug":"sidebar"} /-->',
 
 			'application' => '<!-- wp:awt/skip-link /-->
 
@@ -1762,6 +1775,17 @@ SVG;
 				$c    = 'cds--side-nav';
 				if ( $mode ) {
 					$c .= ' cds--side-nav--' . $mode; }
+				// `persistent` / `rail` / `overlay` are AWT's mode names; the
+				// class that carries Carbon's actual "docked under the UI Shell
+				// header" layout is `--ux`, and persistent is the mode that
+				// means exactly that. It supplies `inset-block-start: 3rem` (so
+				// the nav starts below the 3rem header instead of covering the
+				// brand) and `inline-size: 0` below Carbon's lg breakpoint (so a
+				// phone isn't covered by a 16rem panel with no way to dismiss
+				// it). Reusing Carbon's own class rather than restating those
+				// values keeps us on whatever Carbon does next.
+				if ( $mode === 'persistent' ) {
+					$c .= ' cds--side-nav--ux'; }
 				if ( ! empty( $v['expanded'] ) ) {
 					$c .= ' cds--side-nav--expanded'; }
 				return $c;

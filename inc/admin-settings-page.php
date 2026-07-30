@@ -779,6 +779,7 @@ function render_tab_appearance(): void {
 			<h2><?php esc_html_e( 'Header preset', 'awt' ); ?></h2>
 			<p class="awt-field-help">
 				<?php esc_html_e( 'Replaces your current header with one of four ready-made layouts.', 'awt' ); ?>
+				<?php esc_html_e( 'Documentation also adds a side navigation menu down the left of every page on wide screens (it steps aside on phones and small tablets, where the header menu takes over). Edit its links in the Site Editor, under Patterns → Template Parts → Side navigation.', 'awt' ); ?>
 			</p>
 			<div style="margin-block: 1em 2.5em;">
 				<?php \AWT\Theme\HeaderPresets\picker_ui( $active_preset ); ?>
@@ -895,7 +896,12 @@ function render_tab_appearance(): void {
 			<?php esc_html_e( 'AWT Settings covers the common cases. For advanced changes — custom buttons, reordering icons, or restoring the original header — use the WordPress Site Editor.', 'awt' ); ?>
 		</p>
 
-		<h3 style="margin-block: 1.5em 0.5em;"><?php esc_html_e( 'Adding or reordering icons', 'awt' ); ?></h3>
+		<h3 style="margin-block: 1.5em 0.5em;"><?php esc_html_e( 'Header size and position', 'awt' ); ?></h3>
+		<p class="awt-field-help">
+			<?php esc_html_e( 'The header is a bar 48 pixels tall, fixed to the top of the screen so it stays put as you scroll. Both come from the Carbon Design System layout the theme follows, so there is no setting to change them. What you can change is what goes in the bar and whether it looks light or dark.', 'awt' ); ?>
+		</p>
+
+		<h3 style="margin-block: 2em 0.5em;"><?php esc_html_e( 'Adding or reordering icons', 'awt' ); ?></h3>
 		<p class="awt-field-help"><?php esc_html_e( 'To add custom buttons (an X/Twitter icon, a call-to-action button) or reorder icons, edit the header in the Site Editor.', 'awt' ); ?></p>
 		<ol class="awt-field-help" style="padding-inline-start: 1.5em; max-inline-size: 50em;">
 			<li>
