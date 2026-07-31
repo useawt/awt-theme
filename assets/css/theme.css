@@ -3062,14 +3062,54 @@ body.editor-styles-wrapper .wp-block-awt-icon   + .wp-block-awt-icon {
  * rules + the block's edit.js effect reshape that flat list to mirror the
  * front end: the segment buttons sit in a horizontal segmented control, every
  * panel breaks to a full-width row below it, and the effect hides all panels
- * but the active one. Each item button is wrapped in its own
- * `[data-block][data-type]` element, so the published cascade (group outline,
- * adjacent-sibling dividers, :first/:last-child end-caps) never matches — we
- * recreate the segmented look here with per-button borders instead. */
+ * but the active one.
+ *
+ * This element carries the base `cds--content-switcher` class as well, so the
+ * segment buttons get the SAME cascade here as on the published page — the
+ * hover fill, the :active and :focus edge repaints, the end-cap box-shadows and
+ * the pseudo-element suppressions are all written as `.cds--content-switcher
+ * .cds--content-switcher-btn…` and matched nothing in the canvas while the base
+ * class was missing. Three of Carbon's own wrapper declarations have to be
+ * undone, though, because they assume the element holds ONLY the segment row
+ * and here it holds the panels too:
+ *
+ *   - `block-size: var(--cds-layout-size-height-local)` pinned the whole block
+ *     to one row (40px), so the panels spilled out over the next heading.
+ *   - `outline` draws the group's visible edge around that row; the same box
+ *     here also contains the panels, so it boxed them in. The `::before`
+ *     overlay below re-draws that outline over the first row only.
+ *   - `position` has to be `relative` for the overlay to anchor to. */
 .awt-content-switcher--editor {
 	display: flex;
 	flex-wrap: wrap;
 	align-items: stretch;
+	position: relative;
+	block-size: auto;
+	outline: none;
+}
+/* The group's visible edge. Same declaration Carbon puts on
+ * `.cds--content-switcher` itself, sized to one segment row (the layout-size
+ * token Carbon sets on this element, which tracks the sm/md/lg attribute) so it
+ * frames the segmented control and not the panels beneath it.
+ *
+ * `z-index: 5` clears the buttons' own state z-indexes (hover 3, focus 4): the
+ * published page relies on each button repainting its slice of the edge as an
+ * inset shadow when it elevates above the outline, and `:last-child` — one of
+ * the three rules that repaint — can never match here, because this element's
+ * last child is a panel. Painting the overlay above the row instead keeps the
+ * whole perimeter intact in every state. It draws a 1px ring and nothing else,
+ * so it never covers a label. */
+.awt-content-switcher--editor::before {
+	content: '';
+	position: absolute;
+	inset-block-start: 0;
+	inset-inline: 0;
+	block-size: var(--cds-layout-size-height-local, 2.5rem);
+	border-radius: 0.25rem;
+	outline: 0.0625rem solid var(--cds-border-inverse, #161616);
+	outline-offset: -0.0625rem;
+	pointer-events: none;
+	z-index: 5;
 }
 /* The item block's wrapper element IS the `<button.cds--content-switcher-btn>`
  * (its edit.js spreads useBlockProps onto the button), so style the segment
@@ -3087,23 +3127,26 @@ body.editor-styles-wrapper .wp-block-awt-icon   + .wp-block-awt-icon {
 	display: flex;
 	align-items: center;
 	justify-content: flex-start;
-	/* Outer group edge: dark top + bottom run continuously across the row;
-	 * the left/right caps are added on the first + last segment below. The
-	 * interior boundaries are drawn as thin gray dividers (::before), not as
-	 * borders, so they read like Carbon's short centered divider rather than
-	 * a heavy full-height line. */
-	border-block: 1px solid #161616;
-	border-inline: 0;
+	/* No borders. The row's edge is the `::before` overlay above and the
+	 * interior boundaries are Carbon's thin gray `::before` dividers, exactly as
+	 * on the published page — borders here would add 2px to every segment and
+	 * make the editor row taller than the published one. */
 }
-.awt-content-switcher--editor > [data-type="awt/content-switcher-item"]:first-of-type {
-	border-inline-start: 1px solid #161616;
-	border-start-start-radius: 0.25rem;
-	border-end-start-radius: 0.25rem;
-}
+/* Rounded outer corners. The first segment IS this element's first child, so
+ * Carbon's own `:first-child` rule rounds the left pair; its `:last-child`
+ * partner can't match, because the last child here is a panel — name the last
+ * segment instead. */
 .awt-content-switcher--editor > [data-type="awt/content-switcher-item"]:has(+ [data-type="awt/content-switcher-panel"]) {
-	border-inline-end: 1px solid #161616;
 	border-start-end-radius: 0.25rem;
 	border-end-end-radius: 0.25rem;
+}
+/* The label is editable text in the canvas, so it inherits the editor's 1.5
+ * line-height instead of the published label's 1. That extra 8px sets the row's
+ * height, and on `sm` — where the row has to be 32px and the segment's own
+ * minimum is exactly that — it pushed the row to 40px, taller than the published
+ * control and taller than the edge drawn above. */
+.awt-content-switcher--editor .cds--content-switcher__label {
+	line-height: 1;
 }
 /* Thin gray interior divider — short + vertically centered between segments,
  * matching Carbon's `.cds--content-switcher-btn + ...::before`. */
