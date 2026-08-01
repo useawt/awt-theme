@@ -73,6 +73,13 @@
   the full section, place it in a Group; to line a whole section up with the
   text column, use the Section's new "Reading (48rem)" max width.
 
+- The "Skip to main content" link now looks the way the design system draws
+  it. When you tabbed to it, it showed up as a squat box wearing two focus
+  rings at once, about half the height it should be: an older theme rule and
+  the design system's own rule each won part of the styling. It is now a
+  single panel the full height of the header, with one focus border, in both
+  light and dark mode.
+
 ### [Improvement]
 
 - Breadcrumbs on a month or day archive now name the month you are looking at.
