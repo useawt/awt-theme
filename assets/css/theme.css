@@ -155,21 +155,13 @@
 	position: relative;
 }
 
-/* Field wrapper is the positioning context for absolute children:
- *   - password-input visibility toggle (anchored right edge)
- *   - invalid/warning icon
- * Carbon's compiled CSS sets this via `.cds--text-input__field-wrapper`
- * directly; mirrored here so the rule is present even when @carbon/styles
- * isn't loaded for any reason. */
-.cds--text-input__field-wrapper {
-	position: relative;
-	/* Flex so the wrapper hugs the input's box exactly. As a plain block it
-	   left ~8px of inline descender space below the input, making it taller
-	   than the input — which threw the absolutely-positioned, full-height
-	   password visibility toggle (and status icons) ~4px below the input's
-	   vertical center. Matches Carbon's own field-wrapper display. */
-	display: flex;
-}
+/* No `.cds--text-input__field-wrapper` rule here: Carbon's own sets exactly
+ * the same `position: relative` (the positioning context for the password
+ * visibility toggle and the invalid/warning icon) and `display: flex` (which
+ * makes the wrapper hug the input's box — as a plain block it left ~8px of
+ * inline descender space and pushed the toggle below the input's center).
+ * The text-input/password-input/dropdown blocks each ship that rule with
+ * their own CSS, so it is there whenever the markup is. */
 
 /* Password input — Carbon's visibility-toggle button.
  * Carbon's CSS hangs positioning off the combined selector
@@ -643,9 +635,9 @@ body.cds--white {
 	margin-block: 0;
 }
 
-.cds--list--unordered {
-	list-style: none;
-}
+/* (`.cds--list--unordered { list-style: none }` is Carbon's own rule, shipped
+ * with the List block — no need to repeat it. The ordered variant below is
+ * different: Carbon sets `decimal`, we need `decimal outside`.) */
 
 .cds--list--ordered--native {
 	list-style: decimal outside;
@@ -742,10 +734,6 @@ ol.wp-block-list {
 	list-style: none;
 	padding: 0;
 	margin: 0;
-}
-
-.cds--breadcrumb-item {
-	margin-inline-end: 0.5rem;
 }
 
 /* Carbon's breadcrumb-item::after pseudo-element emits the "/" separator
@@ -1033,6 +1021,11 @@ ol.wp-block-list {
 .cds--header.cds--white .cds--header__logo--light,
 .cds--header.cds--g10   .cds--header__logo--light { display: block; }
 
+/* (Two departures from Carbon's own rule beyond the centering explained
+ * above: 1rem of inline padding, because this button may carry a label next
+ * to its icon, and `border: 0` in place of Carbon's transparent 1px
+ * placeholder border — focus here is drawn with an outline a few rules
+ * down, so there is nothing for that placeholder to swap in.) */
 .cds--header__action {
 	display: inline-flex;
 	align-items: center;
@@ -2226,10 +2219,6 @@ a.cds--btn--ghost:visited:active {
 	border: 1px solid transparent;
 }
 
-.cds--tile--clickable {
-	text-decoration: none;
-}
-
 .cds--tile--clickable:hover {
 	background: var(--cds-layer-hover-01, #e8e8e8);
 }
@@ -2544,7 +2533,14 @@ body.editor-styles-wrapper .wp-block-awt-icon   + .wp-block-awt-icon {
 	padding-block: 0.5rem;
 	padding-inline: 1rem;
 	min-block-size: 3rem;
-	color: var(--cds-text-inverse, #ffffff);
+	/* No `color` here. It used to repeat Carbon's own
+	 * `color: var(--cds-text-inverse)` — but repeating it moved the
+	 * declaration to the end of the cascade, past Carbon's
+	 * `.cds--inline-notification--low-contrast { color: text-primary }`,
+	 * which has the same specificity and only wins on source order. A
+	 * low-contrast notification then drew inverse text on its light tint:
+	 * measured at 1.2:1 in dark mode. Carbon declares both, in the right
+	 * order; let it. */
 	background: var(--cds-background-inverse, #393939);
 	/* The left border draws via Carbon's kind-specific modifier; the base
 	 * carries a transparent stroke so the layout doesn't jitter when the
@@ -2600,12 +2596,9 @@ body.editor-styles-wrapper .wp-block-awt-icon   + .wp-block-awt-icon {
 	color: var(--cds-support-error-inverse, #fa4d56);
 }
 
-/* Low-contrast — light tinted background, dark text, regular-color icons. */
-.cds--inline-notification--low-contrast,
-.cds--toast-notification--low-contrast {
-	color: var(--cds-text-primary, #161616);
-}
-
+/* Low-contrast — light tinted background, dark text, regular-color icons.
+ * The text color itself comes from Carbon; only the tint and the left rule
+ * per status are ours. */
 .cds--inline-notification--low-contrast.cds--inline-notification--info,
 .cds--toast-notification--low-contrast.cds--toast-notification--info {
 	background: var(--cds-notification-background-info, #edf5ff);
@@ -2654,20 +2647,10 @@ body.editor-styles-wrapper .wp-block-awt-icon   + .wp-block-awt-icon {
 	margin: 0 0.8125rem;
 }
 
-/* Carbon's exact icon spacing — `margin-block-start` lines the icon up with
- * the title's optical baseline (the text-wrapper itself carries `padding-
- * block: 0.9375rem`, so the icon needs ~0.875rem top margin to sit beside
- * the title rather than the wrapper's top edge). */
-.cds--inline-notification__icon {
-	flex-shrink: 0;
-	margin-block-start: 0.875rem;
-	margin-inline-end: 1rem;
-}
-.cds--toast-notification__icon {
-	flex-shrink: 0;
-	margin-block-start: 1rem;
-	margin-inline-end: 1rem;
-}
+/* No notification-icon spacing here. This used to restate Carbon's own
+ * margins (0.875rem inline / 1rem toast, which line the icon up with the
+ * title's optical baseline rather than the wrapper's top edge) value for
+ * value. Carbon ships them with the Notification block. */
 
 .cds--inline-notification__text-wrapper,
 .cds--toast-notification__text-wrapper {
@@ -2695,6 +2678,13 @@ body.editor-styles-wrapper .wp-block-awt-icon   + .wp-block-awt-icon {
 	opacity: 0.85;
 }
 
+/* Close button — why this restyles a button Carbon already styles.
+ *
+ * Carbon draws its close button at `padding: 0` inside a fixed 3rem box that
+ * its own React layout provides. Our notification is a flex row without that
+ * box, so the button gets its own 0.5rem padding (a 32px target) and centers
+ * its icon itself. `color: inherit` is deliberate: the button has to follow
+ * the notification's status color, which changes per variant. */
 .cds--inline-notification__close-button,
 .cds--toast-notification__close-button {
 	background: transparent;
@@ -2786,7 +2776,17 @@ body.editor-styles-wrapper .wp-block-awt-icon   + .wp-block-awt-icon {
    need help.
    -------------------------------------------------------------------------- */
 
-/* Pagination */
+/* Pagination — why this restyles a component Carbon already styles.
+ *
+ * Carbon's pagination page is a `<button>` it lays out as `display: block`
+ * with a computed padding; ours is an `<a>` carrying a real href, because a
+ * page link should be a link. Centering a glyph inside a link needs the flex
+ * box below, which is why these are not glue on top of Carbon's rule but a
+ * replacement for it.
+ *
+ * The 3rem square is not a departure: Carbon's own `min-inline-size` reads
+ * `--cds-layout-size-height-local`, which resolves to 3rem on this component
+ * anyway. It is a hardcoded copy of Carbon's value, not a different one. */
 .cds--pagination-nav { display: inline-flex; }
 .cds--pagination-nav__list { display: flex; gap: 0; list-style: none; margin: 0; padding: 0; }
 .cds--pagination-nav__page {
@@ -2811,9 +2811,21 @@ body.editor-styles-wrapper .wp-block-awt-icon   + .wp-block-awt-icon {
 .cds--pagination-nav__page:focus,
 .cds--pagination-nav__page:focus-visible { outline: 2px solid var(--cds-focus, #0f62fe); outline-offset: -2px; }
 
-/* Select */
+/* Select — why this restyles a component Carbon already styles.
+ *
+ * Carbon's Select is a React ListBox; ours is a native `<select>`, so the
+ * rule below is not glue on top of Carbon's, it is the whole control:
+ * `appearance: none` to drop the platform chrome, then Carbon's field
+ * surface, bottom rule and arrow drawn back on by hand.
+ *
+ * The heights are the one part worth revisiting. The block emits
+ * `cds--layout--size-{sm|md|lg}`, so Carbon's own `block-size:
+ * var(--cds-layout-size-height-local)` would resolve to 2 / 2.5 / 3rem on
+ * its own — the three values hardcoded here. They agree today; they are
+ * hardcoded copies, not a deliberate departure. (`.cds--select-input__wrapper
+ * { position: relative }` and the `:focus` outline used to be repeated here
+ * too; both are Carbon's own, shipped with the Select block.) */
 .cds--select { display: block; }
-.cds--select-input__wrapper { position: relative; }
 .cds--select-input {
 	appearance: none;
 	-webkit-appearance: none;
@@ -2829,7 +2841,6 @@ body.editor-styles-wrapper .wp-block-awt-icon   + .wp-block-awt-icon {
 }
 .cds--select-input--sm { block-size: 2rem; }
 .cds--select-input--lg { block-size: 3rem; }
-.cds--select-input:focus { outline: 2px solid var(--cds-focus, #0f62fe); outline-offset: -2px; }
 .cds--select-input--invalid { outline: 2px solid var(--cds-support-error, #da1e28); outline-offset: -2px; }
 .cds--select__arrow { position: absolute; inset-block-start: 50%; inset-inline-end: 1rem; transform: translateY(-50%); pointer-events: none; }
 
@@ -3690,6 +3701,11 @@ body.editor-styles-wrapper .wp-block-awt-icon   + .wp-block-awt-icon {
 
 /* Code snippet */
 .cds--snippet { background: var(--cds-layer-01, #f4f4f4); font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 0.875rem; }
+/* Inline snippet — Carbon leaves this one at `display: inline; padding: 0`
+ * and expects the surrounding React component to supply the chip look. Ours
+ * is a standalone block with nothing around it, so it draws its own: flex to
+ * center the copy icon against the code text, and the horizontal padding that
+ * makes it read as a chip rather than as run-on body text. */
 .cds--snippet--inline { display: inline-flex; align-items: center; padding: 0 0.5rem; gap: 0.25rem; }
 /* Single-line snippet: flex row of (scrollable container, copy button).
  *
