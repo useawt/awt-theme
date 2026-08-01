@@ -177,19 +177,17 @@
 
 .cds--text-input--password__visibility__toggle {
 	position: absolute;
-	/* `inset-block: 0` (top:0 + bottom:0) stretches the toggle to exactly the
-	   field-wrapper's height geometrically. `block-size: 100%` was resolving
-	   to the wrong height (48px vs the 40px wrapper), pushing the centered eye
-	   icon ~4px below the input's vertical center. */
 	inset-inline-end: 0;
 	inline-size: 2.5rem;
-	/* Fill the field-wrapper's full height. Centering the toggle instead (the
-	   earlier approach, when a button min-block-size was forcing it to 48px)
-	   left it shrink-wrapped around its 16px icon: a 40×16 target, under the
-	   24×24 minimum of WCAG 2.5.8. That min-block-size no longer applies, so
-	   `inset-block: 0` now gives the toggle the wrapper's exact height —
-	   40px at size md, and the right height at sm and lg without a per-size
-	   rule. Found by the axe gate, 2026-08-01. */
+	/* `inset-block: 0` (top:0 + bottom:0) stretches the toggle to the
+	   field-wrapper's exact height geometrically — 32/40/48px at sizes
+	   sm/md/lg, with no per-size rule. Two approaches that failed: `block-size:
+	   100%` resolved to 48px against a 40px wrapper and pushed the eye icon
+	   ~4px below center; centering the toggle instead (to dodge a button
+	   min-block-size that no longer applies) left it shrink-wrapped around its
+	   16px icon — a 40×16 target, under the 24×24 minimum of WCAG 2.5.8, with
+	   a focus ring around the icon rather than the button. Found by the axe
+	   gate, 2026-08-01. */
 	inset-block: 0;
 	display: inline-flex;
 	align-items: center;
