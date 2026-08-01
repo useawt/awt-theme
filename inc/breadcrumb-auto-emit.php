@@ -271,7 +271,11 @@ function build_trail(): array {
 			);
 		}
 		if ( is_month() || is_day() ) {
-			$month_label = wp_date( _x( 'F', 'breadcrumb month format', 'awt' ) );
+			// get_the_date(), not wp_date(): wp_date() with no timestamp formats
+			// *now*, so a March archive read in August was labelled "August".
+			// The year above and the day below are already loop-based; this is
+			// the same source, which is the queried month.
+			$month_label = get_the_date( _x( 'F', 'breadcrumb month format', 'awt' ) );
 			$trail[]     = array(
 				'text'    => $month_label,
 				'href'    => is_month() ? '' : get_month_link( (int) get_the_date( 'Y' ), (int) get_the_date( 'n' ) ),

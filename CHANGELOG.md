@@ -75,6 +75,13 @@
 
 ### [Improvement]
 
+- Breadcrumbs on a month or day archive now name the month you are looking at.
+  They named the current month instead, so an archive of posts from March,
+  visited in August, said "August" — the breadcrumb was reading the clock
+  rather than the archive. The year and the day beside it were always correct.
+  Archives from the current month looked right either way, which is why this
+  went unnoticed.
+
 - The Documentation header preset now gives you the side navigation its
   description promises. Picking it adds a side navigation down the left of
   every page on wide screens; edit its links in the Site Editor under
