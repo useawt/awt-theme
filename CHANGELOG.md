@@ -24,6 +24,12 @@
 
 ### [A11y]
 
+- Password field: the show/hide-password button is now as tall as the field
+  it sits in. It had shrunk to the height of its eye icon — 40 by 16 pixels,
+  under the 24 by 24 minimum a target needs — which made it easy to miss with
+  a finger or an imprecise mouse, and gave it a focus outline that hugged the
+  icon instead of the button. The icon stays exactly where it was.
+
 - Every page now has one header landmark and one footer landmark instead of
   two of each, nested inside one another. Screen reader users navigating by
   landmark heard the site header twice in a row, and the footer twice, with

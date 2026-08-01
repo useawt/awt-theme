@@ -183,14 +183,14 @@
 	   icon ~4px below the input's vertical center. */
 	inset-inline-end: 0;
 	inline-size: 2.5rem;
-	/* A button min-block-size (Carbon/editor default ~48px) forces the toggle
-	   taller than the 40px field-wrapper no matter how we set top/bottom/height.
-	   So instead of stretching it, vertically CENTER the whole toggle on the
-	   field-wrapper (which the input fills) — the icon, centered within the
-	   toggle, then lands on the input's vertical center regardless of the
-	   toggle's own height. */
-	inset-block-start: 50%;
-	transform: translateY(-50%);
+	/* Fill the field-wrapper's full height. Centering the toggle instead (the
+	   earlier approach, when a button min-block-size was forcing it to 48px)
+	   left it shrink-wrapped around its 16px icon: a 40×16 target, under the
+	   24×24 minimum of WCAG 2.5.8. That min-block-size no longer applies, so
+	   `inset-block: 0` now gives the toggle the wrapper's exact height —
+	   40px at size md, and the right height at sm and lg without a per-size
+	   rule. Found by the axe gate, 2026-08-01. */
+	inset-block: 0;
 	display: inline-flex;
 	align-items: center;
 	justify-content: center;
