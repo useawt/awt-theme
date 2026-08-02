@@ -587,9 +587,17 @@ div:has(.cds--header) ~ .awt-breadcrumb-region {
    2. Remove the 1rem block-gap margin WordPress puts between the header
       template part and <main>, which would otherwise leave a 1rem strip of
       page background between the header and the hero's coloured section.
-   Higher specificity than the base/admin-bar rules so it wins the !important tie. */
-.page-template-page-no-title .cds--content,
-.page-template-page-no-title .awt-breadcrumb-region {
+   Higher specificity than the base/admin-bar rules so it wins the !important tie.
+
+   Deliberately NOT extended to `.awt-breadcrumb-region`. Both adjustments exist
+   to let a full-bleed hero touch the header; a breadcrumb is a line of text, and
+   flush under the header it reads as stuck to it. When a trail is emitted the
+   region keeps the ordinary clearance, so breadcrumbs sit the same distance
+   below the header on every template, and the hero follows the trail instead of
+   the header. The handover rule further down still zeroes <main>'s own
+   clearance — it is declared later, so it wins the !important tie against this
+   rule the same way this one wins against the base. */
+.page-template-page-no-title .cds--content {
 	margin-block-start: 0 !important;
 	padding-block-start: 3rem !important; /* header height only, no title breathing */
 }
