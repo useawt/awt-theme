@@ -29,8 +29,12 @@
   of the trail and you had to tab through every crumb before reaching the page
   itself — the one thing the link exists to avoid. The trail now sits just
   above the main content instead of inside it, which is also where repeated
-  navigation belongs. Nothing moves on screen. Screen readers announce the
-  trail as "Breadcrumbs" rather than "Breadcrumb".
+  navigation belongs. Screen readers announce the trail as "Breadcrumbs"
+  rather than "Breadcrumb".
+
+  Your pages look the same afterwards, with one intended exception: on the
+  "page without title" template the trail used to sit flush against the
+  header, and now it has the same breathing room it has everywhere else.
 
 - The Documentation article pattern no longer inserts a placeholder breadcrumb
   ("Home / Docs / Current page") into your page. Automatic breadcrumbs cover
