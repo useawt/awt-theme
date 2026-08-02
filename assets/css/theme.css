@@ -361,16 +361,30 @@ body.cds--white {
 .cds--content {
 	display: block;
 	padding: 2rem 1rem;
-	/* `!important` is needed because the block-template's `<main>` carries an
-	 * INLINE `padding-top: var(--wp--preset--spacing--07)` that WP renders
-	 * from the group block's spacing.padding.top attribute. Inline styles
-	 * beat every selector at every specificity — `!important` is the only
-	 * cascade level that wins. The override is essential: without enough
-	 * padding-block-start the content renders BEHIND the fixed header,
-	 * with no visual gap between header bottom and first content row. */
-	padding-block-start: calc(3rem + 2rem) !important; /* Carbon header height + breathing room */
 	background: var(--cds-background, #ffffff);
 	flex: 1 0 auto;
+}
+
+/* Header clearance. Whichever element comes first under the fixed header owns
+   it — that is the breadcrumb region when one is emitted, otherwise <main>.
+   Both are listed on every clearance rule below so the two can never drift.
+
+   `!important` is needed because the block-template's `<main>` carries an
+   INLINE `padding-top: var(--wp--preset--spacing--07)` that WP renders from the
+   group block's spacing.padding.top attribute. Inline styles beat every
+   selector at every specificity — `!important` is the only cascade level that
+   wins. The override is essential: without enough padding-block-start the
+   content renders BEHIND the fixed header, with no visual gap between header
+   bottom and first content row. */
+.cds--content,
+.awt-breadcrumb-region {
+	padding-block-start: calc(3rem + 2rem) !important; /* Carbon header height + breathing room */
+}
+
+/* The region is a plain div, so it needs the header offset <main> gets from
+   the foundation's `div:has(.cds--header) ~ .cds--content` rule. */
+div:has(.cds--header) ~ .awt-breadcrumb-region {
+	margin-block-start: 3rem;
 }
 
 @media (min-width: 672px) {
@@ -435,6 +449,7 @@ body.cds--white {
    `div`, so a `> .wp-site-blocks > footer` selector would match nothing. */
 @media (min-width: 66rem) {
 	body:has(.cds--side-nav--persistent) .cds--content,
+	body:has(.cds--side-nav--persistent) .awt-breadcrumb-region,
 	body:has(.cds--side-nav--persistent) .cds--footer {
 		margin-inline-start: 16rem;
 	}
@@ -540,7 +555,8 @@ body.cds--white {
 	inset-block-start: 32px;
 }
 
-.admin-bar .cds--content {
+.admin-bar .cds--content,
+.admin-bar .awt-breadcrumb-region {
 	/* !important matches the base .cds--content rule — both override the
 	 * WP template's inline padding-top. Without !important the admin-bar
 	 * variant has higher specificity but loses to the base rule's
@@ -553,7 +569,8 @@ body.cds--white {
 		inset-block-start: 46px;
 	}
 
-	.admin-bar .cds--content {
+	.admin-bar .cds--content,
+	.admin-bar .awt-breadcrumb-region {
 		padding-block-start: calc(46px + 3rem + 2rem) !important;
 	}
 }
@@ -571,7 +588,8 @@ body.cds--white {
       template part and <main>, which would otherwise leave a 1rem strip of
       page background between the header and the hero's coloured section.
    Higher specificity than the base/admin-bar rules so it wins the !important tie. */
-.page-template-page-no-title .cds--content {
+.page-template-page-no-title .cds--content,
+.page-template-page-no-title .awt-breadcrumb-region {
 	margin-block-start: 0 !important;
 	padding-block-start: 3rem !important; /* header height only, no title breathing */
 }
@@ -741,12 +759,42 @@ ol.wp-block-list {
  * trailing slash. Don't kill the :last-child::after globally here, or the
  * modifier becomes a no-op. */
 
-/* Auto-emit breadcrumb sits just inside <main>; small block-end margin
-   separates it from the page heading below. */
+/* Breadcrumb region.
+
+   The auto-emitted breadcrumb is a sibling *before* <main>, never inside it, so
+   "Skip to main content" reaches the content instead of dropping the visitor at
+   the top of the trail with the whole trail still to tab through.
+
+   Being outside <main> means the region takes over the job of clearing the
+   fixed header — it is now the first thing under it. It is listed alongside
+   `.cds--content` on every clearance rule above (base, admin-bar at both
+   breakpoints, the no-title template, the side-nav offset) so the two can never
+   drift apart, and this rule hands the clearance over: <main> gives it up for
+   exactly as long as a region precedes it. On pages with no breadcrumb no
+   region is emitted, <main> keeps its clearance, and nothing changes.
+
+   `!important` matches the rules being overridden; the selector also outranks
+   them, so this holds wherever it sits in the file. */
+.awt-breadcrumb-region + .cds--content {
+	margin-block-start: 0 !important;
+	padding-block-start: 0 !important;
+}
+
+/* Small block-end margin separates the trail from the page heading below. */
 .awt-breadcrumb-auto {
 	margin-block-end: 1rem;
 }
 
+/* The region copies <main>'s side padding server-side; this reproduces the
+   centred content width <main>'s constrained layout used to give the trail. */
+.awt-breadcrumb-region > .cds--breadcrumb {
+	max-width: var(--wp--style--global--content-size);
+	margin-inline: auto;
+}
+
+/* Hiding on mobile hides the trail, not the region: the region still owns the
+   header clearance <main> gave up, so a mobile page keeps its gap below the
+   header whether or not the trail is showing. */
 @media (max-width: 671px) {
 	.awt-breadcrumb-auto--hide-mobile {
 		display: none;

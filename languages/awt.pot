@@ -9,7 +9,7 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2026-07-30T11:43:32+00:00\n"
+"POT-Creation-Date: 2026-08-02T10:26:26+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.12.0\n"
 "X-Domain: awt\n"
@@ -42,7 +42,7 @@ msgid "Page"
 msgstr ""
 
 #: functions.php:726
-#: inc/admin-settings-page.php:1532
+#: inc/admin-settings-page.php:1546
 msgid "Skip to main content"
 msgstr ""
 
@@ -75,7 +75,7 @@ msgstr ""
 
 #: inc/admin-settings-page.php:94
 #: inc/admin-settings-page.php:973
-#: inc/admin-settings-page.php:1747
+#: inc/admin-settings-page.php:1761
 msgid "Custom CSS"
 msgstr ""
 
@@ -314,7 +314,7 @@ msgid "Replaces your current header with one of four ready-made layouts."
 msgstr ""
 
 #: inc/admin-settings-page.php:782
-msgid "Documentation also adds a side navigation menu down the left of every page on wide screens (it steps aside on phones and small tablets, where the header menu takes over). Edit its links in the Site Editor, under Patterns → Template Parts → Side navigation."
+msgid "Documentation also adds a side navigation menu down the left of every page on wide screens (on phones and small tablets its links move into the header menu instead). It sits inside the header, so you edit its sections and links by opening the header in the Site Editor and selecting \"Side nav\"."
 msgstr ""
 
 #: inc/admin-settings-page.php:788
@@ -326,7 +326,7 @@ msgid "Add or remove the icon buttons at the top-right of your header. Each swit
 msgstr ""
 
 #: inc/admin-settings-page.php:803
-#: inc/design-system/carbon.php:410
+#: inc/design-system/carbon.php:427
 msgid "Search"
 msgstr ""
 
@@ -335,7 +335,7 @@ msgid "Replaces search icon with a search field within the header."
 msgstr ""
 
 #: inc/admin-settings-page.php:807
-#: inc/design-system/carbon.php:418
+#: inc/design-system/carbon.php:435
 msgid "Notifications"
 msgstr ""
 
@@ -344,7 +344,7 @@ msgid "Opens notifications panel."
 msgstr ""
 
 #: inc/admin-settings-page.php:811
-#: inc/design-system/carbon.php:426
+#: inc/design-system/carbon.php:443
 msgid "User menu"
 msgstr ""
 
@@ -654,298 +654,306 @@ msgstr ""
 msgid "If a built-in color fails, it's worth investigating. If a color you added yourself fails, reconsider it — or use it only where there's no text."
 msgstr ""
 
-#: inc/admin-settings-page.php:1505
+#: inc/admin-settings-page.php:1510
 msgid "Menu"
 msgstr ""
 
-#: inc/admin-settings-page.php:1508
+#: inc/admin-settings-page.php:1513
 msgid "Header menu"
 msgstr ""
 
-#: inc/admin-settings-page.php:1510
+#: inc/admin-settings-page.php:1515
 msgid "Your header menu lives in the header, which you edit in the Site Editor. Open it to add, remove, reorder, or rename links, and to change the buttons on the right."
 msgstr ""
 
-#: inc/admin-settings-page.php:1512
+#: inc/admin-settings-page.php:1517
 msgid "Edit the header"
 msgstr ""
 
-#: inc/admin-settings-page.php:1517
+#: inc/admin-settings-page.php:1522
 msgid "Footer"
 msgstr ""
 
-#: inc/admin-settings-page.php:1519
+#: inc/admin-settings-page.php:1524
 msgid "The links and text at the bottom of every page live in the footer, which you also edit in the Site Editor."
 msgstr ""
 
-#: inc/admin-settings-page.php:1521
+#: inc/admin-settings-page.php:1526
 msgid "Edit the footer"
 msgstr ""
 
-#: inc/admin-settings-page.php:1527
-msgid "Skip link"
-msgstr ""
-
-#: inc/admin-settings-page.php:1530
-msgid "Skip link text"
+#: inc/admin-settings-page.php:1531
+msgid "Side navigation"
 msgstr ""
 
 #: inc/admin-settings-page.php:1533
-msgid "Default text for every Skip link on your site. A setting on an individual block wins. Leave empty to use the default, \"Skip to main content\"."
+msgid "The menu down the left of every page on wide screens, if your header preset includes one. It lives in the header, so this opens the header in the Site Editor — select \"Side nav\" there to add, remove, or rename its sections and links. On narrow screens these same links appear in the header menu."
 msgstr ""
 
-#: inc/admin-settings-page.php:1538
-msgid "Breadcrumbs"
+#: inc/admin-settings-page.php:1535
+msgid "Edit the side navigation"
 msgstr ""
 
 #: inc/admin-settings-page.php:1541
+msgid "Skip link"
+msgstr ""
+
+#: inc/admin-settings-page.php:1544
+msgid "Skip link text"
+msgstr ""
+
+#: inc/admin-settings-page.php:1547
+msgid "Default text for every Skip link on your site. A setting on an individual block wins. Leave empty to use the default, \"Skip to main content\"."
+msgstr ""
+
+#: inc/admin-settings-page.php:1552
+#: inc/breadcrumb-auto-emit.php:375
+#: inc/breadcrumb-auto-emit.php:420
+msgid "Breadcrumbs"
+msgstr ""
+
+#: inc/admin-settings-page.php:1555
 msgid "Accessibility benefit"
 msgstr ""
 
 #. translators: 1: opening <a> tag to WCAG 2.4.5; 2: closing </a> tag
-#: inc/admin-settings-page.php:1546
+#: inc/admin-settings-page.php:1560
 #, php-format
 msgid "Automatic breadcrumbs help meet the %1$sWCAG \"Multiple Ways\" guideline (2.4.5, Level AA)%2$s, which asks for more than one way to find a page. This matters most if your site has no search: without it, breadcrumbs (or a sitemap) become the main alternative, and the guideline needs at least two ways."
 msgstr ""
 
-#: inc/admin-settings-page.php:1555
+#: inc/admin-settings-page.php:1569
 msgid "Auto-emit breadcrumbs"
 msgstr ""
 
-#: inc/admin-settings-page.php:1559
+#: inc/admin-settings-page.php:1573
 msgid "Show a breadcrumb trail above the main content on every page except the front page."
 msgstr ""
 
-#: inc/admin-settings-page.php:1561
+#: inc/admin-settings-page.php:1575
 msgid "Turn this off if you build breadcrumbs by hand with the Breadcrumb block. If a page has both, the automatic one hides itself."
 msgstr ""
 
-#: inc/admin-settings-page.php:1565
+#: inc/admin-settings-page.php:1579
 msgid "Show on mobile"
 msgstr ""
 
-#: inc/admin-settings-page.php:1569
+#: inc/admin-settings-page.php:1583
 msgid "Show breadcrumbs on narrow screens (under 672px). This is separate from the main toggle above."
 msgstr ""
 
-#: inc/admin-settings-page.php:1574
+#: inc/admin-settings-page.php:1588
 msgid "Home item text"
 msgstr ""
 
-#: inc/admin-settings-page.php:1576
+#: inc/admin-settings-page.php:1590
 #: assets/js/breadcrumb-editor.js:62
 msgid "Home"
 msgstr ""
 
-#: inc/admin-settings-page.php:1577
+#: inc/admin-settings-page.php:1591
 msgid "The label for the first item in every auto-emitted breadcrumb trail."
 msgstr ""
 
-#: inc/admin-settings-page.php:1581
+#: inc/admin-settings-page.php:1595
 msgid "404 item text"
 msgstr ""
 
-#: inc/admin-settings-page.php:1583
+#: inc/admin-settings-page.php:1597
 msgid "Page not found"
 msgstr ""
 
-#: inc/admin-settings-page.php:1584
+#: inc/admin-settings-page.php:1598
 msgid "The breadcrumb label for the current page when a visitor hits a \"page not found\" (404) error."
 msgstr ""
 
-#: inc/admin-settings-page.php:1616
+#: inc/admin-settings-page.php:1630
 msgid "⚠ Read before using these fields"
 msgstr ""
 
-#: inc/admin-settings-page.php:1617
+#: inc/admin-settings-page.php:1631
 msgid "These fields accept arbitrary code that AWT cannot validate. Custom code can:"
 msgstr ""
 
-#: inc/admin-settings-page.php:1619
+#: inc/admin-settings-page.php:1633
 msgid "Break keyboard navigation by stealing or trapping focus"
 msgstr ""
 
-#: inc/admin-settings-page.php:1620
+#: inc/admin-settings-page.php:1634
 msgid "Break screen-reader announcements by overriding ARIA live regions (the regions screen readers watch for updates)"
 msgstr ""
 
-#: inc/admin-settings-page.php:1621
+#: inc/admin-settings-page.php:1635
 msgid "Lower color contrast by adding elements in colors outside your palette"
 msgstr ""
 
-#: inc/admin-settings-page.php:1622
+#: inc/admin-settings-page.php:1636
 msgid "Break reduced-motion support by adding animations that ignore the visitor's prefers-reduced-motion setting"
 msgstr ""
 
-#: inc/admin-settings-page.php:1623
+#: inc/admin-settings-page.php:1637
 msgid "Conflict with your site's Content Security Policy, if it has one"
 msgstr ""
 
-#: inc/admin-settings-page.php:1625
+#: inc/admin-settings-page.php:1639
 msgid "AWT's accessibility checker doesn't review code in these fields. You're responsible for the accessibility of anything you paste here."
 msgstr ""
 
-#: inc/admin-settings-page.php:1629
+#: inc/admin-settings-page.php:1643
 msgid "Before </head>"
 msgstr ""
 
-#: inc/admin-settings-page.php:1631
+#: inc/admin-settings-page.php:1645
 msgid "For analytics snippets, site-verification tags, and font or asset preloads. Loads after most other plugins."
 msgstr ""
 
-#: inc/admin-settings-page.php:1635
+#: inc/admin-settings-page.php:1649
 msgid "After <body> opening"
 msgstr ""
 
-#: inc/admin-settings-page.php:1637
+#: inc/admin-settings-page.php:1651
 msgid "For third-party widgets that need to load early, such as chat bubbles or A/B-test anti-flicker scripts."
 msgstr ""
 
-#: inc/admin-settings-page.php:1641
+#: inc/admin-settings-page.php:1655
 msgid "Before </body>"
 msgstr ""
 
-#: inc/admin-settings-page.php:1643
+#: inc/admin-settings-page.php:1657
 msgid "For scripts that can load last, such as footer chat widgets and deferred third-party tools."
 msgstr ""
 
-#: inc/admin-settings-page.php:1734
+#: inc/admin-settings-page.php:1748
 msgid "⚠ Read before using this field"
 msgstr ""
 
-#: inc/admin-settings-page.php:1735
+#: inc/admin-settings-page.php:1749
 msgid "Custom CSS can:"
 msgstr ""
 
-#: inc/admin-settings-page.php:1737
+#: inc/admin-settings-page.php:1751
 msgid "Hide focus outlines"
 msgstr ""
 
-#: inc/admin-settings-page.php:1737
+#: inc/admin-settings-page.php:1751
 msgid "removing them is the most common accessibility mistake on the web"
 msgstr ""
 
-#: inc/admin-settings-page.php:1738
+#: inc/admin-settings-page.php:1752
 msgid "Lower color contrast below the WCAG AA minimum"
 msgstr ""
 
-#: inc/admin-settings-page.php:1739
+#: inc/admin-settings-page.php:1753
 msgid "Hide elements that screen readers depend on"
 msgstr ""
 
-#: inc/admin-settings-page.php:1740
+#: inc/admin-settings-page.php:1754
 msgid "Override the prefers-reduced-motion rules built into AWT"
 msgstr ""
 
-#: inc/admin-settings-page.php:1741
+#: inc/admin-settings-page.php:1755
 msgid "Clash with AWT's built-in styles in unexpected ways"
 msgstr ""
 
-#: inc/admin-settings-page.php:1743
+#: inc/admin-settings-page.php:1757
 msgid "AWT's accessibility checker doesn't review the CSS you add here."
 msgstr ""
 
-#: inc/admin-settings-page.php:1751
+#: inc/admin-settings-page.php:1765
 msgid "Insert color customization example"
 msgstr ""
 
-#: inc/admin-settings-page.php:1799
+#: inc/admin-settings-page.php:1813
 msgid "Welcome wizard"
 msgstr ""
 
-#: inc/admin-settings-page.php:1801
+#: inc/admin-settings-page.php:1815
 msgid "Runs the six-step setup wizard again. Your current settings are kept as the starting point."
 msgstr ""
 
-#: inc/admin-settings-page.php:1805
+#: inc/admin-settings-page.php:1819
 msgid "Re-run welcome wizard"
 msgstr ""
 
-#: inc/admin-settings-page.php:1809
-#: inc/admin-settings-page.php:1829
+#: inc/admin-settings-page.php:1823
+#: inc/admin-settings-page.php:1843
 msgid "Export configuration"
 msgstr ""
 
-#: inc/admin-settings-page.php:1811
+#: inc/admin-settings-page.php:1825
 msgid "Download this site's AWT settings as a file — handy for copying to a staging site, sharing a starting point, or attaching to a support request."
 msgstr ""
 
-#: inc/admin-settings-page.php:1833
 #: inc/admin-settings-page.php:1847
+#: inc/admin-settings-page.php:1861
 msgid "Import configuration"
 msgstr ""
 
-#: inc/admin-settings-page.php:1835
+#: inc/admin-settings-page.php:1849
 msgid "Upload a settings file to replace this site's current AWT settings."
 msgstr ""
 
-#: inc/admin-settings-page.php:1841
+#: inc/admin-settings-page.php:1855
 msgid "Importing will replace this site's current AWT settings with the uploaded file. Continue?"
 msgstr ""
 
-#: inc/admin-settings-page.php:1844
+#: inc/admin-settings-page.php:1858
 msgid "AWT settings JSON file"
 msgstr ""
 
-#: inc/admin-settings-page.php:1883
+#: inc/admin-settings-page.php:1897
 msgid "Could not serialize settings for export."
 msgstr ""
 
-#: inc/admin-settings-page.php:1941
+#: inc/admin-settings-page.php:1955
 msgid "No file was uploaded, or the upload failed."
 msgstr ""
 
-#: inc/admin-settings-page.php:1944
+#: inc/admin-settings-page.php:1958
 msgid "That file is too large to be an AWT settings file."
 msgstr ""
 
-#: inc/admin-settings-page.php:1949
+#: inc/admin-settings-page.php:1963
 msgid "The uploaded file was empty or unreadable."
 msgstr ""
 
-#: inc/admin-settings-page.php:1954
+#: inc/admin-settings-page.php:1968
 msgid "The uploaded file is not valid JSON."
 msgstr ""
 
-#: inc/admin-settings-page.php:1960
+#: inc/admin-settings-page.php:1974
 msgid "That file doesn't look like an AWT settings file."
 msgstr ""
 
-#: inc/admin-settings-page.php:1973
+#: inc/admin-settings-page.php:1987
 msgid "Importing the settings failed. Please check the file and try again."
 msgstr ""
 
-#: inc/breadcrumb-auto-emit.php:116
+#: inc/breadcrumb-auto-emit.php:118
 msgctxt "breadcrumb"
 msgid "Home"
 msgstr ""
 
-#: inc/breadcrumb-auto-emit.php:127
+#: inc/breadcrumb-auto-emit.php:129
 msgctxt "breadcrumb"
 msgid "Page not found"
 msgstr ""
 
 #. translators: %s — the visitor's search query.
-#: inc/breadcrumb-auto-emit.php:165
+#: inc/breadcrumb-auto-emit.php:167
 #, php-format
 msgctxt "breadcrumb"
 msgid "Search: \"%s\""
 msgstr ""
 
-#: inc/breadcrumb-auto-emit.php:274
+#: inc/breadcrumb-auto-emit.php:280
 msgctxt "breadcrumb month format"
 msgid "F"
 msgstr ""
 
-#: inc/breadcrumb-auto-emit.php:283
+#: inc/breadcrumb-auto-emit.php:289
 msgctxt "breadcrumb day format"
 msgid "j"
-msgstr ""
-
-#: inc/breadcrumb-auto-emit.php:369
-#: inc/breadcrumb-auto-emit.php:414
-#: assets/js/breadcrumb-editor.js:210
-msgid "Breadcrumb"
 msgstr ""
 
 #: inc/design-system/carbon.php:46
@@ -1020,365 +1028,365 @@ msgstr ""
 msgid "Prominent agency identifier + nav + language switcher. Government sites, public-service portals, EAA-regulated orgs."
 msgstr ""
 
-#: inc/design-system/carbon.php:431
+#: inc/design-system/carbon.php:448
 msgid "Color-scheme toggle"
 msgstr ""
 
-#: inc/design-system/carbon.php:593
+#: inc/design-system/carbon.php:610
 msgid "Text — primary body"
 msgstr ""
 
-#: inc/design-system/carbon.php:598
-#: inc/design-system/carbon.php:618
-#: inc/design-system/carbon.php:633
-#: inc/design-system/carbon.php:665
-#: inc/design-system/carbon.php:725
-#: inc/design-system/carbon.php:740
-#: inc/design-system/carbon.php:755
-#: inc/design-system/carbon.php:881
-#: inc/design-system/carbon.php:896
-#: inc/design-system/carbon.php:906
-#: inc/design-system/carbon.php:922
+#: inc/design-system/carbon.php:615
+#: inc/design-system/carbon.php:635
+#: inc/design-system/carbon.php:650
+#: inc/design-system/carbon.php:682
+#: inc/design-system/carbon.php:742
+#: inc/design-system/carbon.php:757
+#: inc/design-system/carbon.php:772
+#: inc/design-system/carbon.php:898
+#: inc/design-system/carbon.php:913
+#: inc/design-system/carbon.php:923
+#: inc/design-system/carbon.php:939
 msgid "on background"
 msgstr ""
 
-#: inc/design-system/carbon.php:603
-#: inc/design-system/carbon.php:623
-#: inc/design-system/carbon.php:638
-#: inc/design-system/carbon.php:670
-#: inc/design-system/carbon.php:730
-#: inc/design-system/carbon.php:745
-#: inc/design-system/carbon.php:760
-#: inc/design-system/carbon.php:927
+#: inc/design-system/carbon.php:620
+#: inc/design-system/carbon.php:640
+#: inc/design-system/carbon.php:655
+#: inc/design-system/carbon.php:687
+#: inc/design-system/carbon.php:747
+#: inc/design-system/carbon.php:762
+#: inc/design-system/carbon.php:777
+#: inc/design-system/carbon.php:944
 msgid "on layer-01"
 msgstr ""
 
-#: inc/design-system/carbon.php:608
-#: inc/design-system/carbon.php:648
+#: inc/design-system/carbon.php:625
+#: inc/design-system/carbon.php:665
 msgid "in field input"
 msgstr ""
 
-#: inc/design-system/carbon.php:613
+#: inc/design-system/carbon.php:630
 msgid "Text — secondary"
 msgstr ""
 
-#: inc/design-system/carbon.php:628
+#: inc/design-system/carbon.php:645
 msgid "Text — helper / caption"
 msgstr ""
 
-#: inc/design-system/carbon.php:643
+#: inc/design-system/carbon.php:660
 msgid "Text — placeholder"
 msgstr ""
 
-#: inc/design-system/carbon.php:649
+#: inc/design-system/carbon.php:666
 msgid "Carbon Design System default — we suggest updating text-placeholder to a higher-contrast value (e.g., #767676 reaches 4.54:1 against field-01)."
 msgstr ""
 
-#: inc/design-system/carbon.php:654
+#: inc/design-system/carbon.php:671
 msgid "in field input (alt)"
 msgstr ""
 
-#: inc/design-system/carbon.php:655
+#: inc/design-system/carbon.php:672
 msgid "Carbon Design System default — same value as the field-01 pairing above; we suggest updating to meet the 4.5:1 body-text threshold."
 msgstr ""
 
-#: inc/design-system/carbon.php:660
+#: inc/design-system/carbon.php:677
 msgid "Text — error message"
 msgstr ""
 
-#: inc/design-system/carbon.php:675
+#: inc/design-system/carbon.php:692
 msgid "Text — on accent surfaces"
 msgstr ""
 
-#: inc/design-system/carbon.php:680
+#: inc/design-system/carbon.php:697
 msgid "on Button primary"
 msgstr ""
 
-#: inc/design-system/carbon.php:685
+#: inc/design-system/carbon.php:702
 msgid "on Button secondary"
 msgstr ""
 
-#: inc/design-system/carbon.php:690
+#: inc/design-system/carbon.php:707
 msgid "on Button danger"
 msgstr ""
 
-#: inc/design-system/carbon.php:695
+#: inc/design-system/carbon.php:712
 msgid "on Support error"
 msgstr ""
 
-#: inc/design-system/carbon.php:696
+#: inc/design-system/carbon.php:713
 msgid "Carbon Design System default — in dark scope (g90/g100), Support error brightens (#fa4d56) and white text drops to ~3.35:1, below the 4.5:1 body threshold. We suggest reserving banner body text for ≥18pt sizes, or pairing the banner with an icon shape that carries the meaning."
 msgstr ""
 
-#: inc/design-system/carbon.php:701
+#: inc/design-system/carbon.php:718
 msgid "on Support info"
 msgstr ""
 
-#: inc/design-system/carbon.php:702
+#: inc/design-system/carbon.php:719
 msgid "Carbon Design System default — same tradeoff as Support error in dark scope. White text on dark-mode #4589ff falls below the 4.5:1 body threshold."
 msgstr ""
 
-#: inc/design-system/carbon.php:707
+#: inc/design-system/carbon.php:724
 msgid "Text — inverse (light on dark)"
 msgstr ""
 
-#: inc/design-system/carbon.php:712
+#: inc/design-system/carbon.php:729
 msgid "on inverse surface"
 msgstr ""
 
-#: inc/design-system/carbon.php:715
+#: inc/design-system/carbon.php:732
 msgid "Used on inverted UI like tooltips. Inverse surfaces are usually the opposite-scope background token."
 msgstr ""
 
-#: inc/design-system/carbon.php:720
+#: inc/design-system/carbon.php:737
 msgid "Link — primary"
 msgstr ""
 
-#: inc/design-system/carbon.php:735
+#: inc/design-system/carbon.php:752
 msgid "Link — hover"
 msgstr ""
 
-#: inc/design-system/carbon.php:750
+#: inc/design-system/carbon.php:767
 msgid "Link — visited"
 msgstr ""
 
-#: inc/design-system/carbon.php:767
+#: inc/design-system/carbon.php:784
 msgid "Button — primary surface"
 msgstr ""
 
-#: inc/design-system/carbon.php:772
-#: inc/design-system/carbon.php:783
-#: inc/design-system/carbon.php:804
+#: inc/design-system/carbon.php:789
+#: inc/design-system/carbon.php:800
+#: inc/design-system/carbon.php:821
 msgid "button edge on background"
 msgstr ""
 
-#: inc/design-system/carbon.php:775
+#: inc/design-system/carbon.php:792
 msgid "Button-primary IS a surface; the text on top is checked via \"Text — on accent surfaces\" above."
 msgstr ""
 
-#: inc/design-system/carbon.php:778
+#: inc/design-system/carbon.php:795
 msgid "Button — secondary surface"
 msgstr ""
 
-#: inc/design-system/carbon.php:788
+#: inc/design-system/carbon.php:805
 msgid "Button — tertiary (outline)"
 msgstr ""
 
-#: inc/design-system/carbon.php:793
+#: inc/design-system/carbon.php:810
 msgid "outline/text on background"
 msgstr ""
 
-#: inc/design-system/carbon.php:796
+#: inc/design-system/carbon.php:813
 msgid "Tertiary buttons are outline-only — the same token serves as border AND text. Needs full text contrast."
 msgstr ""
 
-#: inc/design-system/carbon.php:799
+#: inc/design-system/carbon.php:816
 msgid "Button — danger surface"
 msgstr ""
 
-#: inc/design-system/carbon.php:811
+#: inc/design-system/carbon.php:828
 msgid "Status — error icon / accent"
 msgstr ""
 
-#: inc/design-system/carbon.php:816
-#: inc/design-system/carbon.php:831
-#: inc/design-system/carbon.php:846
-#: inc/design-system/carbon.php:864
+#: inc/design-system/carbon.php:833
+#: inc/design-system/carbon.php:848
+#: inc/design-system/carbon.php:863
+#: inc/design-system/carbon.php:881
 msgid "icon on background"
 msgstr ""
 
-#: inc/design-system/carbon.php:821
-#: inc/design-system/carbon.php:836
-#: inc/design-system/carbon.php:852
+#: inc/design-system/carbon.php:838
+#: inc/design-system/carbon.php:853
 #: inc/design-system/carbon.php:869
+#: inc/design-system/carbon.php:886
 msgid "icon on layer-01"
 msgstr ""
 
-#: inc/design-system/carbon.php:826
+#: inc/design-system/carbon.php:843
 msgid "Status — success icon / accent"
 msgstr ""
 
-#: inc/design-system/carbon.php:841
+#: inc/design-system/carbon.php:858
 msgid "Status — warning icon / accent"
 msgstr ""
 
-#: inc/design-system/carbon.php:847
+#: inc/design-system/carbon.php:864
 msgid "Carbon Design System default — warning yellow #f1c21b fails the 3:1 UI threshold on light surfaces. We suggest always pairing it with an icon SHAPE so meaning isn't conveyed by color alone, or substituting a higher-contrast amber if you use it for non-text UI."
 msgstr ""
 
-#: inc/design-system/carbon.php:853
+#: inc/design-system/carbon.php:870
 msgid "Same — Carbon's default warning yellow fails on every light surface; pair with icon shape or substitute."
 msgstr ""
 
-#: inc/design-system/carbon.php:856
+#: inc/design-system/carbon.php:873
 msgid "Warning yellow is famously low-contrast — Carbon's guidance is to always pair it with an icon shape, never use it for text."
 msgstr ""
 
-#: inc/design-system/carbon.php:859
+#: inc/design-system/carbon.php:876
 msgid "Status — info icon / accent"
 msgstr ""
 
-#: inc/design-system/carbon.php:876
+#: inc/design-system/carbon.php:893
 msgid "Border — strong (field borders, dividers)"
 msgstr ""
 
-#: inc/design-system/carbon.php:886
+#: inc/design-system/carbon.php:903
 msgid "around field input"
 msgstr ""
 
-#: inc/design-system/carbon.php:891
+#: inc/design-system/carbon.php:908
 msgid "Border — interactive (focused field)"
 msgstr ""
 
-#: inc/design-system/carbon.php:901
+#: inc/design-system/carbon.php:918
 msgid "Focus ring"
 msgstr ""
 
-#: inc/design-system/carbon.php:911
+#: inc/design-system/carbon.php:928
 msgid "on primary button"
 msgstr ""
 
-#: inc/design-system/carbon.php:912
+#: inc/design-system/carbon.php:929
 msgid "Carbon Design System default — focus and button-primary share the same blue (#0f62fe). Carbon's CSS mitigates with an inner-shadow + focus-inset (white) double-ring technique on Button. If you change either token, port that technique so the focus ring stays visible on the primary button."
 msgstr ""
 
-#: inc/design-system/carbon.php:917
+#: inc/design-system/carbon.php:934
 msgid "Interactive — accent for active states"
 msgstr ""
 
-#: inc/design-system/carbon.php:1026
+#: inc/design-system/carbon.php:1043
 msgid "Vertically stacked, expandable sections."
 msgstr ""
 
-#: inc/design-system/carbon.php:1027
+#: inc/design-system/carbon.php:1044
 msgid "Navigation trail showing page hierarchy."
 msgstr ""
 
-#: inc/design-system/carbon.php:1028
+#: inc/design-system/carbon.php:1045
 msgid "Primary, secondary, tertiary, ghost, and danger actions."
 msgstr ""
 
-#: inc/design-system/carbon.php:1029
+#: inc/design-system/carbon.php:1046
 msgid "Multi-select form control."
 msgstr ""
 
-#: inc/design-system/carbon.php:1030
+#: inc/design-system/carbon.php:1047
 msgid "Inline, single-line, and multi-line code blocks with copy."
 msgstr ""
 
-#: inc/design-system/carbon.php:1031
+#: inc/design-system/carbon.php:1048
 msgid "Toggle between related views."
 msgstr ""
 
-#: inc/design-system/carbon.php:1032
+#: inc/design-system/carbon.php:1049
 msgid "Sortable tabular data."
 msgstr ""
 
-#: inc/design-system/carbon.php:1033
+#: inc/design-system/carbon.php:1050
 msgid "Single-select listbox."
 msgstr ""
 
-#: inc/design-system/carbon.php:1034
+#: inc/design-system/carbon.php:1051
 msgid "UI-shell footer sections and links."
 msgstr ""
 
-#: inc/design-system/carbon.php:1035
+#: inc/design-system/carbon.php:1052
 msgid "Accessible form wrapper with title and description."
 msgstr ""
 
-#: inc/design-system/carbon.php:1036
+#: inc/design-system/carbon.php:1053
 msgid "UI-shell header icon action."
 msgstr ""
 
-#: inc/design-system/carbon.php:1037
+#: inc/design-system/carbon.php:1054
 msgid "UI-shell brand / logo link."
 msgstr ""
 
-#: inc/design-system/carbon.php:1038
+#: inc/design-system/carbon.php:1055
 msgid "UI-shell global action cluster."
 msgstr ""
 
-#: inc/design-system/carbon.php:1039
+#: inc/design-system/carbon.php:1056
 msgid "UI-shell primary navigation."
 msgstr ""
 
-#: inc/design-system/carbon.php:1040
+#: inc/design-system/carbon.php:1057
 msgid "UI-shell expanding search."
 msgstr ""
 
-#: inc/design-system/carbon.php:1041
+#: inc/design-system/carbon.php:1058
 msgid "Standalone and inline hyperlinks."
 msgstr ""
 
-#: inc/design-system/carbon.php:1042
+#: inc/design-system/carbon.php:1059
 msgid "Ordered and unordered lists."
 msgstr ""
 
-#: inc/design-system/carbon.php:1043
+#: inc/design-system/carbon.php:1060
 msgid "Button that opens an action menu."
 msgstr ""
 
-#: inc/design-system/carbon.php:1044
+#: inc/design-system/carbon.php:1061
 msgid "Dialog overlay."
 msgstr ""
 
-#: inc/design-system/carbon.php:1045
+#: inc/design-system/carbon.php:1062
 msgid "Inline and toast status messages."
 msgstr ""
 
-#: inc/design-system/carbon.php:1046
+#: inc/design-system/carbon.php:1063
 msgid "Page navigation."
 msgstr ""
 
-#: inc/design-system/carbon.php:1047
+#: inc/design-system/carbon.php:1064
 msgid "Password field with visibility toggle."
 msgstr ""
 
-#: inc/design-system/carbon.php:1048
+#: inc/design-system/carbon.php:1065
 msgid "Single-select radio group."
 msgstr ""
 
-#: inc/design-system/carbon.php:1049
+#: inc/design-system/carbon.php:1066
 msgid "Native select control."
 msgstr ""
 
-#: inc/design-system/carbon.php:1050
+#: inc/design-system/carbon.php:1067
 msgid "UI-shell side navigation."
 msgstr ""
 
-#: inc/design-system/carbon.php:1051
+#: inc/design-system/carbon.php:1068
 msgid "Skip-to-content bypass link."
 msgstr ""
 
-#: inc/design-system/carbon.php:1052
+#: inc/design-system/carbon.php:1069
 msgid "Tabbed content panels."
 msgstr ""
 
-#: inc/design-system/carbon.php:1053
+#: inc/design-system/carbon.php:1070
 msgid "Categorical labels."
 msgstr ""
 
-#: inc/design-system/carbon.php:1054
+#: inc/design-system/carbon.php:1071
 msgid "Multi-line text field."
 msgstr ""
 
-#: inc/design-system/carbon.php:1055
+#: inc/design-system/carbon.php:1072
 msgid "Single-line text field."
 msgstr ""
 
-#: inc/design-system/carbon.php:1056
+#: inc/design-system/carbon.php:1073
 msgid "Content container; clickable / selectable / expandable."
 msgstr ""
 
-#: inc/design-system/carbon.php:1057
+#: inc/design-system/carbon.php:1074
 msgid "On/off switch."
 msgstr ""
 
-#: inc/design-system/carbon.php:1058
+#: inc/design-system/carbon.php:1075
 msgid "Click-triggered contextual popover."
 msgstr ""
 
-#: inc/design-system/carbon.php:1059
+#: inc/design-system/carbon.php:1076
 msgid "Hover/focus contextual hint."
 msgstr ""
 
@@ -1897,7 +1905,7 @@ msgstr ""
 
 #: patterns/page-docs-article.php
 msgctxt "Pattern description"
-msgid "Starter docs article. Breadcrumb + heading + intro + body content scaffold."
+msgid "Starter docs article. Heading + intro + body content scaffold."
 msgstr ""
 
 #: patterns/page-docs-index.php
@@ -2012,6 +2020,10 @@ msgstr ""
 
 #: assets/js/breadcrumb-editor.js:173
 msgid "Preview of the breadcrumb that appears at the top of this page:"
+msgstr ""
+
+#: assets/js/breadcrumb-editor.js:210
+msgid "Breadcrumb"
 msgstr ""
 
 #: theme.json
@@ -2362,11 +2374,6 @@ msgstr ""
 #: theme.json
 msgctxt "Template part name"
 msgid "Footer"
-msgstr ""
-
-#: theme.json
-msgctxt "Template part name"
-msgid "Side navigation"
 msgstr ""
 
 #: theme.json

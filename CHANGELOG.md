@@ -24,6 +24,19 @@
 
 ### [A11y]
 
+- "Skip to main content" now reaches the content. Automatic breadcrumbs used
+  to sit inside the main content area, so the skip link dropped you at the top
+  of the trail and you had to tab through every crumb before reaching the page
+  itself — the one thing the link exists to avoid. The trail now sits just
+  above the main content instead of inside it, which is also where repeated
+  navigation belongs. Nothing moves on screen. Screen readers announce the
+  trail as "Breadcrumbs" rather than "Breadcrumb".
+
+- The Documentation article pattern no longer inserts a placeholder breadcrumb
+  ("Home / Docs / Current page") into your page. Automatic breadcrumbs cover
+  that page, with the real trail rather than placeholder text — and they sit in
+  the right place. Pages you already built keep the breadcrumb they have.
+
 - Password field: the show/hide-password button is now as tall as the field
   it sits in. It had shrunk to the height of its eye icon — 40 by 16 pixels,
   under the 24 by 24 minimum a target needs — which made it easy to miss with

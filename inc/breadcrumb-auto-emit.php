@@ -1,7 +1,9 @@
 <?php
 /**
  * Breadcrumb auto-emit — theme-level rendering of a breadcrumb landmark above
- * the main content area per phase-1 spec §5 "Navigation → Breadcrumbs".
+ * the main content area per phase-1 spec §5 "Navigation → Breadcrumbs". It is
+ * emitted as a sibling before <main>, never inside it, so the skip link lands
+ * on the page content instead of on the trail.
  *
  * Settings (all filterable; AWT Settings admin page will expose UI later):
  *   - awt_breadcrumb_auto_emit_enabled (default true)
@@ -370,7 +372,7 @@ function render_via_block( array $trail, string $classes ): string {
 			array(
 				'blockName'    => 'awt/breadcrumb',
 				'attrs'        => array(
-					'ariaLabel'       => __( 'Breadcrumb', 'awt' ),
+					'ariaLabel'       => __( 'Breadcrumbs', 'awt' ),
 					'className'       => $classes,
 					// The auto-emit trail always ends in the current page, so
 					// no separator after the last item (Carbon guidance).
@@ -415,23 +417,72 @@ function render_fallback( array $trail, string $classes ): string {
 	return sprintf(
 		'<nav class="cds--breadcrumb cds--breadcrumb--no-trailing-slash %1$s" aria-label="%2$s"><ol class="cds--breadcrumb__list">%3$s</ol></nav>',
 		esc_attr( $classes ),
-		esc_attr__( 'Breadcrumb', 'awt' ),
+		esc_attr__( 'Breadcrumbs', 'awt' ),
 		$items
 	);
 }
 
 /**
- * Inject the breadcrumb above the main content via the
- * render_block_data filter on the main content area.
+ * Wrap the breadcrumb in the region that sits above <main>.
+ *
+ * Only the side padding is copied from <main>, so the trail keeps lining up
+ * with the content below it on whatever a site owner sets in the Site Editor.
+ * The vertical spacing is NOT copied: <main>'s top gap does not come from that
+ * inline value at all — theme.css overrides it with `!important` to clear the
+ * fixed header — so the region takes its own top spacing from the same
+ * theme.css rules instead. See "Breadcrumb region" there.
+ *
+ * The <div> is deliberately unlabelled. The breadcrumb's accessible name lives
+ * on the <nav aria-label="Breadcrumbs"> inside it, which is the element that
+ * carries the navigation role; a second labelled landmark around it would
+ * announce one breadcrumb as two.
+ *
+ * @param string               $breadcrumb Rendered breadcrumb markup.
+ * @param array<string, mixed> $padding    <main>'s padding attribute values.
+ * @return string
+ */
+function wrap_region( string $breadcrumb, array $padding ): string {
+	$sides = array();
+	foreach ( array( 'right', 'left' ) as $side ) {
+		if ( isset( $padding[ $side ] ) && $padding[ $side ] !== '' ) {
+			$sides[ $side ] = $padding[ $side ];
+		}
+	}
+
+	$style = '';
+	if ( $sides && function_exists( 'wp_style_engine_get_styles' ) ) {
+		// The Style Engine turns `var:preset|spacing|06` into the CSS custom
+		// property WordPress prints for that preset — the same conversion core
+		// performs for the block's own inline style.
+		$styles = wp_style_engine_get_styles( array( 'spacing' => array( 'padding' => $sides ) ) );
+		$style  = isset( $styles['css'] ) ? (string) $styles['css'] : '';
+	}
+
+	return sprintf(
+		'<div class="awt-breadcrumb-region"%1$s>%2$s</div>',
+		$style !== '' ? ' style="' . esc_attr( $style ) . '"' : '',
+		$breadcrumb // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- block markup, escaped on render by the breadcrumb block.
+	);
+}
+
+/**
+ * Emit the breadcrumb as a sibling immediately *before* the main content area.
  *
  * Targets blocks tagged `<main id="main-content" class="cds--content">` — the
- * convention every Stage 1 page template uses. The breadcrumb is prepended to
- * the rendered output, so it ends up immediately inside <main>.
+ * convention every Stage 1 page template uses.
+ *
+ * It sits outside <main> on purpose. A breadcrumb is navigation repeated across
+ * pages, which HTML's own guidance keeps out of <main>; and inside <main> it was
+ * the first thing "Skip to main content" reached, so keyboard and screen-reader
+ * users had to tab through the whole trail before arriving at the content the
+ * skip link promised them.
  */
 add_filter(
 	'render_block',
 	static function ( string $block_content, array $block ): string {
-		if ( empty( $block['blockName'] ) || $block['blockName'] !== 'core/group' ) {
+		static $emitted = false;
+
+		if ( $emitted || empty( $block['blockName'] ) || $block['blockName'] !== 'core/group' ) {
 			return $block_content;
 		}
 		// Match the main-content group rendered by every Stage 1 template.
@@ -443,14 +494,14 @@ add_filter(
 		if ( $breadcrumb === '' ) {
 			return $block_content;
 		}
+		$emitted = true;
 
-		// Insert breadcrumb right after the opening <main ...> tag.
-		return preg_replace(
-			'/(<main\b[^>]*>)/',
-			'$1' . $breadcrumb,
-			$block_content,
-			1
-		);
+		$padding = array();
+		if ( isset( $block['attrs']['style']['spacing']['padding'] ) && is_array( $block['attrs']['style']['spacing']['padding'] ) ) {
+			$padding = $block['attrs']['style']['spacing']['padding'];
+		}
+
+		return wrap_region( $breadcrumb, $padding ) . $block_content;
 	},
 	10,
 	2

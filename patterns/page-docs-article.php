@@ -3,7 +3,7 @@
  * Title: AWT — Page: Documentation article
  * Slug: awt/page-docs-article
  * Design system: carbon
- * Description: Starter docs article. Breadcrumb + heading + intro + body content scaffold.
+ * Description: Starter docs article. Heading + intro + body content scaffold.
  * Categories: awt-section
  * Keywords: page, docs, article, documentation
  * Block Types: core/post-content
@@ -11,14 +11,6 @@
  */
 ?>
 <!-- wp:awt/section {"paddingBlock":"08","maxWidth":"narrow"} -->
-<!-- wp:awt/breadcrumb -->
-<!-- wp:awt/breadcrumb-item {"text":"Home","href":"/"} /-->
-
-<!-- wp:awt/breadcrumb-item {"text":"Docs","href":"/docs"} /-->
-
-<!-- wp:awt/breadcrumb-item {"text":"Current page","isCurrentPage":true} /-->
-<!-- /wp:awt/breadcrumb -->
-
 <!-- wp:heading {"level":1} -->
 <h1 class="wp-block-heading">Article title</h1>
 <!-- /wp:heading -->
