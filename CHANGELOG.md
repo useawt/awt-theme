@@ -24,6 +24,10 @@
 
 ### [A11y]
 
+- The "Segmented" color scheme toggle (Light / Auto / Dark) shows which option
+  is in use. The one in use is filled, bold and underlined, so the state does
+  not depend on color alone, and it reads correctly in both light and dark.
+
 - "Skip to main content" now reaches the content. Automatic breadcrumbs used
   to sit inside the main content area, so the skip link dropped you at the top
   of the trail and you had to tab through every crumb before reaching the page
