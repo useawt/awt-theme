@@ -377,24 +377,33 @@
 	border-color: transparent;
 }
 
-/* Read-only: Carbon drops the fill entirely and softens the rule to
-   `border-subtle`. Keep that color — enclosing the shape is this change's job,
-   re-picking Carbon's read-only color is not — and note that at 1.32:1 against
-   the page it is faint. Recorded as an open question in the spec rather than
-   changed quietly here.
+/* Read-only (difference D7). Carbon drops the fill entirely and softens the
+   rule to `border-subtle`, which measures **1.32:1** against the page in light
+   and **1.57:1** in dark. A read-only field is not an inactive one — it takes
+   focus, and its text is there to be read and copied — so WCAG 1.4.11's 3:1 for
+   user-interface components applies and Carbon's value does not meet it. With
+   the fill gone there is nothing else marking the field, which makes the border
+   the whole control.
+
+   Keep `border-strong`, the same token the editable state uses. It is the only
+   Carbon border token that clears 3:1 (`border-disabled` reaches just 1.71:1),
+   so following D5's rule of reusing a value Carbon already trusts lands here by
+   itself. Read-only still reads as read-only, because the difference that
+   carries the meaning is the **absence of the fill**, not a paler outline:
+   editable is a shaded fill inside a strong border, read-only is a strong
+   border around the page itself.
 
    Keyed on the wrapper's `--readonly` modifier, NOT on the `[readonly]` DOM
    attribute, because those two do not mean the same thing: every field in the
    block editor's canvas carries `readOnly` whether the author asked for it or
    not (edit.js pins it so typing cannot drift from the saved attribute). An
-   attribute selector therefore softened every field in the editor to
-   `border-subtle` while the published page drew `border-strong` — the author
-   previewing a faint field that renders as a firm one. The modifier class is
-   emitted by render.php and edit.js alike, and only when read-only is really
-   set, so it means the same thing on both sides. */
+   attribute selector therefore restyled every field in the editor. The modifier
+   class is emitted by render.php and edit.js alike, and only when read-only is
+   really set, so it means the same thing on both sides. The rule still needs
+   this specificity to clear Carbon's own read-only rule. */
 .awt-field--framed.cds--text-input-wrapper--readonly .cds--text-input,
 .awt-field--framed.cds--text-area-wrapper--readonly .cds--text-area {
-	border-color: var(--cds-border-subtle, #e0e0e0);
+	border-color: var(--cds-border-strong, #8d8d8d);
 }
 
 /* --------------------------------------------------------------------------

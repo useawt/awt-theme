@@ -23,6 +23,16 @@
   and dark. If your own CSS restyles these fields' borders, check it against the
   `.awt-field--framed` rules in `assets/css/theme.css`.
 
+- Read-only fields are drawn with the same border color as editable ones, in
+  place of the much paler color they used to have. A read-only field has no
+  shaded fill, so its border is the only thing showing you where the field is,
+  and that border was far too faint to see: 1.32 to 1 against the page in light
+  mode. It is now 3.32 to 1, the contrast a control needs. Read-only fields are
+  still easy to tell apart, because what marks them is having no fill rather
+  than having a paler edge: an editable field is a filled box, a read-only one
+  is an outline, and a disabled one is a fill with no edge at all. A field with
+  **Carbon default** on is unaffected.
+
 - theme.json no longer lists header, side navigation, content and footer
   options under `settings.custom.ui-shell`. Nothing read them, so changing
   them changed nothing, and leaving them there implied a configurable header
