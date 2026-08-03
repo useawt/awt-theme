@@ -77,9 +77,22 @@ published third-party audit, and it does not replace one. A formal independent
 audit is still planned before commercial launch, and its report will appear
 here.
 
-**Six findings received so far. All six are fixed.** Newest first.
+**Seven findings received so far. All seven are fixed.** Newest first.
 
-1. **2026-08-03. Form fields were hard to see as fields.** A field was marked
+1. **2026-08-03. Focus rings were too thin, and three of them could not be
+   seen at all.** The ring that marks the control you have reached with the Tab
+   key was 1 pixel thick, where the guideline asks for 2. Three were worse than
+   thin: each was drawn in a colour so close to the surface behind it that there
+   was nothing to see. The close button on a notification measured 1.8 to 1, the
+   dismiss button on a tag in dark mode 1.2 to 1, and the selected button in a
+   Content switcher in dark mode 1.1 to 1. Every focus ring is now at least 2
+   pixels thick, with at least 2 of those pixels checked against what sits
+   behind them. One of the three faint rings was our own style rule overriding a
+   Carbon rule that was already correct. A plain link typed into a paragraph now
+   gets the theme's ring instead of the browser's. No setting puts the old ring
+   back.
+
+2. **2026-08-03. Form fields were hard to see as fields.** A field was marked
    out by a shaded fill with a single line under the text, so what showed you
    where the field was, and how big it was, came down to that one line: the fill
    differs from the page by only 1.10 to 1 in light mode and 1.20 to 1 in dark,
@@ -90,7 +103,7 @@ here.
    single field can be put back to the one-line look with its **Carbon default**
    setting.
 
-2. **2026-08-03. The Select block told screen readers it had one more option
+3. **2026-08-03. The Select block told screen readers it had one more option
    than it really has.** A select offering four choices was announced as
    "3 of 5". Its placeholder sat in the list assistive technology reads while
    being left out of the list drawn on screen, so every count was one too high.
@@ -98,7 +111,7 @@ here.
    greyed out. It still cannot be chosen. Screen readers that do not announce
    list position, including VoiceOver, were never affected.
 
-3. **2026-08-02. The light and dark mode switch did not say what it had
+4. **2026-08-02. The light and dark mode switch did not say what it had
    done.** The button was named "Light mode / Dark mode", which tells you
    neither what pressing it does nor which mode you are in, and the first press
    announced nothing at all. The button is now named after the mode it turns
@@ -106,26 +119,26 @@ here.
    version now also marks which of Light, Auto and Dark is in use, and a
    returning visitor is no longer told the wrong mode while the page loads.
 
-4. **2026-08-02. "Skip to main content" landed before the breadcrumb trail.**
+5. **2026-08-02. "Skip to main content" landed before the breadcrumb trail.**
    Automatic breadcrumbs were rendered inside the main region, so anyone who
    used the skip link still had every breadcrumb to move through before
    reaching the page content, which is what the skip link exists to avoid. The
    trail now sits immediately before the main region. Nothing changed visually.
 
-5. **2026-08-01. The "Skip to main content" link was hard to see when
+6. **2026-08-01. The "Skip to main content" link was hard to see when
    focused.** An old style rule of ours was overriding part of the Carbon
    styling, so the focused link drew at roughly half its intended height and
    carried two different focus indicators at once. The override is gone. The
    focused link is now a full-height panel with its text at 11:1 contrast.
 
-6. **2026-08-01. Links asked the reader to "see" a thing.** Reported on our own
+7. **2026-08-01. Links asked the reader to "see" a thing.** Reported on our own
    website: link text used *see* where an action word says the same thing
    without assuming sight. About 205 links and labels were reworded. This one
    was on our website rather than in the theme or plugin, so it falls outside
    the scope above, but it came from the same review and belongs in the same
    list.
 
-Findings 1 to 5 are fixed in the theme and plugin, and each is described in
+Findings 1 to 6 are fixed in the theme and plugin, and each is described in
 plain language in `CHANGELOG.md`.
 
 ## Feedback
