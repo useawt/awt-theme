@@ -330,6 +330,74 @@
 }
 
 /* --------------------------------------------------------------------------
+   Form fields — a boundary on all four sides (difference D5)
+   --------------------------------------------------------------------------
+
+   Carbon draws a field as a shaded fill with a single rule under the text, and
+   expects the fill to be what makes the field findable. Measured on Carbon's
+   own palette, that fill differs from the page by **1.10:1** in light and
+   **1.20:1** in dark — so what actually marks the field's shape is one 1px line
+   along the bottom. Reported by the outside accessibility review; the field is
+   hard to locate at low vision, and in forced-colors mode the fill is replaced
+   by a system color, which leaves that single line carrying the whole control.
+
+   AWT encloses the field instead. `--cds-border-strong` measures **3.02:1**
+   against the fill in light and **3.01:1** in dark, so the boundary clears WCAG
+   1.4.11 (3:1 for user-interface components) in both modes with no new token —
+   Carbon picked that value to hit 3:1 and we simply use it on four sides
+   instead of one.
+
+   Focus and invalid need nothing here: Carbon draws both as a 2px outline at
+   `outline-offset: -2px`, which paints over the whole border box, so both
+   states look exactly as Carbon intends whichever look is chosen.
+
+   Applies only where the block asks for it, via `awt-field--framed` from
+   `field_frame_class()` in awt-blocks. Turning a field's "Carbon default" on
+   drops the class, and then none of this matches — Carbon's own CSS runs
+   unopposed rather than being half-overridden. See "Differences from Carbon"
+   in the Stage 1 spec. */
+
+.awt-field--framed .cds--text-input,
+.awt-field--framed .cds--text-area,
+.awt-field--framed .cds--select-input,
+.awt-field--framed .cds--dropdown {
+	border: 1px solid var(--cds-border-strong, #8d8d8d);
+}
+
+/* Disabled: Carbon takes the bottom rule to `transparent` and mutes the text,
+   so the control reads as inactive. Follow it on all four sides — otherwise the
+   base rule above would leave three solid edges and one invisible one, which is
+   worse than either look. WCAG 1.4.11 exempts inactive controls, so nothing is
+   lost. The `:disabled` selectors need the extra class to clear Carbon's own
+   (0,2,0) disabled rules; the dropdown is doubled up for the same reason. */
+.awt-field--framed .cds--text-input:disabled,
+.awt-field--framed .cds--text-area:disabled,
+.awt-field--framed .cds--select-input:disabled,
+.awt-field--framed .cds--dropdown.cds--dropdown--disabled {
+	border-color: transparent;
+}
+
+/* Read-only: Carbon drops the fill entirely and softens the rule to
+   `border-subtle`. Keep that color — enclosing the shape is this change's job,
+   re-picking Carbon's read-only color is not — and note that at 1.32:1 against
+   the page it is faint. Recorded as an open question in the spec rather than
+   changed quietly here.
+
+   Keyed on the wrapper's `--readonly` modifier, NOT on the `[readonly]` DOM
+   attribute, because those two do not mean the same thing: every field in the
+   block editor's canvas carries `readOnly` whether the author asked for it or
+   not (edit.js pins it so typing cannot drift from the saved attribute). An
+   attribute selector therefore softened every field in the editor to
+   `border-subtle` while the published page drew `border-strong` — the author
+   previewing a faint field that renders as a firm one. The modifier class is
+   emitted by render.php and edit.js alike, and only when read-only is really
+   set, so it means the same thing on both sides. */
+.awt-field--framed.cds--text-input-wrapper--readonly .cds--text-input,
+.awt-field--framed.cds--text-area-wrapper--readonly .cds--text-area {
+	border-color: var(--cds-border-subtle, #e0e0e0);
+}
+
+/* --------------------------------------------------------------------------
    Base document
    -------------------------------------------------------------------------- */
 
@@ -2929,7 +2997,12 @@ body.editor-styles-wrapper .wp-block-awt-icon   + .wp-block-awt-icon {
  * its own — the three values hardcoded here. They agree today; they are
  * hardcoded copies, not a deliberate departure. (`.cds--select-input__wrapper
  * { position: relative }` and the `:focus` outline used to be repeated here
- * too; both are Carbon's own, shipped with the Select block.) */
+ * too; both are Carbon's own, shipped with the Select block.)
+ *
+ * The `border: 0` + single `border-block-end` below is Carbon's look, which is
+ * what a field with "Carbon default" on renders. AWT's default overrides it
+ * from the `.awt-field--framed` rules in the form-field section above — if you
+ * change the border here, change it there too. */
 .cds--select { display: block; }
 .cds--select-input {
 	appearance: none;

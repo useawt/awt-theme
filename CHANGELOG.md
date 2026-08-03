@@ -14,6 +14,15 @@
 
 ### [Breaking]
 
+- Form fields are drawn with a border on all four sides instead of a single line
+  under the text, so a field's shape no longer depends on its fill being
+  slightly different from the page. Applies to Text input, Text area, Password
+  input, Select and Dropdown; each of those blocks has a **Carbon default**
+  setting that puts an individual field back to the one-line look. The border
+  reuses the color the line already used, so it keeps 3 to 1 contrast in light
+  and dark. If your own CSS restyles these fields' borders, check it against the
+  `.awt-field--framed` rules in `assets/css/theme.css`.
+
 - theme.json no longer lists header, side navigation, content and footer
   options under `settings.custom.ui-shell`. Nothing read them, so changing
   them changed nothing, and leaving them there implied a configurable header
