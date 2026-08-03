@@ -3886,6 +3886,23 @@ body.editor-styles-wrapper .wp-block-awt-icon   + .wp-block-awt-icon {
  */
 .cds--data-table-container { display: block; overflow-x: auto; }
 
+/* Because that `overflow-x` makes the container scrollable, the block gives it
+ * `tabindex="0"` so a keyboard user can reach the columns past the right edge
+ * (WCAG 2.1.1). A new tab stop needs a visible focus indicator, and the browser
+ * default `outline: auto 1px` is neither ours nor guaranteed: this is the same
+ * ring every other focusable surface in the theme uses. `outline-offset: -2px`
+ * draws it inside the box so it is not clipped by the scroll container. */
+.cds--data-table-container:focus-visible {
+	outline: 2px solid var(--cds-focus, #0f62fe);
+	outline-offset: -2px;
+}
+
+@media (prefers-contrast: more) {
+	.cds--data-table-container:focus-visible {
+		outline-style: dotted;
+	}
+}
+
 .cds--data-table caption {
 	caption-side: top;
 	text-align: start;

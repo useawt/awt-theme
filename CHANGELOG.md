@@ -24,6 +24,14 @@
 
 ### [A11y]
 
+- A data table that is wider than the space it has now shows a focus ring when
+  a keyboard user tabs to it. The table scrolls sideways in that case, and the
+  blocks plugin now makes the scrolling area reachable by keyboard so the
+  columns past the right edge can be read without a mouse. Reaching it is only
+  useful if you can see where you are, so it uses the same focus ring as every
+  other focusable part of the theme, in light and dark, plus a dotted variant
+  when the reader has asked for more contrast.
+
 - The "Segmented" color scheme toggle (Light / Auto / Dark) shows which option
   is in use. The one in use is filled, bold and underlined, so the state does
   not depend on color alone, and it reads correctly in both light and dark.
