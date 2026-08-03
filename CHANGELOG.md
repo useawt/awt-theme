@@ -68,6 +68,23 @@
   1 pixel look. If your own CSS restyles focus indicators, check it against the
   "Focus appearance" section at the end of `assets/css/theme.css`.
 
+- Coloured tags now change with the page. A red or blue tag used to keep its
+  light pill on a dark page, because its colours were written into the theme by
+  hand with no dark version. They come from the Carbon Design System's own tag
+  colours now, which are defined for light and dark, so a dark page gets a
+  strong fill with light text on it. Two things follow from that:
+
+  - The text inside a tag is a slightly lighter shade in light mode than it was.
+    The old shades were an older version of Carbon's palette. Every colour still
+    passes WCAG AA comfortably, from 5.8 to 1 at the lowest.
+  - Tags follow your own colours. If your site overrides Carbon's tag colours,
+    tags now use them instead of ignoring them.
+
+  The dismiss button on a tag set to the **high-contrast** colour was still
+  drawing a 1 pixel ring when a keyboard user reached it, which was missed when
+  every other focus ring was raised to 2 pixels. It is 2 pixels now, like the
+  rest.
+
 - Code snippets that scroll sideways now show the theme's focus ring when a
   keyboard user tabs to them, instead of the browser's own default outline. This
   covers both the single-line and multi-line kinds, each of which scrolls a
