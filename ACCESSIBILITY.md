@@ -3,7 +3,19 @@
 <!-- Canonical source. The awt-blocks release script injects this file into
      the WordPress.org readme.txt between the ACCESSIBILITY_START/END
      markers. Review on every YYYY.MM release (see the Stage 1 spec,
-     "Accessibility statement → Maintenance cadence"). -->
+     "Accessibility statement → Maintenance cadence").
+
+     STANDING RULE: when a finding from the outside accessibility review is
+     fixed, add it to "Audit status" below in the SAME session as the fix, and
+     move the "Last reviewed" date. A statement that lags behind the product is
+     the thing this file exists to prevent. The full engineering write-up of
+     each finding belongs in the Stage 1 spec ("Screen-reader audit") and the
+     user-facing wording in CHANGELOG.md; this file gets the short, honest
+     public version.
+
+     The /accessibility/ page on accessiblewordpresstheme.com is SEPARATE,
+     hand-authored content that paraphrases this file. It does not update
+     itself. Republish it when this file changes materially. -->
 
 ## Our commitment
 
@@ -41,10 +53,11 @@ enforces and what this statement promises stay aligned.
 
 We list what we know does not yet meet the standard, honestly:
 
-- **No independent audit has been performed yet.** Conformance so far rests
-  on the Carbon Design System's accessibility work, our own component
-  reviews, and automated checks — not on third-party verification. See
-  "Audit status" below.
+- **No formal independent audit has been completed yet.** Conformance so far
+  rests on the Carbon Design System's accessibility work, our own component
+  reviews, automated checks, and an ongoing review by accessibility
+  practitioners outside the project. That review is real and it has found real
+  bugs, but it is not a published third-party audit. See "Audit status" below.
 - Components inherit the current behavior of the Carbon Design System
   (v11). Where Carbon publishes known accessibility issues for a component,
   those apply to the matching AWT block until fixed upstream or worked
@@ -55,9 +68,54 @@ below.
 
 ## Audit status
 
-**Pending.** A third-party accessibility audit is scheduled for Stage 4
-(before commercial launch). The audit report will be published here when
-complete.
+**Outside expert review is under way. A formal audit is still to come.**
+
+Since 2026-08-01, accessibility practitioners from outside the project have
+been testing AWT with real assistive technology and reporting what they find.
+Findings are treated as bugs: fixed, verified, and written up. This is not a
+published third-party audit, and it does not replace one. A formal independent
+audit is still planned before commercial launch, and its report will appear
+here.
+
+**Five findings received so far. All five are fixed.** Newest first.
+
+1. **2026-08-03. The Select block told screen readers it had one more option
+   than it really has.** A select offering four choices was announced as
+   "3 of 5". Its placeholder sat in the list assistive technology reads while
+   being left out of the list drawn on screen, so every count was one too high.
+   The placeholder is now an ordinary first option, present in both lists and
+   greyed out. It still cannot be chosen. Screen readers that do not announce
+   list position, including VoiceOver, were never affected.
+
+2. **2026-08-02. The light and dark mode switch did not say what it had
+   done.** The button was named "Light mode / Dark mode", which tells you
+   neither what pressing it does nor which mode you are in, and the first press
+   announced nothing at all. The button is now named after the mode it turns
+   on, reports whether that mode is on, and announces the change. The segmented
+   version now also marks which of Light, Auto and Dark is in use, and a
+   returning visitor is no longer told the wrong mode while the page loads.
+
+3. **2026-08-02. "Skip to main content" landed before the breadcrumb trail.**
+   Automatic breadcrumbs were rendered inside the main region, so anyone who
+   used the skip link still had every breadcrumb to move through before
+   reaching the page content, which is what the skip link exists to avoid. The
+   trail now sits immediately before the main region. Nothing changed visually.
+
+4. **2026-08-01. The "Skip to main content" link was hard to see when
+   focused.** An old style rule of ours was overriding part of the Carbon
+   styling, so the focused link drew at roughly half its intended height and
+   carried two different focus indicators at once. The override is gone. The
+   focused link is now a full-height panel with its text at 11:1 contrast.
+
+5. **2026-08-01. Links asked the reader to "see" a thing.** Reported on our own
+   website: link text used *see* where an action word says the same thing
+   without assuming sight. About 205 links and labels were reworded. This one
+   was on our website rather than in the theme or plugin, so it falls outside
+   the scope above, but it came from the same review and belongs in the same
+   list.
+
+Findings 1 to 4 are fixed in the theme and plugin, and each is described in
+plain language in `CHANGELOG.md`.
 
 ## Feedback
 
@@ -68,4 +126,4 @@ Reports about real barriers are treated as bugs, not feature requests.
 ## Dates
 
 - Statement prepared: 2026-07-17
-- Last reviewed: 2026-07-17
+- Last reviewed: 2026-08-03
