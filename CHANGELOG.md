@@ -24,6 +24,11 @@
 
 ### [A11y]
 
+- Code snippets that scroll sideways now show the theme's focus ring when a
+  keyboard user tabs to them, instead of the browser's own default outline. This
+  covers both the single-line and multi-line kinds, each of which scrolls a
+  different part of the snippet.
+
 - A data table that is wider than the space it has now shows a focus ring when
   a keyboard user tabs to it. The table scrolls sideways in that case, and the
   blocks plugin now makes the scrolling area reachable by keyboard so the

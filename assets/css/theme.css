@@ -3840,6 +3840,23 @@ body.editor-styles-wrapper .wp-block-awt-icon   + .wp-block-awt-icon {
 	white-space: nowrap;
 }
 .cds--snippet--multi  { display: block; padding: 1rem; position: relative; padding-inline-end: 3rem; overflow-x: auto; }
+
+/* Whichever element scrolls is a tab stop (see the block's render.php: the
+ * container for `single`, Carbon's <pre> for `multi`), so it needs the theme's
+ * focus ring rather than the browser default. `outline-offset: -2px` keeps the
+ * ring inside the scrolling box, which would otherwise clip it. */
+.cds--snippet--single .cds--snippet-container:focus-visible,
+.cds--snippet--multi .cds--snippet-container pre:focus-visible {
+	outline: 2px solid var(--cds-focus, #0f62fe);
+	outline-offset: -2px;
+}
+
+@media (prefers-contrast: more) {
+	.cds--snippet--single .cds--snippet-container:focus-visible,
+	.cds--snippet--multi .cds--snippet-container pre:focus-visible {
+		outline-style: dotted;
+	}
+}
 .cds--snippet--multi pre,
 .cds--snippet--single pre { margin: 0; }
 .cds--snippet-button {
