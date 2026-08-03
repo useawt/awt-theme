@@ -43,6 +43,31 @@
 
 ### [A11y]
 
+- Every focus indicator in the theme is now at least 2 pixels thick, and at
+  least 2 pixels of it are visible against what is behind it. The Carbon Design
+  System draws its focus rings 1 pixel thick, so this affected almost every
+  control on a page: links, buttons, form fields, the tag dismiss button and the
+  expandable tile's summary. Thicker is the visible part of the change. Three
+  cases were worse than thin, and those are the reason for it:
+
+  - The close button on a notification drew a blue ring on a dark grey
+    notification, at 1.8 to 1. One of our own style rules was overriding
+    Carbon's correct colour choice for that surface. The rule is gone.
+  - The tag dismiss button drew a white ring on a light blue tag in dark mode,
+    at 1.2 to 1. It now uses the tag's own text colour, which the tag palette
+    already pairs with each fill.
+  - The selected button in a Content switcher drew a white ring on a light
+    surface in dark mode, at 1.1 to 1. Its two-tone ring is now wide enough on
+    both tones for one of them to show.
+
+  A plain link typed into a paragraph used to fall back to whatever ring the
+  browser draws. It now gets the theme's, so focus looks the same everywhere.
+  Form fields draw their ring just outside the field instead of just inside:
+  inside, it competed for the same pixels as the field border and, on a field
+  with an error, as the red outline. There is no setting that returns Carbon's
+  1 pixel look. If your own CSS restyles focus indicators, check it against the
+  "Focus appearance" section at the end of `assets/css/theme.css`.
+
 - Code snippets that scroll sideways now show the theme's focus ring when a
   keyboard user tabs to them, instead of the browser's own default outline. This
   covers both the single-line and multi-line kinds, each of which scrolls a

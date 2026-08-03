@@ -221,28 +221,17 @@
 	color: var(--cds-icon-disabled, #c6c6c6);
 }
 
-/* Explicit solid focus indicators for form inputs.
+/* Field focus indicators live in "Focus appearance" at the end of this file,
+ * with every other focus rule the theme owns. They were here, at 2px; the
+ * four-sided field border (D5) made one of those two pixels imperceptible, so
+ * they are 3px now and the reasoning belongs next to the rest of it.
  *
- * Carbon's compiled CSS sets `outline-style: dotted` inside an
- * `@media (prefers-contrast)` block. On systems where the OS has high-
- * contrast / increased-contrast enabled (macOS Accessibility, Windows
- * High Contrast Mode), that media query activates and the focus indicator
- * becomes dotted everywhere. For everyone else the default is solid.
- *
- * Carbon's selectors are also low-specificity (one class), so Firefox's
- * dotted browser default sometimes leaks through on some controls. Force
- * solid here to make the appearance consistent across browsers; the
- * prefers-contrast block below explicitly opts dotted in when the user
- * has asked for it.
- */
-.cds--text-input:focus,
-.cds--text-input:focus-visible,
-.cds--text-area:focus,
-.cds--text-area:focus-visible {
-	outline: 2px solid var(--cds-focus, #0f62fe);
-	outline-offset: -2px;
-	outline-style: solid;
-}
+ * What was here besides the width, and is still true down there: Carbon puts
+ * `outline-style: dotted` inside an `@media (prefers-contrast)` block, so on a
+ * machine with OS high-contrast on, indicators go dotted everywhere. Carbon's
+ * selectors are also single-class, so Firefox's dotted default leaks through on
+ * some controls. Both are why the rule states `solid` explicitly and opts
+ * dotted back in under the media query rather than inheriting either. */
 
 /* Textarea: fill the wrapper width.
  *
@@ -270,15 +259,6 @@
 .cds--text-area[cols] {
 	inline-size: auto;
 	max-inline-size: 100%;
-}
-
-@media (prefers-contrast: more) {
-	.cds--text-input:focus,
-	.cds--text-input:focus-visible,
-	.cds--text-area:focus,
-	.cds--text-area:focus-visible {
-		outline-style: dotted;
-	}
 }
 
 /* Fluid text-input — Carbon's spec places the label at `inset-block-start:
@@ -2679,11 +2659,9 @@ body.editor-styles-wrapper .wp-block-awt-icon   + .wp-block-awt-icon {
 	background-color: rgba(0, 0, 0, 0.12);
 }
 
-.cds--tag__close-icon:focus,
-.cds--tag__close-icon:focus-visible {
-	outline: none;
-	box-shadow: inset 0 0 0 1px var(--cds-focus, #0f62fe);
-}
+/* The close button's focus ring is in "Focus appearance" at the end of this
+ * file. It was 1px of `--cds-focus` here, which is invisible in dark mode
+ * because a tag's fill does not follow the scope — see D3 down there. */
 
 /* --------------------------------------------------------------------------
    Notification — Carbon's inline + toast variants.
@@ -2880,11 +2858,17 @@ body.editor-styles-wrapper .wp-block-awt-icon   + .wp-block-awt-icon {
 	border-radius: 2px;
 }
 
-.cds--inline-notification__close-button:focus,
-.cds--toast-notification__close-button:focus {
-	outline: 2px solid var(--cds-focus, #0f62fe);
-	outline-offset: -2px;
-}
+/* No focus rule for the close button here on purpose. There was one, at
+ * `outline: 2px solid var(--cds-focus)`, and it made the button's focus ring
+ * invisible on the default notification: that notification's surface is the
+ * INVERSE of the page (dark in light mode, light in dark mode), so the scope's
+ * `--cds-focus` lands on the wrong side of it — blue on #393939 is 1.82:1.
+ *
+ * Carbon already handles this correctly and our rule was overriding it. Carbon
+ * uses `--cds-focus-inverse` for the default notification and `--cds-focus` for
+ * the low-contrast one, in a more specific selector, which is why only the
+ * default variant was affected and why this went unnoticed. Deleting our rule
+ * restores both. Found by the focus-appearance gate, 2026-08-03. */
 
 /* --------------------------------------------------------------------------
    Accordion — Carbon ships visual styling; we add minimal layout so items
@@ -3552,10 +3536,19 @@ body.editor-styles-wrapper .wp-block-awt-icon   + .wp-block-awt-icon {
 	color: var(--cds-text-inverse, #ffffff);
 }
 
-/* Focus indicator via inset box-shadow so it lines up exactly with the
- * button's bounding box (vs `outline` at -2px which floats above the
- * other inset shadows and can look offset). Stacks the focus ring AND
- * the border shadows on the same element. */
+/* Inset box-shadow rather than `outline` so the ring lines up exactly with the
+ * button's bounding box (an outline at -2px floats above the other inset
+ * shadows and can look offset), and so the ring and the border shadows stack on
+ * one element.
+ *
+ * These two rules do NOT draw the visible focus ring, despite reading as if
+ * they do. Carbon paints the switcher's surface as a full-size `::after`
+ * overlay, which covers any box-shadow on the button itself — the classic
+ * Carbon pseudo-element overlay. The ring that shows is the one on `::after`,
+ * in "Focus appearance" at the end of this file. Kept here because the
+ * `outline: none` and the z-index still do work, and because the selected
+ * variant's inner tone tracking the surface token is the right intent if these
+ * ever become visible again. Measured 2026-08-03. */
 .cds--content-switcher-btn:focus,
 .cds--content-switcher-btn:focus-visible {
 	outline: none;
@@ -4097,4 +4090,173 @@ mark.has-inline-color {
 figcaption.wp-element-caption,
 caption.wp-element-caption {
 	color: var(--cds-text-secondary, #525252);
+}
+
+/* ============================================================
+ * Focus appearance — differences D1 to D4
+ * ============================================================
+ *
+ * Every focus indicator in this theme is at least 2 CSS px of change a person
+ * can actually see. Carbon's is 1px, and that is not a bug in one component:
+ * Carbon's `focus-outline()` mixin emits `outline: 1px solid $focus`, so every
+ * component inherits it and every Carbon upgrade can bring it back. This is
+ * the one place the theme raises it, and unlike the field border (D5) there is
+ * no setting that puts Carbon's version back — a focus indicator you cannot
+ * see is not a look, it is a barrier.
+ *
+ * WCAG 2.4.13 asks two things of an indicator, and they interact: it needs the
+ * area of a 2px perimeter, AND those pixels need to differ from their own
+ * unfocused color by 3:1. Meeting only the first is how a ring ends up 2px
+ * wide and invisible — Carbon's primary button drew its focus ring in the same
+ * blue as the button fill, so of the 3px it painted, one was perceivable.
+ *
+ * Which is why the rules below come in two shapes, not one:
+ *
+ *   • Controls whose ring sits on the PAGE take a plain 2px outline in
+ *     `--cds-focus`. The page is a scope surface, so the token is already
+ *     correct in light and dark.
+ *
+ *   • Controls whose ring sits on the CONTROL'S OWN FILL take Carbon's
+ *     two-tone ring — `--cds-focus` outside, `--cds-focus-inset` inside — with
+ *     both tones at 2px instead of Carbon's 1px. The pair is chosen so the two
+ *     tones contrast with each other (blue on white in light, white on near-
+ *     black in dark), so whatever the fill is, at least one of the two tones
+ *     stands out against it. That is Carbon's own idea; only the widths change.
+ *
+ * A gate holds this, not a catch-all selector: `npm run test:focus` in
+ * awt-blocks tabs the fixture pages in both schemes and fails any stop whose
+ * perceivable indicator is under 2px. A selector list can only cover the
+ * components someone remembered; the tab ring covers whatever the page has.
+ *
+ * The already-2px per-component rules elsewhere in this file (header actions,
+ * accordion heading, pagination, tooltip, toggletip, menu item, tile,
+ * notification close, snippet, panel) are deliberately left where they are.
+ * Each carries its component's own offset and mechanism, they already clear the
+ * bar, and rewriting them into this section would be 15 no-op edits on
+ * surfaces that are verified. The gate is what stops them drifting.
+ */
+
+/* D1 links and D4 plain content links — 2px drawn just outside the control,
+ * over the page.
+ *
+ * D4 is the `:not([class*="cds--"])` half: Carbon styles `.cds--link`, so a
+ * bare `<a>` typed into a paragraph fell through to the browser's own ring,
+ * which differs per browser and is outside our control. Anything carrying a
+ * `cds--` class is excluded because it has a rule of its own — buttons,
+ * breadcrumbs, pagination, the header brand, the skip link. */
+.cds--link:focus:not(.cds--link--disabled),
+a:not([class*="cds--"]):focus-visible {
+	outline: 2px solid var(--cds-focus, #0f62fe);
+	outline-offset: 1px;
+}
+
+/* The expandable tile's summary — same missing-ring problem, opposite fix.
+ *
+ * The focusable element is the `<summary>`, while Carbon styles `.cds--tile`,
+ * so an expandable tile showed the browser's own ring. But this ring has to go
+ * INSIDE: `details.cds--tile` is `overflow: hidden`, and the summary fills it,
+ * so a ring drawn outside the summary is clipped on three of its four sides. It
+ * measured a healthy 2px in CSS and painted one edge. Worth remembering as the
+ * general trap — an outward ring is only as real as the room around it. */
+.cds--tile__summary:focus-visible {
+	outline: 2px solid var(--cds-focus, #0f62fe);
+	outline-offset: -2px;
+}
+
+/* Form fields — 2px, drawn OUTSIDE the field rather than inset.
+ *
+ * Carbon insets it, and so did this theme, until two measurements said the
+ * inside of a field is the one place the ring cannot go:
+ *
+ *   • The four-sided field border (D5) sits exactly where an inset ring's outer
+ *     pixel lands, and `--cds-border-strong` against `--cds-focus` is 2.03:1 in
+ *     light. So one of the two pixels changed in the markup and not to the eye.
+ *   • An invalid field is worse. Its red 2px outline occupies the same two
+ *     pixels, and red against focus blue is 1.35:1 — so focusing the one field
+ *     a person most needs to find changed almost nothing they could see.
+ *
+ * Both disappear once the ring moves outside: it then lands on the page, whose
+ * color the scope already guarantees `--cds-focus` against, and it no longer
+ * competes with the border or the invalid outline for the same pixels. It also
+ * makes fields match links, which take the same 2px at the same offset.
+ *
+ * Fields set to "Carbon default" get this too. That setting is about a field's
+ * border and fill, not about focus, and focus has no opt-out in this theme. */
+.cds--text-input:focus,
+.cds--text-input:focus-visible,
+.cds--text-area:focus,
+.cds--text-area:focus-visible,
+.cds--select-input:focus,
+.cds--select-input:focus-visible {
+	outline: 2px solid var(--cds-focus, #0f62fe);
+	outline-offset: 1px;
+	outline-style: solid;
+}
+
+/* D2 buttons — Carbon's two-tone ring with the inner tone at 2px.
+ *
+ * Carbon draws 1px of `$focus` as a border, 1px more as an inset ring, then
+ * 1px of `$background` inside that. On a primary button the first two are the
+ * same blue as the fill, so the whole indicator a person sees is the innermost
+ * 1px. Widening that inner tone to 2px is the entire fix: the outer tone stays
+ * 2px (border plus ring) and carries buttons whose fill is light, the inner
+ * tone carries the ones whose fill is not.
+ *
+ * `border-color` is restated rather than inherited from Carbon because it is
+ * half the outer tone's width; if Carbon drops it, this rule should not
+ * silently thin out. Disabled buttons keep `box-shadow: none` — Carbon's
+ * disabled rule is more specific, which is correct. */
+.cds--btn:focus,
+.cds--btn--icon-only.cds--btn--ghost:focus {
+	border-color: var(--cds-focus, #0f62fe);
+	box-shadow: inset 0 0 0 1px var(--cds-focus, #0f62fe),
+		inset 0 0 0 3px var(--cds-focus-inset, #ffffff);
+}
+
+/* Content switcher — same two-tone widening, on the pseudo-element that
+ * actually paints it.
+ *
+ * The ring has to go on `::after`: Carbon draws the switcher's surface as a
+ * full-size `::after` overlay, so a box-shadow on the button itself is painted
+ * underneath it and never seen (see the content-switcher section above). In
+ * dark mode the selected button's surface is LIGHT, so `--cds-focus` (white
+ * there) was invisible on it and the whole indicator was the 1px inner tone. */
+.cds--content-switcher-btn:focus::after {
+	box-shadow: inset 0 0 0 2px var(--cds-focus, #0f62fe),
+		inset 0 0 0 4px var(--cds-focus-inset, #ffffff);
+}
+
+/* D3 the tag's dismiss button — 2px, in the tag's own text color.
+ *
+ * The exception to the two-tone rule, and the reason is the tag: its fill is a
+ * per-type color (red, blue, green…) that does not follow the light/dark scope,
+ * so neither `--cds-focus` nor `--cds-focus-inset` is guaranteed against it. In
+ * dark mode `--cds-focus` is white and the blue tag stays light, which is how
+ * this button ended up with a ring at 1.2:1 — present, and invisible.
+ *
+ * `currentColor` is the tag's own text color, which Carbon's tag palette pairs
+ * with that exact fill for readable text. So it is the one color guaranteed to
+ * contrast with the pill in every type and both schemes. */
+.cds--tag__close-icon:focus,
+.cds--tag__close-icon:focus-visible {
+	outline: none;
+	box-shadow: inset 0 0 0 2px currentColor;
+}
+
+/* High-contrast preference: Carbon switches its indicators to dotted under
+ * this media query, and does it inside its own @media block, so our overrides
+ * have to opt in again or they land solid. Matches the pattern used by the
+ * input, menu-item and tooltip rules above. */
+@media (prefers-contrast: more) {
+	.cds--link:focus:not(.cds--link--disabled),
+	a:not([class*="cds--"]):focus-visible,
+	.cds--tile__summary:focus-visible,
+	.cds--text-input:focus,
+	.cds--text-input:focus-visible,
+	.cds--text-area:focus,
+	.cds--text-area:focus-visible,
+	.cds--select-input:focus,
+	.cds--select-input:focus-visible {
+		outline-style: dotted;
+	}
 }
