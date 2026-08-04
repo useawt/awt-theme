@@ -4130,6 +4130,147 @@ caption.wp-element-caption {
 }
 
 /* ============================================================
+ * Link underlines — difference D6
+ * ============================================================
+ *
+ * Carbon sets `text-decoration: none` on `.cds--link` and brings the underline
+ * back only on hover, which leaves colour doing the whole job of saying "this
+ * is a link". WCAG 1.4.1 allows that only where the link contrasts at least
+ * 3:1 with the text around it. Measured against `--cds-text-primary`:
+ *
+ *   • light, Carbon's `#0f62fe`  — 3.62:1  (clears it, with little to spare)
+ *   • dark,  Carbon's `#78a9ff`  — 2.14:1  (fails)
+ *   • a link on a dark-scoped band inside a light page — 2.14:1 (fails)
+ *   • the AWT marketing palette's `#054ada` in light — 2.58:1 (fails)
+ *
+ * So this is not a stylistic preference: on the shipped palette the dark scope
+ * fails outright, any dark band fails inside a light page, and a brand colour
+ * one shade off Carbon's blue takes light down with it. Reported by the outside
+ * accessibility review. AWT therefore underlines links, which also settles an
+ * inconsistency that was already visible: a plain `<a>` typed into a paragraph
+ * has always been underlined by the browser, while a Link block beside it was
+ * not, so one paragraph could show two different kinds of link.
+ *
+ * How the switches work
+ * ---------------------
+ * The site owner gets one switch per place a link appears (AWT Settings →
+ * Links), because the reason for the rule differs by place: a link inside a
+ * paragraph must be told apart from the text around it, while a header nav item
+ * stands alone and is found by its position. `link_underline_body_classes()`
+ * puts a class on <body> per region that is on.
+ *
+ * The class does not appear in the rule that draws the underline. Instead each
+ * region's container sets an inherited custom property, and ONE rule reads it.
+ * Three things fall out of that which are worth the indirection:
+ *
+ *   1. Nesting resolves itself. A breadcrumb sits inside `<main>` on some
+ *      pages and outside it on others; whichever container is closer to the
+ *      link wins, so the breadcrumb switch governs breadcrumb links either way
+ *      without a single extra selector.
+ *   2. "Never underline this" is written once, as a reset on the element or its
+ *      heading, instead of a `:not()` chain repeated in five rules.
+ *   3. The block-editor canvas can be brought into agreement by setting one
+ *      variable. The canvas <body> carries `editor-styles-wrapper` and none of
+ *      our classes, so the alternative was restating these selectors in PHP,
+ *      where they would drift. See `block_editor_settings_all` in functions.php.
+ *
+ * Carbon's own inline link is deliberately left alone. `.cds--link--inline`
+ * sets `text-decoration: underline` at a higher specificity than the rule
+ * below, so an inline link stays underlined even with every switch off — which
+ * is correct, because that is Carbon's behaviour and "Carbon style" should mean
+ * Carbon.
+ */
+
+/* Off unless a region turns it on. Naming the containers rather than <body>
+   is what makes the nesting in note 1 above work. */
+main,
+.cds--content,
+.cds--header,
+.cds--side-nav,
+.cds--breadcrumb,
+.cds--footer {
+	--awt-underline: none;
+}
+
+.awt-underline-main main,
+.awt-underline-main .cds--content {
+	--awt-underline: underline;
+}
+.awt-underline-header .cds--header {
+	--awt-underline: underline;
+}
+.awt-underline-side-nav .cds--side-nav {
+	--awt-underline: underline;
+}
+.awt-underline-breadcrumbs .cds--breadcrumb {
+	--awt-underline: underline;
+}
+.awt-underline-footer .cds--footer {
+	--awt-underline: underline;
+}
+
+/* Places an underline would be wrong, so they reset the property for
+   themselves and anything inside them. Each one is already marked out by
+   something other than colour — a fill, a box, or the size of the type — so
+   1.4.1 is satisfied without it, and an underline would misread as text.
+   `.cds--header__action` is the case that measurement caught and reading would
+   not have: the header's search / notifications / account controls render as
+   icon-only `<a>` elements with an `aria-label` and no text node, so the
+   underline was being drawn under a bare SVG. Nothing about 1.4.1 applies to a
+   toolbar icon — it is not a link sitting inside a block of text.
+
+   No heading selectors here, deliberately, and the reasoning is worth keeping
+   because the first draft had them. A link that is a whole heading should not be
+   underlined — but the rule below reaches only links carrying a design-system
+   class, and nothing can put one inside a heading: no shipped pattern, template
+   part or block emits that markup, and a heading's rich-text field yields a
+   plain `<a>`. So an `h1`–`h6` reset would never once be read. Post titles are
+   already handled by WordPress itself, which ships
+   `.wp-block-post-title :where(a) { text-decoration: inherit }` — measured, so
+   a post title is not underlined and D6 does not change it either way. Adding
+   the selectors "just in case" would have shipped the same kind of rule that was
+   deleted from the tag close button: one that looks protective and never fires. */
+.cds--btn,
+.cds--pagination-nav__page,
+.cds--tag,
+.cds--tile,
+.cds--link--disabled,
+.cds--header__name,
+.cds--header__action,
+.cds--skip-to-content {
+	--awt-underline: none;
+}
+
+/* The one rule that draws it — and it deliberately reaches only links carrying
+   a design-system class.
+   A plain `<a>` typed into a paragraph is left alone on purpose, in every
+   state. The browser already underlines it, which is why this rule has nothing
+   to add; and if it were listed here, turning a switch off would *remove* that
+   underline, leaving the site worse than both Carbon and the browser. Carbon
+   only ever de-underlines its own `.cds--link`, so "Carbon style links" has to
+   mean exactly that. The consequence, stated so it is not mistaken for a bug:
+   with a region switched off, a plain link in a paragraph is still underlined
+   while a Link block beside it is not. That inconsistency is Carbon's, it is
+   what the default fixes, and it comes back only for an owner who asks for it.
+
+   The attribute selector rather than a list of component classes: Carbon
+   de-underlines links in several components (`a.cds--link`,
+   `a.cds--header__menu-item`, `a.cds--side-nav__link`), and an enumeration here
+   would silently fall behind the next component that joins them.
+
+   `html body` is not padding: those two Carbon selectors are (0,1,1), the same
+   weight this rule would otherwise carry, and a tie settled by load order is
+   exactly what breaks on a Carbon bump. This sits at (0,1,3) and wins outright;
+   anything meaning to override it has to match that.
+
+   The longhand is deliberate: Carbon writes the `text-decoration` shorthand, so
+   setting only the line here leaves its colour and thickness alone. */
+html body a[ class*='cds--' ],
+html body .cds--link {
+	text-decoration-line: var( --awt-underline, none );
+}
+
+/* ============================================================
  * Focus appearance — differences D1 to D4
  * ============================================================
  *

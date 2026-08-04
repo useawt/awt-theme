@@ -14,6 +14,23 @@
 
 ### [Breaking]
 
+- Links are underlined. Carbon leaves a link without an underline and brings it
+  back only when you point at it, which asks colour to do the whole job of
+  saying "this is a link". Colour may only do that job on its own when the link
+  is clearly different from the text around it, and Carbon's blue is not: 3.62
+  to 1 against body text in light mode, and 2.14 to 1 in dark mode, where the
+  bar is 3 to 1. Any link on a dark band inside a light page measures the same
+  2.14 to 1, and a brand colour a shade off Carbon's blue takes the light
+  figure under the bar too. **AWT Settings → Carbon → Links** has a switch for
+  each place a link appears — main content, header, side navigation,
+  breadcrumbs, footer — with one switch above them that turns the whole thing
+  off and gives you Carbon's link style back. All of them start on. Buttons,
+  pagination numbers, tags, cards and the header's icon controls are never
+  underlined, and plain links you type into your text are left exactly as your
+  browser draws them. (Breaking because every AWT site's links change
+  appearance on upgrade. If your own CSS sets link decoration, check it against
+  the `--awt-underline` rules in `assets/css/theme.css`.)
+
 - Form fields are drawn with a border on all four sides instead of a single line
   under the text, so a field's shape no longer depends on its fill being
   slightly different from the page. Applies to Text input, Text area, Password

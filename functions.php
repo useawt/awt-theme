@@ -289,6 +289,9 @@ add_action(
 /**
  * Apply the active Carbon scope class to <body> based on the server-side guess.
  * The pre-paint script may swap it client-side before first paint.
+ *
+ * Also carries the link-underline classes (AWT Settings → Links), which the
+ * D6 rules in `theme.css` key off region by region.
  */
 add_filter(
 	'body_class',
@@ -297,6 +300,9 @@ add_filter(
 		$active    = active_scheme_server_guess();
 		$variant   = $active === 'dark' ? $scopes['dark'] : $scopes['light'];
 		$classes[] = 'cds--' . $variant;
+		if ( function_exists( '\\AWT\\Theme\\Settings\\link_underline_body_classes' ) ) {
+			$classes = array_merge( $classes, \AWT\Theme\Settings\link_underline_body_classes() );
+		}
 		return $classes;
 	}
 );
@@ -628,6 +634,25 @@ add_filter(
 				$existing[] = array(
 					'css'            => $editor_css,
 					'__unstableType' => 'user',
+				);
+			}
+		}
+
+		// Link underlines (D6) in the canvas. The canvas <body> carries
+		// `editor-styles-wrapper` and never our `awt-underline-*` classes, so
+		// theme.css's region rules cannot match there and every region would
+		// fall back to its no-underline reset. This re-roots the decision onto
+		// the canvas body — one short declaration per region, because
+		// theme.css keeps the underline itself behind an inherited custom
+		// property. A header or footer block is edited in the Site Editor,
+		// where the canvas is the only preview there is, so all five regions
+		// matter here and not just post content.
+		if ( function_exists( '\\AWT\\Theme\\Settings\\link_underline_editor_css' ) ) {
+			$underline_css = \AWT\Theme\Settings\link_underline_editor_css();
+			if ( $underline_css !== '' ) {
+				$existing[] = array(
+					'css'            => $underline_css,
+					'__unstableType' => 'theme',
 				);
 			}
 		}

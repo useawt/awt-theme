@@ -36,6 +36,50 @@ const OPTION_KEY     = 'awt_settings';
 const SCHEMA_VERSION = 2;
 
 /**
+ * The link-underline switches, in the order the settings page shows them.
+ *
+ * `all` is first and is a gate: with it off, no region is underlined, but each
+ * region keeps its own stored value so turning `all` back on restores the set.
+ * The five that follow name the places a link appears, because the reason a
+ * link needs an underline differs by place — see `defaults()`.
+ */
+const LINK_UNDERLINE_KEYS = array( 'all', 'main', 'header', 'sideNav', 'breadcrumbs', 'footer' );
+
+/**
+ * Front-end body class per underline region. The CSS in `theme.css` keys off
+ * these, so a region added here needs a rule there to mean anything.
+ */
+const LINK_UNDERLINE_CLASSES = array(
+	'main'        => 'awt-underline-main',
+	'header'      => 'awt-underline-header',
+	'sideNav'     => 'awt-underline-side-nav',
+	'breadcrumbs' => 'awt-underline-breadcrumbs',
+	'footer'      => 'awt-underline-footer',
+);
+
+/**
+ * The container each region's links live in, for the block-editor canvas only.
+ *
+ * The canvas <body> never carries the `awt-underline-*` classes above, so the
+ * region rules in `theme.css` cannot match there and every container falls back
+ * to its "no underline" reset. These selectors re-root those rules onto the
+ * canvas body, which is the one class WordPress always puts there.
+ *
+ * An empty string means the region IS the canvas body: post content is what the
+ * canvas renders, so main needs no container of its own.
+ *
+ * This duplicates the container list in `theme.css` — CSS cannot read PHP, so
+ * one copy per language is the floor. Change one, change the other.
+ */
+const LINK_UNDERLINE_CANVAS_SELECTORS = array(
+	'main'        => '',
+	'header'      => '.cds--header',
+	'sideNav'     => '.cds--side-nav',
+	'breadcrumbs' => '.cds--breadcrumb',
+	'footer'      => '.cds--footer',
+);
+
+/**
  * Bring a stored payload up to the current schema shape.
  *
  * A pure transform applied on every read — it performs no database write, so a
@@ -137,6 +181,37 @@ function defaults(): array {
 				'enabled'  => true,
 				'mobile'   => true,
 				'position' => 'above-content',
+			),
+		),
+		// Link underlines. AWT underlines links, so a link is never marked out
+		// by colour alone — Carbon leaves `text-decoration: none` and brings
+		// the underline back only on hover, which asks colour to do the whole
+		// job. Whether that is allowed depends on the palette: WCAG 1.4.1 lets
+		// colour carry a link only when the link contrasts at least 3:1 with
+		// the text around it, and Carbon's blue against Carbon's body text
+		// measures 3.62:1 in light but 2.14:1 in dark. So the dark scope fails
+		// on Carbon's own palette, and a darker or lighter brand blue can put
+		// the light scope under too. See "Differences from Carbon" (D6).
+		//
+		// One switch per place a link appears, because the reason for the rule
+		// is different in each: a link inside a paragraph is surrounded by
+		// text it must be told apart from, while a header nav item stands
+		// alone and is found by its position. `all` is a gate, not a bulk
+		// action — turning it off suppresses every underline while leaving the
+		// individual choices intact, so turning it back on restores them.
+		//
+		// Excluded by design, with no switch: pagination numbers, links
+		// rendered as buttons, linked tags, clickable tiles, and links that
+		// are a whole heading. Each of those carries its own fill, box or type
+		// size, so colour is not the only thing marking it.
+		'links'         => array(
+			'underline' => array(
+				'all'         => true,
+				'main'        => true,
+				'header'      => true,
+				'sideNav'     => true,
+				'breadcrumbs' => true,
+				'footer'      => true,
 			),
 		),
 		'typography'    => array(
@@ -363,6 +438,21 @@ function sanitize( array $settings ): array {
 		),
 	);
 
+	// Link underlines. Every switch defaults to ON, so an absent key means
+	// "underline" — the same convention `breadcrumbAutoEmit` uses above, and
+	// the one that makes a site upgrading from an older release land on the
+	// accessible default rather than on Carbon's.
+	$underline    = $settings['links']['underline'] ?? array();
+	$out['links'] = array(
+		'underline' => array_combine(
+			LINK_UNDERLINE_KEYS,
+			array_map(
+				static fn( string $key ): bool => ! isset( $underline[ $key ] ) || ! empty( $underline[ $key ] ),
+				LINK_UNDERLINE_KEYS
+			)
+		),
+	);
+
 	// Typography. Only three allowed scale values; anything else snaps back to Default.
 	$typography        = $settings['typography'] ?? array();
 	$raw_scale         = (float) ( $typography['sizeScale'] ?? 1.0 );
@@ -382,4 +472,55 @@ function sanitize( array $settings ): array {
 	$out['customCss'] = isset( $settings['customCss'] ) ? (string) $settings['customCss'] : '';
 
 	return $out;
+}
+
+/**
+ * The body classes that switch link underlines on, region by region.
+ *
+ * Returns an empty array when the `all` gate is off, which is the one-switch
+ * way to get Carbon's link style across the whole site. Otherwise it returns a
+ * class per region that is on. Nothing is emitted for a region that is off, so
+ * that region keeps Carbon's own CSS with no override of ours in the cascade —
+ * the same opt-*out* shape the field blocks use for D5, for the same reason:
+ * "Carbon style" should be honestly Carbon, and the next Carbon upgrade should
+ * not find a half-overridden link behind it.
+ *
+ * @return string[] Body classes, possibly empty.
+ */
+function link_underline_body_classes(): array {
+	if ( ! get( 'links.underline.all' ) ) {
+		return array();
+	}
+	$classes = array();
+	foreach ( LINK_UNDERLINE_CLASSES as $key => $class ) {
+		if ( get( 'links.underline.' . $key ) ) {
+			$classes[] = $class;
+		}
+	}
+	return $classes;
+}
+
+/**
+ * The same decision, expressed for the block-editor canvas.
+ *
+ * A header or footer block is edited in the Site Editor, where the canvas is
+ * the only preview an author gets — so it has to show the underline the
+ * published page will draw. Returns '' when nothing is underlined, which the
+ * caller can skip injecting entirely.
+ *
+ * @return string CSS, or '' when there is nothing to say.
+ */
+function link_underline_editor_css(): string {
+	if ( ! get( 'links.underline.all' ) ) {
+		return '';
+	}
+	$rules = array();
+	foreach ( LINK_UNDERLINE_CANVAS_SELECTORS as $key => $selector ) {
+		if ( ! get( 'links.underline.' . $key ) ) {
+			continue;
+		}
+		$rules[] = 'body.editor-styles-wrapper' . ( $selector === '' ? '' : ' ' . $selector )
+			. ' { --awt-underline: underline; }';
+	}
+	return implode( "\n", $rules );
 }

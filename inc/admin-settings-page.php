@@ -666,6 +666,7 @@ function render_tab_appearance(): void {
 		'appearance' => __( 'Appearance', 'awt' ),
 		'header'     => __( 'Header', 'awt' ),
 		'typography' => __( 'Typography', 'awt' ),
+		'links'      => __( 'Links', 'awt' ),
 		'colors'     => __( 'Colors', 'awt' ),
 	);
 	// phpcs:ignore WordPress.Security.NonceVerification.Recommended -- read-only sub-tab routing; sanitized, no state change.
@@ -954,6 +955,18 @@ function render_tab_appearance(): void {
 			<?php submit_button( __( 'Save changes', 'awt' ) ); ?>
 		</form>
 		<?php
+	} elseif ( 'links' === $active_section ) {
+		// Link underlines (difference D6). Self-form like Typography above,
+		// dispatched on awt_section='links' in save_tab_appearance().
+		?>
+		<form method="post" action="<?php echo esc_url( $page_url ); ?>">
+			<?php wp_nonce_field( NONCE_KEY, '_awt_nonce' ); ?>
+			<input type="hidden" name="awt_active_tab" value="appearance" />
+			<input type="hidden" name="awt_section" value="links" />
+			<?php render_tab_links(); ?>
+			<?php submit_button( __( 'Save changes', 'awt' ) ); ?>
+		</form>
+		<?php
 	} else {
 		// Colors. In AWT (free) the role-aware contrast audit is hidden and
 		// reserved for AWT Premium — render_tab_colors() is kept (unused) below.
@@ -1065,7 +1078,138 @@ function save_tab_appearance(): void {
 		return;
 	}
 
+	if ( 'links' === $section ) {
+		save_tab_links();
+		return;
+	}
+
 	// 'colors' is read-only — nothing to save.
+}
+
+/**
+ * Render the Links sub-tab: one switch per place a link appears, plus the
+ * master switch above them.
+ *
+ * The five region switches are never disabled when the master is off. A
+ * disabled checkbox leaves the tab order and stops reporting its own state,
+ * and it would need JavaScript to stay in step — so instead the saved choices
+ * stay live and editable, and a status message says plainly that nothing is
+ * being underlined right now. See "Differences from Carbon" (D6).
+ */
+function render_tab_links(): void {
+	$underline = (array) Settings\get( 'links.underline' );
+	$all_on    = ! empty( $underline['all'] );
+
+	$regions = array(
+		'main'        => array(
+			'label' => __( 'Main content', 'awt' ),
+			'help'  => __( 'Links inside your text, where a reader has to tell a link apart from the words around it. This is the one that matters most.', 'awt' ),
+		),
+		'header'      => array(
+			'label' => __( 'Header', 'awt' ),
+			'help'  => __( 'Links in the header menu.', 'awt' ),
+		),
+		'sideNav'     => array(
+			'label' => __( 'Side navigation', 'awt' ),
+			'help'  => __( 'Links in the side navigation, including the header menu when it folds into it on a narrow screen.', 'awt' ),
+		),
+		'breadcrumbs' => array(
+			'label' => __( 'Breadcrumbs', 'awt' ),
+			'help'  => __( 'Links in the breadcrumb trail.', 'awt' ),
+		),
+		'footer'      => array(
+			'label' => __( 'Footer', 'awt' ),
+			'help'  => __( 'Links in the footer.', 'awt' ),
+		),
+	);
+	?>
+	<p class="awt-field-help" style="max-inline-size: 50em;">
+		<?php esc_html_e( 'AWT underlines links, so a link is never marked out by colour alone. Carbon leaves links without an underline and brings it back only when you point at one.', 'awt' ); ?>
+	</p>
+
+	<div style="margin: 0.5em 0 1.5em; padding: 0.75em 1em; background: #f0f6fc; border-inline-start: 4px solid #0073aa; max-inline-size: 60em;">
+		<p style="margin: 0;">
+			<strong>♿ <?php esc_html_e( 'Accessibility benefit', 'awt' ); ?></strong>
+			—
+			<?php
+			printf(
+				/* translators: 1: opening <a> tag to WCAG 1.4.1; 2: closing </a> tag */
+				esc_html__( 'Colour on its own may carry a link only when the link is clearly different from the text around it — at least three times the contrast, under the %1$sWCAG "Use of Color" guideline (1.4.1, Level A)%2$s. Carbon\'s blue reaches 3.62 to 1 against body text in light mode, but only 2.14 to 1 in dark mode, so in dark mode colour alone is not enough. Change your colours and the light figure can drop below the line too. An underline settles it either way.', 'awt' ),
+				'<a href="https://www.w3.org/WAI/WCAG21/Understanding/use-of-color.html" target="_blank" rel="noopener">',
+				'</a>'
+			);
+			?>
+		</p>
+	</div>
+
+	<table class="form-table" role="presentation">
+		<tr>
+			<th scope="row"><label for="awt-links-all"><?php esc_html_e( 'Underline links', 'awt' ); ?></label></th>
+			<td>
+				<label>
+					<input type="checkbox" id="awt-links-all" name="links[underline][all]" value="1" <?php checked( $all_on ); ?> />
+					<?php esc_html_e( 'Underline links across the whole site.', 'awt' ); ?>
+				</label>
+				<p class="awt-field-help">
+					<?php esc_html_e( 'Turn this off to use Carbon\'s link style everywhere, where colour marks a link and the underline appears only when you point at it. The choices below stay saved, and come back when you turn this on again.', 'awt' ); ?>
+				</p>
+			</td>
+		</tr>
+	</table>
+
+	<?php if ( ! $all_on ) : ?>
+		<div role="status" style="margin: 0 0 1.5em; padding: 0.75em 1em; background: #fcf9e8; border-inline-start: 4px solid #dba617; max-inline-size: 60em;">
+			<p style="margin: 0;">
+				<?php esc_html_e( 'Nothing is underlined right now, because the switch above is off. The choices below are saved and will apply as soon as you turn it back on.', 'awt' ); ?>
+			</p>
+		</div>
+	<?php endif; ?>
+
+	<fieldset style="margin-block-end: 1em;">
+		<legend style="font-weight: 600; margin-block-end: 0.5em;">
+			<?php esc_html_e( 'Where to underline', 'awt' ); ?>
+		</legend>
+		<p class="awt-field-help" style="max-inline-size: 50em; margin-block-start: 0;">
+			<?php esc_html_e( 'One switch per place a link appears, because the reason differs: a link in a paragraph has to stand out from the text around it, while a menu item is found by where it sits.', 'awt' ); ?>
+		</p>
+		<table class="form-table" role="presentation">
+			<?php foreach ( $regions as $key => $region ) : ?>
+				<?php $input_id = 'awt-links-' . strtolower( (string) preg_replace( '/([a-z])([A-Z])/', '$1-$2', $key ) ); ?>
+				<tr>
+					<th scope="row">
+						<label for="<?php echo esc_attr( $input_id ); ?>"><?php echo esc_html( $region['label'] ); ?></label>
+					</th>
+					<td>
+						<label>
+							<input type="checkbox"
+								id="<?php echo esc_attr( $input_id ); ?>"
+								name="links[underline][<?php echo esc_attr( $key ); ?>]"
+								value="1"
+								<?php checked( ! empty( $underline[ $key ] ) ); ?> />
+							<?php echo esc_html( $region['help'] ); ?>
+						</label>
+					</td>
+				</tr>
+			<?php endforeach; ?>
+		</table>
+	</fieldset>
+
+	<p class="awt-field-help" style="max-inline-size: 50em;">
+		<?php esc_html_e( 'Never underlined, whatever you choose here: buttons, pagination numbers, tags and cards. Each of those is already marked out by its own shape, so an underline would read as emphasis instead. Plain links you type into your text are left alone too — they keep the underline your browser already gives them, whichever way you set these switches.', 'awt' ); ?>
+	</p>
+	<?php
+}
+
+/**
+ * Save the Links sub-tab. Absent checkbox means off, as the browser sends
+ * nothing for an unchecked box.
+ */
+function save_tab_links(): void {
+	// phpcs:ignore WordPress.Security.NonceVerification.Missing, WordPress.Security.ValidatedSanitizedInput.MissingUnslash, WordPress.Security.ValidatedSanitizedInput.InputNotSanitized -- nonce verified in handle_form_submission(); values only tested for truthiness against the fixed key list.
+	$submitted = (array) ( $_POST['links']['underline'] ?? array() );
+	foreach ( Settings\LINK_UNDERLINE_KEYS as $key ) {
+		Settings\set( 'links.underline.' . $key, ! empty( $submitted[ $key ] ) );
+	}
 }
 
 /**
