@@ -31,6 +31,13 @@
   appearance on upgrade. If your own CSS sets link decoration, check it against
   the `--awt-underline` rules in `assets/css/theme.css`.)
 
+- A style rule that positions the header in the block editor works again. It had
+  been switched off without anyone noticing: a comment above it was closed one
+  line too early, which left the lines after it as invalid CSS, and browsers
+  respond to that by throwing away the next rule. The source looked correct, so
+  nothing pointed at it. `npm run check:css` now fails if any stylesheet has that
+  shape, and it runs on every change.
+
 - Form fields are drawn with a border on all four sides instead of a single line
   under the text, so a field's shape no longer depends on its fill being
   slightly different from the page. Applies to Text input, Text area, Password

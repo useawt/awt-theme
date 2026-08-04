@@ -525,8 +525,18 @@ div:has(.cds--header) ~ .awt-breadcrumb-region {
  *
  * Pin it under the header at its real width so the canvas reads the way the page
  * does. Editor-only: the `.editor-styles-wrapper` scope never matches on the front
- * end, where Carbon's own `--ux` rule already handles this. */
-   The nav is a real block inside the header part, so `.cds--header` — made a
+ * end, where Carbon's own `--ux` rule already handles this.
+ *
+ * (This comment used to be closed here, leaving the six lines below it as stray
+ * CSS followed by a second comment terminator — which cannot be written out in
+ * a comment, since writing it is what caused this. The parser then discarded
+ * the very next rule —
+ * `.editor-styles-wrapper .cds--header { position: relative }` — so the
+ * containing block it establishes never existed and the rule underneath it was
+ * anchoring to the wrong ancestor. Found 2026-08-04 while checking comment
+ * balance in this file; `npm run check:css` now fails on the pattern.)
+ *
+ * The nav is a real block inside the header part, so `.cds--header` — made a
    containing block here — is what it anchors to. (This targeted a nested
    template-part wrapper until the Documentation preset stopped nesting one; if a
    `.wp-block-template-part` ever wraps the nav again, that wrapper becomes the
@@ -4209,10 +4219,19 @@ main,
 	--awt-underline: underline;
 }
 
-/* Places an underline would be wrong, so they reset the property for
-   themselves and anything inside them. Each one is already marked out by
+/* Places an underline would be wrong. Each one is already marked out by
    something other than colour — a fill, a box, or the size of the type — so
    1.4.1 is satisfied without it, and an underline would misread as text.
+
+   Every selector here starts with `a`, and that is not tidiness. Each of these
+   is a case where the element IS the link, and a custom property set on a
+   container inherits into everything inside it. Written as bare classes, this
+   list read as "no underline anywhere in here": `.cds--tile` then stripped the
+   underline from every link *inside* a tile, so a Link block in a feature grid
+   came out looking like plain text. That shipped to production and was caught by
+   measuring the live pages, on a page shape no local fixture had. Name the
+   anchor, not the box around it.
+
    `.cds--header__action` is the case that measurement caught and reading would
    not have: the header's search / notifications / account controls render as
    icon-only `<a>` elements with an `aria-label` and no text node, so the
@@ -4230,14 +4249,14 @@ main,
    a post title is not underlined and D6 does not change it either way. Adding
    the selectors "just in case" would have shipped the same kind of rule that was
    deleted from the tag close button: one that looks protective and never fires. */
-.cds--btn,
-.cds--pagination-nav__page,
-.cds--tag,
-.cds--tile,
-.cds--link--disabled,
-.cds--header__name,
-.cds--header__action,
-.cds--skip-to-content {
+a.cds--btn,
+a.cds--pagination-nav__page,
+a.cds--tag,
+a.cds--tile,
+a.cds--link--disabled,
+a.cds--header__name,
+a.cds--header__action,
+a.cds--skip-to-content {
 	--awt-underline: none;
 }
 

@@ -1,38 +1,39 @@
 {
-	"name": "awt-theme",
-	"version": "2026.01.0-stage1",
-	"description": "AWT theme — Stage 1",
-	"main": "index.js",
-	"license": "GPL-2.0-or-later",
-	"type": "commonjs",
-	"scripts": {
-		"check:premium": "bash scripts/check-no-premium.sh",
-		"prepare": "husky",
-		"lint:js": "eslint assets/js scripts",
-		"lint:md": "markdownlint-cli2",
-		"lint:php": "vendor/bin/phpcs",
-		"build:css": "sass --style=compressed --no-source-map --load-path=node_modules src/foundation.scss assets/css/foundation.min.css",
-		"check:foundation": "node scripts/check-foundation.js",
-		"report:carbon-overrides": "node scripts/report-carbon-overrides.js",
-		"release:prepare": "node scripts/release.js"
-	},
-	"dependencies": {
-		"@carbon/icons": "^11.81.0",
-		"@carbon/styles": "^1.107.0",
-		"@ibm/plex-mono": "^1.1.0",
-		"@ibm/plex-sans": "^1.1.0"
-	},
-	"devDependencies": {
-		"@wordpress/eslint-plugin": "^25.7.0",
-		"eslint": "^9.39.5",
-		"husky": "^9.1.7",
-		"lint-staged": "^17.0.8",
-		"markdownlint-cli2": "^0.23.0",
-		"sass": "^1.101.0"
-	},
-	"lint-staged": {
-		"assets/js/**/*.js": "eslint",
-		"*.php": "vendor/bin/phpcs",
-		"*.md": "markdownlint-cli2"
-	}
+  "name": "awt-theme",
+  "version": "2026.01.0-stage1",
+  "description": "AWT theme \u2014 Stage 1",
+  "main": "index.js",
+  "license": "GPL-2.0-or-later",
+  "type": "commonjs",
+  "scripts": {
+    "check:premium": "bash scripts/check-no-premium.sh",
+    "prepare": "husky",
+    "lint:js": "eslint assets/js scripts",
+    "lint:md": "markdownlint-cli2",
+    "lint:php": "vendor/bin/phpcs",
+    "build:css": "sass --style=compressed --no-source-map --load-path=node_modules src/foundation.scss assets/css/foundation.min.css",
+    "check:foundation": "node scripts/check-foundation.js",
+    "check:css": "node scripts/check-css.js",
+    "report:carbon-overrides": "node scripts/report-carbon-overrides.js",
+    "release:prepare": "node scripts/release.js"
+  },
+  "dependencies": {
+    "@carbon/icons": "^11.81.0",
+    "@carbon/styles": "^1.107.0",
+    "@ibm/plex-mono": "^1.1.0",
+    "@ibm/plex-sans": "^1.1.0"
+  },
+  "devDependencies": {
+    "@wordpress/eslint-plugin": "^25.7.0",
+    "eslint": "^9.39.5",
+    "husky": "^9.1.7",
+    "lint-staged": "^17.0.8",
+    "markdownlint-cli2": "^0.23.0",
+    "sass": "^1.101.0"
+  },
+  "lint-staged": {
+    "assets/js/**/*.js": "eslint",
+    "*.php": "vendor/bin/phpcs",
+    "*.md": "markdownlint-cli2"
+  }
 }

@@ -39,6 +39,8 @@ jobs:
         run: npm run lint:md
       - name: Foundation CSS partial list
         run: npm run check:foundation
+      - name: Stylesheets parse (no silently dropped rules)
+        run: npm run check:css
       - name: Foundation CSS is freshly built
         run: |
           npm run build:css
