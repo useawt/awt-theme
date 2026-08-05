@@ -1107,11 +1107,11 @@ function render_tab_links(): void {
 		),
 		'header'      => array(
 			'label' => __( 'Header', 'awt' ),
-			'help'  => __( 'Links in the header menu. On a narrow screen this covers the side navigation too, because the side navigation moves into the header menu at that size.', 'awt' ),
+			'help'  => __( 'Links in the header menu.', 'awt' ),
 		),
 		'sideNav'     => array(
 			'label' => __( 'Side navigation', 'awt' ),
-			'help'  => __( 'Links in the side navigation. On a narrow screen the side navigation moves into the header menu, and these links then follow the Header switch above rather than this one.', 'awt' ),
+			'help'  => __( 'Links in the side navigation, wherever it appears. On a narrow screen the side navigation moves inside the header menu, and this switch still governs it there.', 'awt' ),
 		),
 		'breadcrumbs' => array(
 			'label' => __( 'Breadcrumbs', 'awt' ),

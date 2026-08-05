@@ -27,9 +27,12 @@
   off and gives you Carbon's link style back. All of them start on. Buttons,
   pagination numbers, tags, cards and the header's icon controls are never
   underlined, and plain links you type into your text are left exactly as your
-  browser draws them. (Breaking because every AWT site's links change
-  appearance on upgrade. If your own CSS sets link decoration, check it against
-  the `--awt-underline` rules in `assets/css/theme.css`.)
+  browser draws them. On a narrow screen the side navigation moves inside the
+  header menu, and the **Side navigation** switch still governs it there, so a
+  setting you chose does not change on a small screen. (Breaking because every
+  AWT site's links change appearance on upgrade. If your own CSS sets link
+  decoration, check it against the `--awt-underline` rules in
+  `assets/css/theme.css`.)
 
 - A style rule that positions the header in the block editor works again. It had
   been switched off without anyone noticing: a comment above it was closed one

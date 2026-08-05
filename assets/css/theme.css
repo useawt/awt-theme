@@ -4198,7 +4198,15 @@ main,
 .cds--header,
 .cds--side-nav,
 .cds--breadcrumb,
-.cds--footer {
+.cds--footer,
+/* The side navigation, while parked in the header menu. Below Carbon's `lg`
+   breakpoint `foldIntoHeaderMenu` (awt-blocks `src/side-nav/view.js`) moves the
+   side nav's own `<nav>` into `.cds--header__nav` and tags it with this class.
+   It is listed here so it stops inheriting the *header's* value once it is
+   physically inside the header — without this line, a site with the side
+   navigation switched off but the header switched on would underline these links
+   on a narrow screen only. */
+.awt-side-nav--in-header-menu {
 	--awt-underline: none;
 }
 
@@ -4209,7 +4217,14 @@ main,
 .awt-underline-header .cds--header {
 	--awt-underline: underline;
 }
-.awt-underline-side-nav .cds--side-nav {
+/* Both halves of the side navigation: where it normally lives, and where it goes
+   on a narrow screen. Moving does not change what those links *are* — the folded
+   `<nav>` deliberately keeps its own "Side navigation" accessible name, so it is
+   still the side navigation, just parked elsewhere — and the switch a site owner
+   set for it should not change under them at a breakpoint. Decided 2026-08-04;
+   see "D6 as shipped" in the Stage 1 spec for the measurements. */
+.awt-underline-side-nav .cds--side-nav,
+.awt-underline-side-nav .awt-side-nav--in-header-menu {
 	--awt-underline: underline;
 }
 .awt-underline-breadcrumbs .cds--breadcrumb {
