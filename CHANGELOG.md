@@ -70,6 +70,14 @@
 
 ### [A11y]
 
+- A chosen tile in a Tile group shows it without relying on colour. Carbon only
+  reveals the check mark on a tile once its own JavaScript adds a class, and tiles
+  are now plain radio buttons with no such class, so the theme draws the chosen
+  state from the radio itself: the blue edge, the accent bar, and the check mark.
+  The edge clears the 3-to-1 contrast that a state indicator needs in both light
+  and dark mode (4.55 and 4.52 to 1), and the check mark means the state is never
+  carried by colour alone.
+
 - The segmented light/dark switch draws a focus ring you can actually see. Its
   ring was set to 2 pixels like everything else, but it was drawn on top of the
   control's own border, and the border colour is too close to the focus blue for

@@ -1974,6 +1974,21 @@ SVG;
 				return 'cds--tile__chevron';
 			case 'content':
 				return 'cds--tile__content';
+			case 'selectable-content':
+				// Single-dash `cds--tile-content`, not the double-underscore
+				// `cds--tile__content` above: Carbon uses two different classes
+				// and only this one sizes the label to fill the tile.
+				return 'cds--tile-content';
+			case 'checkmark':
+				return 'cds--tile__checkmark';
+			case 'checkmark-persistent':
+				return 'cds--tile__checkmark cds--tile__checkmark--persistent';
+			case 'input':
+				return 'cds--tile-input';
+			case 'group':
+				return 'cds--tile-group';
+			case 'group-label':
+				return 'cds--label';
 			default:
 				$variant = $v['variant'] ?? 'default';
 				$c       = 'cds--tile';
@@ -1983,6 +1998,9 @@ SVG;
 						break;
 					case 'selectable':
 						$c .= ' cds--tile--selectable';
+						if ( ! empty( $v['radio'] ) ) {
+							$c .= ' cds--tile--radio';
+						}
 						break;
 					case 'expandable':
 						$c .= ' cds--tile--expandable';

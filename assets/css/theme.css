@@ -2412,20 +2412,42 @@ a.cds--btn--ghost:visited:active {
 	outline-offset: -2px;
 }
 
-/* Selectable tile (single or radio-grouped). Click changes the
- * `aria-checked` state + the `cds--tile--is-selected` class (view.js).
- * Selected state gets an accent left-border + interactive border color, the
- * standard IBM radio-tile visual. Cursor: pointer to signal interactivity. */
+/* Selectable tile. Two shapes with one look:
+ *   - grouped   -> a native `<input type="radio">` whose next sibling is the
+ *                  tile `<label>`, so the state lives in `:checked`.
+ *   - ungrouped -> `role="checkbox"` + the `cds--tile--is-selected` class,
+ *                  toggled by view.js.
+ * Selected gets an accent left-border + interactive border color, the standard
+ * IBM radio-tile visual. Cursor: pointer to signal interactivity. */
 .cds--tile--selectable {
 	cursor: pointer;
 	transition: background 70ms cubic-bezier(.2, 0, .38, .9), border-color 70ms cubic-bezier(.2, 0, .38, .9);
 }
-.cds--tile--selectable:hover {
+.cds--tile--selectable:hover,
+.cds--tile-input:not(:disabled):hover + .cds--tile--selectable {
 	background: var(--cds-layer-hover-01, #e8e8e8);
 }
-.cds--tile--selectable.cds--tile--is-selected {
+.cds--tile--selectable.cds--tile--is-selected,
+.cds--tile-input:checked + .cds--tile--selectable {
 	border-color: var(--cds-border-interactive, #0f62fe);
 	box-shadow: inset 3px 0 0 0 var(--cds-border-interactive, #0f62fe);
+}
+
+/* Carbon reveals the checkmark from `.cds--tile--is-selected`, a class its React
+ * layer adds. A native radio has no such class, so the same two declarations are
+ * repeated off `:checked` — without them the tile would change state with no
+ * visible confirmation, which is the whole point of the control. Values are
+ * Carbon's own (`_tile.scss`: opacity 1, fill $icon-primary). */
+.cds--tile-input:checked + .cds--tile .cds--tile__checkmark {
+	opacity: 1;
+}
+.cds--tile-input:checked + .cds--tile .cds--tile__checkmark svg {
+	fill: var(--cds-icon-primary, #161616);
+}
+.cds--tile-input:checked + .cds--tile .cds--tile__checkmark svg [data-icon-path='inner-path'],
+.cds--tile--is-selected .cds--tile__checkmark svg [data-icon-path='inner-path'] {
+	opacity: 1;
+	fill: var(--cds-layer-01, #f4f4f4);
 }
 
 /* Expandable tile (native <details>). Replaces the browser's default
