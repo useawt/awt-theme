@@ -1422,9 +1422,19 @@ ol.wp-block-list {
 	background: var(--cds-layer-selected-hover-01, #d1d1d1);
 }
 
+/* The ring is inset by 3px, not the 2px used everywhere else in the theme, and
+   the extra pixel is the whole point: this control has a 1px border of its own,
+   and at `-2px` the ring's outer pixel lands on that border. `--cds-border-
+   subtle-01` against `--cds-focus` measures 2.58:1 — below the 3:1 that WCAG
+   2.4.13 asks a focus indicator to change by — so only the inner pixel counted
+   and the indicator was 1px, half of what D1-D4 committed every control to.
+   Insetting by 3px steps the ring past the border, onto the fill, where both
+   pixels clear 4.4:1. Nothing else in the theme needs this because nothing else
+   with a focus ring has a border underneath it. Found by the focus gate the
+   moment a fixture page finally carried this kind of the control. */
 .awt-color-scheme-toggle--segmented button:focus-visible {
 	outline: 2px solid var(--cds-focus, #0f62fe);
-	outline-offset: -2px;
+	outline-offset: -3px;
 }
 
 .cds--menu-button {

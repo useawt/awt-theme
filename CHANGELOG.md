@@ -70,6 +70,14 @@
 
 ### [A11y]
 
+- The segmented light/dark switch draws a focus ring you can actually see. Its
+  ring was set to 2 pixels like everything else, but it was drawn on top of the
+  control's own border, and the border colour is too close to the focus blue for
+  the outer pixel to register — so only 1 pixel of it counted. The ring now sits
+  just inside the border, where both pixels stand out. This is the same 2-pixel
+  rule as below; the switch had slipped through it because it is drawn without
+  any Carbon styling.
+
 - Every focus indicator in the theme is now at least 2 pixels thick, and at
   least 2 pixels of it are visible against what is behind it. The Carbon Design
   System draws its focus rings 1 pixel thick, so this affected almost every
