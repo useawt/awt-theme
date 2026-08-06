@@ -344,8 +344,17 @@ add_filter(
  * subtree, so the header keeps its chosen appearance regardless of the page
  * scope (the color-scheme toggle only swaps the <body> class, never the header).
  *
- * 'default' is a no-op: the header inherits the page scope and follows the
- * toggle + system preference like everything else.
+ * Any scope class ALREADY on the header is stripped first. Adding without
+ * stripping is not enough: the four scope classes carry equal specificity, so
+ * the winner is whichever Carbon defines last in the stylesheet (g100), not
+ * whichever we inject. A header that had picked up `cds--g100` by hand in the
+ * Site Editor therefore stayed dark under every one of the three choices, with
+ * no hint why (2026-08-06, found on the marketing site). Pinning is the
+ * authoritative answer to "what color is the header" — it replaces, not adds.
+ *
+ * 'default' is still a no-op: it means "we don't manage the header's scope", so
+ * a scope class set deliberately in the Site Editor survives. The setting's
+ * help text says so.
  */
 add_filter(
 	'render_block',
@@ -368,10 +377,26 @@ add_filter(
 		$scopes      = theme_scopes();
 		$scope_class = 'cds--' . ( $scheme === 'dark' ? $scopes['dark'] : $scopes['light'] );
 
-		// Inject the scope class into the first <header …> tag's class list.
-		return (string) preg_replace(
-			'/(<header\b[^>]*\bclass=")/',
-			'${1}' . $scope_class . ' ',
+		// Rewrite the first <header …> tag's class list: drop every Carbon scope
+		// class already there, then add ours. Token-wise, so `cds--g10` never
+		// half-matches `cds--g100`.
+		return (string) preg_replace_callback(
+			'/(<header\b[^>]*\bclass=")([^"]*)(")/',
+			static function ( array $m ) use ( $scope_class ): string {
+				$tokens = preg_split( '/\s+/', trim( $m[2] ), -1, PREG_SPLIT_NO_EMPTY );
+				$tokens = array_values(
+					array_filter(
+						is_array( $tokens ) ? $tokens : array(),
+						static fn( string $t ): bool => ! in_array(
+							$t,
+							array( 'cds--white', 'cds--g10', 'cds--g90', 'cds--g100' ),
+							true
+						)
+					)
+				);
+				array_unshift( $tokens, $scope_class );
+				return $m[1] . implode( ' ', $tokens ) . $m[3];
+			},
 			$html,
 			1
 		);

@@ -766,7 +766,7 @@ function render_tab_appearance(): void {
 
 			<h2 style="margin-block-start: 0;"><?php esc_html_e( 'Header appearance', 'awt' ); ?></h2>
 			<p class="awt-field-help">
-				<?php esc_html_e( 'Sets the header bar\'s light or dark appearance. "Default" matches the site appearance above. "Always light" and "Always dark" keep the header fixed no matter what the rest of the page does.', 'awt' ); ?>
+				<?php esc_html_e( 'Sets the header bar\'s light or dark appearance. "Default" matches the site appearance above, or keeps a light or dark look you gave the header yourself in the Site Editor. "Always light" and "Always dark" keep the header fixed no matter what the rest of the page does — they replace anything set on the header in the Site Editor.', 'awt' ); ?>
 			</p>
 			<fieldset style="margin-block: 1em 2.5em;">
 				<legend class="screen-reader-text"><?php esc_html_e( 'Header appearance', 'awt' ); ?></legend>

@@ -252,6 +252,14 @@
 
 ### [Improvement]
 
+- **AWT Settings → Carbon → Header → Header appearance** now decides the header
+  bar's colour even if you have already given the header a light or dark look
+  of its own in the Site Editor. Before, your own choice quietly won every
+  time: all three options left the header exactly as it was, with nothing on
+  the screen to say why. "Always light" and "Always dark" now replace whatever
+  is on the header; "Default" still leaves it alone, which is what "Default"
+  means.
+
 - Breadcrumbs on a month or day archive now name the month you are looking at.
   They named the current month instead, so an archive of posts from March,
   visited in August, said "August" — the breadcrumb was reading the clock
