@@ -14,6 +14,21 @@
 
 ### [Breaking]
 
+- A focused button now has one clear outline instead of two rings. Carbon marks
+  a focused button by recolouring its border, adding a ring inside that, and
+  then a third ring in the button's own background colour — two rings of
+  different thickness, built out of a border and two shadows, with no outline
+  anywhere. Nothing about it measures as a single thickness, so an auditor
+  checking whether the mark is big enough has to work it out from three
+  overlapping layers, and an external audit of AWT could not state a figure.
+  AWT now draws one 2-pixel outline just outside the button, the same mark
+  links and form fields already use. **AWT Settings → Carbon → Focus** turns it
+  off and gives you Carbon's two-ring look back. Both meet the guidelines —
+  this is about which one you can measure, not about whether a keyboard user
+  can see it. (Breaking because focused buttons change appearance on upgrade.
+  If your own CSS styles `.cds--btn:focus`, check it against the D2 rules in
+  `assets/css/theme.css`.)
+
 - Links are underlined. Carbon leaves a link without an underline and brings it
   back only when you point at it, which asks colour to do the whole job of
   saying "this is a link". Colour may only do that job on its own when the link

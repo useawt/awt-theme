@@ -4344,9 +4344,11 @@ html body .cds--link {
  * can actually see. Carbon's is 1px, and that is not a bug in one component:
  * Carbon's `focus-outline()` mixin emits `outline: 1px solid $focus`, so every
  * component inherits it and every Carbon upgrade can bring it back. This is
- * the one place the theme raises it, and unlike the field border (D5) there is
- * no setting that puts Carbon's version back — a focus indicator you cannot
- * see is not a look, it is a barrier.
+ * the one place the theme raises it, and no setting anywhere puts Carbon's own
+ * widths back — a focus indicator you cannot see is not a look, it is a
+ * barrier. (Buttons do have a setting, added later; read D2 below before
+ * assuming it contradicts this. It chooses between two indicators that both
+ * clear the bar, not between having one and not.)
  *
  * WCAG 2.4.13 asks two things of an indicator, and they interact: it needs the
  * area of a 2px perimeter, AND those pixels need to differ from their own
@@ -4437,14 +4439,28 @@ a:not([class*="cds--"]):focus-visible {
 	outline-style: solid;
 }
 
-/* D2 buttons — Carbon's two-tone ring with the inner tone at 2px.
+/* D2 buttons — two indicators, and a setting that picks between them.
  *
  * Carbon draws 1px of `$focus` as a border, 1px more as an inset ring, then
  * 1px of `$background` inside that. On a primary button the first two are the
  * same blue as the fill, so the whole indicator a person sees is the innermost
- * 1px. Widening that inner tone to 2px is the entire fix: the outer tone stays
+ * 1px. Widening that inner tone to 2px fixes the width: the outer tone stays
  * 2px (border plus ring) and carries buttons whose fill is light, the inner
- * tone carries the ones whose fill is not.
+ * tone carries the ones whose fill is not. That is the rule immediately below,
+ * and it is what a button gets when the setting is off.
+ *
+ * It leaves a second problem the width fix cannot reach. The indicator is
+ * assembled out of a border and two inset shadows, and no `outline` at all, so
+ * there is no single declaration whose value is its size. An external audit
+ * measured it and could not state a thickness — three overlapping tones, two
+ * of them shadows, one of them the same blue as the fill it sits on. Whether
+ * it passes 2.4.13 stops being readable and starts being an argument.
+ *
+ * So AWT Settings → Focus has a switch, default on, that swaps the whole thing
+ * for one 2px outline just outside the button. Same treatment links and form
+ * fields already take, and one property to point at when someone asks how
+ * thick it is. Off keeps the two-tone ring for anyone who wants Carbon's look;
+ * both states clear 2.4.13 and `npm run test:focus` holds both.
  *
  * `border-color` is restated rather than inherited from Carbon because it is
  * half the outer tone's width; if Carbon drops it, this rule should not
@@ -4455,6 +4471,27 @@ a:not([class*="cds--"]):focus-visible {
 	border-color: var(--cds-focus, #0f62fe);
 	box-shadow: inset 0 0 0 1px var(--cds-focus, #0f62fe),
 		inset 0 0 0 3px var(--cds-focus-inset, #ffffff);
+}
+
+/* The setting's on state: one outline, outside the button, nothing inset.
+ *
+ * `border-color` goes back to transparent rather than to each variant's own
+ * value, and that is enough for all six. A transparent border shows the
+ * element's own background through it (`background-clip` is `border-box` by
+ * default), so on primary, secondary and danger it reads as the fill, on ghost
+ * it reads as the page, and on tertiary — which Carbon fills with blue on
+ * focus — it reads as that blue. No variant ends up with a stray 1px line
+ * between the button and the outline.
+ *
+ * Disabled is excluded explicitly. Carbon's disabled rule is 0,3,0 and this one
+ * is 0,3,1, so without the guard a disabled button would win an outline it has
+ * no business drawing. */
+body.awt-btn-focus-outline .cds--btn:focus:not(:disabled):not(.cds--btn--disabled),
+body.awt-btn-focus-outline .cds--btn--icon-only.cds--btn--ghost:focus:not(:disabled):not(.cds--btn--disabled) {
+	border-color: transparent;
+	box-shadow: none;
+	outline: 2px solid var(--cds-focus, #0f62fe);
+	outline-offset: 1px;
 }
 
 /* Content switcher — same two-tone widening, on the pseudo-element that

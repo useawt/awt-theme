@@ -214,6 +214,27 @@ function defaults(): array {
 				'footer'      => true,
 			),
 		),
+		// Button focus indicator. Carbon draws a focused button's indicator out
+		// of a border plus two inset shadows — 1px of focus blue as the border,
+		// 1px more as a shadow, then a ring of the button's own background
+		// inside that. Two rings of unequal thickness, and no `outline` at all,
+		// so nothing about it measures as a single width. An external audit read
+		// it as ambiguous, which is the point: an indicator whose size an
+		// auditor cannot state is one a site owner cannot defend.
+		//
+		// On (the default) replaces that with one 2px outline just outside the
+		// button — the same shape links and form fields already use, and a
+		// single property to measure. Off keeps the two-tone ring this theme has
+		// drawn since D1-D4, inner tone widened to 2px.
+		//
+		// Note what off does NOT mean: it is not Carbon untouched. Carbon's own
+		// widths leave 1px perceivable on a primary button, and this theme has
+		// no setting that puts a 1px indicator back. Both states clear WCAG
+		// 2.4.13 and both are held by `npm run test:focus`. See "Differences
+		// from Carbon" (D2).
+		'focus'         => array(
+			'buttonOutline' => true,
+		),
 		'typography'    => array(
 			// Global font-size multiplier per §5 "Site Editor surfaces →
 			// Typography (sizes only)". One of: 0.875 (Compact), 1.0
@@ -453,6 +474,14 @@ function sanitize( array $settings ): array {
 		),
 	);
 
+	// Button focus indicator. Defaults to ON for the same reason the underline
+	// switches do — an absent key means a site upgrading from an older release
+	// lands on the plain, measurable outline rather than on the two-tone ring.
+	$focus        = $settings['focus'] ?? array();
+	$out['focus'] = array(
+		'buttonOutline' => ! isset( $focus['buttonOutline'] ) || ! empty( $focus['buttonOutline'] ),
+	);
+
 	// Typography. Only three allowed scale values; anything else snaps back to Default.
 	$typography        = $settings['typography'] ?? array();
 	$raw_scale         = (float) ( $typography['sizeScale'] ?? 1.0 );
@@ -523,4 +552,22 @@ function link_underline_editor_css(): string {
 			. ' { --awt-underline: underline; }';
 	}
 	return implode( "\n", $rules );
+}
+
+/**
+ * The body class that switches buttons to the plain 2px focus outline.
+ *
+ * Returns an empty array when the setting is off, in which case no class of
+ * ours is in the cascade and buttons keep the two-tone ring theme.css draws by
+ * default — the same opt-*out* shape the underline switches use.
+ *
+ * There is no editor-canvas counterpart, and that is not an omission. An
+ * underline is a resting state, so the canvas has to show it or the preview
+ * lies. A focus indicator only exists while a control holds keyboard focus,
+ * which is not something a block preview does.
+ *
+ * @return string[] Body classes, possibly empty.
+ */
+function button_focus_body_classes(): array {
+	return get( 'focus.buttonOutline' ) ? array( 'awt-btn-focus-outline' ) : array();
 }

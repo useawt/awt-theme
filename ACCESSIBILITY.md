@@ -77,9 +77,23 @@ published third-party audit, and it does not replace one. A formal independent
 audit is still planned before commercial launch, and its report will appear
 here.
 
-**Eight findings received so far. All eight are fixed.** Newest first.
+**Nine findings received so far. All nine are fixed.** Newest first.
 
-1. **2026-08-04. Links were marked out by colour alone.** A link had no
+1. **2026-08-06. A focused button's outline could not be measured.** Carbon
+   marks a focused button by recolouring its border, drawing a ring inside that,
+   and then a third ring in the button's own background colour. That is two
+   rings of different thickness, assembled from a border and two shadows, with
+   no outline anywhere — so there is no single thickness to read. On a primary
+   button two of the three layers are the same blue as the button fill, which is
+   what made a reading ambiguous: whether the mark cleared the 2-pixel bar
+   became something to argue about rather than something to check. A focused
+   button now carries one 2-pixel outline just outside its edge, the same mark
+   links and form fields already use. **AWT Settings → Carbon → Focus** puts
+   Carbon's two-ring look back. Both meet the guideline — this was about which
+   one an auditor can measure, not about whether a keyboard user can see it —
+   and the automated check now measures both.
+
+2. **2026-08-04. Links were marked out by colour alone.** A link had no
    underline until you pointed at it, so colour was the only thing telling you
    it was a link. Colour may do that job by itself only when the link is clearly
    different from the text around it — three times the contrast or more. Ours
@@ -94,7 +108,7 @@ here.
    out by its own shape. Fixing this also removed a stray underline that had
    been drawn under the header's icon controls.
 
-2. **2026-08-03. Focus rings were too thin, and three of them could not be
+3. **2026-08-03. Focus rings were too thin, and three of them could not be
    seen at all.** The ring that marks the control you have reached with the Tab
    key was 1 pixel thick, where the guideline asks for 2. Three were worse than
    thin: each was drawn in a colour so close to the surface behind it that there
@@ -104,10 +118,11 @@ here.
    pixels thick, with at least 2 of those pixels checked against what sits
    behind them. One of the three faint rings was our own style rule overriding a
    Carbon rule that was already correct. A plain link typed into a paragraph now
-   gets the theme's ring instead of the browser's. No setting puts the old ring
-   back.
+   gets the theme's ring instead of the browser's. No setting puts Carbon's
+   1-pixel ring back. Buttons later gained a choice, but it is between two marks
+   that both clear the bar, not between having one and not — see finding 1.
 
-3. **2026-08-03. Form fields were hard to see as fields.** A field was marked
+4. **2026-08-03. Form fields were hard to see as fields.** A field was marked
    out by a shaded fill with a single line under the text, so what showed you
    where the field was, and how big it was, came down to that one line: the fill
    differs from the page by only 1.10 to 1 in light mode and 1.20 to 1 in dark,
@@ -118,7 +133,7 @@ here.
    single field can be put back to the one-line look with its **Carbon default**
    setting.
 
-4. **2026-08-03. The Select block told screen readers it had one more option
+5. **2026-08-03. The Select block told screen readers it had one more option
    than it really has.** A select offering four choices was announced as
    "3 of 5". Its placeholder sat in the list assistive technology reads while
    being left out of the list drawn on screen, so every count was one too high.
@@ -126,7 +141,7 @@ here.
    greyed out. It still cannot be chosen. Screen readers that do not announce
    list position, including VoiceOver, were never affected.
 
-5. **2026-08-02. The light and dark mode switch did not say what it had
+6. **2026-08-02. The light and dark mode switch did not say what it had
    done.** The button was named "Light mode / Dark mode", which tells you
    neither what pressing it does nor which mode you are in, and the first press
    announced nothing at all. The button is now named after the mode it turns
@@ -134,26 +149,26 @@ here.
    version now also marks which of Light, Auto and Dark is in use, and a
    returning visitor is no longer told the wrong mode while the page loads.
 
-6. **2026-08-02. "Skip to main content" landed before the breadcrumb trail.**
+7. **2026-08-02. "Skip to main content" landed before the breadcrumb trail.**
    Automatic breadcrumbs were rendered inside the main region, so anyone who
    used the skip link still had every breadcrumb to move through before
    reaching the page content, which is what the skip link exists to avoid. The
    trail now sits immediately before the main region. Nothing changed visually.
 
-7. **2026-08-01. The "Skip to main content" link was hard to see when
+8. **2026-08-01. The "Skip to main content" link was hard to see when
    focused.** An old style rule of ours was overriding part of the Carbon
    styling, so the focused link drew at roughly half its intended height and
    carried two different focus indicators at once. The override is gone. The
    focused link is now a full-height panel with its text at 11:1 contrast.
 
-8. **2026-08-01. Links asked the reader to "see" a thing.** Reported on our own
+9. **2026-08-01. Links asked the reader to "see" a thing.** Reported on our own
    website: link text used *see* where an action word says the same thing
    without assuming sight. About 205 links and labels were reworded. This one
    was on our website rather than in the theme or plugin, so it falls outside
    the scope above, but it came from the same review and belongs in the same
    list.
 
-Findings 1 to 7 are fixed in the theme and plugin, and each is described in
+Findings 1 to 8 are fixed in the theme and plugin, and each is described in
 plain language in `CHANGELOG.md`.
 
 ## Feedback
@@ -165,4 +180,4 @@ Reports about real barriers are treated as bugs, not feature requests.
 ## Dates
 
 - Statement prepared: 2026-07-17
-- Last reviewed: 2026-08-04
+- Last reviewed: 2026-08-06

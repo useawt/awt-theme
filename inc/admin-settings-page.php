@@ -667,6 +667,7 @@ function render_tab_appearance(): void {
 		'header'     => __( 'Header', 'awt' ),
 		'typography' => __( 'Typography', 'awt' ),
 		'links'      => __( 'Links', 'awt' ),
+		'focus'      => __( 'Focus', 'awt' ),
 		'colors'     => __( 'Colors', 'awt' ),
 	);
 	// phpcs:ignore WordPress.Security.NonceVerification.Recommended -- read-only sub-tab routing; sanitized, no state change.
@@ -967,6 +968,18 @@ function render_tab_appearance(): void {
 			<?php submit_button( __( 'Save changes', 'awt' ) ); ?>
 		</form>
 		<?php
+	} elseif ( 'focus' === $active_section ) {
+		// Button focus indicator (difference D2). Self-form like Links above,
+		// dispatched on awt_section='focus' in save_tab_appearance().
+		?>
+		<form method="post" action="<?php echo esc_url( $page_url ); ?>">
+			<?php wp_nonce_field( NONCE_KEY, '_awt_nonce' ); ?>
+			<input type="hidden" name="awt_active_tab" value="appearance" />
+			<input type="hidden" name="awt_section" value="focus" />
+			<?php render_tab_focus(); ?>
+			<?php submit_button( __( 'Save changes', 'awt' ) ); ?>
+		</form>
+		<?php
 	} else {
 		// Colors. In AWT (free) the role-aware contrast audit is hidden and
 		// reserved for AWT Premium — render_tab_colors() is kept (unused) below.
@@ -1080,6 +1093,11 @@ function save_tab_appearance(): void {
 
 	if ( 'links' === $section ) {
 		save_tab_links();
+		return;
+	}
+
+	if ( 'focus' === $section ) {
+		save_tab_focus();
 		return;
 	}
 
@@ -1210,6 +1228,76 @@ function save_tab_links(): void {
 	foreach ( Settings\LINK_UNDERLINE_KEYS as $key ) {
 		Settings\set( 'links.underline.' . $key, ! empty( $submitted[ $key ] ) );
 	}
+}
+
+/**
+ * Render the Focus sub-tab: one switch for how a focused button is outlined.
+ *
+ * Unlike the Links sub-tab, "off" here is not a step down in accessibility —
+ * both states clear WCAG 2.4.13 and both are held by the focus gate. So the
+ * off-state message is neutral, not a warning. See "Differences from
+ * Carbon" (D2).
+ */
+function render_tab_focus(): void {
+	$outline_on = (bool) Settings\get( 'focus.buttonOutline' );
+	?>
+	<p class="awt-field-help" style="max-inline-size: 50em;">
+		<?php esc_html_e( 'When someone moves through your page with the Tab key, the control they land on is marked so they can see where they are. This sets how that mark is drawn on buttons.', 'awt' ); ?>
+	</p>
+
+	<div style="margin: 0.5em 0 1.5em; padding: 0.75em 1em; background: #f0f6fc; border-inline-start: 4px solid #0073aa; max-inline-size: 60em;">
+		<p style="margin: 0;">
+			<strong>♿ <?php esc_html_e( 'Accessibility benefit', 'awt' ); ?></strong>
+			—
+			<?php
+			printf(
+				/* translators: 1: opening <a> tag to WCAG 2.4.7; 2: closing </a> tag; 3: opening <a> tag to WCAG 2.4.13; 4: closing </a> tag */
+				esc_html__( 'A focused control has to be visible, under the %1$sWCAG "Focus Visible" guideline (2.4.7, Level AA)%2$s. How big the mark has to be is set by %3$s"Focus Appearance" (2.4.13, Level AAA)%4$s: at least as much area as a 2-pixel line around the control, and a clear change from how that same spot looks unfocused. AWT meets both whichever way you set this. What changes is how easy it is to check. Carbon builds a button\'s mark out of a border and two shadows, so there is no single thickness to read and anyone auditing your site has to work it out from three overlapping layers. One outline answers the question directly.', 'awt' ),
+				'<a href="https://www.w3.org/WAI/WCAG21/Understanding/focus-visible.html" target="_blank" rel="noopener">',
+				'</a>',
+				'<a href="https://www.w3.org/WAI/WCAG22/Understanding/focus-appearance.html" target="_blank" rel="noopener">',
+				'</a>'
+			);
+			?>
+		</p>
+	</div>
+
+	<table class="form-table" role="presentation">
+		<tr>
+			<th scope="row"><label for="awt-focus-button-outline"><?php esc_html_e( 'Button focus outline', 'awt' ); ?></label></th>
+			<td>
+				<label>
+					<input type="checkbox" id="awt-focus-button-outline" name="focus[buttonOutline]" value="1" <?php checked( $outline_on ); ?> />
+					<?php esc_html_e( 'Mark a focused button with one outline, just outside its edge.', 'awt' ); ?>
+				</label>
+				<p class="awt-field-help">
+					<?php esc_html_e( 'Turn this off to use Carbon\'s look instead: two rings of different thickness, drawn inside the button\'s edge. Both are easy to see, and both meet the guidelines. The single outline is simply easier to measure and to explain.', 'awt' ); ?>
+				</p>
+			</td>
+		</tr>
+	</table>
+
+	<?php if ( ! $outline_on ) : ?>
+		<div role="status" style="margin: 0 0 1.5em; padding: 0.75em 1em; background: #f0f6fc; border-inline-start: 4px solid #0073aa; max-inline-size: 60em;">
+			<p style="margin: 0;">
+				<?php esc_html_e( 'Buttons are using Carbon\'s two-ring style right now. This still meets the guidelines — it is a look, not a step down.', 'awt' ); ?>
+			</p>
+		</div>
+	<?php endif; ?>
+
+	<p class="awt-field-help" style="max-inline-size: 50em;">
+		<?php esc_html_e( 'This switch covers buttons only. Links, form fields, menus, tabs and everything else keep the outline they already have, whichever way you set it. Buttons were the one place the mark was built out of layers instead of drawn as a single line.', 'awt' ); ?>
+	</p>
+	<?php
+}
+
+/**
+ * Save the Focus sub-tab. Absent checkbox means off, as the browser sends
+ * nothing for an unchecked box.
+ */
+function save_tab_focus(): void {
+	// phpcs:ignore WordPress.Security.NonceVerification.Missing, WordPress.Security.ValidatedSanitizedInput.MissingUnslash, WordPress.Security.ValidatedSanitizedInput.InputNotSanitized -- nonce verified in handle_form_submission(); value only tested for truthiness.
+	Settings\set( 'focus.buttonOutline', ! empty( $_POST['focus']['buttonOutline'] ) );
 }
 
 /**

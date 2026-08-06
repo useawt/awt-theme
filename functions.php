@@ -291,7 +291,8 @@ add_action(
  * The pre-paint script may swap it client-side before first paint.
  *
  * Also carries the link-underline classes (AWT Settings → Links), which the
- * D6 rules in `theme.css` key off region by region.
+ * D6 rules in `theme.css` key off region by region, and the button focus class
+ * (AWT Settings → Focus), which D2 keys off.
  */
 add_filter(
 	'body_class',
@@ -302,6 +303,9 @@ add_filter(
 		$classes[] = 'cds--' . $variant;
 		if ( function_exists( '\\AWT\\Theme\\Settings\\link_underline_body_classes' ) ) {
 			$classes = array_merge( $classes, \AWT\Theme\Settings\link_underline_body_classes() );
+		}
+		if ( function_exists( '\\AWT\\Theme\\Settings\\button_focus_body_classes' ) ) {
+			$classes = array_merge( $classes, \AWT\Theme\Settings\button_focus_body_classes() );
 		}
 		return $classes;
 	}
