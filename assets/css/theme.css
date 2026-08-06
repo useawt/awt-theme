@@ -4525,6 +4525,42 @@ body.awt-btn-focus-outline .cds--header .cds--btn:focus:not(:disabled):not(.cds-
 	outline-offset: -2px;
 }
 
+/* The current page's nav item keeps all four sides of its focus ring.
+ *
+ * Two Carbon marks land on the same pixels. Focus draws
+ * `border: 2px solid $focus` on the 2px transparent border the item reserves,
+ * so the bottom edge occupies the last two pixels of the item. The current-page
+ * mark is an absolutely positioned `::after` — 3px tall at
+ * `inset-block-end: -2px` — and because an absolutely positioned child is
+ * placed against the PADDING box, "-2px" puts it over exactly those two pixels
+ * and one more above them. It is painted later, so it wins: the focused ring
+ * loses its whole bottom side and reads as an open box with a blue smear under
+ * it. That is what a keyboard user sees on whichever page they are on, which is
+ * to say on every page.
+ *
+ * Carbon knows about the interaction — it ships
+ * `[aria-current=page]:focus::after { border: 0 }` — but the bar has no border,
+ * so the rule changes nothing. In the SUBMENU, where the same mark is a
+ * vertical bar, Carbon does handle it, widening the bar from 3px to 5px on
+ * focus. The horizontal case looks like the one that was missed.
+ *
+ * The fix is to move the bar inside the ring on focus rather than to hide it:
+ * "you are here" and "you are focused here" are different facts, and a keyboard
+ * user needs both at once. At `inset-block-end: 0` the bar sits directly above
+ * the bottom border instead of over it, so the ring closes and the bar is still
+ * the full width of the item's content.
+ *
+ * Scoped to direct children of the menu bar so Carbon's vertical-bar treatment
+ * for submenu items is untouched — it is a deliberate design there, not a
+ * collision. The `--current` selector is Carbon's own alternative to the
+ * attribute and is matched here for the same reason Carbon matches it. */
+.cds--header__menu-bar > li > a.cds--header__menu-item[aria-current="page"]:focus::after,
+.cds--header__menu-bar > li > a.cds--header__menu-item.cds--header__menu-item--current:focus::after {
+	inset-block-end: 0;
+	inset-inline-start: 0;
+	inline-size: 100%;
+}
+
 /* Content switcher — same two-tone widening, on the pseudo-element that
  * actually paints it.
  *

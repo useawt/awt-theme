@@ -88,6 +88,14 @@
 
 ### [A11y]
 
+- The menu item for the page you are on keeps its whole focus outline. Carbon
+  marks the current page with a blue bar along the bottom of that menu item, and
+  marks focus with an outline around it. Both were drawn in the same two pixels
+  and the blue bar won, so a keyboard user landing on that item saw a box with
+  no bottom edge — on whichever page they were on, which is to say on every
+  page. The bar now sits just inside the outline, so you get both: a complete
+  outline, and the bar telling you where you are.
+
 - A chosen tile in a Tile group shows it without relying on colour. Carbon only
   reveals the check mark on a tile once its own JavaScript adds a class, and tiles
   are now plain radio buttons with no such class, so the theme draws the chosen
