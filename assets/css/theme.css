@@ -4494,6 +4494,37 @@ body.awt-btn-focus-outline .cds--btn--icon-only.cds--btn--ghost:focus:not(:disab
 	outline-offset: 1px;
 }
 
+/* A button in the header draws the same ring INSIDE, in its own text color.
+ *
+ * Two things break when the rule above meets the header, and both come from
+ * the same fact: a header button fills the bar rather than sitting on a page.
+ *
+ *   • There is no room outside. The bar is 48px and the button is 47px of it,
+ *     starting at y=0, so a ring 1px outside is clipped at the top of the
+ *     screen and spills 2px past the bar onto the page below it.
+ *   • The 1px offset gap stops being nothing. Over a page it is a sliver of
+ *     page; over the header it is a sliver of dark bar, and it reads as a thin
+ *     border drawn inside the button. Reported as "the button kept its inner
+ *     shadow line" — there is no shadow, `box-shadow` is `none`. It is the gap.
+ *
+ * Inside also matches `.cds--header__action` (the icon buttons beside it),
+ * which has always drawn its ring at `outline-offset: -2px`. Two neighbouring
+ * controls marking focus in opposite directions is what got this noticed.
+ *
+ * The color has to change with the offset, and this is the part worth
+ * remembering. `--cds-focus` is guaranteed against the SCOPE SURFACE, which is
+ * why every outward ring in this file can use it. An inward ring lands on the
+ * button's own fill instead, and in a light-scoped header `--cds-focus` and
+ * `--cds-button-primary` are the same #0f62fe — so the ring would be drawn on
+ * the exact color it is meant to stand out from. `currentColor` cannot have
+ * that problem: it is the label's color, so it already clears 4.5:1 against
+ * the fill or the label would be unreadable. Same reasoning as the tag dismiss
+ * button further up this file, and the same fix. */
+body.awt-btn-focus-outline .cds--header .cds--btn:focus:not(:disabled):not(.cds--btn--disabled) {
+	outline-color: currentColor;
+	outline-offset: -2px;
+}
+
 /* Content switcher — same two-tone widening, on the pseudo-element that
  * actually paints it.
  *

@@ -88,7 +88,12 @@ here.
    what made a reading ambiguous: whether the mark cleared the 2-pixel bar
    became something to argue about rather than something to check. A focused
    button now carries one 2-pixel outline just outside its edge, the same mark
-   links and form fields already use. **AWT Settings → Carbon → Focus** puts
+   links and form fields already use. In the header bar there is no outside to
+   draw in, because a button fills the bar's whole height, so there the same
+   outline goes just inside the edge instead, matching the icon buttons beside
+   it. (That part was a second pass the same day: the first version drew outside
+   everywhere, which in the header spilled onto the page below and left a
+   one-pixel gap that read as a border.) **AWT Settings → Carbon → Focus** puts
    Carbon's two-ring look back. Both meet the guideline — this was about which
    one an auditor can measure, not about whether a keyboard user can see it —
    and the automated check now measures both.

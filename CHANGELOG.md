@@ -22,8 +22,11 @@
   checking whether the mark is big enough has to work it out from three
   overlapping layers, and an external audit of AWT could not state a figure.
   AWT now draws one 2-pixel outline just outside the button, the same mark
-  links and form fields already use. **AWT Settings → Carbon → Focus** turns it
-  off and gives you Carbon's two-ring look back. Both meet the guidelines —
+  links and form fields already use. In the header bar, where a button fills
+  the whole height and there is no room outside it, that outline is drawn just
+  inside instead, in the button's own text colour, matching the icon buttons
+  beside it. **AWT Settings → Carbon → Focus** turns it off and gives you
+  Carbon's two-ring look back. Both meet the guidelines —
   this is about which one you can measure, not about whether a keyboard user
   can see it. (Breaking because focused buttons change appearance on upgrade.
   If your own CSS styles `.cds--btn:focus`, check it against the D2 rules in
