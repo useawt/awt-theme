@@ -14,6 +14,19 @@
 
 ### [Breaking]
 
+- Form labels, hints and error messages are now the same size as the text a
+  visitor types into the field. Carbon sets all three a step smaller, so the
+  three strings someone has to read in order to fill your form in were the
+  smallest text on the page. **AWT Settings → Carbon → Typography** turns this
+  off and gives you Carbon's sizes back. No accessibility rule sets a minimum
+  text size, so both settings pass — bigger text is simply easier to read, and
+  it matters most where reading it is the only way through. One field style is
+  left out on purpose: the one that floats its label inside the box, where the
+  label sits in a slot built for smaller text. (Breaking because forms get
+  taller on upgrade, which can reflow a tight layout. If your own CSS sizes
+  `.cds--label`, `.cds--form__helper-text` or `.cds--form-requirement`, check it
+  against the D8 rules in `assets/css/theme.css`.)
+
 - A focused button now has one clear outline instead of two rings. Carbon marks
   a focused button by recolouring its border, adding a ring inside that, and
   then a third ring in the button's own background colour — two rings of

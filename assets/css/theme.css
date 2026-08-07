@@ -4622,3 +4622,54 @@ body.awt-btn-focus-outline .cds--header .cds--btn:focus:not(:disabled):not(.cds-
 		outline-style: dotted;
 	}
 }
+
+/* ==========================================================================
+ * D8 — the text around a form field, at body size (2026-08-07)
+ * ========================================================================== */
+
+/* Carbon sets a field's label at `label-01` and its hint and error message at
+ * `helper-text-01`. Both are 12px, against 14px body text — so the three
+ * strings a person actually has to read in order to fill a form in are the
+ * smallest type anywhere on the page. On (the default) puts all three at body
+ * size; off leaves this block out of the cascade entirely and Carbon's own
+ * sizes stand.
+ *
+ * Say plainly what this is: no WCAG success criterion sets a minimum text size,
+ * and Carbon's 12px passes. The case is readability, not conformance.
+ *
+ * All three values come from `body-compact-01`, the token Carbon already uses
+ * for the text typed INTO the field — not a size invented here. That keeps the
+ * label and the value it names on one type step, and it is why the tracking
+ * drops to 0.16px: 0.32px is the tracking Carbon pairs with 12px, and carrying
+ * it up to 14px would leave the label looser than the body text it now matches.
+ *
+ * `.cds--label` needs the line-height restated rather than left to the token,
+ * because Carbon declares `line-height: 1rem` on it AFTER the type-style
+ * include. That 16px is the height the label's own box is built around in the
+ * fluid variant below. */
+body.awt-form-text-body :is(
+	.cds--label,
+	.cds--form__helper-text,
+	.cds--form-requirement
+) {
+	font-size: 0.875rem;
+	line-height: 1.28572;
+	letter-spacing: 0.16px;
+}
+
+/* The fluid variant keeps Carbon's 12px, and this is the one deliberate hole.
+ *
+ * A fluid field floats its label INSIDE the field box: absolutely positioned,
+ * `block-size: 1rem`, `white-space: nowrap`, `overflow-x: scroll`. It is sized
+ * to a 16px slot, not to a line of text. At 14px the line box is 18px, so the
+ * label would overflow the slot it sits in and crowd the value below it — a
+ * label made bigger to be easier to read, placed where it is harder to read.
+ *
+ * `.cds--form--fluid` is Carbon's own wrapper class and `.cds--text-input--fluid`
+ * is the one the AWT block emits; both are listed so the hole holds whichever
+ * markup produced the field. Specificity is 0,3,1 against the 0,2,1 above. */
+body.awt-form-text-body :is(.cds--form--fluid, .cds--text-input--fluid) .cds--label {
+	font-size: 0.75rem;
+	line-height: 1rem;
+	letter-spacing: 0.32px;
+}

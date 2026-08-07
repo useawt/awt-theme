@@ -1394,6 +1394,59 @@ function render_tab_typography(): void {
 		});
 	})();
 	</script>
+
+	<?php
+	// Form text size (difference D8). Its own section below the size scale and
+	// that scale's preview, because the two are independent: the scale resizes
+	// everything together, this decides where one kind of text sits within it.
+	$form_text_on = (bool) Settings\get( 'typography.formTextBodySize' );
+	?>
+	<h2><?php esc_html_e( 'Text around form fields', 'awt' ); ?></h2>
+	<p class="awt-field-help" style="max-inline-size: 50em;">
+		<?php esc_html_e( 'Every field on a form carries a label, sometimes a hint, and a message when something is wrong. Carbon sets all three smaller than your body text. This puts them at the same size as everything else.', 'awt' ); ?>
+	</p>
+
+	<div style="margin: 0.5em 0 1.5em; padding: 0.75em 1em; background: #f0f6fc; border-inline-start: 4px solid #0073aa; max-inline-size: 60em;">
+		<p style="margin: 0;">
+			<strong>♿ <?php esc_html_e( 'Accessibility benefit', 'awt' ); ?></strong>
+			—
+			<?php esc_html_e( 'These three strings are the ones a person has to read in order to fill your form in, and at Carbon\'s size they are the smallest text on the page. No accessibility rule sets a minimum text size, so both settings pass. Bigger text is simply easier to read, and it matters most where reading it is the only way through.', 'awt' ); ?>
+		</p>
+	</div>
+
+	<table class="form-table" role="presentation">
+		<tr>
+			<th scope="row"><label for="awt-form-text-body-size"><?php esc_html_e( 'Form text size', 'awt' ); ?></label></th>
+			<td>
+				<?php
+				// Marks this form as the one that owns the checkbox. The welcome
+				// wizard's Typography step calls the same save handler and posts
+				// only the size scale, so without this an unchecked-box reading
+				// would silently switch the setting off there.
+				?>
+				<input type="hidden" name="typography[formTextPresent]" value="1" />
+				<label>
+					<input type="checkbox" id="awt-form-text-body-size" name="typography[formTextBodySize]" value="1" <?php checked( $form_text_on ); ?> />
+					<?php esc_html_e( 'Show labels, hints and error messages at body text size.', 'awt' ); ?>
+				</label>
+				<p class="awt-field-help">
+					<?php esc_html_e( 'Turn this off to use Carbon\'s sizes instead, where this text is a step smaller than your body text.', 'awt' ); ?>
+				</p>
+			</td>
+		</tr>
+	</table>
+
+	<?php if ( ! $form_text_on ) : ?>
+		<div role="status" style="margin: 0 0 1.5em; padding: 0.75em 1em; background: #f0f6fc; border-inline-start: 4px solid #0073aa; max-inline-size: 60em;">
+			<p style="margin: 0;">
+				<?php esc_html_e( 'Form labels, hints and error messages are using Carbon\'s smaller size right now. This still meets the guidelines — it is a size, not a step down.', 'awt' ); ?>
+			</p>
+		</div>
+	<?php endif; ?>
+
+	<p class="awt-field-help" style="max-inline-size: 50em;">
+		<?php esc_html_e( 'One field style is left out on purpose: the one that floats its label inside the box. There, the label sits in a slot built for smaller text, so growing it would crowd what the visitor types.', 'awt' ); ?>
+	</p>
 	<?php
 }
 
@@ -1704,6 +1757,15 @@ function save_tab_typography(): void {
 	$raw   = (float) ( $input['sizeScale'] ?? 1.0 );
 	// sanitize() enforces the allowed set on the round-trip through save().
 	Settings\set( 'typography.sizeScale', $raw );
+
+	// Form text size (D8). Only written when the submitted form actually
+	// carried the checkbox, because an unchecked box sends nothing and is
+	// indistinguishable from a form that never offered it. The welcome
+	// wizard's Typography step is exactly that form, and without this guard
+	// finishing the wizard would switch the setting off without saying so.
+	if ( ! empty( $input['formTextPresent'] ) ) {
+		Settings\set( 'typography.formTextBodySize', ! empty( $input['formTextBodySize'] ) );
+	}
 }
 
 /**

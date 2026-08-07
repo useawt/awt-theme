@@ -241,7 +241,20 @@ function defaults(): array {
 			// (Default), 1.125 (Comfortable). Applied at the html element
 			// as `font-size: calc(100% * X)` — every rem-based Carbon
 			// token scales proportionally, including line-height ratios.
-			'sizeScale' => 1.0,
+			'sizeScale'        => 1.0,
+			// Size of the text around a form field: the label, the hint, and
+			// the error or warning message. Carbon sets all three at
+			// `label-01` / `helper-text-01`, both 12px, against 14px body
+			// text — so the three strings a person must read to fill a form
+			// in are the smallest type on the page.
+			//
+			// On (the default) puts all three at body size. Off leaves no
+			// rule of ours in the cascade, so Carbon's own sizes stand.
+			//
+			// This is a readability change, not a conformance fix: no WCAG
+			// success criterion sets a minimum text size, and 12px labels
+			// pass. See "Differences from Carbon" (D8).
+			'formTextBodySize' => true,
 		),
 		'customCode'    => array(
 			'head'            => '',
@@ -487,7 +500,11 @@ function sanitize( array $settings ): array {
 	$raw_scale         = (float) ( $typography['sizeScale'] ?? 1.0 );
 	$allowed_scales    = array( 0.875, 1.0, 1.125 );
 	$out['typography'] = array(
-		'sizeScale' => in_array( $raw_scale, $allowed_scales, true ) ? $raw_scale : 1.0,
+		'sizeScale'        => in_array( $raw_scale, $allowed_scales, true ) ? $raw_scale : 1.0,
+		// Form text size. Defaults to ON like the underline and focus
+		// switches, so an absent key means a site upgrading from an older
+		// release lands on the readable size rather than on Carbon's 12px.
+		'formTextBodySize' => ! isset( $typography['formTextBodySize'] ) || ! empty( $typography['formTextBodySize'] ),
 	);
 
 	// Custom code (NOT sanitized — see comment above).
@@ -570,4 +587,43 @@ function link_underline_editor_css(): string {
  */
 function button_focus_body_classes(): array {
 	return get( 'focus.buttonOutline' ) ? array( 'awt-btn-focus-outline' ) : array();
+}
+
+/**
+ * The body class that puts a form's label, hint and error text at body size.
+ *
+ * Off returns nothing, so no rule of ours is in the cascade and Carbon's 12px
+ * stands untouched — the same opt-*out* shape D5, D6 and D2 use, for the same
+ * reason: "Carbon style" should be honestly Carbon.
+ *
+ * @return string[] Body classes, possibly empty.
+ */
+function form_text_body_classes(): array {
+	return get( 'typography.formTextBodySize' ) ? array( 'awt-form-text-body' ) : array();
+}
+
+/**
+ * The same decision, expressed for the block-editor canvas.
+ *
+ * The canvas <body> carries `editor-styles-wrapper` and never our
+ * `awt-form-text-body` class, so `theme.css`'s rule cannot match there and every
+ * form block would preview at Carbon's 12px while publishing at 14px. Unlike a
+ * focus ring, a label's size is a resting state, so the canvas has to show it or
+ * the preview lies.
+ *
+ * The three values below repeat `theme.css`'s D8 block — CSS cannot read PHP, so
+ * one copy per language is the floor, the same trade `LINK_UNDERLINE_CANVAS_SELECTORS`
+ * makes. Change one, change the other. The fluid variant's floating in-field
+ * label is left out here for the reason `theme.css` gives.
+ *
+ * @return string CSS, or '' when the setting is off.
+ */
+function form_text_editor_css(): string {
+	if ( ! get( 'typography.formTextBodySize' ) ) {
+		return '';
+	}
+	return 'body.editor-styles-wrapper :is(.cds--label, .cds--form__helper-text, .cds--form-requirement)'
+		. ' { font-size: 0.875rem; line-height: 1.28572; letter-spacing: 0.16px; }' . "\n"
+		. 'body.editor-styles-wrapper .cds--text-input--fluid .cds--label'
+		. ' { font-size: 0.75rem; line-height: 1rem; letter-spacing: 0.32px; }';
 }

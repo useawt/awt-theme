@@ -307,6 +307,9 @@ add_filter(
 		if ( function_exists( '\\AWT\\Theme\\Settings\\button_focus_body_classes' ) ) {
 			$classes = array_merge( $classes, \AWT\Theme\Settings\button_focus_body_classes() );
 		}
+		if ( function_exists( '\\AWT\\Theme\\Settings\\form_text_body_classes' ) ) {
+			$classes = array_merge( $classes, \AWT\Theme\Settings\form_text_body_classes() );
+		}
 		return $classes;
 	}
 );
@@ -681,6 +684,20 @@ add_filter(
 			if ( $underline_css !== '' ) {
 				$existing[] = array(
 					'css'            => $underline_css,
+					'__unstableType' => 'theme',
+				);
+			}
+		}
+
+		// Form label / hint / error text at body size (D8) in the canvas, for
+		// the same reason as the underlines above: the class the front-end rule
+		// keys off never reaches the canvas body, and a label's size is a
+		// resting state an author has to be able to see while editing.
+		if ( function_exists( '\\AWT\\Theme\\Settings\\form_text_editor_css' ) ) {
+			$form_text_css = \AWT\Theme\Settings\form_text_editor_css();
+			if ( $form_text_css !== '' ) {
+				$existing[] = array(
+					'css'            => $form_text_css,
 					'__unstableType' => 'theme',
 				);
 			}
