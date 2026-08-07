@@ -1,5 +1,5 @@
 === AWT ===
-Contributors: awt
+Contributors: getawt
 Requires at least: 6.6
 Tested up to: 6.8
 Requires PHP: 8.1
