@@ -3,11 +3,16 @@
  * Title: AWT — Header preset: Public sector
  * Slug: awt/header-preset-public-sector
  * Design system: carbon
- * Description: Prominent agency identifier + accessible nav + language switcher + minimal actions. For government sites, public-service portals, EAA-regulated orgs.
+ * Description: A large organization name, menu links, and a language switcher. Good for government and public-service sites.
  * Categories: awt-section, header
  * Keywords: header, preset, public sector, government, agency, accessibility
  * Block Types: core/template-part/header
  * Inserter: yes
+ *
+ * NOTE: the Description above is duplicated in inc/design-system/carbon.php
+ * (get_header_presets()), which renders the same sentence in the AWT Settings
+ * header-preset picker. WordPress parses this line statically from the file
+ * comment, so it cannot read that PHP. Change both places together.
  *
  * Mirrors §1 "Header style presets → 4. Public sector". The language
  * action's panelId="language-panel" needs an author-provided panel —

@@ -652,18 +652,20 @@ function render_tab_appearance(): void {
 	$page_url         = admin_url( 'options-general.php?page=' . MENU_SLUG . '&tab=appearance' );
 	?>
 	<p class="awt-field-help" style="margin-block: 1em 1.5em;">
-		<?php esc_html_e( 'Settings that are specific to the Carbon design system: light/dark style, header layout, brand options, type size, and the color-contrast check. Other settings — logos and navigation — have their own tabs.', 'awt' ); ?>
+		<?php esc_html_e( 'Settings that are specific to the Carbon design system: light/dark style, header layout, brand options, and type size. Other settings — logos and navigation — have their own tabs.', 'awt' ); ?>
 	</p>
 
 	<?php
 	// --- Carbon sub-tabs -----------------------------------------------------
 	// Second-level tab bar (default WordPress nav-tab styling), driven by a
-	// ?section= query param — same pattern as the top-level tabs. Three groups:
-	// Appearance (style variation + site light/dark), Header (header appearance,
-	// preset, buttons, brand, further customization), and Colors (the read-only
-	// contrast audit). Each form tab saves with a single button.
+	// ?section= query param — same pattern as the top-level tabs. Each form tab
+	// saves with a single button.
+	//
+	// Labels are free to change; the slugs are not, since they appear in saved
+	// links and in the ?section= param. 'appearance' reads "Light & dark" —
+	// it was "Appearance", the same label as the tab containing it.
 	$carbon_sections = array(
-		'appearance' => __( 'Appearance', 'awt' ),
+		'appearance' => __( 'Light & dark', 'awt' ),
 		'header'     => __( 'Header', 'awt' ),
 		'typography' => __( 'Typography', 'awt' ),
 		'links'      => __( 'Links', 'awt' ),
@@ -742,10 +744,16 @@ function render_tab_appearance(): void {
 		<?php
 	} elseif ( 'header' === $active_section ) {
 		$header_scheme = (string) ( \AWT\Theme\Settings\get( 'header.colorScheme' ) ?? 'default' );
-		$icons         = \AWT\Theme\HeaderPresets\standard_icons();
-		$brand_mode    = (string) \AWT\Theme\Settings\get( 'identity.brandMode' );
-		$brand_prefix  = (string) \AWT\Theme\Settings\get( 'identity.prefix' );
-		$brand_modes   = array(
+		// "Default" means something different here than it does for the site.
+		// The site's default follows the visitor's device; the header's default
+		// follows whatever the site appearance resolved to. Sharing the site's
+		// label made the radio contradict the help text right above it.
+		$header_appearance_options            = $appearance_options;
+		$header_appearance_options['default'] = __( 'Default (matches the site appearance)', 'awt' );
+		$icons                                = \AWT\Theme\HeaderPresets\standard_icons();
+		$brand_mode                           = (string) \AWT\Theme\Settings\get( 'identity.brandMode' );
+		$brand_prefix                         = (string) \AWT\Theme\Settings\get( 'identity.prefix' );
+		$brand_modes                          = array(
 			'auto'                      => __( 'Automatic — use the logo and prefix you have set', 'awt' ),
 			'text-only'                 => __( 'Site Title only', 'awt' ),
 			'logo-with-text'            => __( 'Logo + Site Title', 'awt' ),
@@ -753,7 +761,7 @@ function render_tab_appearance(): void {
 			'text-with-prefix'          => __( 'Site Title + prefix', 'awt' ),
 			'logo-with-text-and-prefix' => __( 'Logo + Site Title + prefix', 'awt' ),
 		);
-		$preset_msg    = __( 'Applying a different header preset replaces any changes you have made to your header. Continue?', 'awt' );
+		$preset_msg                           = __( 'Applying a different header preset replaces any changes you have made to your header. Continue?', 'awt' );
 		?>
 		<style><?php echo \AWT\Theme\HeaderPresets\picker_styles(); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- static admin CSS authored in code, no dynamic input. ?></style>
 		<form method="post" action="<?php echo esc_url( $page_url ); ?>"
@@ -766,11 +774,11 @@ function render_tab_appearance(): void {
 
 			<h2 style="margin-block-start: 0;"><?php esc_html_e( 'Header appearance', 'awt' ); ?></h2>
 			<p class="awt-field-help">
-				<?php esc_html_e( 'Sets the header bar\'s light or dark appearance. "Default" matches the site appearance above, or keeps a light or dark look you gave the header yourself in the Site Editor. "Always light" and "Always dark" keep the header fixed no matter what the rest of the page does — they replace anything set on the header in the Site Editor.', 'awt' ); ?>
+				<?php esc_html_e( 'Sets the header bar\'s light or dark appearance. "Default" matches the site appearance you set under Light & dark, or keeps a light or dark look you gave the header yourself in the Site Editor. "Always light" and "Always dark" keep the header fixed no matter what the rest of the page does — they replace anything set on the header in the Site Editor.', 'awt' ); ?>
 			</p>
 			<fieldset style="margin-block: 1em 2.5em;">
 				<legend class="screen-reader-text"><?php esc_html_e( 'Header appearance', 'awt' ); ?></legend>
-				<?php foreach ( $appearance_options as $value => $label ) : ?>
+				<?php foreach ( $header_appearance_options as $value => $label ) : ?>
 					<label style="display:block; margin-block-end:0.5em;">
 						<input type="radio" name="headerColorScheme" value="<?php echo esc_attr( $value ); ?>" <?php checked( $header_scheme, $value ); ?> />
 						<?php echo esc_html( $label ); ?>

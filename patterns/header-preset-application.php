@@ -3,11 +3,16 @@
  * Title: AWT — Header preset: Application
  * Slug: awt/header-preset-application
  * Design system: carbon
- * Description: Brand + global actions cluster (search, notifications, user menu) with optional side-nav toggle. For SaaS dashboards and admin tools.
+ * Description: Your logo and the icon buttons (search, notifications, user menu), with an optional side navigation menu. Good for dashboards and admin tools.
  * Categories: awt-section, header
  * Keywords: header, preset, app, dashboard, saas
  * Block Types: core/template-part/header
  * Inserter: yes
+ *
+ * NOTE: the Description above is duplicated in inc/design-system/carbon.php
+ * (get_header_presets()), which renders the same sentence in the AWT Settings
+ * header-preset picker. WordPress parses this line statically from the file
+ * comment, so it cannot read that PHP. Change both places together.
  *
  * Mirrors §1 "Header style presets → 3. Application". The leading
  * `awt/header-action` button toggles the side-nav panel; remove it if

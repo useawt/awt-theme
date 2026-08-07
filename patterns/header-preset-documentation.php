@@ -3,11 +3,16 @@
  * Title: AWT — Header preset: Documentation
  * Slug: awt/header-preset-documentation
  * Design system: carbon
- * Description: Brand + horizontal section nav + search + a side nav on wide screens. Designed for technical product docs, knowledge bases, and reference sites.
+ * Description: Your logo, section links, search, and a side navigation menu down the left on wide screens. Good for knowledge bases and reference sites.
  * Categories: awt-section, header
  * Keywords: header, preset, docs, knowledge base, reference
  * Block Types: core/template-part/header
  * Inserter: yes
+ *
+ * NOTE: the Description above is duplicated in inc/design-system/carbon.php
+ * (get_header_presets()), which renders the same sentence in the AWT Settings
+ * header-preset picker. WordPress parses this line statically from the file
+ * comment, so it cannot read that PHP. Change both places together.
  *
  * Mirrors §1 "Header style presets → 2. Documentation". The side nav's blocks
  * are written out here rather than pulled in from a `sidebar` template part:

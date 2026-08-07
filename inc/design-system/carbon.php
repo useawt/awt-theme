@@ -150,21 +150,33 @@ class Carbon implements DesignSystemInterface {
 	 */
 	public function get_header_presets(): array {
 		$meta = array(
+			// Descriptions are read by someone choosing a layout, so they say
+			// what appears in the bar and who the layout suits — not which
+			// components it is built from. Two naming rules, both learned the
+			// hard way: use the wording the Header tab already uses ("icon
+			// buttons"), and name things the author has to find on screen
+			// rather than describing them. "A menu down the left" is the side
+			// navigation, and an author told to look for that will not find
+			// "Side nav" in the Site Editor.
+			//
+			// These four strings are duplicated in patterns/header-preset-*.php,
+			// which WordPress reads statically from the file comment and so
+			// cannot call this method. Change both places together.
 			'marketing'     => array(
 				'label'       => __( 'Marketing', 'awt' ),
-				'description' => __( 'Brand + horizontal primary nav + minimal global actions. No side nav. Landing pages, public product sites.', 'awt' ),
+				'description' => __( 'Your logo, a row of menu links, and one or two icon buttons. No side navigation. Good for landing pages and product sites.', 'awt' ),
 			),
 			'documentation' => array(
 				'label'       => __( 'Documentation', 'awt' ),
-				'description' => __( 'Brand + horizontal section nav + search + a side nav on wide screens. Knowledge bases, reference sites.', 'awt' ),
+				'description' => __( 'Your logo, section links, search, and a side navigation menu down the left on wide screens. Good for knowledge bases and reference sites.', 'awt' ),
 			),
 			'application'   => array(
 				'label'       => __( 'Application', 'awt' ),
-				'description' => __( 'Brand + global actions (search, notifications, user menu) + optional side nav. SaaS dashboards, admin tools.', 'awt' ),
+				'description' => __( 'Your logo and the icon buttons (search, notifications, user menu), with an optional side navigation menu. Good for dashboards and admin tools.', 'awt' ),
 			),
 			'public-sector' => array(
 				'label'       => __( 'Public sector', 'awt' ),
-				'description' => __( 'Prominent agency identifier + nav + language switcher. Government sites, public-service portals, EAA-regulated orgs.', 'awt' ),
+				'description' => __( 'A large organization name, menu links, and a language switcher. Good for government and public-service sites.', 'awt' ),
 			),
 		);
 

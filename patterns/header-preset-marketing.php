@@ -3,11 +3,16 @@
  * Title: AWT — Header preset: Marketing
  * Slug: awt/header-preset-marketing
  * Design system: carbon
- * Description: Brand + horizontal primary nav + minimal global actions. No side nav. Optimized for landing pages and conversion-focused sites.
+ * Description: Your logo, a row of menu links, and one or two icon buttons. No side navigation. Good for landing pages and product sites.
  * Categories: awt-section, header
  * Keywords: header, preset, marketing, landing, brand
  * Block Types: core/template-part/header
  * Inserter: yes
+ *
+ * NOTE: the Description above is duplicated in inc/design-system/carbon.php
+ * (get_header_presets()), which renders the same sentence in the AWT Settings
+ * header-preset picker. WordPress parses this line statically from the file
+ * comment, so it cannot read that PHP. Change both places together.
  *
  * Composition mirrors the §1 "Header style presets → 1. Marketing"
  * pseudocode exactly. Switching preset only replaces the header template
