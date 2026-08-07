@@ -265,6 +265,9 @@
 
 ### [Improvement]
 
+- Version numbers now agree with each other, reading `2026.01.0` everywhere
+  instead of `2026.01.0-stage1` in some places.
+
 - **AWT Settings → Carbon → Header → Header appearance** now decides the header
   bar's colour even if you have already given the header a light or dark look
   of its own in the Site Editor. Before, your own choice quietly won every

@@ -20,7 +20,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-const AWT_THEME_VERSION = '2026.01.0-stage1';
+const AWT_THEME_VERSION = '2026.01.0';
 
 require_once __DIR__ . '/inc/settings.php';
 // §A Design system layer — interface + registry + Carbon. Loaded before the
