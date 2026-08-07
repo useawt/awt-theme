@@ -12,3 +12,8 @@
 .DS_Store
 *.log
 /vendor/
+
+# The WordPress.org distribution zip, rebuilt on demand by `npm run build:zip`.
+# Never committed: it is derived from the tracked files, and a stale copy in the
+# repo is worse than none — it looks like the artifact and is not.
+/awt.zip

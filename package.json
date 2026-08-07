@@ -12,6 +12,7 @@
     "lint:md": "markdownlint-cli2",
     "lint:php": "vendor/bin/phpcs",
     "build:css": "sass --style=compressed --no-source-map --load-path=node_modules src/foundation.scss assets/css/foundation.min.css",
+    "build:zip": "node scripts/build-zip.js",
     "check:foundation": "node scripts/check-foundation.js",
     "check:css": "node scripts/check-css.js",
     "report:carbon-overrides": "node scripts/report-carbon-overrides.js",
