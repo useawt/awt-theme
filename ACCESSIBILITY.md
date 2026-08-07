@@ -77,9 +77,22 @@ published third-party audit, and it does not replace one. A formal independent
 audit is still planned before commercial launch, and its report will appear
 here.
 
-**Nine findings received so far. All nine are fixed.** Newest first.
+**Ten findings received so far. All ten are fixed.** Newest first.
 
-1. **2026-08-06. A focused button's outline could not be measured.** Carbon
+1. **2026-08-07. A select in error was marked by colour alone, and lost even
+   that on focus.** Carbon draws an error icon inside a select that has an
+   error; ours drew only the red outline. So the field itself said "error" in
+   red and nothing else, which colour may not do on its own. Worse, the rule
+   Carbon writes for that red outline steps aside for the focus indicator — by
+   design, since the two would otherwise occupy the same edge — so tabbing into
+   the field removed the last mark of the error at the exact moment you reached
+   it. The message under the field was still there and still read out, but the
+   field showed nothing. The icon is now drawn, and it stays put whether the
+   field is focused or not. The automated checks gained a select in error, three
+   style probes and one screen-reader-tree probe: none of the four browser gates
+   could see this shape before, because no test page contained one.
+
+2. **2026-08-06. A focused button's outline could not be measured.** Carbon
    marks a focused button by recolouring its border, drawing a ring inside that,
    and then a third ring in the button's own background colour. That is two
    rings of different thickness, assembled from a border and two shadows, with
@@ -98,7 +111,7 @@ here.
    one an auditor can measure, not about whether a keyboard user can see it —
    and the automated check now measures both.
 
-2. **2026-08-04. Links were marked out by colour alone.** A link had no
+3. **2026-08-04. Links were marked out by colour alone.** A link had no
    underline until you pointed at it, so colour was the only thing telling you
    it was a link. Colour may do that job by itself only when the link is clearly
    different from the text around it — three times the contrast or more. Ours
@@ -113,7 +126,7 @@ here.
    out by its own shape. Fixing this also removed a stray underline that had
    been drawn under the header's icon controls.
 
-3. **2026-08-03. Focus rings were too thin, and three of them could not be
+4. **2026-08-03. Focus rings were too thin, and three of them could not be
    seen at all.** The ring that marks the control you have reached with the Tab
    key was 1 pixel thick, where the guideline asks for 2. Three were worse than
    thin: each was drawn in a colour so close to the surface behind it that there
@@ -127,7 +140,7 @@ here.
    1-pixel ring back. Buttons later gained a choice, but it is between two marks
    that both clear the bar, not between having one and not — see finding 1.
 
-4. **2026-08-03. Form fields were hard to see as fields.** A field was marked
+5. **2026-08-03. Form fields were hard to see as fields.** A field was marked
    out by a shaded fill with a single line under the text, so what showed you
    where the field was, and how big it was, came down to that one line: the fill
    differs from the page by only 1.10 to 1 in light mode and 1.20 to 1 in dark,
@@ -138,7 +151,7 @@ here.
    single field can be put back to the one-line look with its **Carbon default**
    setting.
 
-5. **2026-08-03. The Select block told screen readers it had one more option
+6. **2026-08-03. The Select block told screen readers it had one more option
    than it really has.** A select offering four choices was announced as
    "3 of 5". Its placeholder sat in the list assistive technology reads while
    being left out of the list drawn on screen, so every count was one too high.
@@ -146,7 +159,7 @@ here.
    greyed out. It still cannot be chosen. Screen readers that do not announce
    list position, including VoiceOver, were never affected.
 
-6. **2026-08-02. The light and dark mode switch did not say what it had
+7. **2026-08-02. The light and dark mode switch did not say what it had
    done.** The button was named "Light mode / Dark mode", which tells you
    neither what pressing it does nor which mode you are in, and the first press
    announced nothing at all. The button is now named after the mode it turns
@@ -154,19 +167,19 @@ here.
    version now also marks which of Light, Auto and Dark is in use, and a
    returning visitor is no longer told the wrong mode while the page loads.
 
-7. **2026-08-02. "Skip to main content" landed before the breadcrumb trail.**
+8. **2026-08-02. "Skip to main content" landed before the breadcrumb trail.**
    Automatic breadcrumbs were rendered inside the main region, so anyone who
    used the skip link still had every breadcrumb to move through before
    reaching the page content, which is what the skip link exists to avoid. The
    trail now sits immediately before the main region. Nothing changed visually.
 
-8. **2026-08-01. The "Skip to main content" link was hard to see when
+9. **2026-08-01. The "Skip to main content" link was hard to see when
    focused.** An old style rule of ours was overriding part of the Carbon
    styling, so the focused link drew at roughly half its intended height and
    carried two different focus indicators at once. The override is gone. The
    focused link is now a full-height panel with its text at 11:1 contrast.
 
-9. **2026-08-01. Links asked the reader to "see" a thing.** Reported on our own
+10. **2026-08-01. Links asked the reader to "see" a thing.** Reported on our own
    website: link text used *see* where an action word says the same thing
    without assuming sight. About 205 links and labels were reworded. This one
    was on our website rather than in the theme or plugin, so it falls outside
@@ -185,4 +198,4 @@ Reports about real barriers are treated as bugs, not feature requests.
 ## Dates
 
 - Statement prepared: 2026-07-17
-- Last reviewed: 2026-08-06
+- Last reviewed: 2026-08-07
