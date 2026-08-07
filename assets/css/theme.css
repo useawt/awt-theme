@@ -3091,7 +3091,13 @@ body.editor-styles-wrapper .wp-block-awt-icon   + .wp-block-awt-icon {
 }
 .cds--select-input--sm { block-size: 2rem; }
 .cds--select-input--lg { block-size: 3rem; }
-.cds--select-input--invalid { outline: 2px solid var(--cds-support-error, #da1e28); outline-offset: -2px; }
+/* No `.cds--select-input--invalid` outline rule here any more. A Stage 0 one
+ * drew the red error outline before the block emitted `data-invalid` on the
+ * select's wrapper; since 2026-08-07 it does, so Carbon's own rule draws it
+ * instead. Carbon's version is scoped `:not(:focus)` — it steps aside for the
+ * focus outline, and the error icon inside the field carries the error while
+ * the field is focused. Ours painted red unconditionally, so it could only
+ * ever obscure that. */
 .cds--select__arrow { position: absolute; inset-block-start: 50%; inset-inline-end: 1rem; transform: translateY(-50%); pointer-events: none; }
 
 /* Dropdown.
