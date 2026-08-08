@@ -13,7 +13,7 @@
      user-facing wording in CHANGELOG.md; this file gets the short, honest
      public version.
 
-     The /accessibility/ page on accessiblewordpresstheme.com is SEPARATE,
+     The /accessibility/ page on useawt.com is SEPARATE,
      hand-authored content that paraphrases this file. It does not update
      itself. Republish it when this file changes materially. -->
 
@@ -192,7 +192,7 @@ plain language in `CHANGELOG.md`.
 ## Feedback
 
 Found an accessibility problem in AWT? Email
-**[hello@accessiblewordpresstheme.com](mailto:hello@accessiblewordpresstheme.com)**.
+**[hello@useawt.com](mailto:hello@useawt.com)**.
 Reports about real barriers are treated as bugs, not feature requests.
 
 ## Dates

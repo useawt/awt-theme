@@ -35,7 +35,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 const NONCE_KEY   = 'awt_wizard_step';
 const LAST_STEP   = 5;
-const PREMIUM_URL = 'https://accessiblewordpresstheme.com/premium';
+const PREMIUM_URL = 'https://useawt.com/premium';
 
 add_action( 'after_switch_theme', __NAMESPACE__ . '\\on_activation' );
 add_action( 'admin_notices', __NAMESPACE__ . '\\maybe_show_welcome_notice' );

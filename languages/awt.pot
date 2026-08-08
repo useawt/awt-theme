@@ -24,7 +24,7 @@ msgstr ""
 #. Theme URI of the theme
 #. Author URI of the theme
 #: style.css
-msgid "https://accessiblewordpresstheme.com"
+msgid "https://useawt.com"
 msgstr ""
 
 #. Description of the theme
