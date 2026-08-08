@@ -63,7 +63,7 @@
 <h3 class="wp-block-heading">Free, forever</h3>
 <!-- /wp:heading -->
 <!-- wp:paragraph -->
-<p>GPL-2.0-or-later. No telemetry, no callbacks, no lock-in.</p>
+<p>GPL-3.0-or-later. No telemetry, no callbacks, no lock-in.</p>
 <!-- /wp:paragraph -->
 <!-- /wp:awt/tile -->
 <!-- /wp:awt/feature-grid -->
@@ -77,7 +77,7 @@
 <!-- wp:awt/accordion {"singleOpen":true} -->
 <!-- wp:awt/faq-item {"question":"Is this product really free?","level":"3"} -->
 <!-- wp:paragraph -->
-<p>Yes. The base product is GPL-2.0-or-later and is published on WordPress.org with no telemetry, no callbacks, and no license keys. Premium adds optional capabilities; the free theme and plugin are the complete product.</p>
+<p>Yes. The base product is GPL-3.0-or-later and is published on WordPress.org with no telemetry, no callbacks, and no license keys. Premium adds optional capabilities; the free theme and plugin are the complete product.</p>
 <!-- /wp:paragraph -->
 <!-- /wp:awt/faq-item -->
 

@@ -42,7 +42,7 @@
 <h3 class="wp-block-heading">Free, forever</h3>
 <!-- /wp:heading -->
 <!-- wp:paragraph -->
-<p>GPL-2.0-or-later. No telemetry, no callbacks, no lock-in.</p>
+<p>GPL-3.0-or-later. No telemetry, no callbacks, no lock-in.</p>
 <!-- /wp:paragraph -->
 <!-- /wp:awt/tile -->
 <!-- /wp:awt/feature-grid -->

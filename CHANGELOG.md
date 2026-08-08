@@ -14,6 +14,16 @@
 
 ### [Breaking]
 
+- **AWT is now GPLv3 or later, instead of GPLv2 or later.** Nothing changes for
+  you as a site owner: you can still use, modify and redistribute it freely,
+  and it runs on WordPress exactly as before. The change matters only if you
+  redistribute AWT yourself or build on its code, in which case your copy must
+  now follow GPLv3 terms. The reason is that AWT bundles Carbon Design System
+  styles, which IBM releases under the Apache 2.0 licence. Apache 2.0 can be
+  combined with GPLv3 but not with GPLv2, so the older label was wrong. The
+  full licence text ships in `license.txt`, alongside the Apache 2.0 and SIL
+  Open Font License texts covering Carbon and the IBM Plex fonts.
+
 - Form labels, hints and error messages are now the same size as the text a
   visitor types into the field. Carbon sets all three a step smaller, so the
   three strings someone has to read in order to fill your form in were the

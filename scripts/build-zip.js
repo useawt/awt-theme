@@ -55,6 +55,14 @@ const INCLUDE = [
 	'theme.json',
 	'readme.txt',
 	'screenshot.png',
+	// Three licences, because the zip redistributes three licensed works: our
+	// own GPLv3, Carbon's Apache-2.0 (the compiled CSS), and IBM Plex's
+	// OFL-1.1 (the woff2 files). Apache 2.0 §4(a) and OFL 1.1 both require
+	// their text to travel with what they cover — naming them in readme.txt
+	// is attribution, not the licence.
+	'license.txt',
+	'LICENSE-Apache-2.0.txt',
+	'LICENSE-OFL-1.1.txt',
 ];
 
 /**

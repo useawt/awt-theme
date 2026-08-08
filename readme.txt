@@ -1,10 +1,10 @@
 === AWT ===
-Contributors: getawt
+Contributors: useawt
 Requires at least: 6.6
 Tested up to: 6.8
 Requires PHP: 8.1
-License: GPLv2 or later
-License URI: https://www.gnu.org/licenses/gpl-2.0.html
+License: GPLv3 or later
+License URI: https://www.gnu.org/licenses/gpl-3.0.html
 
 An accessibility-first block theme built on IBM's open-source Carbon Design System. Made to pair with the AWT Blocks plugin.
 
@@ -37,23 +37,30 @@ From the AWT Blocks plugin. Install both for the full experience; the theme's pa
 == Copyright ==
 
 AWT WordPress Theme, (C) 2026 AWT.
-AWT is distributed under the terms of the GNU GPL v2 or later.
+AWT is distributed under the terms of the GNU GPL v3 or later.
+The full text is in license.txt.
+
+AWT is GPLv3-or-later rather than GPLv2-or-later because it bundles Carbon
+Design System styles, which are Apache-2.0. Apache 2.0 is compatible with
+GPLv3 but not with GPLv2.
 
 This theme bundles the following third-party resources:
 
 Carbon Design System styles, compiled from @carbon/styles
 Copyright IBM Corp. 2016, 2026
 License: Apache License 2.0, https://www.apache.org/licenses/LICENSE-2.0
+Full text: LICENSE-Apache-2.0.txt
 Source: https://github.com/carbon-design-system/carbon
 
 IBM Plex Sans, IBM Plex Serif, IBM Plex Mono fonts
 Copyright IBM Corp. 2017, 2026
 License: SIL Open Font License 1.1, https://opensource.org/licenses/OFL-1.1
+Full text: LICENSE-OFL-1.1.txt
 Source: https://github.com/IBM/plex
 
 Placeholder images (assets/images/logo-*.svg, assets/images/avatar-*.svg)
 Created for this theme, (C) 2026 AWT. The company names shown are fictional.
-License: GPLv2 or later, https://www.gnu.org/licenses/gpl-2.0.html
+License: GPLv3 or later, https://www.gnu.org/licenses/gpl-3.0.html
 
 == Accessibility statement ==
 

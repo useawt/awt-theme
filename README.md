@@ -22,4 +22,4 @@ and `theme.json` apply on reload, no build step.
 
 ## License
 
-GPL-2.0-or-later
+GPL-3.0-or-later

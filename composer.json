@@ -1,7 +1,7 @@
 {
 	"name": "awt/awt-theme",
 	"description": "AWT theme — development dependencies (coding standards).",
-	"license": "GPL-2.0-or-later",
+	"license": "GPL-3.0-or-later",
 	"require-dev": {
 		"wp-coding-standards/wpcs": "^3.2",
 		"dealerdirect/phpcodesniffer-composer-installer": "^1.1"
