@@ -10,7 +10,7 @@ An accessibility-first block theme built on IBM's open-source Carbon Design Syst
 
 == Description ==
 
-AWT (Accessible WordPress Theme) is a block theme where accessibility is the starting point, not a checkbox. It's built on IBM's open-source Carbon Design System and reviewed against WCAG 2.2 AA — in both light and dark mode.
+AWT is a block theme where accessibility is the starting point, not a checkbox. It's built on IBM's open-source Carbon Design System and reviewed against WCAG 2.2 AA — in both light and dark mode.
 
 * **Four style variations**, each pairing a Carbon light theme with a dark one (White + Gray 90, White + Gray 100, Gray 10 + Gray 90, Gray 10 + Gray 100).
 * **A visitor color scheme switch**: visitors choose light, dark, or "follow my system setting", and the choice is applied before the page paints — no flash, and it works with page-caching plugins out of the box.

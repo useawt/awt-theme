@@ -275,6 +275,9 @@
 
 ### [Improvement]
 
+- The footer credit now reads "Built with AWT, an accessible theme for
+  WordPress." If you have edited your own footer, your version is untouched.
+
 - Version numbers now agree with each other, reading `2026.01.0` everywhere
   instead of `2026.01.0-stage1` in some places.
 
