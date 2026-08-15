@@ -275,6 +275,10 @@
 
 ### [Improvement]
 
+- Tested on WordPress 7.0. Everything was checked on it before the version was
+  written down: the blocks and patterns on the front end, the editor, the Site
+  Editor, and every AWT Settings screen.
+
 - The footer credit now reads "Built with AWT, an accessible theme for
   WordPress." If you have edited your own footer, your version is untouched.
 
