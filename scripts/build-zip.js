@@ -202,7 +202,10 @@ if (textDomain !== SLUG) {
 }
 
 const bytes = fs.statSync(outfile).size;
-const files = paths.filter((p) => !p.endsWith('/')).length;
+// Count from `listed`, not `paths`: stripping the slug prefix turns the `awt/`
+// folder entry into an empty string, which reads as a file and inflates the
+// number a person uses to sanity-check the package.
+const files = listed.filter((p) => !p.endsWith('/')).length;
 
 process.stdout.write(
 	`\n✓ ${path.basename(outfile)} — ${files} files, ${(bytes / 1024 / 1024).toFixed(2)} MB\n` +
