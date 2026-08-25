@@ -10,7 +10,7 @@
      markdownlint enforces the structure in CI. Newest release first.
      The Unreleased section accumulates entries between releases. -->
 
-## Unreleased
+## 2026.08.0 — 2026-08-25
 
 ### [Breaking]
 
@@ -274,6 +274,10 @@
   light and dark mode.
 
 ### [Improvement]
+
+- The What's new tab reads as text instead of showing the marks around it.
+  Bold wording and file names arrived with asterisks and backticks still
+  around them, the way they are typed in the release notes.
 
 - Tested on WordPress 7.0. Everything was checked on it before the version was
   written down: the blocks and patterns on the front end, the editor, the Site

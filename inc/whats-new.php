@@ -215,10 +215,28 @@ function render_entries( array $release ): void {
 			'<li class="awt-whats-new-entry awt-whats-new-entry--%1$s"><strong class="awt-whats-new-badge">[%2$s]</strong> %3$s</li>',
 			esc_attr( strtolower( $severity ) ),
 			esc_html( $severity ),
-			esc_html( trim( ( $entry['summary'] ?? '' ) . ' ' . ( $entry['details'] ?? '' ) ) )
+			format_entry_text( trim( ( $entry['summary'] ?? '' ) . ' ' . ( $entry['details'] ?? '' ) ) ) // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- escaped inside format_entry_text() before any markup is added.
 		);
 	}
 	echo '</ul>';
+}
+
+/**
+ * Turn one changelog entry into safe HTML.
+ *
+ * Entries are authored in CHANGELOG.md, so they carry Markdown emphasis and
+ * code spans. Printing them raw showed people literal `**` and backticks in the
+ * admin. Escape first, then convert the two markers we actually use — nothing
+ * else is interpreted, so no markup can arrive from the text itself.
+ *
+ * @param string $text Entry text as written in the changelog.
+ * @return string Escaped HTML.
+ */
+function format_entry_text( string $text ): string {
+	$out = esc_html( $text );
+	$out = (string) preg_replace( '/\*\*(.+?)\*\*/s', '<strong>$1</strong>', $out );
+	$out = (string) preg_replace( '/`([^`]+)`/', '<code>$1</code>', $out );
+	return $out;
 }
 
 /**
