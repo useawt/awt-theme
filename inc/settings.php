@@ -403,7 +403,7 @@ function deep_merge( array $base, array $override ): array {
  *
  * Custom-code fields are deliberately NOT sanitized — they're documented
  * as accepting arbitrary code (the spec's §5 warning block makes this
- * explicit). The capability check at the API boundary (`manage_options`)
+ * explicit). The capability check at the API boundary (`edit_theme_options`)
  * is the access gate; sanitizing here would defeat the field's purpose.
  *
  * @param array $settings Raw settings document to sanitize.

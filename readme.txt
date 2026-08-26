@@ -44,6 +44,8 @@ AWT is GPLv3-or-later rather than GPLv2-or-later because it bundles Carbon
 Design System styles, which are Apache-2.0. Apache 2.0 is compatible with
 GPLv3 but not with GPLv2.
 
+== Resources ==
+
 This theme bundles the following third-party resources:
 
 Carbon Design System styles, compiled from @carbon/styles
@@ -282,6 +284,8 @@ Reports about real barriers are treated as bugs, not feature requests.
 * [A11y] Footer links are now easier to tap: each link is at least 32px tall with an 8px gap between rows. Before, the links stacked with no spacing at all, so on touch screens it was easy to hit the wrong one — below the WCAG 2.5.8 minimum target size, and flagged by Lighthouse. The links look the same, they just breathe.
 * [A11y] Paragraphs placed directly in a Section now keep a readable line length: they are capped at the reading measure (48rem, about 90 characters), matching how the Carbon Design System site sets its own body text. Very long lines are a barrier for low-vision and dyslexic readers (WCAG 1.4.8 recommends 80 characters or less). Centered and right-aligned paragraphs keep their alignment. Text inside columns, tiles, and other blocks is not affected — it is already sized by its container. To let one paragraph span the full section, place it in a Group; to line a whole section up with the text column, use the Section's new "Reading (48rem)" max width.
 * [A11y] The "Skip to main content" link now looks the way the design system draws it. When you tabbed to it, it showed up as a squat box wearing two focus rings at once, about half the height it should be: an older theme rule and the design system's own rule each won part of the styling. It is now a single panel the full height of the header, with one focus border, in both light and dark mode.
+* [Improvement] AWT Settings has moved from Settings to **Appearance**, where WordPress keeps everything that changes how a site looks. The page is unchanged; only where you find it. It also now opens for anyone allowed to change the site's appearance, rather than only for full site administrators.
+* [Improvement] The welcome notice can be dismissed, and stays dismissed.
 * [Improvement] The What's new tab reads as text instead of showing the marks around it. Bold wording and file names arrived with asterisks and backticks still around them, the way they are typed in the release notes.
 * [Improvement] Tested on WordPress 7.0. Everything was checked on it before the version was written down: the blocks and patterns on the front end, the editor, the Site Editor, and every AWT Settings screen.
 * [Improvement] The footer credit now reads "Built with AWT, an accessible theme for WordPress." If you have edited your own footer, your version is untouched.
@@ -307,3 +311,8 @@ Reports about real barriers are treated as bugs, not feature requests.
 * [Improvement] Automatic breadcrumbs now render through the Breadcrumb block when the AWT Blocks plugin is active, so their Carbon styling (including the "/" separators) loads on every page — not just pages that already contain a Breadcrumb block. The trail no longer shows a separator after the current page.
 * [New] Initial Stage 1 release of the AWT theme: Carbon Design System foundation CSS, eight page templates, header/footer/sidebar template parts, block patterns, style variations (light + dark scope pairs), the AWT Settings screen with welcome wizard, automatic breadcrumbs, and visitor color-scheme support.
 <!-- CHANGELOG_END -->
+
+== Upgrade Notice ==
+
+= 2026.08.0 =
+First release. Nothing to upgrade from yet.

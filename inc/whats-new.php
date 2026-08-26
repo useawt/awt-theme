@@ -23,6 +23,8 @@ declare( strict_types = 1 );
 
 namespace AWT\Theme\WhatsNew;
 
+use AWT\Theme\AdminPage;
+
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
@@ -169,12 +171,12 @@ function decorate_menu_item(): void {
 	}
 
 	global $submenu;
-	if ( empty( $submenu['options-general.php'] ) ) {
+	if ( empty( $submenu[ AdminPage\PARENT_SLUG ] ) ) {
 		return;
 	}
-	foreach ( $submenu['options-general.php'] as $i => $item ) {
+	foreach ( $submenu[ AdminPage\PARENT_SLUG ] as $i => $item ) {
 		if ( 'awt-settings' === ( $item[2] ?? '' ) ) {
-			$submenu['options-general.php'][ $i ][0] .= $badge; // phpcs:ignore WordPress.WP.GlobalVariablesOverride.Prohibited -- decorating our own menu label is the documented way to add an indicator.
+			$submenu[ AdminPage\PARENT_SLUG ][ $i ][0] .= $badge; // phpcs:ignore WordPress.WP.GlobalVariablesOverride.Prohibited -- decorating our own menu label is the documented way to add an indicator.
 			break;
 		}
 	}
@@ -187,7 +189,7 @@ function handle_ack(): void {
 	if ( empty( $_POST['awt_whats_new_ack'] ) ) {
 		return;
 	}
-	if ( ! current_user_can( 'manage_options' ) ) {
+	if ( ! current_user_can( 'edit_theme_options' ) ) {
 		return;
 	}
 	$nonce = sanitize_text_field( wp_unslash( $_POST['_awt_whats_new_nonce'] ?? '' ) );
@@ -198,7 +200,7 @@ function handle_ack(): void {
 	if ( $data ) {
 		update_user_meta( get_current_user_id(), ACK_META, (string) $data['currentVersion'] );
 	}
-	wp_safe_redirect( admin_url( 'options-general.php?page=awt-settings&tab=whats-new' ) );
+	wp_safe_redirect( admin_url( 'themes.php?page=awt-settings&tab=whats-new' ) );
 	exit;
 }
 

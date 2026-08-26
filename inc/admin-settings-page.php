@@ -15,7 +15,7 @@
  * matches the spec's §5 placement decision ("sub-menu under WP core's
  * Settings, not a top-level menu"). Familiar pattern from Yoast / WooCommerce.
  *
- * Capability gate: `manage_options` for read + write. Standard WP admin
+ * Capability gate: `edit_theme_options` for read + write. Standard WP admin
  * capability for theme settings. Both the menu registration and the form
  * processor check it.
  *
@@ -33,7 +33,16 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 const MENU_SLUG = 'awt-settings';
-const NONCE_KEY = 'awt_settings_save';
+
+/**
+ * The parent menu, and the screen hook WordPress derives from it.
+ *
+ * Both are here rather than written out at each use: they move together, and
+ * a stale copy of the hook silently stops the page's own CSS from loading.
+ */
+const PARENT_SLUG = 'themes.php';
+const PAGE_HOOK   = 'appearance_page_' . MENU_SLUG;
+const NONCE_KEY   = 'awt_settings_save';
 
 add_action( 'admin_menu', __NAMESPACE__ . '\\register_menu' );
 add_action( 'admin_init', __NAMESPACE__ . '\\handle_form_submission' );
@@ -42,18 +51,21 @@ add_action( 'admin_init', __NAMESPACE__ . '\\handle_import' );
 add_action( 'admin_enqueue_scripts', __NAMESPACE__ . '\\enqueue_assets' );
 
 /**
- * Register the sub-menu page under WP core's Settings menu.
+ * Register the sub-menu page under WP core's Appearance menu.
  *
- * `options-general.php` is the parent slug — that's the literal file
- * WP-core's "Settings" menu corresponds to. Using it puts us in the
- * conventional location next to General / Writing / Reading / etc.
+ * `themes.php` is the parent slug — the file behind the Appearance menu.
+ * The Theme Directory requires a theme's own screens to live there, and it
+ * is where someone looks for anything that changes how the site is drawn.
+ * The capability is `edit_theme_options` for the same reason: it is the one
+ * WordPress defines for exactly this, rather than the site-wide
+ * `manage_options`.
  */
 function register_menu(): void {
 	add_submenu_page(
-		'options-general.php',
+		PARENT_SLUG,
 		__( 'AWT Settings', 'awt' ),
 		__( 'AWT', 'awt' ),
-		'manage_options',
+		'edit_theme_options',
 		MENU_SLUG,
 		__NAMESPACE__ . '\\render_page'
 	);
@@ -127,7 +139,7 @@ function tab_url( string $tab_slug ): string {
 			'page' => MENU_SLUG,
 			'tab'  => $tab_slug,
 		),
-		admin_url( 'options-general.php' )
+		admin_url( 'themes.php' )
 	);
 }
 
@@ -136,7 +148,7 @@ function tab_url( string $tab_slug ): string {
  * the active tab's content is delegated to its renderer function.
  */
 function render_page(): void {
-	if ( ! current_user_can( 'manage_options' ) ) {
+	if ( ! current_user_can( 'edit_theme_options' ) ) {
 		wp_die( esc_html__( 'You do not have permission to access this page.', 'awt' ) );
 	}
 
@@ -186,7 +198,7 @@ function render_page(): void {
 			call_user_func( $renderer );
 		} else {
 			?>
-			<form method="post" action="<?php echo esc_url( admin_url( 'options-general.php?page=' . MENU_SLUG . '&tab=' . $active ) ); ?>" class="awt-settings-form">
+			<form method="post" action="<?php echo esc_url( admin_url( 'themes.php?page=' . MENU_SLUG . '&tab=' . $active ) ); ?>" class="awt-settings-form">
 				<?php
 				wp_nonce_field( NONCE_KEY, '_awt_nonce' );
 				echo '<input type="hidden" name="awt_active_tab" value="' . esc_attr( $active ) . '" />';
@@ -253,7 +265,7 @@ function handle_form_submission(): void {
 	if ( empty( $_POST['_awt_nonce'] ) || empty( $_POST['awt_active_tab'] ) ) {
 		return;
 	}
-	if ( ! current_user_can( 'manage_options' ) ) {
+	if ( ! current_user_can( 'edit_theme_options' ) ) {
 		return;
 	}
 	$nonce = sanitize_text_field( wp_unslash( $_POST['_awt_nonce'] ) );
@@ -295,7 +307,7 @@ function handle_form_submission(): void {
 	} else {
 		$redirect_args['awt_error'] = $error;
 	}
-	wp_safe_redirect( add_query_arg( $redirect_args, admin_url( 'options-general.php' ) ) );
+	wp_safe_redirect( add_query_arg( $redirect_args, admin_url( 'themes.php' ) ) );
 	exit;
 }
 
@@ -306,7 +318,7 @@ function handle_form_submission(): void {
  * @param string $hook_suffix Current admin page hook suffix.
  */
 function enqueue_assets( string $hook_suffix ): void {
-	if ( $hook_suffix !== 'settings_page_' . MENU_SLUG ) {
+	if ( $hook_suffix !== PAGE_HOOK ) {
 		return;
 	}
 	wp_register_style( 'awt-settings-admin', false, array(), wp_get_theme()->get( 'Version' ) );
@@ -649,7 +661,7 @@ function render_tab_appearance(): void {
 	// tabs()); Carbon's settings body is rendered inline below.
 	$active_variation = (string) ( \AWT\Theme\Settings\get( 'welcome.choices.styleVariation' ) ?? '' );
 	$active_preset    = (string) ( \AWT\Theme\Settings\get( 'welcome.choices.headerPreset' ) ?? '' );
-	$page_url         = admin_url( 'options-general.php?page=' . MENU_SLUG . '&tab=appearance' );
+	$page_url         = admin_url( 'themes.php?page=' . MENU_SLUG . '&tab=appearance' );
 	?>
 	<p class="awt-field-help" style="margin-block: 1em 1.5em;">
 		<?php esc_html_e( 'Settings that are specific to the Carbon design system: light/dark style, header layout, brand options, and type size. Other settings — logos and navigation — have their own tabs.', 'awt' ); ?>
@@ -693,7 +705,7 @@ function render_tab_appearance(): void {
 					'tab'     => 'appearance',
 					'section' => $sslug,
 				),
-				admin_url( 'options-general.php' )
+				admin_url( 'themes.php' )
 			);
 			?>
 			<a class="<?php echo esc_attr( $sclass ); ?>"
@@ -994,7 +1006,7 @@ function render_tab_appearance(): void {
 		// Free shows a short chooser: recolor via Custom CSS (the supported free
 		// path) or the Premium color editor (disabled).
 		$premium_url    = 'https://useawt.com/premium';
-		$custom_css_url = admin_url( 'options-general.php?page=' . MENU_SLUG . '&tab=custom-css' );
+		$custom_css_url = admin_url( 'themes.php?page=' . MENU_SLUG . '&tab=custom-css' );
 		?>
 		<p class="awt-field-help" style="max-inline-size: 50em;">
 			<?php esc_html_e( 'You can change your colors, but every change must keep WCAG-conformant contrast ratios so your site stays readable.', 'awt' ); ?>
@@ -2107,7 +2119,7 @@ function render_tab_tools(): void {
 				'tab'              => 'tools',
 				'awt_wizard_rerun' => '1',
 			),
-			admin_url( 'options-general.php' )
+			admin_url( 'themes.php' )
 		),
 		'awt_wizard_rerun'
 	);
@@ -2135,7 +2147,7 @@ function render_tab_tools(): void {
 				'tab'        => 'tools',
 				'awt_export' => '1',
 			),
-			admin_url( 'options-general.php' )
+			admin_url( 'themes.php' )
 		),
 		'awt_export'
 	);
@@ -2152,7 +2164,7 @@ function render_tab_tools(): void {
 	</p>
 
 	<form method="post"
-			action="<?php echo esc_url( admin_url( 'options-general.php?page=' . MENU_SLUG . '&tab=tools' ) ); ?>"
+			action="<?php echo esc_url( admin_url( 'themes.php?page=' . MENU_SLUG . '&tab=tools' ) ); ?>"
 			enctype="multipart/form-data"
 			onsubmit="return confirm(<?php echo esc_attr( wp_json_encode( __( 'Importing will replace this site\'s current AWT settings with the uploaded file. Continue?', 'awt' ) ) ); ?>);">
 		<?php wp_nonce_field( 'awt_import', 'awt_import_nonce' ); ?>
@@ -2178,7 +2190,7 @@ function handle_export(): void {
 	if ( empty( $_GET['awt_export'] ) || $_GET['awt_export'] !== '1' ) {
 		return;
 	}
-	if ( ! current_user_can( 'manage_options' ) ) {
+	if ( ! current_user_can( 'edit_theme_options' ) ) {
 		return;
 	}
 	$nonce = isset( $_GET['_wpnonce'] ) ? sanitize_text_field( wp_unslash( $_GET['_wpnonce'] ) ) : '';
@@ -2198,7 +2210,7 @@ function handle_export(): void {
 					'tab'       => 'tools',
 					'awt_error' => rawurlencode( __( 'Could not serialize settings for export.', 'awt' ) ),
 				),
-				admin_url( 'options-general.php' )
+				admin_url( 'themes.php' )
 			)
 		);
 		exit;
@@ -2231,7 +2243,7 @@ function handle_import(): void {
 	if ( empty( $_POST['awt_import_nonce'] ) ) {
 		return;
 	}
-	if ( ! current_user_can( 'manage_options' ) ) {
+	if ( ! current_user_can( 'edit_theme_options' ) ) {
 		return;
 	}
 	$nonce = sanitize_text_field( wp_unslash( $_POST['awt_import_nonce'] ) );
@@ -2244,7 +2256,7 @@ function handle_import(): void {
 			'page' => MENU_SLUG,
 			'tab'  => 'tools',
 		),
-		admin_url( 'options-general.php' )
+		admin_url( 'themes.php' )
 	);
 	$fail     = static function ( string $msg ) use ( $redirect ): void {
 		wp_safe_redirect( add_query_arg( 'awt_error', rawurlencode( $msg ), $redirect ) );

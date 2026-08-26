@@ -63,6 +63,9 @@ const INCLUDE = [
 	'license.txt',
 	'LICENSE-Apache-2.0.txt',
 	'LICENSE-OFL-1.1.txt',
+	// The Sass the minified stylesheet is compiled from. The Theme Directory
+	// asks for the original of anything minified that ships.
+	'src/foundation.scss',
 ];
 
 /**
@@ -80,7 +83,16 @@ const REQUIRED = [
 	'screenshot.png',
 	'assets/css/foundation.min.css',
 	'assets/css/theme.css',
+	// The source the minified stylesheet is built from. The Theme Directory
+	// asks for the original of anything minified, and it is 2 KB.
+	'src/foundation.scss',
 ];
+
+/**
+ * The one exception to FORBIDDEN below, listed on its own so the exclusion of
+ * `src/` and `.scss` stays otherwise absolute.
+ */
+const ALLOWED_SOURCES = [ 'src/', 'src/foundation.scss' ];
 
 /**
  * Nothing matching these may appear in the zip. Redundant with the include
@@ -161,6 +173,9 @@ if (missing.length) {
 
 const offenders = [];
 for (const p of paths) {
+	if (ALLOWED_SOURCES.includes(p)) {
+		continue;
+	}
 	const hit = FORBIDDEN.find((rule) => rule.re.test(p));
 	if (hit) {
 		offenders.push(`${p}  (${hit.why})`);

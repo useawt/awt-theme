@@ -41,6 +41,7 @@ add_action( 'after_switch_theme', __NAMESPACE__ . '\\on_activation' );
 add_action( 'admin_notices', __NAMESPACE__ . '\\maybe_show_welcome_notice' );
 add_action( 'admin_init', __NAMESPACE__ . '\\handle_step_submission' );
 add_action( 'admin_init', __NAMESPACE__ . '\\handle_rerun_request' );
+add_action( 'admin_init', __NAMESPACE__ . '\\handle_notice_dismissal' );
 
 /**
  * Handle ?awt_wizard_rerun=1 — resets the wizard's completed flag + step
@@ -51,7 +52,7 @@ function handle_rerun_request(): void {
 	if ( empty( $_GET['awt_wizard_rerun'] ) || $_GET['awt_wizard_rerun'] !== '1' ) {
 		return;
 	}
-	if ( ! current_user_can( 'manage_options' ) ) {
+	if ( ! current_user_can( 'edit_theme_options' ) ) {
 		return;
 	}
 	$nonce = isset( $_GET['_wpnonce'] ) ? sanitize_text_field( wp_unslash( $_GET['_wpnonce'] ) ) : '';
@@ -66,7 +67,7 @@ function handle_rerun_request(): void {
 				'page' => AdminPage\MENU_SLUG,
 				'tab'  => 'welcome',
 			),
-			admin_url( 'options-general.php' )
+			admin_url( 'themes.php' )
 		)
 	);
 	exit;
@@ -88,7 +89,7 @@ function on_activation(): void {
  * One-shot admin notice that points users to the wizard.
  */
 function maybe_show_welcome_notice(): void {
-	if ( ! current_user_can( 'manage_options' ) ) {
+	if ( ! current_user_can( 'edit_theme_options' ) ) {
 		return;
 	}
 	if ( (bool) Settings\get( 'welcome.completed' ) ) {
@@ -98,27 +99,58 @@ function maybe_show_welcome_notice(): void {
 		return;
 	}
 	$screen = function_exists( 'get_current_screen' ) ? get_current_screen() : null;
-	if ( $screen && $screen->id === 'settings_page_' . AdminPage\MENU_SLUG && active_tab_is_welcome() ) {
+	if ( $screen && $screen->id === AdminPage\PAGE_HOOK && active_tab_is_welcome() ) {
 		return;
 	}
-	$wizard_url = add_query_arg(
+	$wizard_url  = add_query_arg(
 		array(
 			'page' => AdminPage\MENU_SLUG,
 			'tab'  => 'welcome',
 		),
-		admin_url( 'options-general.php' )
+		admin_url( 'themes.php' )
+	);
+	$dismiss_url = wp_nonce_url(
+		add_query_arg( 'awt_dismiss_welcome', '1' ),
+		'awt_dismiss_welcome'
 	);
 	?>
-	<div class="notice notice-info">
+	<div class="notice notice-info is-dismissible">
 		<p>
 			<strong><?php esc_html_e( 'Welcome to AWT', 'awt' ); ?></strong>
 			— <?php esc_html_e( 'Finish setting up your site in a few quick steps.', 'awt' ); ?>
 			<a href="<?php echo esc_url( $wizard_url ); ?>" class="button button-primary" style="margin-inline-start: 1em;">
 				<?php esc_html_e( 'Start setup', 'awt' ); ?>
 			</a>
+			<a href="<?php echo esc_url( $dismiss_url ); ?>" style="margin-inline-start: 1em;">
+				<?php esc_html_e( 'Dismiss', 'awt' ); ?>
+			</a>
 		</p>
 	</div>
 	<?php
+}
+
+/**
+ * Stop showing the welcome notice, for good.
+ *
+ * The core dismiss button only hides a notice for the page you are looking at,
+ * so a notice that is only `is-dismissible` comes back on the next screen and
+ * reads as broken. This handles the link beside it, which removes the flag the
+ * notice is drawn from.
+ */
+function handle_notice_dismissal(): void {
+	if ( empty( $_GET['awt_dismiss_welcome'] ) ) {
+		return;
+	}
+	if ( ! current_user_can( 'edit_theme_options' ) ) {
+		return;
+	}
+	$nonce = isset( $_GET['_wpnonce'] ) ? sanitize_text_field( wp_unslash( $_GET['_wpnonce'] ) ) : '';
+	if ( ! wp_verify_nonce( $nonce, 'awt_dismiss_welcome' ) ) {
+		return;
+	}
+	delete_transient( 'awt_welcome_notice' );
+	wp_safe_redirect( remove_query_arg( array( 'awt_dismiss_welcome', '_wpnonce' ) ) );
+	exit;
 }
 
 /**
@@ -426,7 +458,7 @@ function handle_step_submission(): void {
 	if ( empty( $_POST['_awt_wizard_nonce'] ) ) {
 		return;
 	}
-	if ( ! current_user_can( 'manage_options' ) ) {
+	if ( ! current_user_can( 'edit_theme_options' ) ) {
 		return;
 	}
 	$nonce = sanitize_text_field( wp_unslash( $_POST['_awt_wizard_nonce'] ) );
@@ -451,7 +483,7 @@ function handle_step_submission(): void {
 					'tab'      => 'welcome',
 					'awt_done' => '1',
 				),
-				admin_url( 'options-general.php' )
+				admin_url( 'themes.php' )
 			)
 		);
 		exit;
@@ -551,7 +583,7 @@ function redirect_to_wizard(): void {
 				'page' => AdminPage\MENU_SLUG,
 				'tab'  => 'welcome',
 			),
-			admin_url( 'options-general.php' )
+			admin_url( 'themes.php' )
 		)
 	);
 	exit;

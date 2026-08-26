@@ -275,6 +275,13 @@
 
 ### [Improvement]
 
+- AWT Settings has moved from Settings to **Appearance**, where WordPress keeps
+  everything that changes how a site looks. The page is unchanged; only where
+  you find it. It also now opens for anyone allowed to change the site's
+  appearance, rather than only for full site administrators.
+
+- The welcome notice can be dismissed, and stays dismissed.
+
 - The What's new tab reads as text instead of showing the marks around it.
   Bold wording and file names arrived with asterisks and backticks still
   around them, the way they are typed in the release notes.
