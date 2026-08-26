@@ -14,6 +14,21 @@
 
 ### [Breaking]
 
+- **Custom code has moved to AWT Premium.** The screen that put your own markup
+  into every page (before `</head>`, after `<body>`, before `</body>`) is not
+  something a theme may do: WordPress.org asks themes to stay with design and
+  presentation, and names injected script as the example of what belongs in a
+  plugin. Anything you had saved is kept and reappears if you add Premium.
+  **Custom CSS is unaffected** — styling your site is exactly what a theme is
+  for.
+
+- **Settings are stored under new names.** The option, and the keys behind a
+  page's own language and hidden-breadcrumb choices, gained an `awt_theme_`
+  prefix, because the directory requires at least four letters and ours was
+  three. Your settings and per-page choices move themselves the first time you
+  open the admin — nothing to do. Custom code that read `awt_settings` directly
+  should read `awt_theme_settings`.
+
 - **AWT is now GPLv3 or later, instead of GPLv2 or later.** Nothing changes for
   you as a site owner: you can still use, modify and redistribute it freely,
   and it runs on WordPress exactly as before. The change matters only if you

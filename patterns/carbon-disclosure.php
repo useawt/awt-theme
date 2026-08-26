@@ -4,7 +4,7 @@
  * Slug: awt/carbon-disclosure
  * Design system: carbon
  * Description: Click-triggered pop-ups that reveal more in place: a toggletip for supporting detail next to a label, and a menu button that discloses a set of actions.
- * Categories: awt-section
+ * Categories: awt-theme-section
  * Keywords: disclosure, toggletip, popover, menu button, reveal
  * Block Types: core/post-content
  * Inserter: yes

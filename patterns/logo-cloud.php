@@ -4,7 +4,7 @@
  * Slug: awt/logo-cloud
  * Design system: carbon
  * Description: Row of customer or partner logos with an optional heading. Used to build social proof on marketing pages.
- * Categories: awt-section
+ * Categories: awt-theme-section
  * Keywords: logos, customers, partners, social proof, brands
  * Block Types: core/post-content
  * Inserter: yes

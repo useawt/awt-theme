@@ -39,7 +39,7 @@ interface DesignSystemInterface {
 
 	/* --- 1. Identity ----------------------------------------------------- */
 
-	/** Stable machine slug, e.g. 'carbon'. Stored in awt_settings.designSystem.slug. */
+	/** Stable machine slug, e.g. 'carbon'. Stored in awt_theme_settings.designSystem.slug. */
 	public function slug(): string;
 
 	/** Human-readable name, e.g. 'Carbon'. Used as the per-system AWT-Settings tab label. */

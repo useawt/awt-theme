@@ -29,8 +29,8 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-const SEEN_META = 'awt_whats_new_seen';
-const ACK_META  = 'awt_whats_new_ack';
+const SEEN_META = 'awt_theme_whats_new_seen';
+const ACK_META  = 'awt_theme_whats_new_ack';
 
 add_filter( 'awt_admin_settings_tabs', __NAMESPACE__ . '\\register_tab', 20 );
 add_action( 'admin_menu', __NAMESPACE__ . '\\decorate_menu_item', 999 );
@@ -138,10 +138,10 @@ function register_tab( array $tabs ): array {
  * core's native bubble classes and needs no CSS of ours.)
  */
 function enqueue_indicator_style(): void {
-	wp_register_style( 'awt-whats-new-indicator', false, array(), \AWT\Theme\AWT_THEME_VERSION );
-	wp_enqueue_style( 'awt-whats-new-indicator' );
+	wp_register_style( 'awt-theme-whats-new-indicator', false, array(), \AWT\Theme\AWT_THEME_VERSION );
+	wp_enqueue_style( 'awt-theme-whats-new-indicator' );
 	wp_add_inline_style(
-		'awt-whats-new-indicator',
+		'awt-theme-whats-new-indicator',
 		'.awt-whats-new-dot{display:inline-block;width:8px;height:8px;margin-left:6px;border-radius:50%;background:currentColor;opacity:.55;vertical-align:middle;}'
 	);
 }
@@ -186,14 +186,14 @@ function decorate_menu_item(): void {
  * Handle the "Got it" dismissal of pinned high-severity notes.
  */
 function handle_ack(): void {
-	if ( empty( $_POST['awt_whats_new_ack'] ) ) {
+	if ( empty( $_POST['awt_theme_whats_new_ack'] ) ) {
 		return;
 	}
 	if ( ! current_user_can( 'edit_theme_options' ) ) {
 		return;
 	}
 	$nonce = sanitize_text_field( wp_unslash( $_POST['_awt_whats_new_nonce'] ?? '' ) );
-	if ( ! wp_verify_nonce( $nonce, 'awt_whats_new_ack' ) ) {
+	if ( ! wp_verify_nonce( $nonce, 'awt_theme_whats_new_ack' ) ) {
 		return;
 	}
 	$data = changelog();
@@ -273,8 +273,8 @@ function render_tab(): void {
 			render_entries( $release );
 		}
 		echo '<form method="post">';
-		wp_nonce_field( 'awt_whats_new_ack', '_awt_whats_new_nonce' );
-		echo '<button type="submit" name="awt_whats_new_ack" value="1" class="button button-secondary">' . esc_html__( 'Got it — dismiss these notes', 'awt' ) . '</button>';
+		wp_nonce_field( 'awt_theme_whats_new_ack', '_awt_whats_new_nonce' );
+		echo '<button type="submit" name="awt_theme_whats_new_ack" value="1" class="button button-secondary">' . esc_html__( 'Got it — dismiss these notes', 'awt' ) . '</button>';
 		echo '</form>';
 		echo '</div>';
 	}

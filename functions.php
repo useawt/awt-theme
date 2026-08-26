@@ -23,6 +23,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 const AWT_THEME_VERSION = '2026.08.0';
 
 require_once __DIR__ . '/inc/settings.php';
+require_once __DIR__ . '/inc/upgrade.php';
 // §A Design system layer — interface + registry + Carbon. Loaded before the
 // contrast / header-preset / style-variation files, which are thin shims
 // delegating to Registry::get_active().
@@ -93,7 +94,7 @@ function ui_shell_settings(): array {
  * from there meant every non-default variation (g10 light, g90 dark) silently had
  * no effect on the front-end `cds--{scope}` body class.
  *
- * Source of truth instead: the applied variation slug in `awt_settings`
+ * Source of truth instead: the applied variation slug in `awt_theme_settings`
  * (`welcome.choices.styleVariation`), which both apply-paths (welcome wizard +
  * Appearance/Carbon tab) write and which is NOT subject to global-styles
  * sanitization. The slug encodes both scopes as `{light}-plus-{dark}`. Falls back
@@ -251,7 +252,7 @@ add_action(
 			return;
 		}
 		register_block_pattern_category(
-			'awt-section',
+			'awt-theme-section',
 			array( 'label' => __( 'AWT — Sections', 'awt' ) )
 		);
 	}
@@ -445,8 +446,8 @@ add_action(
 		$carbon_path = get_template_directory() . '/assets/css/foundation.min.css';
 		$theme_path  = get_template_directory() . '/assets/css/theme.css';
 
-		wp_enqueue_style( 'awt-carbon', get_template_directory_uri() . '/assets/css/foundation.min.css', array(), (string) filemtime( $carbon_path ) );
-		wp_enqueue_style( 'awt-theme', get_template_directory_uri() . '/assets/css/theme.css', array( 'awt-carbon' ), (string) filemtime( $theme_path ) );
+		wp_enqueue_style( 'awt-theme-carbon', get_template_directory_uri() . '/assets/css/foundation.min.css', array(), (string) filemtime( $carbon_path ) );
+		wp_enqueue_style( 'awt-theme', get_template_directory_uri() . '/assets/css/theme.css', array( 'awt-theme-carbon' ), (string) filemtime( $theme_path ) );
 	}
 );
 
@@ -505,7 +506,7 @@ add_action(
  * the correct scope is in place before any page content has been parsed, let
  * alone painted.
  *
- * Priority 0 so it runs ahead of the Custom code → after body open injection.
+ * Priority 0 so it runs before anything else hooked to `wp_body_open`.
  */
 add_action(
 	'wp_body_open',
@@ -569,56 +570,12 @@ add_action(
 	999
 );
 
-/**
- * Front-end emission of AWT Settings → Custom code → "Before </head>".
- *
- * Priority 99 per spec — fires after other plugins on the same hook so
- * AWT-injected code doesn't break plugins that expect a settled head.
+/*
+ * Nothing here injects author-supplied code into the page. The Custom code
+ * capability moved to AWT Premium: injecting arbitrary markup into the head or
+ * the body is not design or presentation, which is the line the Theme
+ * Directory draws for themes. See the note in inc/admin-settings-page.php.
  */
-add_action(
-	'wp_head',
-	static function (): void {
-		if ( ! function_exists( '\\AWT\\Theme\\Settings\\get' ) ) {
-			return;
-		}
-		$code = (string) \AWT\Theme\Settings\get( 'customCode.head' );
-		if ( trim( $code ) === '' ) {
-			return;
-		}
-		echo "\n<!-- AWT custom code: head -->\n" . $code . "\n<!-- /AWT custom code: head -->\n"; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- deliberately raw: site-owner Custom code feature (capability-gated save path); see spec §5.
-	},
-	99
-);
-
-add_action(
-	'wp_body_open',
-	static function (): void {
-		if ( ! function_exists( '\\AWT\\Theme\\Settings\\get' ) ) {
-			return;
-		}
-		$code = (string) \AWT\Theme\Settings\get( 'customCode.afterBodyOpen' );
-		if ( trim( $code ) === '' ) {
-			return;
-		}
-		echo "\n<!-- AWT custom code: after body open -->\n" . $code . "\n<!-- /AWT custom code: after body open -->\n"; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- deliberately raw: site-owner Custom code feature (capability-gated save path); see spec §5.
-	},
-	99
-);
-
-add_action(
-	'wp_footer',
-	static function (): void {
-		if ( ! function_exists( '\\AWT\\Theme\\Settings\\get' ) ) {
-			return;
-		}
-		$code = (string) \AWT\Theme\Settings\get( 'customCode.beforeBodyClose' );
-		if ( trim( $code ) === '' ) {
-			return;
-		}
-		echo "\n<!-- AWT custom code: before body close -->\n" . $code . "\n<!-- /AWT custom code: before body close -->\n"; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- deliberately raw: site-owner Custom code feature (capability-gated save path); see spec §5.
-	},
-	99
-);
 
 /**
  * Expose ui-shell config + active variants to the editor iframe so blocks

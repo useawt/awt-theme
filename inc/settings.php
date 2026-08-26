@@ -2,7 +2,7 @@
 /**
  * AWT Settings — persistence layer.
  *
- * Single `wp_options` row (`awt_settings`) serialized as JSON. Every §5
+ * Single `wp_options` row (`awt_theme_settings`) serialized as JSON. Every §5
  * admin-page setting reads/writes here through the `Settings` class —
  * blocks, theme code, and the admin UI all share one source of truth.
  *
@@ -32,7 +32,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-const OPTION_KEY     = 'awt_settings';
+const OPTION_KEY     = 'awt_theme_settings';
 const SCHEMA_VERSION = 2;
 
 /**
@@ -256,6 +256,9 @@ function defaults(): array {
 			// pass. See "Differences from Carbon" (D8).
 			'formTextBodySize' => true,
 		),
+		// Kept, and read by nothing in this theme: the Custom code screen is
+		// an AWT Premium capability. Holding the keys here means a site that
+		// turns Premium off keeps what it wrote rather than losing it.
 		'customCode'    => array(
 			'head'            => '',
 			'afterBodyOpen'   => '',
@@ -507,7 +510,7 @@ function sanitize( array $settings ): array {
 		'formTextBodySize' => ! isset( $typography['formTextBodySize'] ) || ! empty( $typography['formTextBodySize'] ),
 	);
 
-	// Custom code (NOT sanitized — see comment above).
+	// Custom code: carried through untouched, and never output by this theme.
 	$cc                = $settings['customCode'] ?? array();
 	$out['customCode'] = array(
 		'head'            => isset( $cc['head'] ) ? (string) $cc['head'] : '',

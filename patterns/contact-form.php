@@ -4,7 +4,7 @@
  * Slug: awt/contact-form
  * Design system: carbon
  * Description: Single-column contact form with name + email + message + submit. Replace the form's action endpoint with your handler.
- * Categories: awt-section
+ * Categories: awt-theme-section
  * Keywords: contact, form, message, inquiry
  * Block Types: core/post-content
  * Inserter: yes

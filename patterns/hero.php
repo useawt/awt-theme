@@ -4,7 +4,7 @@
  * Slug: awt/hero
  * Design system: carbon
  * Description: Centered hero with eyebrow, headline, supporting text, and a primary CTA.
- * Categories: awt-section, header
+ * Categories: awt-theme-section, header
  * Keywords: hero, headline, marketing, banner
  * Block Types: core/post-content
  * Inserter: yes

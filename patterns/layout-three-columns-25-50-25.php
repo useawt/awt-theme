@@ -4,7 +4,7 @@
  * Slug: awt/layout-three-columns-25-50-25
  * Design system: carbon
  * Description: Three columns with center-weighted middle. Sidebar + main + sidebar.
- * Categories: awt-section
+ * Categories: awt-theme-section
  * Keywords: layout, three columns, asymmetric, sidebar, center-weighted
  * Block Types: core/post-content
  * Inserter: yes

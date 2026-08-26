@@ -4,7 +4,7 @@
  * Slug: awt/page-home
  * Design system: carbon
  * Description: Full home-page starter: hero with CTAs, three-column feature grid, and FAQ accordion. Pair it with the "Page without title" template so the hero is the page's main heading.
- * Categories: awt-section
+ * Categories: awt-theme-section
  * Keywords: home, landing, hero, marketing, starter
  * Block Types: core/post-content
  * Inserter: yes

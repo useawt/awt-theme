@@ -4,7 +4,7 @@
  * Slug: awt/carbon-error-messages
  * Design system: carbon
  * Description: Inline + page-level error compositions. Uses awt/notification at error severity with descriptive copy.
- * Categories: awt-section
+ * Categories: awt-theme-section
  * Keywords: error, alert, notification, failure
  * Block Types: core/post-content
  * Inserter: yes

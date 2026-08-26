@@ -4,7 +4,7 @@
  * Slug: awt/layout-one-column-narrow
  * Design system: carbon
  * Description: Single column at narrow (42rem) reading-line-length width. Optimized for long-form prose.
- * Categories: awt-section
+ * Categories: awt-theme-section
  * Keywords: layout, one column, narrow, reading, prose
  * Block Types: core/post-content
  * Inserter: yes

@@ -4,7 +4,7 @@
  * Slug: awt/feature-grid
  * Design system: carbon
  * Description: Three-column feature grid with icon + heading + description per cell.
- * Categories: awt-section, columns
+ * Categories: awt-theme-section, columns
  * Keywords: features, grid, marketing
  * Block Types: core/post-content
  * Inserter: yes

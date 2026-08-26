@@ -4,7 +4,7 @@
  * Slug: awt/page-contact
  * Design system: carbon
  * Description: Starter Contact page. Heading + intro + contact form.
- * Categories: awt-section
+ * Categories: awt-theme-section
  * Keywords: page, contact, form, message
  * Block Types: core/post-content
  * Inserter: yes

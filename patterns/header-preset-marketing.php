@@ -4,7 +4,7 @@
  * Slug: awt/header-preset-marketing
  * Design system: carbon
  * Description: Your logo, a row of menu links, and one or two icon buttons. No side navigation. Good for landing pages and product sites.
- * Categories: awt-section, header
+ * Categories: awt-theme-section, header
  * Keywords: header, preset, marketing, landing, brand
  * Block Types: core/template-part/header
  * Inserter: yes

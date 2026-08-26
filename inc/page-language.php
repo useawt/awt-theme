@@ -3,7 +3,7 @@
  * Page-level language override (§4 Language controls).
  *
  * A page that is entirely in another language can override the document
- * language just for itself: the `awt_page_lang` post meta (set via the editor's
+ * language just for itself: the `awt_theme_page_lang` post meta (set via the editor's
  * "Language" document panel, awt-blocks) replaces `<html lang>` on that singular
  * view via the language_attributes filter. Empty meta = inherit the site
  * language (WordPress core's default behavior).
@@ -19,7 +19,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-const META_KEY = 'awt_page_lang';
+const META_KEY = 'awt_theme_page_lang';
 
 /**
  * Register the override meta on every public post type, exposed to the REST API

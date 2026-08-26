@@ -40,8 +40,8 @@ It does not cover:
 - Content written by site owners and authors (the in-editor accessibility
   linter helps here, but authors stay responsible for their content).
 - Third-party plugins installed alongside AWT.
-- Custom code or custom CSS added through the AWT Settings → Custom code
-  fields.
+- Custom CSS added through AWT Settings, and any code added by an AWT Premium
+  add-on.
 
 ## Standard
 

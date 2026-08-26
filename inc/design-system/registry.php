@@ -7,7 +7,7 @@
  * Registry::get_active() rather than instantiating Carbon directly, so there
  * is exactly one resolution path to reason about and to reset in tests.
  *
- * The active selection is read from awt_settings.designSystem.slug, defaulting
+ * The active selection is read from awt_theme_settings.designSystem.slug, defaulting
  * to 'carbon'. An unknown or unavailable slug falls back to Carbon so the
  * site never renders without a design system.
  *
@@ -85,7 +85,7 @@ class Registry {
 	}
 
 	/**
-	 * The active design system. Reads awt_settings.designSystem.slug; falls
+	 * The active design system. Reads awt_theme_settings.designSystem.slug; falls
 	 * back to Carbon when the stored slug is missing, unknown, or not
 	 * available.
 	 */

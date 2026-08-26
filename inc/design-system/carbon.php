@@ -37,7 +37,7 @@ class Carbon implements DesignSystemInterface {
 	 * ==================================================================
 	 */
 
-	/** Stable machine slug: 'carbon'. Stored in awt_settings.designSystem.slug. */
+	/** Stable machine slug: 'carbon'. Stored in awt_theme_settings.designSystem.slug. */
 	public function slug(): string {
 		return 'carbon'; }
 

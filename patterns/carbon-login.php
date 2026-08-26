@@ -4,7 +4,7 @@
  * Slug: awt/carbon-login
  * Design system: carbon
  * Description: Centered login form with username + password + submit + recovery link.
- * Categories: awt-section
+ * Categories: awt-theme-section
  * Keywords: login, signin, authentication, account
  * Block Types: core/post-content
  * Inserter: yes

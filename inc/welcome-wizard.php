@@ -12,7 +12,7 @@
  *   5. Done (recap + onward links)
  *
  * On first theme activation, a one-shot admin notice points users here.
- * The wizard's state lives in `awt_settings.welcome.{currentStep,
+ * The wizard's state lives in `awt_theme_settings.welcome.{currentStep,
  * completed,choices}` so authors can leave and resume. Steps 2 and 4
  * reuse the matching AWT Settings tab renderers + savers so there is one
  * source of truth; steps 1 and 3 render inline (they merge two tabs each).
@@ -82,7 +82,7 @@ function on_activation(): void {
 	if ( $completed ) {
 		return; // Returning visitors don't see the notice again.
 	}
-	set_transient( 'awt_welcome_notice', '1', 30 * DAY_IN_SECONDS );
+	set_transient( 'awt_theme_welcome_notice', '1', 30 * DAY_IN_SECONDS );
 }
 
 /**
@@ -95,7 +95,7 @@ function maybe_show_welcome_notice(): void {
 	if ( (bool) Settings\get( 'welcome.completed' ) ) {
 		return;
 	}
-	if ( ! get_transient( 'awt_welcome_notice' ) ) {
+	if ( ! get_transient( 'awt_theme_welcome_notice' ) ) {
 		return;
 	}
 	$screen = function_exists( 'get_current_screen' ) ? get_current_screen() : null;
@@ -148,7 +148,7 @@ function handle_notice_dismissal(): void {
 	if ( ! wp_verify_nonce( $nonce, 'awt_dismiss_welcome' ) ) {
 		return;
 	}
-	delete_transient( 'awt_welcome_notice' );
+	delete_transient( 'awt_theme_welcome_notice' );
 	wp_safe_redirect( remove_query_arg( array( 'awt_dismiss_welcome', '_wpnonce' ) ) );
 	exit;
 }
@@ -186,7 +186,7 @@ function inject_welcome_tab( array $tabs ): array {
 
 /**
  * Render the wizard. Dispatches to a per-step renderer based on
- * `awt_settings.welcome.currentStep`. Steps numbered 0–5.
+ * `awt_theme_settings.welcome.currentStep`. Steps numbered 0–5.
  */
 function render_wizard_page(): void {
 	$current = (int) Settings\get( 'welcome.currentStep' );
@@ -473,7 +473,7 @@ function handle_step_submission(): void {
 	if ( $action === 'complete' && $direction !== 'back' ) {
 		Settings\set( 'welcome.completed', true );
 		Settings\set( 'welcome.currentStep', LAST_STEP );
-		delete_transient( 'awt_welcome_notice' );
+		delete_transient( 'awt_theme_welcome_notice' );
 		// Stay on the Done step (now marked complete) rather than leaving for
 		// the Site Editor — the recap + onward links live here.
 		wp_safe_redirect(

@@ -4,7 +4,7 @@
  * Slug: awt/carbon-forms
  * Design system: carbon
  * Description: Carbon form-layout pattern. Stacked labelled inputs + checkbox + submit. Foundation for any form scenario.
- * Categories: awt-section
+ * Categories: awt-theme-section
  * Keywords: form, input, signup, register
  * Block Types: core/post-content
  * Inserter: yes

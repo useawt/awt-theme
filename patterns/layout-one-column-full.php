@@ -4,7 +4,7 @@
  * Slug: awt/layout-one-column-full
  * Design system: carbon
  * Description: Single column at full content area width (no max-width cap). For hero-style or image-led sections.
- * Categories: awt-section
+ * Categories: awt-theme-section
  * Keywords: layout, one column, full width, hero, bleed
  * Block Types: core/post-content
  * Inserter: yes

@@ -4,7 +4,7 @@
  * Slug: awt/page-docs-index
  * Design system: carbon
  * Description: Starter docs landing page. Heading + intro + 3-column card grid linking to top-level docs sections.
- * Categories: awt-section
+ * Categories: awt-theme-section
  * Keywords: page, docs, documentation, knowledge base
  * Block Types: core/post-content
  * Inserter: yes

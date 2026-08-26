@@ -4,7 +4,7 @@
  * Slug: awt/cta-section
  * Design system: carbon
  * Description: Centered headline + supporting text + primary action. Section break between content and conversion.
- * Categories: awt-section
+ * Categories: awt-theme-section
  * Keywords: cta, call to action, conversion
  * Block Types: core/post-content
  * Inserter: yes

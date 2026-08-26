@@ -4,7 +4,7 @@
  * Slug: awt/testimonial
  * Design system: carbon
  * Description: Customer quote with author attribution. Serif body type for editorial weight.
- * Categories: awt-section
+ * Categories: awt-theme-section
  * Keywords: quote, testimonial, customer, case study
  * Block Types: core/post-content
  * Inserter: yes

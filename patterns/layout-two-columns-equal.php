@@ -4,7 +4,7 @@
  * Slug: awt/layout-two-columns-equal
  * Design system: carbon
  * Description: Two equal columns. The most common multi-column layout.
- * Categories: awt-section
+ * Categories: awt-theme-section
  * Keywords: layout, two columns, 50/50, equal, split
  * Block Types: core/post-content
  * Inserter: yes

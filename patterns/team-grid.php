@@ -4,7 +4,7 @@
  * Slug: awt/team-grid
  * Design system: carbon
  * Description: 3-column team-member grid with photo + name + role. Replace placeholder images with real photos.
- * Categories: awt-section
+ * Categories: awt-theme-section
  * Keywords: team, people, about, staff
  * Block Types: core/post-content
  * Inserter: yes

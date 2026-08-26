@@ -98,10 +98,6 @@ function tabs(): array {
 			'label'  => __( 'Navigation', 'awt' ),
 			'render' => __NAMESPACE__ . '\\render_tab_navigation',
 		),
-		'custom-code'   => array(
-			'label'  => __( 'Custom code', 'awt' ),
-			'render' => __NAMESPACE__ . '\\render_tab_custom_code',
-		),
 		'custom-css'    => array(
 			'label'  => __( 'Custom CSS', 'awt' ),
 			'render' => __NAMESPACE__ . '\\render_tab_custom_css',
@@ -282,9 +278,15 @@ function handle_form_submission(): void {
 	// Delegate to the active tab's save handler — each tab knows which
 	// settings keys it owns. Keeps form-shape and persistence-shape close
 	// together (one section's UI only touches its own settings keys).
-	$handler = __NAMESPACE__ . '\\save_tab_' . str_replace( '-', '_', $tab );
+	//
+	// A tab may name its own saver with a `save` key. Tabs added through the
+	// `awt_admin_settings_tabs` filter live in another namespace, where the
+	// name-based convention below cannot reach them.
+	$handler = isset( $tabs[ $tab ]['save'] ) && is_callable( $tabs[ $tab ]['save'] )
+		? $tabs[ $tab ]['save']
+		: __NAMESPACE__ . '\\save_tab_' . str_replace( '-', '_', $tab );
 	$error   = '';
-	if ( function_exists( $handler ) ) {
+	if ( is_callable( $handler ) ) {
 		try {
 			call_user_func( $handler );
 		} catch ( \Throwable $e ) {
@@ -321,10 +323,10 @@ function enqueue_assets( string $hook_suffix ): void {
 	if ( $hook_suffix !== PAGE_HOOK ) {
 		return;
 	}
-	wp_register_style( 'awt-settings-admin', false, array(), wp_get_theme()->get( 'Version' ) );
-	wp_enqueue_style( 'awt-settings-admin' );
+	wp_register_style( 'awt-theme-settings-admin', false, array(), wp_get_theme()->get( 'Version' ) );
+	wp_enqueue_style( 'awt-theme-settings-admin' );
 	wp_add_inline_style(
-		'awt-settings-admin',
+		'awt-theme-settings-admin',
 		'
 		.awt-settings-page { max-width: 1200px; }
 		/* Release-notes panel. Severity is never color-only: every entry keeps
@@ -379,10 +381,10 @@ function enqueue_assets( string $hook_suffix ): void {
 	// data-awt-media-type         restrict the library (e.g. 'image')
 	// A separate `data-awt-media-remove` button clears its paired field +
 	// preview. Used on both the Identity tab and the wizard.
-	wp_register_script( 'awt-settings-admin', false, array( 'jquery', 'media-editor' ), wp_get_theme()->get( 'Version' ), true );
-	wp_enqueue_script( 'awt-settings-admin' );
+	wp_register_script( 'awt-theme-settings-admin', false, array( 'jquery', 'media-editor' ), wp_get_theme()->get( 'Version' ), true );
+	wp_enqueue_script( 'awt-theme-settings-admin' );
 	wp_add_inline_script(
-		'awt-settings-admin',
+		'awt-theme-settings-admin',
 		"(function(){
 		document.addEventListener('click', function(e){
 			// Remove button: clear the paired hidden input + preview, hide self.
@@ -1931,63 +1933,16 @@ function save_tab_navigation(): void {
 	Settings\set( 'navigation.breadcrumbAutoEmit.mobile', ! empty( $breadcrumb['mobile'] ) );
 }
 
-/**
- * Render the Custom code tab: three raw-code fields (before </head>, after
- * <body> opening, before </body>) with an accessibility caution up front.
+/*
+ * The Custom code screen (raw markup injected into the head and around the
+ * body) is not part of the free theme. It is not a matter of design or
+ * presentation, which is what a theme is for, and the Theme Directory draws
+ * that line deliberately. AWT Premium adds the screen back by registering a
+ * tab through the `awt_admin_settings_tabs` filter, with its own renderer and
+ * saver; the `customCode` keys stay in the settings schema here so a site that
+ * turns Premium off keeps what it wrote. Custom CSS below is unaffected --
+ * styling a site is exactly what a theme is for.
  */
-function render_tab_custom_code(): void {
-	$head       = Settings\get( 'customCode.head' );
-	$body_open  = Settings\get( 'customCode.afterBodyOpen' );
-	$body_close = Settings\get( 'customCode.beforeBodyClose' );
-	?>
-	<details open>
-		<summary><?php esc_html_e( '⚠ Read before using these fields', 'awt' ); ?></summary>
-		<p><?php esc_html_e( 'These fields accept arbitrary code that AWT cannot validate. Custom code can:', 'awt' ); ?></p>
-		<ul style="list-style: disc; padding-inline-start: 1.5em;">
-			<li><?php esc_html_e( 'Break keyboard navigation by stealing or trapping focus', 'awt' ); ?></li>
-			<li><?php esc_html_e( 'Break screen-reader announcements by overriding ARIA live regions (the regions screen readers watch for updates)', 'awt' ); ?></li>
-			<li><?php esc_html_e( 'Lower color contrast by adding elements in colors outside your palette', 'awt' ); ?></li>
-			<li><?php esc_html_e( 'Break reduced-motion support by adding animations that ignore the visitor\'s prefers-reduced-motion setting', 'awt' ); ?></li>
-			<li><?php esc_html_e( 'Conflict with your site\'s Content Security Policy, if it has one', 'awt' ); ?></li>
-		</ul>
-		<p><strong><?php esc_html_e( "AWT's accessibility checker doesn't review code in these fields. You're responsible for the accessibility of anything you paste here.", 'awt' ); ?></strong></p>
-	</details>
-	<table class="form-table" role="presentation">
-		<tr>
-			<th scope="row"><label for="awt-cc-head"><?php esc_html_e( 'Before </head>', 'awt' ); ?></label></th>
-			<td><textarea id="awt-cc-head" name="customCode[head]" class="code" rows="6"><?php echo esc_textarea( (string) $head ); ?></textarea>
-				<p class="awt-field-help"><?php esc_html_e( 'For analytics snippets, site-verification tags, and font or asset preloads. Loads after most other plugins.', 'awt' ); ?></p>
-			</td>
-		</tr>
-		<tr>
-			<th scope="row"><label for="awt-cc-bo"><?php esc_html_e( 'After <body> opening', 'awt' ); ?></label></th>
-			<td><textarea id="awt-cc-bo" name="customCode[afterBodyOpen]" class="code" rows="6"><?php echo esc_textarea( (string) $body_open ); ?></textarea>
-				<p class="awt-field-help"><?php esc_html_e( 'For third-party widgets that need to load early, such as chat bubbles or A/B-test anti-flicker scripts.', 'awt' ); ?></p>
-			</td>
-		</tr>
-		<tr>
-			<th scope="row"><label for="awt-cc-bc"><?php esc_html_e( 'Before </body>', 'awt' ); ?></label></th>
-			<td><textarea id="awt-cc-bc" name="customCode[beforeBodyClose]" class="code" rows="6"><?php echo esc_textarea( (string) $body_close ); ?></textarea>
-				<p class="awt-field-help"><?php esc_html_e( 'For scripts that can load last, such as footer chat widgets and deferred third-party tools.', 'awt' ); ?></p>
-			</td>
-		</tr>
-	</table>
-	<?php
-}
-
-/**
- * Save the Custom code tab's three injection fields.
- */
-function save_tab_custom_code(): void {
-	// phpcs:ignore WordPress.Security.NonceVerification.Missing, WordPress.Security.ValidatedSanitizedInput.MissingUnslash, WordPress.Security.ValidatedSanitizedInput.InputNotSanitized -- nonce verified in handle_form_submission(); fields accept raw code by design and are wp_unslash()ed per field below.
-	$input = (array) ( $_POST['customCode'] ?? array() );
-	// Don't unslash + sanitize — these fields accept raw code per spec.
-	// WP magic-quotes-style slash escaping IS removed (wp_unslash) so the
-	// stored code matches what the user typed, but no other transforms.
-	Settings\set( 'customCode.head', wp_unslash( (string) ( $input['head'] ?? '' ) ) );
-	Settings\set( 'customCode.afterBodyOpen', wp_unslash( (string) ( $input['afterBodyOpen'] ?? '' ) ) );
-	Settings\set( 'customCode.beforeBodyClose', wp_unslash( (string) ( $input['beforeBodyClose'] ?? '' ) ) );
-}
 
 /**
  * Render the Custom CSS tab: one raw-CSS field plus an "insert color

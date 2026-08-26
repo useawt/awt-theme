@@ -29,7 +29,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  * Post meta key for the per-post "hide breadcrumb" override. Registered with
  * show_in_rest so the editor's Document → Breadcrumb panel can bind to it.
  */
-const META_HIDE = 'awt_hide_breadcrumb';
+const META_HIDE = 'awt_theme_hide_breadcrumb';
 
 /**
  * Resolution helper: AWT Settings → filter → spec default.
@@ -92,7 +92,7 @@ function is_enabled(): bool {
 	}
 	// Per-post override: an author can hide the breadcrumb on a specific
 	// page/post via the editor's Document → Breadcrumb panel (the
-	// `awt_hide_breadcrumb` meta). This wins over the site-wide setting.
+	// `awt_theme_hide_breadcrumb` meta). This wins over the site-wide setting.
 	if ( is_singular() ) {
 		$post = get_queried_object();
 		if ( $post instanceof \WP_Post && get_post_meta( $post->ID, META_HIDE, true ) ) {

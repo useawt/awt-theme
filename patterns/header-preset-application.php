@@ -4,7 +4,7 @@
  * Slug: awt/header-preset-application
  * Design system: carbon
  * Description: Your logo and the icon buttons (search, notifications, user menu), with an optional side navigation menu. Good for dashboards and admin tools.
- * Categories: awt-section, header
+ * Categories: awt-theme-section, header
  * Keywords: header, preset, app, dashboard, saas
  * Block Types: core/template-part/header
  * Inserter: yes

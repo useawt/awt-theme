@@ -4,7 +4,7 @@
  * Slug: awt/layout-stacked-sections
  * Design system: carbon
  * Description: Three vertically-stacked sections with Carbon vertical rhythm. Foundation for marketing pages composed from multiple section patterns.
- * Categories: awt-section
+ * Categories: awt-theme-section
  * Keywords: layout, stacked, sections, vertical rhythm, page
  * Block Types: core/post-content
  * Inserter: yes
