@@ -230,7 +230,10 @@ function main() {
 
 	// --- RELEASE_NOTES.md --------------------------------------------------
 	const notes = [`## ${version} — ${release.date}`, ''];
-	for (const sev of SEVERITIES) {
+	// Sections keep the order the author wrote them in, so the GitHub
+	// Release reads the same way as the readme.txt changelog.
+	const order = [...new Set(release.entries.map((e) => e.severity))];
+	for (const sev of order) {
 		const entries = release.entries.filter((e) => e.severity === sev);
 		if (!entries.length) {
 			continue;
