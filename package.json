@@ -16,7 +16,8 @@
     "check:foundation": "node scripts/check-foundation.js",
     "check:css": "node scripts/check-css.js",
     "report:carbon-overrides": "node scripts/report-carbon-overrides.js",
-    "release:prepare": "node scripts/release.js"
+    "release:prepare": "node scripts/release.js",
+    "release:publish": "node scripts/release-publish.js"
   },
   "dependencies": {
     "@carbon/icons": "^11.81.0",

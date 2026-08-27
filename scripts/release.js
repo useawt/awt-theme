@@ -256,12 +256,11 @@ function main() {
 Release ${version} prepared${dryRun ? ' (dry run — nothing written)' : ''}. Checklist:
   1. Review the staged files (git diff --staged).
   2. Commit:  git commit -m "Release ${version}"
-  3. Tag:     git tag v${version}
-  4. Push:    git push && git push --tags
-  5. Create the GitHub Release for v${version}, with RELEASE_NOTES.md as the body
-     and the built zip attached — it is the only record of which commit shipped:
-     gh release create v${version} --title "${version}" --notes-file RELEASE_NOTES.md <zip>
-  6. Repeat in the sibling repos — releases are lockstep (same version, same day).`);
+  3. Build the zip if it is not current (this repo's build/check script) --
+     release:publish refuses a zip older than the commit it is tagging.
+  4. Publish: npm run release:publish ${version}
+     (tags v${version}, pushes, and creates the GitHub Release with the zip attached)
+  5. Repeat in the sibling repos -- releases are lockstep (same version, same day).`);
 }
 
 main();
