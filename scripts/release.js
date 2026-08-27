@@ -258,7 +258,9 @@ Release ${version} prepared${dryRun ? ' (dry run — nothing written)' : ''}. Ch
   2. Commit:  git commit -m "Release ${version}"
   3. Tag:     git tag v${version}
   4. Push:    git push && git push --tags
-  5. Create the GitHub Release for v${version} pasting RELEASE_NOTES.md as the body.
+  5. Create the GitHub Release for v${version}, with RELEASE_NOTES.md as the body
+     and the built zip attached — it is the only record of which commit shipped:
+     gh release create v${version} --title "${version}" --notes-file RELEASE_NOTES.md <zip>
   6. Repeat in the sibling repos — releases are lockstep (same version, same day).`);
 }
 
