@@ -18,7 +18,7 @@
 <!-- wp:awt/accordion {"singleOpen":true} -->
 <!-- wp:awt/faq-item {"question":"Is this product really free?","level":"3"} -->
 <!-- wp:paragraph -->
-<p>Yes. The base product is GPL-3.0-or-later and is published on WordPress.org with no telemetry, no callbacks, and no license keys. Premium adds optional capabilities; the free theme and plugin are the complete product.</p>
+<p>Yes. The base product is GPL-3.0-or-later, with no telemetry, no callbacks, and no license keys. Premium adds optional capabilities; the free theme and plugin are the complete product.</p>
 <!-- /wp:paragraph -->
 <!-- /wp:awt/faq-item -->
 

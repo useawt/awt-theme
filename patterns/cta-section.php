@@ -16,7 +16,7 @@
 <!-- /wp:heading -->
 
 <!-- wp:paragraph {"align":"center"} -->
-<p class="has-text-align-center">Install the theme and the blocks plugin from WordPress.org. No license keys, no telemetry, no callbacks. The accessibility linter is built in.</p>
+<p class="has-text-align-center">Install the theme and the blocks plugin, and start with an accessible foundation. No license keys, no telemetry, no callbacks. The accessibility linter is built in.</p>
 <!-- /wp:paragraph -->
 
 <!-- wp:awt/inline-set {"align":"center"} -->
