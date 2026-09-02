@@ -44,6 +44,9 @@ const PARENT_SLUG = 'themes.php';
 const PAGE_HOOK   = 'appearance_page_' . MENU_SLUG;
 const NONCE_KEY   = 'awt_settings_save';
 
+/** Where new versions of the theme and the blocks plugin are published. */
+const DOWNLOAD_URL = 'https://useawt.com/faq/#updating';
+
 add_action( 'admin_menu', __NAMESPACE__ . '\\register_menu' );
 add_action( 'admin_init', __NAMESPACE__ . '\\handle_form_submission' );
 add_action( 'admin_init', __NAMESPACE__ . '\\handle_export' );
@@ -2063,10 +2066,94 @@ function save_tab_custom_css(): void {
 }
 
 /**
+ * Version of the installed AWT Blocks plugin, or an empty string when the
+ * plugin isn't there. Read from the plugin's own file header rather than
+ * from the active-plugins list, so a deactivated-but-installed copy still
+ * reports honestly.
+ */
+function blocks_version(): string {
+	$file = WP_PLUGIN_DIR . '/awt-blocks/awt-blocks.php';
+	if ( ! is_readable( $file ) ) {
+		return '';
+	}
+	$data = get_file_data( $file, array( 'Version' => 'Version' ), 'plugin' );
+	return (string) ( $data['Version'] ?? '' );
+}
+
+/**
+ * Render the "Updating AWT" section of the Tools tab.
+ *
+ * AWT is installed from a downloaded file, not from a directory, so nothing
+ * tells a site owner that a new version exists or how to take it. This is
+ * that instruction, next to the version numbers it applies to.
+ */
+function render_updates_section(): void {
+	$theme_version  = \AWT\Theme\AWT_THEME_VERSION;
+	$blocks_version = blocks_version();
+	?>
+	<h2><?php esc_html_e( 'Updating AWT', 'awt' ); ?></h2>
+
+	<p class="awt-field-help">
+		<?php
+		if ( $blocks_version === '' ) {
+			printf(
+				/* translators: %s: version number of the AWT theme. */
+				esc_html__( 'You have the AWT theme %s. The AWT Blocks plugin is not installed, and the theme needs it: the header, the footer and every pattern are built from those blocks.', 'awt' ),
+				esc_html( $theme_version )
+			);
+		} else {
+			printf(
+				/* translators: 1: version number of the AWT theme. 2: version number of the AWT Blocks plugin. */
+				esc_html__( 'You have the AWT theme %1$s and the AWT Blocks plugin %2$s.', 'awt' ),
+				esc_html( $theme_version ),
+				esc_html( $blocks_version )
+			);
+		}
+		?>
+	</p>
+
+	<?php if ( $blocks_version !== '' && $blocks_version !== $theme_version ) : ?>
+		<div class="notice notice-warning inline">
+			<p>
+				<?php esc_html_e( 'The theme and the plugin are different versions. They are built as a pair and are only tested together, so update whichever one is behind.', 'awt' ); ?>
+			</p>
+		</div>
+	<?php endif; ?>
+
+	<p class="awt-field-help">
+		<?php esc_html_e( 'AWT does not update itself, and WordPress will not tell you when a new version is out. To move to a new version, download the files and upload them to your site. Your settings, pages and content are kept.', 'awt' ); ?>
+	</p>
+
+	<ol class="awt-field-help">
+		<li>
+			<?php
+			printf(
+				/* translators: 1: opening link tag to the download page. 2: closing link tag. */
+				esc_html__( 'Download the latest theme and plugin files from %1$sthe AWT website%2$s.', 'awt' ),
+				'<a href="' . esc_url( DOWNLOAD_URL ) . '" target="_blank" rel="noopener">',
+				'<span class="screen-reader-text">' . esc_html__( '(opens in a new tab)', 'awt' ) . '</span></a>'
+			);
+			?>
+		</li>
+		<li><?php esc_html_e( 'Go to Plugins, Add Plugin, Upload Plugin. Choose the plugin file, then choose "Replace current with uploaded".', 'awt' ); ?></li>
+		<li><?php esc_html_e( 'Go to Appearance, Themes, Add New Theme, Upload Theme. Choose the theme file, then choose "Replace current with uploaded".', 'awt' ); ?></li>
+	</ol>
+
+	<p class="awt-field-help">
+		<?php esc_html_e( 'Update both to the same version. The theme and the plugin are built as a pair and are only tested together. Back up your site first, the way you would for any update.', 'awt' ); ?>
+	</p>
+
+	<hr />
+	<?php
+}
+
+/**
  * Render the Tools tab: re-run the welcome wizard, export configuration
  * (nonced GET link), and import configuration (multipart POST form).
  */
 function render_tab_tools(): void {
+	render_updates_section();
+
 	$rerun_url = wp_nonce_url(
 		add_query_arg(
 			array(
