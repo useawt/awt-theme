@@ -84,8 +84,14 @@ const LINK_UNDERLINE_CANVAS_SELECTORS = array(
  *
  * A pure transform applied on every read — it performs no database write, so a
  * site is correct from the very next page load, and the migrated value persists
- * naturally the next time anything is saved (both `save()` and `sanitize()`
- * stamp the current SCHEMA_VERSION).
+ * naturally the next time anything is saved: `save()` stamps the current
+ * SCHEMA_VERSION before handing the document to `sanitize()`.
+ *
+ * `sanitize()` itself PRESERVES whatever version it is given rather than
+ * stamping one. That is only safe because `save()` is its only caller; a future
+ * caller that sanitizes without saving would carry a stale version through.
+ * (Corrected 2026-09-02 — this docblock previously claimed both functions
+ * stamp, which the theme's first test caught on its first run.)
  *
  * **v1 → v2 — `identity.brandMode` gains `auto` and defaults to it.** Under v1
  * the sanitizer always wrote a concrete mode, filling in `text-only` even when
