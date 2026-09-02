@@ -127,6 +127,100 @@ function theme_scopes(): array {
 }
 
 /**
+ * Carbon's token declarations for one theme scope, re-rooted onto the editor
+ * canvas body.
+ *
+ * The canvas iframe body carries no `cds--*` scope class, so nothing in it
+ * inherits the site's colour scheme the way the front end does through the
+ * class on `<body>`. `assets/css/editor-scope.css` covers that by hardcoding
+ * the light (`white`) values, which is right for a light site and wrong for
+ * every other case: a site pinned to dark previewed unscoped body copy as
+ * near-black on white while publishing it as near-white on dark. Blocks that
+ * pin their own `themeScope` were never affected, because they render their
+ * own scope class and Carbon resolves inside it — which is why this survived
+ * a month unnoticed (see the Stage 1 spec, outstanding-accessibility item 8).
+ *
+ * The values are read out of `foundation.min.css` rather than restated here.
+ * That file is the compiled Carbon subset we already ship, it carries all four
+ * scopes as single-selector blocks, and taking them from it means the editor
+ * cannot drift from the front end the way a hand-maintained list does.
+ *
+ * @param string $scope One of `white`, `g10`, `g90`, `g100`.
+ * @return string CSS, or '' when the scope block cannot be read.
+ */
+function editor_scope_tokens( string $scope ): string {
+	static $cache = array();
+	if ( isset( $cache[ $scope ] ) ) {
+		return $cache[ $scope ];
+	}
+	$cache[ $scope ] = '';
+
+	if ( ! in_array( $scope, array( 'white', 'g10', 'g90', 'g100' ), true ) ) {
+		return '';
+	}
+
+	$file = get_theme_file_path( 'assets/css/foundation.min.css' );
+	if ( ! is_readable( $file ) ) {
+		return '';
+	}
+	$css = file_get_contents( $file ); // phpcs:ignore WordPress.WP.AlternativeFunctions.file_get_contents_file_get_contents -- bundled theme asset.
+	if ( ! is_string( $css ) || $css === '' ) {
+		return '';
+	}
+
+	// The bare single-scope block, e.g. `.cds--g100{--cds-…:…;…}`. The lookbehind
+	// keeps `.cds--g10` from matching inside `.cds--g100`, and the negative
+	// lookahead does the same from the other side.
+	$pattern = '/(?<![\w-])\.cds--' . preg_quote( $scope, '/' ) . '(?![\w-])\s*\{([^}]*)\}/';
+	if ( ! preg_match( $pattern, $css, $m ) ) {
+		return '';
+	}
+	$declarations = trim( $m[1] );
+	if ( $declarations === '' ) {
+		return '';
+	}
+
+	$cache[ $scope ] = 'body.editor-styles-wrapper{' . $declarations . '}';
+	return $cache[ $scope ];
+}
+
+/**
+ * The scope CSS the editor canvas should carry, for the site as configured.
+ *
+ * `light` and `dark` pin a scope, so the canvas gets that one. `default` means
+ * the front end follows each visitor's own system setting, and the author is a
+ * visitor too: the canvas gets the light scope, with the dark one behind
+ * `prefers-color-scheme` so an author working on a dark desktop previews what
+ * they would themselves see on the site.
+ *
+ * @return string CSS, or '' when nothing could be resolved.
+ */
+function editor_scope_css(): string {
+	$scopes = theme_scopes();
+
+	$site_cs = function_exists( '\\AWT\\Theme\\Settings\\get' )
+		? (string) \AWT\Theme\Settings\get( 'site.colorScheme' )
+		: 'default';
+
+	if ( $site_cs === 'dark' ) {
+		return editor_scope_tokens( $scopes['dark'] );
+	}
+
+	$light = editor_scope_tokens( $scopes['light'] );
+
+	if ( $site_cs === 'light' ) {
+		return $light;
+	}
+
+	$dark = editor_scope_tokens( $scopes['dark'] );
+	if ( $dark === '' ) {
+		return $light;
+	}
+
+	return $light . '@media (prefers-color-scheme: dark){' . $dark . '}';
+}
+
+/**
  * Default scheme + honor-system-preference + allow-visitor-override flags.
  *
  * @return array{default: string, honorSystemPreference: bool, allowVisitorOverride: bool}
@@ -231,10 +325,13 @@ add_action(
 			array(
 				'assets/css/foundation.min.css',
 				'assets/css/theme.css',
-				// Mirrors Carbon's `.cds--white` variable declarations onto
-				// `body.editor-styles-wrapper` so Carbon variables resolve in
-				// the editor iframe without depending on a runtime body-class
-				// injection (which is racy with the iframe's async mount).
+				// Baseline only. Mirrors Carbon's `.cds--white` declarations
+				// onto `body.editor-styles-wrapper` so Carbon variables
+				// resolve in the editor iframe without depending on a runtime
+				// body-class injection (which is racy with the iframe's async
+				// mount). The site's ACTUAL scope is layered over this by
+				// `editor_scope_css()` further down; this file is what remains
+				// if that cannot read the scope block.
 				'assets/css/editor-scope.css',
 			)
 		);
@@ -590,6 +687,19 @@ add_filter(
 			'css'            => 'body.editor-styles-wrapper { background: var(--cds-background, #fff); color: var(--cds-text-primary, #161616); }',
 			'__unstableType' => 'theme',
 		);
+
+		// The site's own theme scope, so unscoped content in the canvas inherits
+		// the scheme the way it does on the front end. `editor-scope.css` stays
+		// as the baseline: if the scope block cannot be read this adds nothing
+		// and behaviour is unchanged. Appended before the Custom CSS below, so a
+		// site's own colour overrides still win.
+		$scope_css = editor_scope_css();
+		if ( $scope_css !== '' ) {
+			$existing[] = array(
+				'css'            => $scope_css,
+				'__unstableType' => 'theme',
+			);
+		}
 
 		// AWT Settings → Custom CSS into the editor canvas. On the front end the
 		// Custom CSS is a <style> in the head and its colour overrides are keyed

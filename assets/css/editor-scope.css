@@ -1,5 +1,14 @@
 /**
- * Editor canvas — Carbon scope bridge.
+ * Editor canvas — Carbon scope bridge (BASELINE ONLY).
+ *
+ * Since 2026-09-02 this file is the fallback, not the answer. `editor_scope_css()`
+ * in functions.php layers the site's actual scope (white / g10 / g90 / g100, from
+ * the style variation and the colour-scheme setting) over the top, reading the
+ * values straight out of foundation.min.css. What is below applies only when that
+ * cannot read its scope block, and only the light values are here — which is
+ * exactly the defect that prompted the change: a site pinned to dark previewed
+ * unscoped body copy in the light scheme.
+ *
  *
  * Carbon's CSS variable declarations live under class scopes (.cds--white,
  * .cds--g10, .cds--g90, .cds--g100). The block-editor iframe body doesn't
