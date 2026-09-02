@@ -2401,6 +2401,11 @@ a.cds--btn--ghost:visited:active {
 	border: 1px solid transparent;
 }
 
+.awt-tile--framed {
+	border-color: var(--cds-border-strong, #8d8d8d);
+}
+
+
 .cds--tile--clickable:hover {
 	background: var(--cds-layer-hover-01, #e8e8e8);
 }
@@ -2410,6 +2415,26 @@ a.cds--btn--ghost:visited:active {
 .cds--tile--expandable:focus-visible {
 	outline: 2px solid var(--cds-focus, #0f62fe);
 	outline-offset: -2px;
+}
+
+/* Focused: move Carbon's ring inside the new border instead of under it.
+
+   Carbon draws focus as a 2px outline at `outline-offset: -2px`, which paints
+   over the outermost 2px of the border box — and that is exactly where the
+   resting border now sits. `test:focus` measures an indicator by how much it
+   CHANGES from the resting look, and grey `#8d8d8d` to focus blue `#005fcc` is
+   about 1.8:1, under the 3:1 the gate requires. So the outer 1px of the ring
+   stopped counting and three tiles reported a 1px indicator against a 2px bar
+   (D2, WCAG 2.4.13).
+
+   Offsetting by 3px puts the whole 2px ring on the tile's fill, which is what
+   it used to sit on, so the full thickness counts again. The border stays
+   visible outside it, which is also the better look: a focused tile reads as
+   bordered AND ringed rather than as a tile whose edge changed colour. Colour
+   and geometry are Carbon's otherwise. */
+.cds--tile-input:focus + .awt-tile--framed,
+.awt-tile--framed:focus-visible {
+	outline-offset: -3px;
 }
 
 /* Selectable tile. Two shapes with one look:
