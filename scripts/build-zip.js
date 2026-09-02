@@ -92,7 +92,7 @@ const REQUIRED = [
  * The one exception to FORBIDDEN below, listed on its own so the exclusion of
  * `src/` and `.scss` stays otherwise absolute.
  */
-const ALLOWED_SOURCES = [ 'src/', 'src/foundation.scss' ];
+const ALLOWED_SOURCES = ['src/', 'src/foundation.scss'];
 
 /**
  * Nothing matching these may appear in the zip. Redundant with the include
