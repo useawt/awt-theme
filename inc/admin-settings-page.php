@@ -489,7 +489,7 @@ function render_tab_design_system(): void {
 		<?php esc_html_e( 'A design system sets the look of every AWT block: colors, fonts, spacing, and component style.', 'awt' ); ?>
 	</p>
 	<p style="max-inline-size:50em;">
-		<?php esc_html_e( 'AWT is built on Carbon, IBM\'s open-source design system for products and digital experiences. Every block follows Carbon\'s components, spacing, and type scale, comes with matching light and dark themes, and meets the WCAG 2.2 AA accessibility standard.', 'awt' ); ?>
+		<?php esc_html_e( 'AWT is built on Carbon, IBM\'s open-source design system. Every block follows Carbon\'s components, spacing and type scale, ships with matching light and dark themes, and meets WCAG 2.2 AA.', 'awt' ); ?>
 	</p>
 	<p>
 		<a href="https://carbondesignsystem.com/" target="_blank" rel="noopener noreferrer">
@@ -517,10 +517,10 @@ function render_tab_identity(): void {
 
 	?>
 	<p class="awt-field-help">
-		<?php esc_html_e( 'These defaults apply to every Header brand block on your site. A setting on an individual block overrides them.', 'awt' ); ?>
+		<?php esc_html_e( 'These apply to every Header brand block. A setting on one block overrides them.', 'awt' ); ?>
 	</p>
 	<p class="awt-field-help">
-		<?php esc_html_e( 'Your logo appears in the header beside your site title as soon as you set one here. To show it on its own instead, or to hide it, change "Default brand mode" under AWT Settings → Appearance → Header.', 'awt' ); ?>
+		<?php esc_html_e( 'Your logo appears beside your site title as soon as you set one. To show it alone or hide it, change "Default brand mode" under Appearance → Header.', 'awt' ); ?>
 	</p>
 	<table class="form-table" role="presentation">
 		<tr>
@@ -537,7 +537,7 @@ function render_tab_identity(): void {
 				<?php if ( $logo_url ) : ?>
 					<img class="awt-logo-preview" src="<?php echo esc_url( (string) $logo_url ); ?>" alt="" />
 				<?php endif; ?>
-				<p class="awt-field-help"><?php esc_html_e( 'Click "Select from Media Library" to upload or choose an image, or paste a URL. SVG, PNG, or WebP work best. This logo shows on light backgrounds, and is also used in dark mode if you don\'t set a separate dark-mode logo.', 'awt' ); ?></p>
+				<p class="awt-field-help"><?php esc_html_e( 'Upload or choose an image, or paste a URL. SVG, PNG or WebP work best. Shown on light backgrounds, and in dark mode too unless you set a dark-mode logo below.', 'awt' ); ?></p>
 				<p class="awt-field-help" style="font-style: italic;">
 					<?php
 					// Point users to THIS site's plugin-install search page when
@@ -564,7 +564,7 @@ function render_tab_identity(): void {
 						: ' <span class="screen-reader-text">' . esc_html__( '(opens in new tab)', 'awt' ) . '</span>';
 					printf(
 						/* translators: 1: opening <a> tag for Safe SVG plugin link, 2: closing </a> tag (with opens-in-new-tab sr-text when relevant) */
-						esc_html__( 'Need to upload an SVG logo? WordPress blocks SVG uploads by default, because SVG files can hide harmful code. To allow them safely, install %1$sSafe SVG%2$s or a similar plugin that cleans SVG files. AWT leaves this to a dedicated plugin so SVG safety stays well-maintained.', 'awt' ),
+						esc_html__( 'WordPress blocks SVG uploads by default. To allow them, install %1$sSafe SVG%2$s or a similar plugin that cleans SVG files.', 'awt' ),
 						'<a href="' . esc_url( $safe_svg_url ) . '" target="' . esc_attr( $link_target ) . '"' . $link_rel . '>', // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- $link_rel is a static literal chosen above.
 						$opens_in_tab . '</a>' // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- built above with esc_html__().
 					);
@@ -587,7 +587,7 @@ function render_tab_identity(): void {
 					<img class="awt-logo-preview awt-logo-preview--dark" src="<?php echo esc_url( (string) $logo_url_dark ); ?>" alt="" />
 				<?php endif; ?>
 				<p class="awt-field-help">
-					<?php esc_html_e( 'Optional. Upload a light or inverted version of your logo for dark backgrounds. Most logos use dark colors that vanish on dark backgrounds, so add a readable version here. Leave empty to use your light-mode logo everywhere.', 'awt' ); ?>
+					<?php esc_html_e( 'Optional. A light or inverted version of your logo, for dark backgrounds. Leave empty to use your light-mode logo everywhere.', 'awt' ); ?>
 				</p>
 			</td>
 		</tr>
@@ -595,7 +595,7 @@ function render_tab_identity(): void {
 			<th scope="row"><label for="awt-identity-logoAlt"><?php esc_html_e( 'Default logo alt text', 'awt' ); ?></label></th>
 			<td>
 				<input type="text" id="awt-identity-logoAlt" name="identity[logoAlt]" value="<?php echo esc_attr( (string) $logo_alt ); ?>" class="regular-text" />
-				<p class="awt-field-help"><?php esc_html_e( 'Required when you set a logo. Describe what the logo shows — usually your company name. Leave empty if your brand mode is "Site Title only".', 'awt' ); ?></p>
+				<p class="awt-field-help"><?php esc_html_e( 'Required when you set a logo. Describe what it shows, usually your company name. Leave empty if your brand mode is "Site Title only".', 'awt' ); ?></p>
 			</td>
 		</tr>
 		<tr>
@@ -618,7 +618,7 @@ function render_tab_identity(): void {
 				</div>
 				<input type="hidden" id="awt-identity-siteIcon" name="siteIcon" value="<?php echo $site_icon_id ? esc_attr( (string) $site_icon_id ) : ''; ?>" />
 				<img id="awt-identity-siteIcon-preview" class="awt-logo-preview awt-site-icon-preview" src="<?php echo esc_url( (string) $site_icon_url ); ?>" alt="" style="<?php echo $site_icon_url ? '' : 'display:none;'; ?>" />
-				<p class="awt-field-help"><?php esc_html_e( 'Shown in browser tabs, bookmarks, and when someone adds your site to a phone home screen. Use a square image at least 512×512 pixels. This is the same Site Icon as Settings → General — kept here so all your branding lives in one place.', 'awt' ); ?></p>
+				<p class="awt-field-help"><?php esc_html_e( 'Shown in browser tabs, bookmarks and on a phone home screen. Use a square image at least 512×512 pixels. Same as the Site Icon in Settings → General.', 'awt' ); ?></p>
 			</td>
 		</tr>
 	</table>
@@ -669,7 +669,7 @@ function render_tab_appearance(): void {
 	$page_url         = admin_url( 'themes.php?page=' . MENU_SLUG . '&tab=appearance' );
 	?>
 	<p class="awt-field-help" style="margin-block: 1em 1.5em;">
-		<?php esc_html_e( 'Settings that are specific to the Carbon design system: light/dark style, header layout, brand options, and type size. Other settings — logos and navigation — have their own tabs.', 'awt' ); ?>
+		<?php esc_html_e( 'Light and dark style, header layout, brand options and type size. Logos and navigation have their own tabs.', 'awt' ); ?>
 	</p>
 
 	<?php
@@ -724,7 +724,7 @@ function render_tab_appearance(): void {
 	<?php
 	if ( 'appearance' === $active_section ) {
 		$site_scheme   = (string) ( \AWT\Theme\Settings\get( 'site.colorScheme' ) ?? 'default' );
-		$variation_msg = __( 'Applying a different style variation replaces any color, typography, or layout changes you have made in Appearance → Editor → Styles. Continue?', 'awt' );
+		$variation_msg = __( 'This replaces any color, typography or layout changes you made in Appearance → Editor → Styles. Continue?', 'awt' );
 		?>
 		<form method="post" action="<?php echo esc_url( $page_url ); ?>"
 				data-awt-confirm-field="styleVariation"
@@ -736,7 +736,7 @@ function render_tab_appearance(): void {
 
 			<h2 style="margin-block-start: 0;"><?php esc_html_e( 'Style variation', 'awt' ); ?></h2>
 			<p class="awt-field-help">
-				<?php esc_html_e( 'Each variation pairs a light theme with a dark theme. Applying one replaces any style changes you\'ve made under Appearance → Editor → Styles — the same as choosing a variation there.', 'awt' ); ?>
+				<?php esc_html_e( 'Each variation pairs a light theme with a dark theme. Applying one replaces style changes you made under Appearance → Editor → Styles.', 'awt' ); ?>
 			</p>
 			<div style="margin-block: 1em 2.5em;">
 				<?php \AWT\Theme\StyleVariations\picker_ui( $active_variation ); ?>
@@ -744,7 +744,7 @@ function render_tab_appearance(): void {
 
 			<h2><?php esc_html_e( 'Site appearance', 'awt' ); ?></h2>
 			<p class="awt-field-help">
-				<?php esc_html_e( 'Sets your site\'s light or dark appearance. "Default" follows each visitor\'s device setting (and the light/dark toggle, if you show one). "Always light" and "Always dark" lock the appearance for everyone.', 'awt' ); ?>
+				<?php esc_html_e( '"Default" follows each visitor\'s device setting, and the light/dark toggle if you show one. "Always light" and "Always dark" lock it for everyone.', 'awt' ); ?>
 			</p>
 			<fieldset style="margin-block: 1em;">
 				<legend class="screen-reader-text"><?php esc_html_e( 'Site appearance', 'awt' ); ?></legend>
@@ -791,7 +791,7 @@ function render_tab_appearance(): void {
 
 			<h2 style="margin-block-start: 0;"><?php esc_html_e( 'Header appearance', 'awt' ); ?></h2>
 			<p class="awt-field-help">
-				<?php esc_html_e( 'Sets the header bar\'s light or dark appearance. "Default" matches the site appearance you set under Light & dark, or keeps a light or dark look you gave the header yourself in the Site Editor. "Always light" and "Always dark" keep the header fixed no matter what the rest of the page does — they replace anything set on the header in the Site Editor.', 'awt' ); ?>
+				<?php esc_html_e( '"Default" follows the site appearance set under Light & dark, or a look you gave the header in the Site Editor. "Always light" and "Always dark" fix the header and replace anything set there.', 'awt' ); ?>
 			</p>
 			<fieldset style="margin-block: 1em 2.5em;">
 				<legend class="screen-reader-text"><?php esc_html_e( 'Header appearance', 'awt' ); ?></legend>
@@ -806,7 +806,7 @@ function render_tab_appearance(): void {
 			<h2><?php esc_html_e( 'Header preset', 'awt' ); ?></h2>
 			<p class="awt-field-help">
 				<?php esc_html_e( 'Replaces your current header with one of four ready-made layouts.', 'awt' ); ?>
-				<?php esc_html_e( 'Documentation also adds a side navigation menu down the left of every page on wide screens (on phones and small tablets its links move into the header menu instead). It sits inside the header, so you edit its sections and links by opening the header in the Site Editor and selecting "Side nav".', 'awt' ); ?>
+				<?php esc_html_e( 'Documentation adds a side navigation menu on wide screens; on small screens its links move into the header menu. Edit it by opening the header in the Site Editor and selecting "Side nav".', 'awt' ); ?>
 			</p>
 			<div style="margin-block: 1em 2.5em;">
 				<?php \AWT\Theme\HeaderPresets\picker_ui( $active_preset ); ?>
@@ -814,7 +814,7 @@ function render_tab_appearance(): void {
 
 			<h2><?php esc_html_e( 'Header settings', 'awt' ); ?></h2>
 			<p class="awt-field-help">
-				<?php esc_html_e( 'Add or remove the icon buttons at the top-right of your header. Each switch changes just that one button and leaves your other header changes alone.', 'awt' ); ?>
+				<?php esc_html_e( 'The icon buttons at the top-right of your header. Each switch changes only that button.', 'awt' ); ?>
 			</p>
 			<?php
 			// AWT Premium turns these icons into rich widgets (a search field in
@@ -847,7 +847,7 @@ function render_tab_appearance(): void {
 						<fieldset>
 							<legend class="screen-reader-text"><?php esc_html_e( 'Header icon buttons', 'awt' ); ?></legend>
 							<p class="awt-field-help" style="margin-block:0 0.75em; max-inline-size:42em;">
-								<?php esc_html_e( 'Plain icon buttons. Search links to your site search; you can point Notifications and User menu wherever you like in the Site Editor.', 'awt' ); ?>
+								<?php esc_html_e( 'Search links to your site search. Point Notifications and User menu wherever you like in the Site Editor.', 'awt' ); ?>
 							</p>
 							<?php
 							foreach ( $icons as $key => $entry ) :
@@ -891,7 +891,7 @@ function render_tab_appearance(): void {
 			</table>
 
 			<h2 style="margin-block-start: 2em;"><?php esc_html_e( 'Brand', 'awt' ); ?></h2>
-			<p class="awt-field-help"><?php esc_html_e( 'How the Header brand block looks by default. You can show an optional prefix before the site title (for example a parent brand). Set logo images on the Identity tab.', 'awt' ); ?></p>
+			<p class="awt-field-help"><?php esc_html_e( 'How the Header brand block looks by default. Set logo images on the Identity tab.', 'awt' ); ?></p>
 			<table class="form-table" role="presentation">
 				<tr>
 					<th scope="row"><label for="awt-brand-mode"><?php esc_html_e( 'Default brand mode', 'awt' ); ?></label></th>
@@ -901,7 +901,7 @@ function render_tab_appearance(): void {
 								<option value="<?php echo esc_attr( $value ); ?>" <?php selected( $brand_mode, $value ); ?>><?php echo esc_html( $label ); ?></option>
 							<?php endforeach; ?>
 						</select>
-						<p class="awt-field-help"><?php esc_html_e( 'Automatic follows the Identity tab: your logo shows as soon as you set one, next to your site title, and your prefix shows as soon as you type one. Pick any other option to always show the same thing.', 'awt' ); ?></p>
+						<p class="awt-field-help"><?php esc_html_e( 'Automatic follows the Identity tab: your logo and prefix appear as soon as you set them. Any other option always shows the same thing.', 'awt' ); ?></p>
 					</td>
 				</tr>
 				<tr>
@@ -920,51 +920,16 @@ function render_tab_appearance(): void {
 
 		<h2><?php esc_html_e( 'Further customization', 'awt' ); ?></h2>
 		<p class="awt-field-help">
-			<?php esc_html_e( 'AWT Settings covers the common cases. For advanced changes — custom buttons, reordering icons, or restoring the original header — use the WordPress Site Editor.', 'awt' ); ?>
+			<?php
+			printf(
+				/* translators: %s: link to the Site Editor. */
+				esc_html__( 'AWT Settings covers the common cases. To add custom buttons, reorder icons or restore the original header, edit it in the %s, under Patterns → Template Parts → Header.', 'awt' ),
+				'<strong><a href="' . esc_url( admin_url( 'site-editor.php' ) ) . '">' . esc_html__( 'Site Editor', 'awt' ) . '</a></strong>'
+			);
+			?>
 		</p>
-
-		<h3 style="margin-block: 1.5em 0.5em;"><?php esc_html_e( 'Header size and position', 'awt' ); ?></h3>
 		<p class="awt-field-help">
-			<?php esc_html_e( 'The header is a bar 48 pixels tall, fixed to the top of the screen so it stays put as you scroll. Both come from the Carbon Design System layout the theme follows, so there is no setting to change them. What you can change is what goes in the bar and whether it looks light or dark.', 'awt' ); ?>
-		</p>
-
-		<h3 style="margin-block: 2em 0.5em;"><?php esc_html_e( 'Adding or reordering icons', 'awt' ); ?></h3>
-		<p class="awt-field-help"><?php esc_html_e( 'To add custom buttons (an X/Twitter icon, a call-to-action button) or reorder icons, edit the header in the Site Editor.', 'awt' ); ?></p>
-		<ol class="awt-field-help" style="padding-inline-start: 1.5em; max-inline-size: 50em;">
-			<li>
-				<?php
-				printf(
-					/* translators: %s: link to the Site Editor. */
-					esc_html__( 'WordPress admin → %s.', 'awt' ),
-					'<strong><a href="' . esc_url( admin_url( 'site-editor.php' ) ) . '">' . esc_html__( 'Appearance → Editor (Site Editor)', 'awt' ) . '</a></strong>'
-				);
-				?>
-			</li>
-			<li><?php esc_html_e( 'Patterns → Template Parts → Header.', 'awt' ); ?></li>
-			<li><?php esc_html_e( 'Click into the header bar. A small toolbar appears with the global actions group at the right end — click into it.', 'awt' ); ?></li>
-			<li><?php esc_html_e( 'Use the + button to add a new header action, or click an existing one to edit it.', 'awt' ); ?></li>
-		</ol>
-
-		<h3 style="margin-block: 2em 0.5em;"><?php esc_html_e( 'Reverting to the theme\'s shipped header', 'awt' ); ?></h3>
-		<p class="awt-field-help">
-			<?php esc_html_e( 'Want to discard your changes and go back to the header AWT ships with the theme? WordPress can do this for you — no plugin needed.', 'awt' ); ?>
-		</p>
-		<ol class="awt-field-help" style="padding-inline-start: 1.5em; max-inline-size: 50em;">
-			<li>
-				<?php
-				printf(
-					/* translators: %s: link to the Site Editor. */
-					esc_html__( 'WordPress admin → %s.', 'awt' ),
-					'<strong><a href="' . esc_url( admin_url( 'site-editor.php' ) ) . '">' . esc_html__( 'Appearance → Editor (Site Editor)', 'awt' ) . '</a></strong>'
-				);
-				?>
-			</li>
-			<li><?php esc_html_e( 'Patterns → Template Parts → Header.', 'awt' ); ?></li>
-			<li><?php esc_html_e( 'Open the three-dot (⋯) menu on the Header template part (top-right of the canvas, or beside the template part\'s name in the sidebar).', 'awt' ); ?></li>
-			<li><?php esc_html_e( 'Click "Clear customizations" (sometimes called "Reset"). WordPress discards your saved changes and restores the original header from the theme.', 'awt' ); ?></li>
-		</ol>
-		<p class="awt-field-help" style="font-style: italic;">
-			<?php esc_html_e( 'The same works for any other template area (footer, sidebar, and so on) — it\'s a WordPress feature, not an AWT one. Handy whenever you want a fresh start.', 'awt' ); ?>
+			<?php esc_html_e( 'To restore the header AWT ships with: open the three-dot (⋯) menu on the Header template part and choose "Clear customizations".', 'awt' ); ?>
 		</p>
 		<?php
 	} elseif ( 'typography' === $active_section ) {
@@ -1014,7 +979,7 @@ function render_tab_appearance(): void {
 		$custom_css_url = admin_url( 'themes.php?page=' . MENU_SLUG . '&tab=custom-css' );
 		?>
 		<p class="awt-field-help" style="max-inline-size: 50em;">
-			<?php esc_html_e( 'You can change your colors, but every change must keep WCAG-conformant contrast ratios so your site stays readable.', 'awt' ); ?>
+			<?php esc_html_e( 'You can change your colors. Every change has to keep enough contrast to stay readable.', 'awt' ); ?>
 		</p>
 		<fieldset style="margin-block: 1.5em;">
 			<legend style="font-weight: 600; margin-block-end: 0.75em;"><?php esc_html_e( 'Change colors using', 'awt' ); ?></legend>
@@ -1146,7 +1111,7 @@ function render_tab_links(): void {
 	$regions = array(
 		'main'        => array(
 			'label' => __( 'Main content', 'awt' ),
-			'help'  => __( 'Links inside your text, where a reader has to tell a link apart from the words around it. This is the one that matters most.', 'awt' ),
+			'help'  => __( 'Links inside your text, where a reader has to tell a link from the words around it. The one that matters most.', 'awt' ),
 		),
 		'header'      => array(
 			'label' => __( 'Header', 'awt' ),
@@ -1154,7 +1119,7 @@ function render_tab_links(): void {
 		),
 		'sideNav'     => array(
 			'label' => __( 'Side navigation', 'awt' ),
-			'help'  => __( 'Links in the side navigation, wherever it appears. On a narrow screen the side navigation moves inside the header menu, and this switch still governs it there.', 'awt' ),
+			'help'  => __( 'Links in the side navigation. On a narrow screen it moves into the header menu, and this switch still covers it.', 'awt' ),
 		),
 		'breadcrumbs' => array(
 			'label' => __( 'Breadcrumbs', 'awt' ),
@@ -1167,7 +1132,7 @@ function render_tab_links(): void {
 	);
 	?>
 	<p class="awt-field-help" style="max-inline-size: 50em;">
-		<?php esc_html_e( 'AWT underlines links, so a link is never marked out by colour alone. Carbon leaves links without an underline and brings it back only when you point at one.', 'awt' ); ?>
+		<?php esc_html_e( 'AWT underlines links, so colour is never the only thing marking one. Carbon underlines only on hover.', 'awt' ); ?>
 	</p>
 
 	<div style="margin: 0.5em 0 1.5em; padding: 0.75em 1em; background: #f0f6fc; border-inline-start: 4px solid #0073aa; max-inline-size: 60em;">
@@ -1177,7 +1142,7 @@ function render_tab_links(): void {
 			<?php
 			printf(
 				/* translators: 1: opening <a> tag to WCAG 1.4.1; 2: closing </a> tag */
-				esc_html__( 'Colour on its own may carry a link only when the link is clearly different from the text around it — at least three times the contrast, under the %1$sWCAG "Use of Color" guideline (1.4.1, Level A)%2$s. Carbon\'s blue reaches 3.62 to 1 against body text in light mode, but only 2.14 to 1 in dark mode, so in dark mode colour alone is not enough. Change your colours and the light figure can drop below the line too. An underline settles it either way.', 'awt' ),
+				esc_html__( 'Colour alone may mark a link only when it contrasts at least 3:1 with the text around it — %1$sWCAG "Use of Color" (1.4.1, Level A)%2$s. Carbon\'s blue reaches 3.62:1 in light mode but 2.14:1 in dark, so colour alone is not enough there. An underline settles it.', 'awt' ),
 				'<a href="https://www.w3.org/WAI/WCAG21/Understanding/use-of-color.html" target="_blank" rel="noopener">',
 				'</a>'
 			);
@@ -1194,7 +1159,7 @@ function render_tab_links(): void {
 					<?php esc_html_e( 'Underline links across the whole site.', 'awt' ); ?>
 				</label>
 				<p class="awt-field-help">
-					<?php esc_html_e( 'Turn this off to use Carbon\'s link style everywhere, where colour marks a link and the underline appears only when you point at it. The choices below stay saved, and come back when you turn this on again.', 'awt' ); ?>
+					<?php esc_html_e( 'Turn this off for Carbon\'s style: colour only, underline on hover. The choices below stay saved.', 'awt' ); ?>
 				</p>
 			</td>
 		</tr>
@@ -1203,7 +1168,7 @@ function render_tab_links(): void {
 	<?php if ( ! $all_on ) : ?>
 		<div role="status" style="margin: 0 0 1.5em; padding: 0.75em 1em; background: #fcf9e8; border-inline-start: 4px solid #dba617; max-inline-size: 60em;">
 			<p style="margin: 0;">
-				<?php esc_html_e( 'Nothing is underlined right now, because the switch above is off. The choices below are saved and will apply as soon as you turn it back on.', 'awt' ); ?>
+				<?php esc_html_e( 'Nothing is underlined right now. The choices below are saved and apply when you turn the switch back on.', 'awt' ); ?>
 			</p>
 		</div>
 	<?php endif; ?>
@@ -1213,7 +1178,7 @@ function render_tab_links(): void {
 			<?php esc_html_e( 'Where to underline', 'awt' ); ?>
 		</legend>
 		<p class="awt-field-help" style="max-inline-size: 50em; margin-block-start: 0;">
-			<?php esc_html_e( 'One switch per place a link appears, because the reason differs: a link in a paragraph has to stand out from the text around it, while a menu item is found by where it sits.', 'awt' ); ?>
+			<?php esc_html_e( 'One switch per place a link appears.', 'awt' ); ?>
 		</p>
 		<table class="form-table" role="presentation">
 			<?php foreach ( $regions as $key => $region ) : ?>
@@ -1238,7 +1203,7 @@ function render_tab_links(): void {
 	</fieldset>
 
 	<p class="awt-field-help" style="max-inline-size: 50em;">
-		<?php esc_html_e( 'Never underlined, whatever you choose here: buttons, pagination numbers, tags and cards. Each of those is already marked out by its own shape, so an underline would read as emphasis instead. Plain links you type into your text are left alone too — they keep the underline your browser already gives them, whichever way you set these switches.', 'awt' ); ?>
+		<?php esc_html_e( 'Never underlined, whatever you choose: buttons, pagination numbers, tags and cards — each is already marked out by its shape. Links you type into your text keep the underline your browser gives them.', 'awt' ); ?>
 	</p>
 	<?php
 }
@@ -1267,7 +1232,7 @@ function render_tab_focus(): void {
 	$outline_on = (bool) Settings\get( 'focus.buttonOutline' );
 	?>
 	<p class="awt-field-help" style="max-inline-size: 50em;">
-		<?php esc_html_e( 'When someone moves through your page with the Tab key, the control they land on is marked so they can see where they are. This sets how that mark is drawn on buttons.', 'awt' ); ?>
+		<?php esc_html_e( 'How a button is marked when someone reaches it with the Tab key.', 'awt' ); ?>
 	</p>
 
 	<div style="margin: 0.5em 0 1.5em; padding: 0.75em 1em; background: #f0f6fc; border-inline-start: 4px solid #0073aa; max-inline-size: 60em;">
@@ -1277,7 +1242,7 @@ function render_tab_focus(): void {
 			<?php
 			printf(
 				/* translators: 1: opening <a> tag to WCAG 2.4.7; 2: closing </a> tag; 3: opening <a> tag to WCAG 2.4.13; 4: closing </a> tag */
-				esc_html__( 'A focused control has to be visible, under the %1$sWCAG "Focus Visible" guideline (2.4.7, Level AA)%2$s. How big the mark has to be is set by %3$s"Focus Appearance" (2.4.13, Level AAA)%4$s: at least as much area as a 2-pixel line around the control, and a clear change from how that same spot looks unfocused. AWT meets both whichever way you set this. What changes is how easy it is to check. Carbon builds a button\'s mark out of a border and two shadows, so there is no single thickness to read and anyone auditing your site has to work it out from three overlapping layers. One outline answers the question directly.', 'awt' ),
+				esc_html__( 'A focused control has to be visible — %1$sWCAG "Focus Visible" (2.4.7, Level AA)%2$s — and %3$s"Focus Appearance" (2.4.13, Level AAA)%4$s sets how big the mark must be. AWT meets both whichever way you set this. One outline is simply easier to measure than Carbon\'s three overlapping layers.', 'awt' ),
 				'<a href="https://www.w3.org/WAI/WCAG21/Understanding/focus-visible.html" target="_blank" rel="noopener">',
 				'</a>',
 				'<a href="https://www.w3.org/WAI/WCAG22/Understanding/focus-appearance.html" target="_blank" rel="noopener">',
@@ -1296,7 +1261,7 @@ function render_tab_focus(): void {
 					<?php esc_html_e( 'Mark a focused button with one outline, just outside its edge.', 'awt' ); ?>
 				</label>
 				<p class="awt-field-help">
-					<?php esc_html_e( 'Turn this off to use Carbon\'s look instead: two rings of different thickness, drawn inside the button\'s edge. Both are easy to see, and both meet the guidelines. The single outline is simply easier to measure and to explain.', 'awt' ); ?>
+					<?php esc_html_e( 'Turn this off for Carbon\'s look: two rings of different thickness, drawn inside the button\'s edge. Both meet the guidelines.', 'awt' ); ?>
 				</p>
 			</td>
 		</tr>
@@ -1305,13 +1270,13 @@ function render_tab_focus(): void {
 	<?php if ( ! $outline_on ) : ?>
 		<div role="status" style="margin: 0 0 1.5em; padding: 0.75em 1em; background: #f0f6fc; border-inline-start: 4px solid #0073aa; max-inline-size: 60em;">
 			<p style="margin: 0;">
-				<?php esc_html_e( 'Buttons are using Carbon\'s two-ring style right now. This still meets the guidelines — it is a look, not a step down.', 'awt' ); ?>
+				<?php esc_html_e( 'Buttons are using Carbon\'s two-ring style. This still meets the guidelines.', 'awt' ); ?>
 			</p>
 		</div>
 	<?php endif; ?>
 
 	<p class="awt-field-help" style="max-inline-size: 50em;">
-		<?php esc_html_e( 'This switch covers buttons only. Links, form fields, menus, tabs and everything else keep the outline they already have, whichever way you set it. Buttons were the one place the mark was built out of layers instead of drawn as a single line.', 'awt' ); ?>
+		<?php esc_html_e( 'Buttons only. Links, form fields, menus and tabs keep the outline they already have.', 'awt' ); ?>
 	</p>
 	<?php
 }
@@ -1347,10 +1312,10 @@ function render_tab_typography(): void {
 	);
 	?>
 	<p class="awt-field-help">
-		<?php esc_html_e( 'Resize every font on your site by the same amount. Heading-to-body proportions and line spacing stay balanced at any size.', 'awt' ); ?>
+		<?php esc_html_e( 'Resize every font on your site by the same amount. Proportions and line spacing stay balanced.', 'awt' ); ?>
 	</p>
 	<p class="awt-field-help">
-		<?php esc_html_e( 'AWT uses IBM Plex Sans for text and IBM Plex Mono for code, chosen for on-screen readability. You can\'t swap fonts yet, because many web fonts are harder to read.', 'awt' ); ?>
+		<?php esc_html_e( 'AWT uses IBM Plex Sans for text and IBM Plex Mono for code. You cannot swap fonts yet.', 'awt' ); ?>
 	</p>
 	<table class="form-table" role="presentation">
 		<tr>
@@ -1395,7 +1360,7 @@ function render_tab_typography(): void {
 		<div data-awt-preview-base="1.75" style="font-size: 1.75rem; font-weight: 400; line-height: 1.25; margin-block: 1em 0.5em;"><?php esc_html_e( 'Heading 2 — Productive heading 04', 'awt' ); ?></div>
 		<div data-awt-preview-base="1.25" style="font-size: 1.25rem; font-weight: 400; line-height: 1.4; margin-block: 1em 0.5em;"><?php esc_html_e( 'Heading 3 — Productive heading 03', 'awt' ); ?></div>
 		<p data-awt-preview-base="0.875" style="font-size: 0.875rem; line-height: 1.4286; margin-block: 1em 0;">
-			<?php esc_html_e( 'Body text. The quick brown fox jumps over the lazy dog. 1234567890. AWT resizes every font by the same amount, so spacing stays balanced at any size. Compact fits more on screen; Comfortable gives larger, easier-to-read type.', 'awt' ); ?>
+			<?php esc_html_e( 'Body text. The quick brown fox jumps over the lazy dog. 1234567890. Compact fits more on screen; Comfortable gives larger, easier-to-read type.', 'awt' ); ?>
 		</p>
 	</div>
 
@@ -1428,14 +1393,14 @@ function render_tab_typography(): void {
 	?>
 	<h2><?php esc_html_e( 'Text around form fields', 'awt' ); ?></h2>
 	<p class="awt-field-help" style="max-inline-size: 50em;">
-		<?php esc_html_e( 'Every field on a form carries a label, sometimes a hint, and a message when something is wrong. Carbon sets all three smaller than your body text. This puts them at the same size as everything else.', 'awt' ); ?>
+		<?php esc_html_e( 'Carbon sets form labels, hints and error messages smaller than your body text. This puts them at the same size.', 'awt' ); ?>
 	</p>
 
 	<div style="margin: 0.5em 0 1.5em; padding: 0.75em 1em; background: #f0f6fc; border-inline-start: 4px solid #0073aa; max-inline-size: 60em;">
 		<p style="margin: 0;">
 			<strong>♿ <?php esc_html_e( 'Accessibility benefit', 'awt' ); ?></strong>
 			—
-			<?php esc_html_e( 'These three strings are the ones a person has to read in order to fill your form in, and at Carbon\'s size they are the smallest text on the page. No accessibility rule sets a minimum text size, so both settings pass. Bigger text is simply easier to read, and it matters most where reading it is the only way through.', 'awt' ); ?>
+			<?php esc_html_e( 'These three strings are what a person has to read to fill your form in, and at Carbon\'s size they are the smallest text on the page. No rule sets a minimum text size, so both settings pass.', 'awt' ); ?>
 		</p>
 	</div>
 
@@ -1464,13 +1429,13 @@ function render_tab_typography(): void {
 	<?php if ( ! $form_text_on ) : ?>
 		<div role="status" style="margin: 0 0 1.5em; padding: 0.75em 1em; background: #f0f6fc; border-inline-start: 4px solid #0073aa; max-inline-size: 60em;">
 			<p style="margin: 0;">
-				<?php esc_html_e( 'Form labels, hints and error messages are using Carbon\'s smaller size right now. This still meets the guidelines — it is a size, not a step down.', 'awt' ); ?>
+				<?php esc_html_e( 'Form labels, hints and error messages are using Carbon\'s smaller size. This still meets the guidelines.', 'awt' ); ?>
 			</p>
 		</div>
 	<?php endif; ?>
 
 	<p class="awt-field-help" style="max-inline-size: 50em;">
-		<?php esc_html_e( 'One field style is left out on purpose: the one that floats its label inside the box. There, the label sits in a slot built for smaller text, so growing it would crowd what the visitor types.', 'awt' ); ?>
+		<?php esc_html_e( 'Fields that float the label inside the box are left out: a bigger label would crowd what the visitor types.', 'awt' ); ?>
 	</p>
 	<?php
 }
@@ -1831,7 +1796,7 @@ function render_tab_navigation(): void {
 		<tr>
 			<th scope="row"><?php esc_html_e( 'Header menu', 'awt' ); ?></th>
 			<td>
-				<p style="margin-block-start: 0;"><?php esc_html_e( 'Your header menu lives in the header, which you edit in the Site Editor. Open it to add, remove, reorder, or rename links, and to change the buttons on the right.', 'awt' ); ?></p>
+				<p style="margin-block-start: 0;"><?php esc_html_e( 'Your header menu is part of the header. Open it in the Site Editor to add, remove, reorder or rename links.', 'awt' ); ?></p>
 				<p>
 					<a href="<?php echo esc_url( $header_edit_url ); ?>" class="button button-secondary"><?php esc_html_e( 'Edit the header', 'awt' ); ?></a>
 				</p>
@@ -1849,7 +1814,7 @@ function render_tab_navigation(): void {
 		<tr>
 			<th scope="row"><?php esc_html_e( 'Side navigation', 'awt' ); ?></th>
 			<td>
-				<p style="margin-block-start: 0;"><?php esc_html_e( 'The menu down the left of every page on wide screens, if your header preset includes one. It lives in the header, so this opens the header in the Site Editor — select "Side nav" there to add, remove, or rename its sections and links. On narrow screens these same links appear in the header menu.', 'awt' ); ?></p>
+				<p style="margin-block-start: 0;"><?php esc_html_e( 'The menu down the left on wide screens, if your header preset includes one. This opens the header in the Site Editor; select "Side nav" there. On narrow screens the same links appear in the header menu.', 'awt' ); ?></p>
 				<p>
 					<a href="<?php echo esc_url( $sidebar_edit_url ); ?>" class="button button-secondary"><?php esc_html_e( 'Edit the side navigation', 'awt' ); ?></a>
 				</p>
@@ -1863,7 +1828,7 @@ function render_tab_navigation(): void {
 			<th scope="row"><label for="awt-nav-skipLinkText"><?php esc_html_e( 'Skip link text', 'awt' ); ?></label></th>
 			<td>
 				<input type="text" id="awt-nav-skipLinkText" name="navigation[skipLinkText]" value="<?php echo esc_attr( (string) $skip_link_text ); ?>" class="regular-text" placeholder="<?php esc_attr_e( 'Skip to main content', 'awt' ); ?>" />
-				<p class="awt-field-help"><?php esc_html_e( 'Default text for every Skip link on your site. A setting on an individual block wins. Leave empty to use the default, "Skip to main content".', 'awt' ); ?></p>
+				<p class="awt-field-help"><?php esc_html_e( 'Default text for every Skip link. A setting on one block wins. Leave empty for "Skip to main content".', 'awt' ); ?></p>
 			</td>
 		</tr>
 	</table>
@@ -1876,7 +1841,7 @@ function render_tab_navigation(): void {
 			<?php
 			printf(
 				/* translators: 1: opening <a> tag to WCAG 2.4.5; 2: closing </a> tag */
-				esc_html__( 'Automatic breadcrumbs help meet the %1$sWCAG "Multiple Ways" guideline (2.4.5, Level AA)%2$s, which asks for more than one way to find a page. This matters most if your site has no search: without it, breadcrumbs (or a sitemap) become the main alternative, and the guideline needs at least two ways.', 'awt' ),
+				esc_html__( 'Breadcrumbs help meet the %1$sWCAG "Multiple Ways" guideline (2.4.5, Level AA)%2$s, which asks for more than one way to find a page. That matters most if your site has no search.', 'awt' ),
 				'<a href="https://www.w3.org/WAI/WCAG21/Understanding/multiple-ways.html" target="_blank" rel="noopener">',
 				'</a>'
 			);
@@ -2098,7 +2063,7 @@ function render_updates_section(): void {
 		if ( $blocks_version === '' ) {
 			printf(
 				/* translators: %s: version number of the AWT theme. */
-				esc_html__( 'You have the AWT theme %s. The AWT Blocks plugin is not installed, and the theme needs it: the header, the footer and every pattern are built from those blocks.', 'awt' ),
+				esc_html__( 'You have the AWT theme %s. The AWT Blocks plugin is not installed, and the theme needs it.', 'awt' ),
 				esc_html( $theme_version )
 			);
 		} else {
@@ -2115,13 +2080,13 @@ function render_updates_section(): void {
 	<?php if ( $blocks_version !== '' && $blocks_version !== $theme_version ) : ?>
 		<div class="notice notice-warning inline">
 			<p>
-				<?php esc_html_e( 'The theme and the plugin are different versions. They are built as a pair and are only tested together, so update whichever one is behind.', 'awt' ); ?>
+				<?php esc_html_e( 'The theme and the plugin are different versions. Update whichever one is behind.', 'awt' ); ?>
 			</p>
 		</div>
 	<?php endif; ?>
 
 	<p class="awt-field-help">
-		<?php esc_html_e( 'WordPress tells you when a new AWT version is out, in the same place it tells you about everything else: Dashboard, Updates. AWT does not install it for you. To move to a new version, download the files and upload them to your site. Your settings, pages and content are kept.', 'awt' ); ?>
+		<?php esc_html_e( 'WordPress tells you when a new AWT version is out, on Dashboard, Updates. AWT does not install it for you: download the new files and upload them. Your settings, pages and content are kept.', 'awt' ); ?>
 	</p>
 
 	<ol class="awt-field-help">
@@ -2140,7 +2105,7 @@ function render_updates_section(): void {
 	</ol>
 
 	<p class="awt-field-help">
-		<?php esc_html_e( 'Update both to the same version. The theme and the plugin are built as a pair and are only tested together. Back up your site first, the way you would for any update.', 'awt' ); ?>
+		<?php esc_html_e( 'Update both to the same version. Back up your site first, the way you would for any update.', 'awt' ); ?>
 	</p>
 
 	<form method="post" action="<?php echo esc_url( admin_url( 'themes.php?page=' . MENU_SLUG . '&tab=tools' ) ); ?>">
@@ -2199,7 +2164,7 @@ function render_tab_tools(): void {
 
 	<h2><?php esc_html_e( 'Export configuration', 'awt' ); ?></h2>
 	<p class="awt-field-help">
-		<?php esc_html_e( 'Download this site\'s AWT settings as a file — handy for copying to a staging site, sharing a starting point, or attaching to a support request.', 'awt' ); ?>
+		<?php esc_html_e( 'Download this site\'s AWT settings as a file, to copy to another site or attach to a support request.', 'awt' ); ?>
 	</p>
 
 	<?php

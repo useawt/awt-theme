@@ -12,6 +12,10 @@
 
 ## Unreleased
 
+### [Improvement]
+
+- Help text across the AWT Settings screens and the welcome wizard is shorter.
+
 ### [New]
 
 - WordPress now tells you when a new version of AWT is out, on Dashboard,

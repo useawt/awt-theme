@@ -282,8 +282,8 @@ function step_nav_buttons( int $step, bool $show_skip = true ): void {
 function render_step_0(): void {
 	?>
 	<h2><?php esc_html_e( 'Welcome to AWT', 'awt' ); ?></h2>
-	<p><?php esc_html_e( 'This wizard helps you set up how your site looks. You can skip any step and change everything later in AWT Settings.', 'awt' ); ?></p>
-	<p><?php esc_html_e( 'AWT is built on IBM\'s Carbon Design System. Every block meets the WCAG 2.2 AA accessibility standard and comes with matching light and dark themes, full keyboard support, and screen-reader support.', 'awt' ); ?></p>
+	<p><?php esc_html_e( 'Set up how your site looks. You can skip any step and change everything later in AWT Settings.', 'awt' ); ?></p>
+	<p><?php esc_html_e( 'AWT is built on IBM\'s Carbon Design System. Every block meets WCAG 2.2 AA, works with a keyboard and a screen reader, and has matching light and dark themes.', 'awt' ); ?></p>
 
 	<div class="notice notice-info inline" style="margin: 1.5em 0; padding: 1em 1.25em; max-inline-size: 50em;">
 		<p style="margin-block-start: 0;"><strong><?php esc_html_e( 'Want more? AWT Premium adds:', 'awt' ); ?></strong></p>
@@ -326,7 +326,7 @@ function render_step_1(): void {
 		</div>
 
 		<h3><?php esc_html_e( 'Site appearance', 'awt' ); ?></h3>
-		<p class="awt-field-help"><?php esc_html_e( 'Sets your site\'s light or dark appearance. "Default" follows each visitor\'s device setting (and the light/dark toggle, if you show one).', 'awt' ); ?></p>
+		<p class="awt-field-help"><?php esc_html_e( '"Default" follows each visitor\'s device setting, and the light/dark toggle if you show one.', 'awt' ); ?></p>
 		<fieldset style="margin-block: 1em;">
 			<legend class="screen-reader-text"><?php esc_html_e( 'Site appearance', 'awt' ); ?></legend>
 			<?php foreach ( $appearance_options as $value => $label ) : ?>
