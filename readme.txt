@@ -32,7 +32,7 @@ Yes. One cached copy of a page serves both light and dark visitors correctly; a 
 
 = How do I update AWT? =
 
-WordPress tells you when a new version is out, on Dashboard, Updates. AWT does not install it for you: download the new theme and plugin files and upload them, and keep both on the same version. Your settings, pages and content are kept. To know that a version exists, your site reads one small file on useawt.com twice a day. It sends nothing about your site, and you can turn the check off in AWT Settings, Tools.
+WordPress tells you when a new version is out, on Dashboard, Updates. AWT does not install it for you: download the new theme and plugin files and upload them, and keep both on the same version. Your settings, pages and content are kept. The new version check sends nothing about your site: no address, no version, no visitor data. It reads one file to determine the latest version, and you can turn the check off in AWT Settings, Tools.
 
 = Where do the blocks come from? =
 
