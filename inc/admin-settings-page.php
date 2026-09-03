@@ -2156,7 +2156,7 @@ function render_updates_section(): void {
 						<?php esc_html_e( 'Let this site ask useawt.com whether a newer AWT is out.', 'awt' ); ?>
 					</label>
 					<p class="awt-field-help">
-						<?php esc_html_e( 'The check happens twice a day, in the admin only, and sends nothing about your site: no address, no version, no visitor data. It reads one file that is the same for everyone. Turn it off if your site must make no outside requests at all — you will then need to check for new versions yourself.', 'awt' ); ?>
+						<?php esc_html_e( 'The new version check sends nothing about your site: no address, no version, no visitor data. It reads one file to determine the latest version.', 'awt' ); ?>
 					</p>
 					<?php submit_button( __( 'Save', 'awt' ), 'secondary', 'submit', false ); ?>
 				</td>

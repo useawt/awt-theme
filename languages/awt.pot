@@ -9,7 +9,7 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2026-09-03T08:15:35+00:00\n"
+"POT-Creation-Date: 2026-09-03T09:16:19+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.12.0\n"
 "X-Domain: awt\n"
@@ -1006,7 +1006,7 @@ msgid "Let this site ask useawt.com whether a newer AWT is out."
 msgstr ""
 
 #: inc/admin-settings-page.php:2159
-msgid "The check happens twice a day, in the admin only, and sends nothing about your site: no address, no version, no visitor data. It reads one file that is the same for everyone. Turn it off if your site must make no outside requests at all — you will then need to check for new versions yourself."
+msgid "The new version check sends nothing about your site: no address, no version, no visitor data. It reads one file to determine the latest version."
 msgstr ""
 
 #: inc/admin-settings-page.php:2161
