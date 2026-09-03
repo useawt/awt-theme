@@ -2121,7 +2121,7 @@ function render_updates_section(): void {
 	<?php endif; ?>
 
 	<p class="awt-field-help">
-		<?php esc_html_e( 'AWT does not update itself, and WordPress will not tell you when a new version is out. To move to a new version, download the files and upload them to your site. Your settings, pages and content are kept.', 'awt' ); ?>
+		<?php esc_html_e( 'WordPress tells you when a new AWT version is out, in the same place it tells you about everything else: Dashboard, Updates. AWT does not install it for you. To move to a new version, download the files and upload them to your site. Your settings, pages and content are kept.', 'awt' ); ?>
 	</p>
 
 	<ol class="awt-field-help">
@@ -2142,6 +2142,27 @@ function render_updates_section(): void {
 	<p class="awt-field-help">
 		<?php esc_html_e( 'Update both to the same version. The theme and the plugin are built as a pair and are only tested together. Back up your site first, the way you would for any update.', 'awt' ); ?>
 	</p>
+
+	<form method="post" action="<?php echo esc_url( admin_url( 'themes.php?page=' . MENU_SLUG . '&tab=tools' ) ); ?>">
+		<?php wp_nonce_field( NONCE_KEY, '_awt_nonce' ); ?>
+		<input type="hidden" name="awt_active_tab" value="tools" />
+		<input type="hidden" name="awt_updates_submitted" value="1" />
+		<table class="form-table" role="presentation">
+			<tr>
+				<th scope="row"><label for="awt-updates-check"><?php esc_html_e( 'Check for updates', 'awt' ); ?></label></th>
+				<td>
+					<label>
+						<input type="checkbox" id="awt-updates-check" name="updates[check]" value="1" <?php checked( (bool) Settings\get( 'updates.check' ) ); ?> />
+						<?php esc_html_e( 'Let this site ask useawt.com whether a newer AWT is out.', 'awt' ); ?>
+					</label>
+					<p class="awt-field-help">
+						<?php esc_html_e( 'The check happens twice a day, in the admin only, and sends nothing about your site: no address, no version, no visitor data. It reads one file that is the same for everyone. Turn it off if your site must make no outside requests at all — you will then need to check for new versions yourself.', 'awt' ); ?>
+					</p>
+					<?php submit_button( __( 'Save', 'awt' ), 'secondary', 'submit', false ); ?>
+				</td>
+			</tr>
+		</table>
+	</form>
 
 	<hr />
 	<?php
@@ -2353,5 +2374,19 @@ function handle_import(): void {
 function save_tab_tools(): void {
 	// Tools tab renders its own forms (self-form tab). Export is a nonced GET
 	// link handled by handle_export(); Import is a multipart POST handled by
-	// handle_import(). Nothing for the standard save dispatcher to do.
+	// handle_import(). The one thing that does save the ordinary way is the
+	// update-check switch.
+	//
+	// The hidden marker matters: an unchecked box sends nothing, so without a
+	// field that is always present every other Tools-tab POST would read as
+	// "the switch was turned off".
+	// phpcs:ignore WordPress.Security.NonceVerification.Missing -- nonce verified in handle_form_submission().
+	if ( empty( $_POST['awt_updates_submitted'] ) ) {
+		return;
+	}
+	// phpcs:ignore WordPress.Security.NonceVerification.Missing, WordPress.Security.ValidatedSanitizedInput.MissingUnslash, WordPress.Security.ValidatedSanitizedInput.InputNotSanitized -- nonce verified in handle_form_submission(); value only tested for truthiness.
+	Settings\set( 'updates.check', ! empty( $_POST['updates']['check'] ) );
+	// The cached answer was fetched under the old setting. Drop it so turning
+	// the check back on takes effect now rather than in up to twelve hours.
+	delete_site_transient( \AWT\Theme\Updates\CACHE_KEY );
 }

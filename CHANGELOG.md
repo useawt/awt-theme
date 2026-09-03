@@ -12,6 +12,12 @@
 
 ## Unreleased
 
+### [New]
+
+- WordPress now tells you when a new version of AWT is out, on Dashboard,
+  Updates. You still install it yourself.
+- A switch in AWT Settings, Tools turns the update check off.
+
 ## 2026.08.0 — 2026-08-25
 
 The first public release of AWT.

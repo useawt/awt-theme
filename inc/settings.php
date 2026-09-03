@@ -262,6 +262,16 @@ function defaults(): array {
 			// pass. See "Differences from Carbon" (D8).
 			'formTextBodySize' => true,
 		),
+		// Checking useawt.com for a newer AWT. On by default: a site that is
+		// never told about a fix does not get the fix. Off is a real answer
+		// for a site that is required to make no outbound requests — the
+		// check sends nothing about the site either way, but "it makes no
+		// requests at all" is sometimes the sentence that has to be true.
+		// Read by inc/updates.php, and by the AWT Blocks plugin, which reads
+		// this option directly so the switch covers both halves.
+		'updates'       => array(
+			'check' => true,
+		),
 		// Kept, and read by nothing in this theme: the Custom code screen is
 		// an AWT Premium capability. Holding the keys here means a site that
 		// turns Premium off keeps what it wrote rather than losing it.
@@ -465,6 +475,13 @@ function sanitize( array $settings ): array {
 		'logoAlt'     => isset( $identity['logoAlt'] ) ? sanitize_text_field( (string) $identity['logoAlt'] ) : '',
 		'brandMode'   => in_array( $identity['brandMode'] ?? '', $brand_modes, true ) ? $identity['brandMode'] : 'auto',
 		'prefix'      => isset( $identity['prefix'] ) ? sanitize_text_field( (string) $identity['prefix'] ) : '',
+	);
+
+	// Update checks. Absent means "never saved", which is the default (on) —
+	// not "unchecked". Only an explicit false turns it off.
+	$updates        = $settings['updates'] ?? array();
+	$out['updates'] = array(
+		'check' => ! isset( $updates['check'] ) || ! empty( $updates['check'] ),
 	);
 
 	// Navigation.

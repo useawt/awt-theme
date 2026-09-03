@@ -14,6 +14,7 @@
 		"build:css": "sass --style=compressed --no-source-map --load-path=node_modules src/foundation.scss assets/css/foundation.min.css",
 		"build:zip": "node scripts/build-zip.js",
 		"check:foundation": "node scripts/check-foundation.js",
+		"i18n:pot": "wp i18n make-pot . languages/awt.pot --exclude=build,tests,scripts,node_modules,vendor --domain=awt",
 		"check:css": "node scripts/check-css.js",
 		"report:carbon-overrides": "node scripts/report-carbon-overrides.js",
 		"release:prepare": "node scripts/release.js",

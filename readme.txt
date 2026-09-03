@@ -30,6 +30,10 @@ No. The visitor's choice is stored in a cookie that only holds a UI preference t
 
 Yes. One cached copy of a page serves both light and dark visitors correctly; a small script applies the visitor's choice before the page paints. Don't configure your cache to vary by cookie — it isn't needed.
 
+= How do I update AWT? =
+
+WordPress tells you when a new version is out, on Dashboard, Updates. AWT does not install it for you: download the new theme and plugin files and upload them, and keep both on the same version. Your settings, pages and content are kept. To know that a version exists, your site reads one small file on useawt.com twice a day. It sends nothing about your site, and you can turn the check off in AWT Settings, Tools.
+
 = Where do the blocks come from? =
 
 From the AWT Blocks plugin, and the theme needs it. The header, the footer and every pattern are built from those blocks, so install both — the theme on its own gives you an empty header and no patterns.

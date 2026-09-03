@@ -3,13 +3,13 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: AWT 2026.08.0\n"
-"Report-Msgid-Bugs-To: https://wordpress.org/support/theme/awt\n"
+"Report-Msgid-Bugs-To: https://wordpress.org/support/theme/awt-theme\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2026-08-26T05:22:08+00:00\n"
+"POT-Creation-Date: 2026-09-03T08:15:35+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.12.0\n"
 "X-Domain: awt\n"
@@ -17,7 +17,7 @@ msgstr ""
 #. Theme Name of the theme
 #. Author of the theme
 #: style.css
-#: inc/admin-settings-page.php:55
+#: inc/admin-settings-page.php:70
 msgid "AWT"
 msgstr ""
 
@@ -31,1048 +31,1051 @@ msgstr ""
 msgid "An accessibility-first block theme built on IBM's open-source Carbon Design System. Four paired light/dark style variations, a visitor-facing color scheme switch that works with page caching out of the box, and 42 ready-made patterns — every one reviewed against WCAG 2.2 AA in both light and dark mode. Designed for the AWT Blocks plugin, which adds 58 matching accessible blocks and an accessibility checker inside the editor."
 msgstr ""
 
-#: functions.php:255
+#: functions.php:354
 msgid "AWT — Sections"
 msgstr ""
 
-#: functions.php:337
+#: functions.php:436
 msgctxt "template name"
 msgid "Page"
 msgstr ""
 
-#: functions.php:797
-#: inc/admin-settings-page.php:1848
+#: functions.php:865
+#: inc/admin-settings-page.php:1865
 msgid "Skip to main content"
 msgstr ""
 
-#: inc/admin-settings-page.php:54
-#: inc/admin-settings-page.php:153
+#: inc/admin-settings-page.php:69
+#: inc/admin-settings-page.php:164
 msgid "AWT Settings"
 msgstr ""
 
-#: inc/admin-settings-page.php:74
-#: inc/welcome-wizard.php:169
+#: inc/admin-settings-page.php:89
+#: inc/welcome-wizard.php:201
 msgid "Identity"
 msgstr ""
 
-#: inc/admin-settings-page.php:78
+#: inc/admin-settings-page.php:93
 msgid "Design system"
 msgstr ""
 
-#: inc/admin-settings-page.php:82
+#: inc/admin-settings-page.php:97
 msgid "Appearance"
 msgstr ""
 
-#: inc/admin-settings-page.php:86
+#: inc/admin-settings-page.php:101
 msgid "Navigation"
 msgstr ""
 
-#: inc/admin-settings-page.php:90
-msgid "Custom code"
-msgstr ""
-
-#: inc/admin-settings-page.php:94
-#: inc/admin-settings-page.php:1007
-#: inc/admin-settings-page.php:2063
+#: inc/admin-settings-page.php:105
+#: inc/admin-settings-page.php:1024
+#: inc/admin-settings-page.php:2033
 msgid "Custom CSS"
 msgstr ""
 
-#: inc/admin-settings-page.php:98
+#: inc/admin-settings-page.php:109
 msgid "Tools"
 msgstr ""
 
-#: inc/admin-settings-page.php:140
+#: inc/admin-settings-page.php:151
 msgid "You do not have permission to access this page."
 msgstr ""
 
-#: inc/admin-settings-page.php:157
+#: inc/admin-settings-page.php:168
 msgid "Settings saved."
 msgstr ""
 
-#: inc/admin-settings-page.php:166
+#: inc/admin-settings-page.php:177
 msgid "AWT Settings sections"
 msgstr ""
 
-#: inc/admin-settings-page.php:194
-#: inc/admin-settings-page.php:742
-#: inc/admin-settings-page.php:899
-#: inc/admin-settings-page.php:964
-#: inc/admin-settings-page.php:976
-#: inc/admin-settings-page.php:988
+#: inc/admin-settings-page.php:205
+#: inc/admin-settings-page.php:759
+#: inc/admin-settings-page.php:916
+#: inc/admin-settings-page.php:981
+#: inc/admin-settings-page.php:993
+#: inc/admin-settings-page.php:1005
 msgid "Save changes"
 msgstr ""
 
-#: inc/admin-settings-page.php:204
+#: inc/admin-settings-page.php:215
 msgid "You have unsaved changes on this tab. Leave without saving? Your changes will be lost."
 msgstr ""
 
-#: inc/admin-settings-page.php:395
+#: inc/admin-settings-page.php:412
 msgid "Select image"
 msgstr ""
 
-#: inc/admin-settings-page.php:397
+#: inc/admin-settings-page.php:414
 msgid "Use this"
 msgstr ""
 
-#: inc/admin-settings-page.php:448
+#: inc/admin-settings-page.php:465
 msgid "Premium"
 msgstr ""
 
 #. translators: %s: tier name, e.g. "Premium".
-#: inc/admin-settings-page.php:451
+#: inc/admin-settings-page.php:468
 #, php-format
 msgid "%s — learn more (opens in a new tab)"
 msgstr ""
 
-#: inc/admin-settings-page.php:472
+#: inc/admin-settings-page.php:489
 msgid "A design system sets the look of every AWT block: colors, fonts, spacing, and component style."
 msgstr ""
 
-#: inc/admin-settings-page.php:475
+#: inc/admin-settings-page.php:492
 msgid "AWT is built on Carbon, IBM's open-source design system for products and digital experiences. Every block follows Carbon's components, spacing, and type scale, comes with matching light and dark themes, and meets the WCAG 2.2 AA accessibility standard."
 msgstr ""
 
-#: inc/admin-settings-page.php:479
+#: inc/admin-settings-page.php:496
 msgid "Explore the Carbon Design System (opens in a new tab)"
 msgstr ""
 
-#: inc/admin-settings-page.php:503
+#: inc/admin-settings-page.php:520
 msgid "These defaults apply to every Header brand block on your site. A setting on an individual block overrides them."
 msgstr ""
 
-#: inc/admin-settings-page.php:506
+#: inc/admin-settings-page.php:523
 msgid "Your logo appears in the header beside your site title as soon as you set one here. To show it on its own instead, or to hide it, change \"Default brand mode\" under AWT Settings → Appearance → Header."
 msgstr ""
 
-#: inc/admin-settings-page.php:510
+#: inc/admin-settings-page.php:527
 msgid "Logo for light mode"
 msgstr ""
 
-#: inc/admin-settings-page.php:516
-#: inc/admin-settings-page.php:565
-#: inc/admin-settings-page.php:593
+#: inc/admin-settings-page.php:533
+#: inc/admin-settings-page.php:582
+#: inc/admin-settings-page.php:610
 msgid "Select from Media Library…"
 msgstr ""
 
-#: inc/admin-settings-page.php:523
+#: inc/admin-settings-page.php:540
 msgid "Click \"Select from Media Library\" to upload or choose an image, or paste a URL. SVG, PNG, or WebP work best. This logo shows on light backgrounds, and is also used in dark mode if you don't set a separate dark-mode logo."
 msgstr ""
 
-#: inc/admin-settings-page.php:547
+#: inc/admin-settings-page.php:564
 msgid "(opens in new tab)"
 msgstr ""
 
 #. translators: 1: opening <a> tag for Safe SVG plugin link, 2: closing </a> tag (with opens-in-new-tab sr-text when relevant)
-#: inc/admin-settings-page.php:550
+#: inc/admin-settings-page.php:567
 #, php-format
 msgid "Need to upload an SVG logo? WordPress blocks SVG uploads by default, because SVG files can hide harmful code. To allow them safely, install %1$sSafe SVG%2$s or a similar plugin that cleans SVG files. AWT leaves this to a dedicated plugin so SVG safety stays well-maintained."
 msgstr ""
 
-#: inc/admin-settings-page.php:559
+#: inc/admin-settings-page.php:576
 msgid "Logo for dark mode"
 msgstr ""
 
-#: inc/admin-settings-page.php:573
+#: inc/admin-settings-page.php:590
 msgid "Optional. Upload a light or inverted version of your logo for dark backgrounds. Most logos use dark colors that vanish on dark backgrounds, so add a readable version here. Leave empty to use your light-mode logo everywhere."
 msgstr ""
 
-#: inc/admin-settings-page.php:578
+#: inc/admin-settings-page.php:595
 msgid "Default logo alt text"
 msgstr ""
 
-#: inc/admin-settings-page.php:581
+#: inc/admin-settings-page.php:598
 msgid "Required when you set a logo. Describe what the logo shows — usually your company name. Leave empty if your brand mode is \"Site Title only\"."
 msgstr ""
 
-#: inc/admin-settings-page.php:585
+#: inc/admin-settings-page.php:602
 msgid "Site icon (favicon)"
 msgstr ""
 
-#: inc/admin-settings-page.php:592
+#: inc/admin-settings-page.php:609
 msgid "Select site icon"
 msgstr ""
 
-#: inc/admin-settings-page.php:599
+#: inc/admin-settings-page.php:616
 msgid "Remove"
 msgstr ""
 
-#: inc/admin-settings-page.php:604
+#: inc/admin-settings-page.php:621
 msgid "Shown in browser tabs, bookmarks, and when someone adds your site to a phone home screen. Use a square image at least 512×512 pixels. This is the same Site Icon as Settings → General — kept here so all your branding lives in one place."
 msgstr ""
 
-#: inc/admin-settings-page.php:655
+#: inc/admin-settings-page.php:672
 msgid "Settings that are specific to the Carbon design system: light/dark style, header layout, brand options, and type size. Other settings — logos and navigation — have their own tabs."
 msgstr ""
 
-#: inc/admin-settings-page.php:668
+#: inc/admin-settings-page.php:685
 msgid "Light & dark"
 msgstr ""
 
-#: inc/admin-settings-page.php:669
-#: inc/admin-settings-page.php:1135
-#: inc/welcome-wizard.php:170
-#: inc/welcome-wizard.php:327
+#: inc/admin-settings-page.php:686
+#: inc/admin-settings-page.php:1152
+#: inc/welcome-wizard.php:202
+#: inc/welcome-wizard.php:359
 msgid "Header"
 msgstr ""
 
-#: inc/admin-settings-page.php:670
-#: inc/welcome-wizard.php:171
+#: inc/admin-settings-page.php:687
+#: inc/welcome-wizard.php:203
 msgid "Typography"
 msgstr ""
 
-#: inc/admin-settings-page.php:671
+#: inc/admin-settings-page.php:688
 msgid "Links"
 msgstr ""
 
-#: inc/admin-settings-page.php:672
+#: inc/admin-settings-page.php:689
 msgid "Focus"
 msgstr ""
 
-#: inc/admin-settings-page.php:673
+#: inc/admin-settings-page.php:690
 msgid "Colors"
 msgstr ""
 
-#: inc/admin-settings-page.php:681
-#: inc/welcome-wizard.php:281
+#: inc/admin-settings-page.php:698
+#: inc/welcome-wizard.php:313
 msgid "Default (follows the visitor's device setting)"
 msgstr ""
 
-#: inc/admin-settings-page.php:682
-#: inc/welcome-wizard.php:282
+#: inc/admin-settings-page.php:699
+#: inc/welcome-wizard.php:314
 msgid "Always light"
 msgstr ""
 
-#: inc/admin-settings-page.php:683
-#: inc/welcome-wizard.php:283
+#: inc/admin-settings-page.php:700
+#: inc/welcome-wizard.php:315
 msgid "Always dark"
 msgstr ""
 
-#: inc/admin-settings-page.php:686
+#: inc/admin-settings-page.php:703
 msgid "Carbon settings sections"
 msgstr ""
 
-#: inc/admin-settings-page.php:710
+#: inc/admin-settings-page.php:727
 msgid "Applying a different style variation replaces any color, typography, or layout changes you have made in Appearance → Editor → Styles. Continue?"
 msgstr ""
 
-#: inc/admin-settings-page.php:720
+#: inc/admin-settings-page.php:737
 #: inc/style-variations.php:174
-#: inc/welcome-wizard.php:290
-#: inc/welcome-wizard.php:394
+#: inc/welcome-wizard.php:322
+#: inc/welcome-wizard.php:426
 msgid "Style variation"
 msgstr ""
 
-#: inc/admin-settings-page.php:722
+#: inc/admin-settings-page.php:739
 msgid "Each variation pairs a light theme with a dark theme. Applying one replaces any style changes you've made under Appearance → Editor → Styles — the same as choosing a variation there."
 msgstr ""
 
-#: inc/admin-settings-page.php:728
-#: inc/admin-settings-page.php:733
-#: inc/welcome-wizard.php:296
-#: inc/welcome-wizard.php:299
-#: inc/welcome-wizard.php:398
+#: inc/admin-settings-page.php:745
+#: inc/admin-settings-page.php:750
+#: inc/welcome-wizard.php:328
+#: inc/welcome-wizard.php:331
+#: inc/welcome-wizard.php:430
 msgid "Site appearance"
 msgstr ""
 
-#: inc/admin-settings-page.php:730
+#: inc/admin-settings-page.php:747
 msgid "Sets your site's light or dark appearance. \"Default\" follows each visitor's device setting (and the light/dark toggle, if you show one). \"Always light\" and \"Always dark\" lock the appearance for everyone."
 msgstr ""
 
-#: inc/admin-settings-page.php:752
+#: inc/admin-settings-page.php:769
 msgid "Default (matches the site appearance)"
 msgstr ""
 
-#: inc/admin-settings-page.php:757
+#: inc/admin-settings-page.php:774
 msgid "Automatic — use the logo and prefix you have set"
 msgstr ""
 
-#: inc/admin-settings-page.php:758
+#: inc/admin-settings-page.php:775
 msgid "Site Title only"
 msgstr ""
 
-#: inc/admin-settings-page.php:759
+#: inc/admin-settings-page.php:776
 msgid "Logo + Site Title"
 msgstr ""
 
-#: inc/admin-settings-page.php:760
+#: inc/admin-settings-page.php:777
 msgid "Logo only"
 msgstr ""
 
-#: inc/admin-settings-page.php:761
+#: inc/admin-settings-page.php:778
 msgid "Site Title + prefix"
 msgstr ""
 
-#: inc/admin-settings-page.php:762
+#: inc/admin-settings-page.php:779
 msgid "Logo + Site Title + prefix"
 msgstr ""
 
-#: inc/admin-settings-page.php:764
+#: inc/admin-settings-page.php:781
 msgid "Applying a different header preset replaces any changes you have made to your header. Continue?"
 msgstr ""
 
-#: inc/admin-settings-page.php:775
-#: inc/admin-settings-page.php:780
+#: inc/admin-settings-page.php:792
+#: inc/admin-settings-page.php:797
 msgid "Header appearance"
 msgstr ""
 
-#: inc/admin-settings-page.php:777
+#: inc/admin-settings-page.php:794
 msgid "Sets the header bar's light or dark appearance. \"Default\" matches the site appearance you set under Light & dark, or keeps a light or dark look you gave the header yourself in the Site Editor. \"Always light\" and \"Always dark\" keep the header fixed no matter what the rest of the page does — they replace anything set on the header in the Site Editor."
 msgstr ""
 
-#: inc/admin-settings-page.php:789
+#: inc/admin-settings-page.php:806
 #: inc/header-presets.php:89
-#: inc/welcome-wizard.php:332
-#: inc/welcome-wizard.php:402
+#: inc/welcome-wizard.php:364
+#: inc/welcome-wizard.php:434
 msgid "Header preset"
 msgstr ""
 
-#: inc/admin-settings-page.php:791
+#: inc/admin-settings-page.php:808
 msgid "Replaces your current header with one of four ready-made layouts."
 msgstr ""
 
-#: inc/admin-settings-page.php:792
+#: inc/admin-settings-page.php:809
 msgid "Documentation also adds a side navigation menu down the left of every page on wide screens (on phones and small tablets its links move into the header menu instead). It sits inside the header, so you edit its sections and links by opening the header in the Site Editor and selecting \"Side nav\"."
 msgstr ""
 
-#: inc/admin-settings-page.php:798
+#: inc/admin-settings-page.php:815
 msgid "Header settings"
 msgstr ""
 
-#: inc/admin-settings-page.php:800
+#: inc/admin-settings-page.php:817
 msgid "Add or remove the icon buttons at the top-right of your header. Each switch changes just that one button and leaves your other header changes alone."
 msgstr ""
 
-#: inc/admin-settings-page.php:813
+#: inc/admin-settings-page.php:830
 #: inc/design-system/carbon.php:439
 msgid "Search"
 msgstr ""
 
-#: inc/admin-settings-page.php:814
+#: inc/admin-settings-page.php:831
 msgid "Replaces search icon with a search field within the header."
 msgstr ""
 
-#: inc/admin-settings-page.php:817
+#: inc/admin-settings-page.php:834
 #: inc/design-system/carbon.php:447
 msgid "Notifications"
 msgstr ""
 
-#: inc/admin-settings-page.php:818
+#: inc/admin-settings-page.php:835
 msgid "Opens notifications panel."
 msgstr ""
 
-#: inc/admin-settings-page.php:821
+#: inc/admin-settings-page.php:838
 #: inc/design-system/carbon.php:455
 msgid "User menu"
 msgstr ""
 
-#: inc/admin-settings-page.php:822
+#: inc/admin-settings-page.php:839
 msgid "Opens user menu."
 msgstr ""
 
-#: inc/admin-settings-page.php:828
-#: inc/admin-settings-page.php:831
-#: inc/welcome-wizard.php:338
-#: inc/welcome-wizard.php:341
-#: inc/welcome-wizard.php:344
+#: inc/admin-settings-page.php:845
+#: inc/admin-settings-page.php:848
+#: inc/welcome-wizard.php:370
+#: inc/welcome-wizard.php:373
+#: inc/welcome-wizard.php:376
 msgid "Header icon buttons"
 msgstr ""
 
-#: inc/admin-settings-page.php:833
+#: inc/admin-settings-page.php:850
 msgid "Plain icon buttons. Search links to your site search; you can point Notifications and User menu wherever you like in the Site Editor."
 msgstr ""
 
-#: inc/admin-settings-page.php:849
+#: inc/admin-settings-page.php:866
 msgid "Header icon widgets"
 msgstr ""
 
-#: inc/admin-settings-page.php:852
+#: inc/admin-settings-page.php:869
 msgid "Header icon widgets (AWT Premium)"
 msgstr ""
 
-#: inc/admin-settings-page.php:854
+#: inc/admin-settings-page.php:871
 msgid "AWT Premium upgrades these icons into rich widgets instead of plain buttons."
 msgstr ""
 
-#: inc/admin-settings-page.php:876
+#: inc/admin-settings-page.php:893
 msgid "Brand"
 msgstr ""
 
-#: inc/admin-settings-page.php:877
+#: inc/admin-settings-page.php:894
 msgid "How the Header brand block looks by default. You can show an optional prefix before the site title (for example a parent brand). Set logo images on the Identity tab."
 msgstr ""
 
-#: inc/admin-settings-page.php:880
+#: inc/admin-settings-page.php:897
 msgid "Default brand mode"
 msgstr ""
 
-#: inc/admin-settings-page.php:887
+#: inc/admin-settings-page.php:904
 msgid "Automatic follows the Identity tab: your logo shows as soon as you set one, next to your site title, and your prefix shows as soon as you type one. Pick any other option to always show the same thing."
 msgstr ""
 
-#: inc/admin-settings-page.php:891
+#: inc/admin-settings-page.php:908
 msgid "Default prefix"
 msgstr ""
 
-#: inc/admin-settings-page.php:894
+#: inc/admin-settings-page.php:911
 msgid "A short parent-brand name shown before the site title — like \"IBM\" in \"IBM Cloud\". Only appears when brand mode includes a prefix."
 msgstr ""
 
-#: inc/admin-settings-page.php:904
+#: inc/admin-settings-page.php:921
 msgid "Further customization"
 msgstr ""
 
-#: inc/admin-settings-page.php:906
+#: inc/admin-settings-page.php:923
 msgid "AWT Settings covers the common cases. For advanced changes — custom buttons, reordering icons, or restoring the original header — use the WordPress Site Editor."
 msgstr ""
 
-#: inc/admin-settings-page.php:909
+#: inc/admin-settings-page.php:926
 msgid "Header size and position"
 msgstr ""
 
-#: inc/admin-settings-page.php:911
+#: inc/admin-settings-page.php:928
 msgid "The header is a bar 48 pixels tall, fixed to the top of the screen so it stays put as you scroll. Both come from the Carbon Design System layout the theme follows, so there is no setting to change them. What you can change is what goes in the bar and whether it looks light or dark."
 msgstr ""
 
-#: inc/admin-settings-page.php:914
+#: inc/admin-settings-page.php:931
 msgid "Adding or reordering icons"
 msgstr ""
 
-#: inc/admin-settings-page.php:915
+#: inc/admin-settings-page.php:932
 msgid "To add custom buttons (an X/Twitter icon, a call-to-action button) or reorder icons, edit the header in the Site Editor."
 msgstr ""
 
 #. translators: %s: link to the Site Editor.
-#: inc/admin-settings-page.php:921
-#: inc/admin-settings-page.php:940
+#: inc/admin-settings-page.php:938
+#: inc/admin-settings-page.php:957
 #, php-format
 msgid "WordPress admin → %s."
 msgstr ""
 
-#: inc/admin-settings-page.php:922
-#: inc/admin-settings-page.php:941
+#: inc/admin-settings-page.php:939
+#: inc/admin-settings-page.php:958
 msgid "Appearance → Editor (Site Editor)"
 msgstr ""
 
-#: inc/admin-settings-page.php:926
-#: inc/admin-settings-page.php:945
+#: inc/admin-settings-page.php:943
+#: inc/admin-settings-page.php:962
 msgid "Patterns → Template Parts → Header."
 msgstr ""
 
-#: inc/admin-settings-page.php:927
+#: inc/admin-settings-page.php:944
 msgid "Click into the header bar. A small toolbar appears with the global actions group at the right end — click into it."
 msgstr ""
 
-#: inc/admin-settings-page.php:928
+#: inc/admin-settings-page.php:945
 msgid "Use the + button to add a new header action, or click an existing one to edit it."
 msgstr ""
 
-#: inc/admin-settings-page.php:931
+#: inc/admin-settings-page.php:948
 msgid "Reverting to the theme's shipped header"
 msgstr ""
 
-#: inc/admin-settings-page.php:933
+#: inc/admin-settings-page.php:950
 msgid "Want to discard your changes and go back to the header AWT ships with the theme? WordPress can do this for you — no plugin needed."
 msgstr ""
 
-#: inc/admin-settings-page.php:946
+#: inc/admin-settings-page.php:963
 msgid "Open the three-dot (⋯) menu on the Header template part (top-right of the canvas, or beside the template part's name in the sidebar)."
 msgstr ""
 
-#: inc/admin-settings-page.php:947
+#: inc/admin-settings-page.php:964
 msgid "Click \"Clear customizations\" (sometimes called \"Reset\"). WordPress discards your saved changes and restores the original header from the theme."
 msgstr ""
 
-#: inc/admin-settings-page.php:950
+#: inc/admin-settings-page.php:967
 msgid "The same works for any other template area (footer, sidebar, and so on) — it's a WordPress feature, not an AWT one. Handy whenever you want a fresh start."
 msgstr ""
 
-#: inc/admin-settings-page.php:1000
+#: inc/admin-settings-page.php:1017
 msgid "You can change your colors, but every change must keep WCAG-conformant contrast ratios so your site stays readable."
 msgstr ""
 
-#: inc/admin-settings-page.php:1003
+#: inc/admin-settings-page.php:1020
 msgid "Change colors using"
 msgstr ""
 
-#: inc/admin-settings-page.php:1012
+#: inc/admin-settings-page.php:1029
 msgid "AWT contrast-safe color editor"
 msgstr ""
 
 #. translators: %s: link to the AWT Premium website
-#: inc/admin-settings-page.php:1021
+#: inc/admin-settings-page.php:1038
 #, php-format
 msgid "Learn more about %s."
 msgstr ""
 
-#: inc/admin-settings-page.php:1022
+#: inc/admin-settings-page.php:1039
 msgid "AWT Premium"
 msgstr ""
 
-#: inc/admin-settings-page.php:1050
+#: inc/admin-settings-page.php:1067
 msgid "Failed to apply the style variation. Check that the variation file exists in /styles."
 msgstr ""
 
-#: inc/admin-settings-page.php:1070
+#: inc/admin-settings-page.php:1087
 msgid "Failed to apply the header preset."
 msgstr ""
 
-#: inc/admin-settings-page.php:1131
+#: inc/admin-settings-page.php:1148
 msgid "Main content"
 msgstr ""
 
-#: inc/admin-settings-page.php:1132
+#: inc/admin-settings-page.php:1149
 msgid "Links inside your text, where a reader has to tell a link apart from the words around it. This is the one that matters most."
 msgstr ""
 
-#: inc/admin-settings-page.php:1136
+#: inc/admin-settings-page.php:1153
 msgid "Links in the header menu."
 msgstr ""
 
-#: inc/admin-settings-page.php:1139
-#: inc/admin-settings-page.php:1833
+#: inc/admin-settings-page.php:1156
+#: inc/admin-settings-page.php:1850
 msgid "Side navigation"
 msgstr ""
 
-#: inc/admin-settings-page.php:1140
+#: inc/admin-settings-page.php:1157
 msgid "Links in the side navigation, wherever it appears. On a narrow screen the side navigation moves inside the header menu, and this switch still governs it there."
 msgstr ""
 
-#: inc/admin-settings-page.php:1143
-#: inc/admin-settings-page.php:1854
+#: inc/admin-settings-page.php:1160
+#: inc/admin-settings-page.php:1871
 #: inc/breadcrumb-auto-emit.php:375
 #: inc/breadcrumb-auto-emit.php:420
 msgid "Breadcrumbs"
 msgstr ""
 
-#: inc/admin-settings-page.php:1144
+#: inc/admin-settings-page.php:1161
 msgid "Links in the breadcrumb trail."
 msgstr ""
 
-#: inc/admin-settings-page.php:1147
-#: inc/admin-settings-page.php:1824
+#: inc/admin-settings-page.php:1164
+#: inc/admin-settings-page.php:1841
 msgid "Footer"
 msgstr ""
 
-#: inc/admin-settings-page.php:1148
+#: inc/admin-settings-page.php:1165
 msgid "Links in the footer."
 msgstr ""
 
-#: inc/admin-settings-page.php:1153
+#: inc/admin-settings-page.php:1170
 msgid "AWT underlines links, so a link is never marked out by colour alone. Carbon leaves links without an underline and brings it back only when you point at one."
 msgstr ""
 
-#: inc/admin-settings-page.php:1158
-#: inc/admin-settings-page.php:1258
-#: inc/admin-settings-page.php:1419
-#: inc/admin-settings-page.php:1857
+#: inc/admin-settings-page.php:1175
+#: inc/admin-settings-page.php:1275
+#: inc/admin-settings-page.php:1436
+#: inc/admin-settings-page.php:1874
 msgid "Accessibility benefit"
 msgstr ""
 
 #. translators: 1: opening <a> tag to WCAG 1.4.1; 2: closing </a> tag
-#: inc/admin-settings-page.php:1163
+#: inc/admin-settings-page.php:1180
 #, php-format
 msgid "Colour on its own may carry a link only when the link is clearly different from the text around it — at least three times the contrast, under the %1$sWCAG \"Use of Color\" guideline (1.4.1, Level A)%2$s. Carbon's blue reaches 3.62 to 1 against body text in light mode, but only 2.14 to 1 in dark mode, so in dark mode colour alone is not enough. Change your colours and the light figure can drop below the line too. An underline settles it either way."
 msgstr ""
 
-#: inc/admin-settings-page.php:1173
+#: inc/admin-settings-page.php:1190
 msgid "Underline links"
 msgstr ""
 
-#: inc/admin-settings-page.php:1177
+#: inc/admin-settings-page.php:1194
 msgid "Underline links across the whole site."
 msgstr ""
 
-#: inc/admin-settings-page.php:1180
+#: inc/admin-settings-page.php:1197
 msgid "Turn this off to use Carbon's link style everywhere, where colour marks a link and the underline appears only when you point at it. The choices below stay saved, and come back when you turn this on again."
 msgstr ""
 
-#: inc/admin-settings-page.php:1189
+#: inc/admin-settings-page.php:1206
 msgid "Nothing is underlined right now, because the switch above is off. The choices below are saved and will apply as soon as you turn it back on."
 msgstr ""
 
-#: inc/admin-settings-page.php:1196
+#: inc/admin-settings-page.php:1213
 msgid "Where to underline"
 msgstr ""
 
-#: inc/admin-settings-page.php:1199
+#: inc/admin-settings-page.php:1216
 msgid "One switch per place a link appears, because the reason differs: a link in a paragraph has to stand out from the text around it, while a menu item is found by where it sits."
 msgstr ""
 
-#: inc/admin-settings-page.php:1224
+#: inc/admin-settings-page.php:1241
 msgid "Never underlined, whatever you choose here: buttons, pagination numbers, tags and cards. Each of those is already marked out by its own shape, so an underline would read as emphasis instead. Plain links you type into your text are left alone too — they keep the underline your browser already gives them, whichever way you set these switches."
 msgstr ""
 
-#: inc/admin-settings-page.php:1253
+#: inc/admin-settings-page.php:1270
 msgid "When someone moves through your page with the Tab key, the control they land on is marked so they can see where they are. This sets how that mark is drawn on buttons."
 msgstr ""
 
 #. translators: 1: opening <a> tag to WCAG 2.4.7; 2: closing </a> tag; 3: opening <a> tag to WCAG 2.4.13; 4: closing </a> tag
-#: inc/admin-settings-page.php:1263
+#: inc/admin-settings-page.php:1280
 #, php-format
 msgid "A focused control has to be visible, under the %1$sWCAG \"Focus Visible\" guideline (2.4.7, Level AA)%2$s. How big the mark has to be is set by %3$s\"Focus Appearance\" (2.4.13, Level AAA)%4$s: at least as much area as a 2-pixel line around the control, and a clear change from how that same spot looks unfocused. AWT meets both whichever way you set this. What changes is how easy it is to check. Carbon builds a button's mark out of a border and two shadows, so there is no single thickness to read and anyone auditing your site has to work it out from three overlapping layers. One outline answers the question directly."
 msgstr ""
 
-#: inc/admin-settings-page.php:1275
+#: inc/admin-settings-page.php:1292
 msgid "Button focus outline"
 msgstr ""
 
-#: inc/admin-settings-page.php:1279
+#: inc/admin-settings-page.php:1296
 msgid "Mark a focused button with one outline, just outside its edge."
 msgstr ""
 
-#: inc/admin-settings-page.php:1282
+#: inc/admin-settings-page.php:1299
 msgid "Turn this off to use Carbon's look instead: two rings of different thickness, drawn inside the button's edge. Both are easy to see, and both meet the guidelines. The single outline is simply easier to measure and to explain."
 msgstr ""
 
-#: inc/admin-settings-page.php:1291
+#: inc/admin-settings-page.php:1308
 msgid "Buttons are using Carbon's two-ring style right now. This still meets the guidelines — it is a look, not a step down."
 msgstr ""
 
-#: inc/admin-settings-page.php:1297
+#: inc/admin-settings-page.php:1314
 msgid "This switch covers buttons only. Links, form fields, menus, tabs and everything else keep the outline they already have, whichever way you set it. Buttons were the one place the mark was built out of layers instead of drawn as a single line."
 msgstr ""
 
-#: inc/admin-settings-page.php:1319
+#: inc/admin-settings-page.php:1336
 msgid "Compact (0.875×)"
 msgstr ""
 
-#: inc/admin-settings-page.php:1320
+#: inc/admin-settings-page.php:1337
 msgid "Slightly smaller than the browser default. Best when fitting more on screen matters more than easy reading."
 msgstr ""
 
-#: inc/admin-settings-page.php:1323
+#: inc/admin-settings-page.php:1340
 msgid "Default (1.0×)"
 msgstr ""
 
-#: inc/admin-settings-page.php:1324
+#: inc/admin-settings-page.php:1341
 msgid "The standard type scale. Recommended for most sites."
 msgstr ""
 
-#: inc/admin-settings-page.php:1327
+#: inc/admin-settings-page.php:1344
 msgid "Comfortable (1.125×)"
 msgstr ""
 
-#: inc/admin-settings-page.php:1328
+#: inc/admin-settings-page.php:1345
 msgid "Slightly larger. Recommended for sites with older audiences or low-vision readers."
 msgstr ""
 
-#: inc/admin-settings-page.php:1333
+#: inc/admin-settings-page.php:1350
 msgid "Resize every font on your site by the same amount. Heading-to-body proportions and line spacing stay balanced at any size."
 msgstr ""
 
-#: inc/admin-settings-page.php:1336
+#: inc/admin-settings-page.php:1353
 msgid "AWT uses IBM Plex Sans for text and IBM Plex Mono for code, chosen for on-screen readability. You can't swap fonts yet, because many web fonts are harder to read."
 msgstr ""
 
-#: inc/admin-settings-page.php:1340
-#: inc/admin-settings-page.php:1343
+#: inc/admin-settings-page.php:1357
+#: inc/admin-settings-page.php:1360
 msgid "Size scale"
 msgstr ""
 
-#: inc/admin-settings-page.php:1374
+#: inc/admin-settings-page.php:1391
 msgid "Preview"
 msgstr ""
 
-#: inc/admin-settings-page.php:1375
+#: inc/admin-settings-page.php:1392
 msgid "Updates live as you change the size scale. Save changes to apply across the site."
 msgstr ""
 
-#: inc/admin-settings-page.php:1377
+#: inc/admin-settings-page.php:1394
 msgid "Heading 1 — Productive heading 06"
 msgstr ""
 
-#: inc/admin-settings-page.php:1378
+#: inc/admin-settings-page.php:1395
 msgid "Heading 2 — Productive heading 04"
 msgstr ""
 
-#: inc/admin-settings-page.php:1379
+#: inc/admin-settings-page.php:1396
 msgid "Heading 3 — Productive heading 03"
 msgstr ""
 
-#: inc/admin-settings-page.php:1381
+#: inc/admin-settings-page.php:1398
 msgid "Body text. The quick brown fox jumps over the lazy dog. 1234567890. AWT resizes every font by the same amount, so spacing stays balanced at any size. Compact fits more on screen; Comfortable gives larger, easier-to-read type."
 msgstr ""
 
-#: inc/admin-settings-page.php:1412
+#: inc/admin-settings-page.php:1429
 msgid "Text around form fields"
 msgstr ""
 
-#: inc/admin-settings-page.php:1414
+#: inc/admin-settings-page.php:1431
 msgid "Every field on a form carries a label, sometimes a hint, and a message when something is wrong. Carbon sets all three smaller than your body text. This puts them at the same size as everything else."
 msgstr ""
 
-#: inc/admin-settings-page.php:1421
+#: inc/admin-settings-page.php:1438
 msgid "These three strings are the ones a person has to read in order to fill your form in, and at Carbon's size they are the smallest text on the page. No accessibility rule sets a minimum text size, so both settings pass. Bigger text is simply easier to read, and it matters most where reading it is the only way through."
 msgstr ""
 
-#: inc/admin-settings-page.php:1427
+#: inc/admin-settings-page.php:1444
 msgid "Form text size"
 msgstr ""
 
-#: inc/admin-settings-page.php:1438
+#: inc/admin-settings-page.php:1455
 msgid "Show labels, hints and error messages at body text size."
 msgstr ""
 
-#: inc/admin-settings-page.php:1441
+#: inc/admin-settings-page.php:1458
 msgid "Turn this off to use Carbon's sizes instead, where this text is a step smaller than your body text."
 msgstr ""
 
-#: inc/admin-settings-page.php:1450
+#: inc/admin-settings-page.php:1467
 msgid "Form labels, hints and error messages are using Carbon's smaller size right now. This still meets the guidelines — it is a size, not a step down."
 msgstr ""
 
-#: inc/admin-settings-page.php:1456
+#: inc/admin-settings-page.php:1473
 msgid "One field style is left out on purpose: the one that floats its label inside the box. There, the label sits in a slot built for smaller text, so growing it would crowd what the visitor types."
 msgstr ""
 
 #. translators: %s: link to Site Editor
-#: inc/admin-settings-page.php:1524
+#: inc/admin-settings-page.php:1541
 #, php-format
 msgid "Edit colors in %s. Custom colors you add there appear in this audit alongside Carbon's defaults."
 msgstr ""
 
-#: inc/admin-settings-page.php:1525
+#: inc/admin-settings-page.php:1542
 msgid "Site Editor → Styles → Colors"
 msgstr ""
 
-#: inc/admin-settings-page.php:1530
+#: inc/admin-settings-page.php:1547
 msgid "This check tests each color only against the backgrounds it's meant to appear on, using the WCAG contrast level its role requires: 4.5:1 for body and link text, 3:1 for interface parts like button edges, icons, focus rings, and borders. Color pairings a color isn't meant for aren't shown."
 msgstr ""
 
-#: inc/admin-settings-page.php:1565
+#: inc/admin-settings-page.php:1582
 msgid "No palette colors found."
 msgstr ""
 
-#: inc/admin-settings-page.php:1572
+#: inc/admin-settings-page.php:1589
 #: inc/style-variations.php:184
 msgid "Light scope"
 msgstr ""
 
-#: inc/admin-settings-page.php:1573
+#: inc/admin-settings-page.php:1590
 #: inc/style-variations.php:185
 msgid "Dark scope"
 msgstr ""
 
 #. translators: 1: passing pairings, 2: failing pairings
-#: inc/admin-settings-page.php:1626
+#: inc/admin-settings-page.php:1643
 #, php-format
 msgid "%1$d pass · %2$d fail."
 msgstr ""
 
-#: inc/admin-settings-page.php:1636
+#: inc/admin-settings-page.php:1653
 msgid "Token & role"
 msgstr ""
 
-#: inc/admin-settings-page.php:1637
+#: inc/admin-settings-page.php:1654
 msgid "Pairing"
 msgstr ""
 
-#: inc/admin-settings-page.php:1638
+#: inc/admin-settings-page.php:1655
 msgid "Required contrast"
 msgstr ""
 
-#: inc/admin-settings-page.php:1639
+#: inc/admin-settings-page.php:1656
 msgid "Measured contrast"
 msgstr ""
 
-#: inc/admin-settings-page.php:1640
+#: inc/admin-settings-page.php:1657
 msgid "Outcome"
 msgstr ""
 
-#: inc/admin-settings-page.php:1641
+#: inc/admin-settings-page.php:1658
 msgid "Notes"
 msgstr ""
 
-#: inc/admin-settings-page.php:1657
+#: inc/admin-settings-page.php:1674
 msgid "Pass"
 msgstr ""
 
-#: inc/admin-settings-page.php:1657
+#: inc/admin-settings-page.php:1674
 msgid "Fail"
 msgstr ""
 
-#: inc/admin-settings-page.php:1699
+#: inc/admin-settings-page.php:1716
 msgid "Surfaces (no ratio check)"
 msgstr ""
 
-#: inc/admin-settings-page.php:1701
+#: inc/admin-settings-page.php:1718
 msgid "Surface colors are backgrounds — the colors that text and icons sit on top of. They aren't foreground colors, so there's no contrast ratio to check."
 msgstr ""
 
-#: inc/admin-settings-page.php:1719
+#: inc/admin-settings-page.php:1736
 msgid "Exempt tokens (intentionally low contrast)"
 msgstr ""
 
-#: inc/admin-settings-page.php:1721
+#: inc/admin-settings-page.php:1738
 msgid "These colors are skipped. WCAG exempts disabled controls from contrast rules, and other colors depend too much on context (like focus insets) for an automatic check to judge fairly."
 msgstr ""
 
-#: inc/admin-settings-page.php:1741
+#: inc/admin-settings-page.php:1758
 msgid "How to read this audit"
 msgstr ""
 
-#: inc/admin-settings-page.php:1742
+#: inc/admin-settings-page.php:1759
 msgid "Each row shows a color, the backgrounds it's designed for, and the contrast level its role needs. Colors are checked only where they're actually used: a text color is tested against the backgrounds it appears on; a button color is tested for its edge contrast, while text-on-button readability is checked separately under \"Text — on accent surfaces\"."
 msgstr ""
 
-#: inc/admin-settings-page.php:1743
+#: inc/admin-settings-page.php:1760
 msgid "If a built-in color fails, it's worth investigating. If a color you added yourself fails, reconsider it — or use it only where there's no text."
 msgstr ""
 
-#: inc/admin-settings-page.php:1812
+#: inc/admin-settings-page.php:1829
 msgid "Menu"
 msgstr ""
 
-#: inc/admin-settings-page.php:1815
+#: inc/admin-settings-page.php:1832
 msgid "Header menu"
 msgstr ""
 
-#: inc/admin-settings-page.php:1817
+#: inc/admin-settings-page.php:1834
 msgid "Your header menu lives in the header, which you edit in the Site Editor. Open it to add, remove, reorder, or rename links, and to change the buttons on the right."
 msgstr ""
 
-#: inc/admin-settings-page.php:1819
+#: inc/admin-settings-page.php:1836
 msgid "Edit the header"
 msgstr ""
 
-#: inc/admin-settings-page.php:1826
+#: inc/admin-settings-page.php:1843
 msgid "The links and text at the bottom of every page live in the footer, which you also edit in the Site Editor."
 msgstr ""
 
-#: inc/admin-settings-page.php:1828
+#: inc/admin-settings-page.php:1845
 msgid "Edit the footer"
 msgstr ""
 
-#: inc/admin-settings-page.php:1835
+#: inc/admin-settings-page.php:1852
 msgid "The menu down the left of every page on wide screens, if your header preset includes one. It lives in the header, so this opens the header in the Site Editor — select \"Side nav\" there to add, remove, or rename its sections and links. On narrow screens these same links appear in the header menu."
 msgstr ""
 
-#: inc/admin-settings-page.php:1837
+#: inc/admin-settings-page.php:1854
 msgid "Edit the side navigation"
 msgstr ""
 
-#: inc/admin-settings-page.php:1843
+#: inc/admin-settings-page.php:1860
 msgid "Skip link"
 msgstr ""
 
-#: inc/admin-settings-page.php:1846
+#: inc/admin-settings-page.php:1863
 msgid "Skip link text"
 msgstr ""
 
-#: inc/admin-settings-page.php:1849
+#: inc/admin-settings-page.php:1866
 msgid "Default text for every Skip link on your site. A setting on an individual block wins. Leave empty to use the default, \"Skip to main content\"."
 msgstr ""
 
 #. translators: 1: opening <a> tag to WCAG 2.4.5; 2: closing </a> tag
-#: inc/admin-settings-page.php:1862
+#: inc/admin-settings-page.php:1879
 #, php-format
 msgid "Automatic breadcrumbs help meet the %1$sWCAG \"Multiple Ways\" guideline (2.4.5, Level AA)%2$s, which asks for more than one way to find a page. This matters most if your site has no search: without it, breadcrumbs (or a sitemap) become the main alternative, and the guideline needs at least two ways."
 msgstr ""
 
-#: inc/admin-settings-page.php:1871
+#: inc/admin-settings-page.php:1888
 msgid "Auto-emit breadcrumbs"
 msgstr ""
 
-#: inc/admin-settings-page.php:1875
+#: inc/admin-settings-page.php:1892
 msgid "Show a breadcrumb trail above the main content on every page except the front page."
 msgstr ""
 
-#: inc/admin-settings-page.php:1877
+#: inc/admin-settings-page.php:1894
 msgid "Turn this off if you build breadcrumbs by hand with the Breadcrumb block. If a page has both, the automatic one hides itself."
 msgstr ""
 
-#: inc/admin-settings-page.php:1881
+#: inc/admin-settings-page.php:1898
 msgid "Show on mobile"
 msgstr ""
 
-#: inc/admin-settings-page.php:1885
+#: inc/admin-settings-page.php:1902
 msgid "Show breadcrumbs on narrow screens (under 672px). This is separate from the main toggle above."
 msgstr ""
 
-#: inc/admin-settings-page.php:1890
+#: inc/admin-settings-page.php:1907
 msgid "Home item text"
 msgstr ""
 
-#: inc/admin-settings-page.php:1892
+#: inc/admin-settings-page.php:1909
 #: assets/js/breadcrumb-editor.js:62
 msgid "Home"
 msgstr ""
 
-#: inc/admin-settings-page.php:1893
+#: inc/admin-settings-page.php:1910
 msgid "The label for the first item in every auto-emitted breadcrumb trail."
 msgstr ""
 
-#: inc/admin-settings-page.php:1897
+#: inc/admin-settings-page.php:1914
 msgid "404 item text"
 msgstr ""
 
-#: inc/admin-settings-page.php:1899
+#: inc/admin-settings-page.php:1916
 msgid "Page not found"
 msgstr ""
 
-#: inc/admin-settings-page.php:1900
+#: inc/admin-settings-page.php:1917
 msgid "The breadcrumb label for the current page when a visitor hits a \"page not found\" (404) error."
 msgstr ""
 
-#: inc/admin-settings-page.php:1932
-msgid "⚠ Read before using these fields"
-msgstr ""
-
-#: inc/admin-settings-page.php:1933
-msgid "These fields accept arbitrary code that AWT cannot validate. Custom code can:"
-msgstr ""
-
-#: inc/admin-settings-page.php:1935
-msgid "Break keyboard navigation by stealing or trapping focus"
-msgstr ""
-
-#: inc/admin-settings-page.php:1936
-msgid "Break screen-reader announcements by overriding ARIA live regions (the regions screen readers watch for updates)"
-msgstr ""
-
-#: inc/admin-settings-page.php:1937
-msgid "Lower color contrast by adding elements in colors outside your palette"
-msgstr ""
-
-#: inc/admin-settings-page.php:1938
-msgid "Break reduced-motion support by adding animations that ignore the visitor's prefers-reduced-motion setting"
-msgstr ""
-
-#: inc/admin-settings-page.php:1939
-msgid "Conflict with your site's Content Security Policy, if it has one"
-msgstr ""
-
-#: inc/admin-settings-page.php:1941
-msgid "AWT's accessibility checker doesn't review code in these fields. You're responsible for the accessibility of anything you paste here."
-msgstr ""
-
-#: inc/admin-settings-page.php:1945
-msgid "Before </head>"
-msgstr ""
-
-#: inc/admin-settings-page.php:1947
-msgid "For analytics snippets, site-verification tags, and font or asset preloads. Loads after most other plugins."
-msgstr ""
-
-#: inc/admin-settings-page.php:1951
-msgid "After <body> opening"
-msgstr ""
-
-#: inc/admin-settings-page.php:1953
-msgid "For third-party widgets that need to load early, such as chat bubbles or A/B-test anti-flicker scripts."
-msgstr ""
-
-#: inc/admin-settings-page.php:1957
-msgid "Before </body>"
-msgstr ""
-
-#: inc/admin-settings-page.php:1959
-msgid "For scripts that can load last, such as footer chat widgets and deferred third-party tools."
-msgstr ""
-
-#: inc/admin-settings-page.php:2050
+#: inc/admin-settings-page.php:2020
 msgid "⚠ Read before using this field"
 msgstr ""
 
-#: inc/admin-settings-page.php:2051
+#: inc/admin-settings-page.php:2021
 msgid "Custom CSS can:"
 msgstr ""
 
-#: inc/admin-settings-page.php:2053
+#: inc/admin-settings-page.php:2023
 msgid "Hide focus outlines"
 msgstr ""
 
-#: inc/admin-settings-page.php:2053
+#: inc/admin-settings-page.php:2023
 msgid "removing them is the most common accessibility mistake on the web"
 msgstr ""
 
-#: inc/admin-settings-page.php:2054
+#: inc/admin-settings-page.php:2024
 msgid "Lower color contrast below the WCAG AA minimum"
 msgstr ""
 
-#: inc/admin-settings-page.php:2055
+#: inc/admin-settings-page.php:2025
 msgid "Hide elements that screen readers depend on"
 msgstr ""
 
-#: inc/admin-settings-page.php:2056
+#: inc/admin-settings-page.php:2026
 msgid "Override the prefers-reduced-motion rules built into AWT"
 msgstr ""
 
-#: inc/admin-settings-page.php:2057
+#: inc/admin-settings-page.php:2027
 msgid "Clash with AWT's built-in styles in unexpected ways"
 msgstr ""
 
-#: inc/admin-settings-page.php:2059
+#: inc/admin-settings-page.php:2029
 msgid "AWT's accessibility checker doesn't review the CSS you add here."
 msgstr ""
 
-#: inc/admin-settings-page.php:2067
+#: inc/admin-settings-page.php:2037
 msgid "Insert color customization example"
 msgstr ""
 
-#: inc/admin-settings-page.php:2115
+#: inc/admin-settings-page.php:2094
+msgid "Updating AWT"
+msgstr ""
+
+#. translators: %s: version number of the AWT theme.
+#: inc/admin-settings-page.php:2101
+#, php-format
+msgid "You have the AWT theme %s. The AWT Blocks plugin is not installed, and the theme needs it: the header, the footer and every pattern are built from those blocks."
+msgstr ""
+
+#. translators: 1: version number of the AWT theme. 2: version number of the AWT Blocks plugin.
+#: inc/admin-settings-page.php:2107
+#, php-format
+msgid "You have the AWT theme %1$s and the AWT Blocks plugin %2$s."
+msgstr ""
+
+#: inc/admin-settings-page.php:2118
+msgid "The theme and the plugin are different versions. They are built as a pair and are only tested together, so update whichever one is behind."
+msgstr ""
+
+#: inc/admin-settings-page.php:2124
+msgid "WordPress tells you when a new AWT version is out, in the same place it tells you about everything else: Dashboard, Updates. AWT does not install it for you. To move to a new version, download the files and upload them to your site. Your settings, pages and content are kept."
+msgstr ""
+
+#. translators: 1: opening link tag to the download page. 2: closing link tag.
+#: inc/admin-settings-page.php:2132
+#, php-format
+msgid "Download the latest theme and plugin files from %1$sthe AWT website%2$s."
+msgstr ""
+
+#: inc/admin-settings-page.php:2134
+#: inc/updates.php:344
+msgid "(opens in a new tab)"
+msgstr ""
+
+#: inc/admin-settings-page.php:2138
+msgid "Go to Plugins, Add Plugin, Upload Plugin. Choose the plugin file, then choose \"Replace current with uploaded\"."
+msgstr ""
+
+#: inc/admin-settings-page.php:2139
+msgid "Go to Appearance, Themes, Add New Theme, Upload Theme. Choose the theme file, then choose \"Replace current with uploaded\"."
+msgstr ""
+
+#: inc/admin-settings-page.php:2143
+msgid "Update both to the same version. The theme and the plugin are built as a pair and are only tested together. Back up your site first, the way you would for any update."
+msgstr ""
+
+#: inc/admin-settings-page.php:2152
+msgid "Check for updates"
+msgstr ""
+
+#: inc/admin-settings-page.php:2156
+msgid "Let this site ask useawt.com whether a newer AWT is out."
+msgstr ""
+
+#: inc/admin-settings-page.php:2159
+msgid "The check happens twice a day, in the admin only, and sends nothing about your site: no address, no version, no visitor data. It reads one file that is the same for everyone. Turn it off if your site must make no outside requests at all — you will then need to check for new versions yourself."
+msgstr ""
+
+#: inc/admin-settings-page.php:2161
+msgid "Save"
+msgstr ""
+
+#: inc/admin-settings-page.php:2190
 msgid "Welcome wizard"
 msgstr ""
 
-#: inc/admin-settings-page.php:2117
+#: inc/admin-settings-page.php:2192
 msgid "Runs the six-step setup wizard again. Your current settings are kept as the starting point."
 msgstr ""
 
-#: inc/admin-settings-page.php:2121
+#: inc/admin-settings-page.php:2196
 msgid "Re-run welcome wizard"
 msgstr ""
 
-#: inc/admin-settings-page.php:2125
-#: inc/admin-settings-page.php:2145
+#: inc/admin-settings-page.php:2200
+#: inc/admin-settings-page.php:2220
 msgid "Export configuration"
 msgstr ""
 
-#: inc/admin-settings-page.php:2127
+#: inc/admin-settings-page.php:2202
 msgid "Download this site's AWT settings as a file — handy for copying to a staging site, sharing a starting point, or attaching to a support request."
 msgstr ""
 
-#: inc/admin-settings-page.php:2149
-#: inc/admin-settings-page.php:2163
+#: inc/admin-settings-page.php:2224
+#: inc/admin-settings-page.php:2238
 msgid "Import configuration"
 msgstr ""
 
-#: inc/admin-settings-page.php:2151
+#: inc/admin-settings-page.php:2226
 msgid "Upload a settings file to replace this site's current AWT settings."
 msgstr ""
 
-#: inc/admin-settings-page.php:2157
+#: inc/admin-settings-page.php:2232
 msgid "Importing will replace this site's current AWT settings with the uploaded file. Continue?"
 msgstr ""
 
-#: inc/admin-settings-page.php:2160
+#: inc/admin-settings-page.php:2235
 msgid "AWT settings JSON file"
 msgstr ""
 
-#: inc/admin-settings-page.php:2199
+#: inc/admin-settings-page.php:2274
 msgid "Could not serialize settings for export."
 msgstr ""
 
-#: inc/admin-settings-page.php:2257
+#: inc/admin-settings-page.php:2332
 msgid "No file was uploaded, or the upload failed."
 msgstr ""
 
-#: inc/admin-settings-page.php:2260
+#: inc/admin-settings-page.php:2335
 msgid "That file is too large to be an AWT settings file."
 msgstr ""
 
-#: inc/admin-settings-page.php:2265
+#: inc/admin-settings-page.php:2340
 msgid "The uploaded file was empty or unreadable."
 msgstr ""
 
-#: inc/admin-settings-page.php:2270
+#: inc/admin-settings-page.php:2345
 msgid "The uploaded file is not valid JSON."
 msgstr ""
 
-#: inc/admin-settings-page.php:2276
+#: inc/admin-settings-page.php:2351
 msgid "That file doesn't look like an AWT settings file."
 msgstr ""
 
-#: inc/admin-settings-page.php:2289
+#: inc/admin-settings-page.php:2364
 msgid "Importing the settings failed. Please check the file and try again."
 msgstr ""
 
@@ -1541,187 +1544,216 @@ msgstr ""
 msgid "Custom Styles"
 msgstr ""
 
-#: inc/welcome-wizard.php:114
-#: inc/welcome-wizard.php:252
+#: inc/updates.php:283
+#: inc/updates.php:287
+msgid "No changelog is bundled with this copy of AWT."
+msgstr ""
+
+#: inc/updates.php:321
+msgid "Update the AWT theme and the AWT Blocks plugin together — they are built as a pair."
+msgstr ""
+
+#: inc/updates.php:343
+msgid "Release notes"
+msgstr ""
+
+#. translators: 1: link text, e.g. "View version 2026.09.0 details". 2: theme name.
+#: inc/updates.php:412
+#, php-format
+msgid "%1$s for %2$s (opens in a new tab)"
+msgstr ""
+
+#. translators: %s: URL of the update instructions.
+#: inc/updates.php:458
+#, php-format
+msgid "AWT does not install its own updates. Download the new version and upload it in Appearance, Themes, Add New Theme, Upload Theme, choosing \"Replace current with uploaded\". Step-by-step instructions: %s"
+msgstr ""
+
+#: inc/welcome-wizard.php:119
+#: inc/welcome-wizard.php:284
 msgid "Welcome to AWT"
 msgstr ""
 
-#: inc/welcome-wizard.php:115
+#: inc/welcome-wizard.php:120
 msgid "Finish setting up your site in a few quick steps."
 msgstr ""
 
-#: inc/welcome-wizard.php:117
+#: inc/welcome-wizard.php:122
 msgid "Start setup"
 msgstr ""
 
-#: inc/welcome-wizard.php:145
-#: inc/welcome-wizard.php:167
+#: inc/welcome-wizard.php:125
+msgid "Dismiss"
+msgstr ""
+
+#: inc/welcome-wizard.php:177
+#: inc/welcome-wizard.php:199
 msgid "Welcome"
 msgstr ""
 
-#: inc/welcome-wizard.php:164
+#: inc/welcome-wizard.php:196
 msgid "Wizard progress"
 msgstr ""
 
-#: inc/welcome-wizard.php:168
-#: inc/welcome-wizard.php:286
+#: inc/welcome-wizard.php:200
+#: inc/welcome-wizard.php:318
 msgid "Style & appearance"
 msgstr ""
 
-#: inc/welcome-wizard.php:172
+#: inc/welcome-wizard.php:204
 msgid "Done"
 msgstr ""
 
-#: inc/welcome-wizard.php:232
-#: inc/welcome-wizard.php:415
+#: inc/welcome-wizard.php:264
+#: inc/welcome-wizard.php:447
 msgid "← Back"
 msgstr ""
 
-#: inc/welcome-wizard.php:235
+#: inc/welcome-wizard.php:267
 msgid "Skip this step"
 msgstr ""
 
-#: inc/welcome-wizard.php:237
+#: inc/welcome-wizard.php:269
 msgid "Next →"
 msgstr ""
 
-#: inc/welcome-wizard.php:253
+#: inc/welcome-wizard.php:285
 msgid "This wizard helps you set up how your site looks. You can skip any step and change everything later in AWT Settings."
 msgstr ""
 
-#: inc/welcome-wizard.php:254
+#: inc/welcome-wizard.php:286
 msgid "AWT is built on IBM's Carbon Design System. Every block meets the WCAG 2.2 AA accessibility standard and comes with matching light and dark themes, full keyboard support, and screen-reader support."
 msgstr ""
 
-#: inc/welcome-wizard.php:257
+#: inc/welcome-wizard.php:289
 msgid "Want more? AWT Premium adds:"
 msgstr ""
 
-#: inc/welcome-wizard.php:259
+#: inc/welcome-wizard.php:291
 msgid "More section layouts and page patterns"
 msgstr ""
 
-#: inc/welcome-wizard.php:260
+#: inc/welcome-wizard.php:292
 msgid "A contrast-safe color editor that matches your brand without breaking readability"
 msgstr ""
 
-#: inc/welcome-wizard.php:261
+#: inc/welcome-wizard.php:293
 msgid "Styled WooCommerce shop, product, cart, and checkout pages"
 msgstr ""
 
-#: inc/welcome-wizard.php:262
+#: inc/welcome-wizard.php:294
 msgid "Professionally translated European languages, and email support"
 msgstr ""
 
-#: inc/welcome-wizard.php:266
+#: inc/welcome-wizard.php:298
 msgid "Learn more about AWT Premium →"
 msgstr ""
 
-#: inc/welcome-wizard.php:291
+#: inc/welcome-wizard.php:323
 msgid "Each variation pairs a light theme with a dark theme."
 msgstr ""
 
-#: inc/welcome-wizard.php:297
+#: inc/welcome-wizard.php:329
 msgid "Sets your site's light or dark appearance. \"Default\" follows each visitor's device setting (and the light/dark toggle, if you show one)."
 msgstr ""
 
-#: inc/welcome-wizard.php:307
+#: inc/welcome-wizard.php:339
 msgid "Applying a style variation replaces any style changes you have made under Appearance → Editor → Styles."
 msgstr ""
 
-#: inc/welcome-wizard.php:315
+#: inc/welcome-wizard.php:347
 msgid "Add your logo"
 msgstr ""
 
-#: inc/welcome-wizard.php:333
+#: inc/welcome-wizard.php:365
 msgid "Pick a ready-made header layout. You can rearrange the individual blocks later."
 msgstr ""
 
-#: inc/welcome-wizard.php:359
+#: inc/welcome-wizard.php:391
 msgid "Changing the header preset replaces your current header layout."
 msgstr ""
 
-#: inc/welcome-wizard.php:367
+#: inc/welcome-wizard.php:399
 msgid "Text size"
 msgstr ""
 
-#: inc/welcome-wizard.php:386
+#: inc/welcome-wizard.php:418
 msgid "Setup complete — your choices are saved."
 msgstr ""
 
-#: inc/welcome-wizard.php:389
+#: inc/welcome-wizard.php:421
 msgid "You're all set"
 msgstr ""
 
-#: inc/welcome-wizard.php:390
+#: inc/welcome-wizard.php:422
 msgid "Here's a recap. You can change any of this later in AWT Settings."
 msgstr ""
 
-#: inc/welcome-wizard.php:395
+#: inc/welcome-wizard.php:427
 msgid "Theme default"
 msgstr ""
 
-#: inc/welcome-wizard.php:403
+#: inc/welcome-wizard.php:435
 msgid "Default (Marketing)"
 msgstr ""
 
-#: inc/welcome-wizard.php:406
+#: inc/welcome-wizard.php:438
 msgid "Logo"
 msgstr ""
 
-#: inc/welcome-wizard.php:407
+#: inc/welcome-wizard.php:439
 msgid "Configured"
 msgstr ""
 
-#: inc/welcome-wizard.php:407
+#: inc/welcome-wizard.php:439
 msgid "Site title only"
 msgstr ""
 
-#: inc/welcome-wizard.php:416
+#: inc/welcome-wizard.php:448
 msgid "Finish setup"
 msgstr ""
 
-#: inc/whats-new.php:127
+#: inc/whats-new.php:129
 msgid "What's new"
 msgstr ""
 
-#: inc/whats-new.php:165
+#: inc/whats-new.php:167
 msgid "important release notes need your attention"
 msgstr ""
 
-#: inc/whats-new.php:168
+#: inc/whats-new.php:170
 msgid "unread release notes"
 msgstr ""
 
-#: inc/whats-new.php:248
+#: inc/whats-new.php:250
 msgid "No release notes are available yet."
 msgstr ""
 
-#: inc/whats-new.php:259
+#: inc/whats-new.php:261
 msgid "What's new in AWT"
 msgstr ""
 
-#: inc/whats-new.php:262
+#: inc/whats-new.php:264
 msgid "Important release notes"
 msgstr ""
 
-#: inc/whats-new.php:263
+#: inc/whats-new.php:265
 msgid "Needs your attention"
 msgstr ""
 
-#: inc/whats-new.php:264
+#: inc/whats-new.php:266
 msgid "These releases contain security fixes or changes that may need action on your site."
 msgstr ""
 
-#: inc/whats-new.php:275
+#: inc/whats-new.php:277
 msgid "Got it — dismiss these notes"
 msgstr ""
 
-#: inc/whats-new.php:289
+#: inc/whats-new.php:291
 msgid "(new)"
 msgstr ""
 
-#: inc/whats-new.php:295
+#: inc/whats-new.php:297
 msgid "Release notes come from the AWT Blocks plugin bundled with each update. Nothing is fetched from the internet."
 msgstr ""
 

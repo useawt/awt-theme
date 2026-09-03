@@ -173,7 +173,9 @@ function main() {
 
 	console.log(
 		`\n${tag} published. Repeat in the sibling repos — releases are ` +
-			'lockstep (same version, same day).'
+			'lockstep (same version, same day).\n' +
+			'Then publish the update manifest, or no installed site hears about ' +
+			'this release:\n  marketing/publish-updates.sh'
 	);
 }
 
