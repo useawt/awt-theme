@@ -66,6 +66,10 @@ const INCLUDE = [
 	// The Sass the minified stylesheet is compiled from. The Theme Directory
 	// asks for the original of anything minified that ships.
 	'src/foundation.scss',
+	// The release changelog, written by scripts/release.js. Without it the
+	// "View version details" window on the Themes screen has nothing to show,
+	// because it reads this file rather than making a network call.
+	'build/changelog.json',
 ];
 
 /**

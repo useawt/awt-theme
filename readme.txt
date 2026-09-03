@@ -260,6 +260,11 @@ Reports about real barriers are treated as bugs, not feature requests.
 == Changelog ==
 
 <!-- CHANGELOG_START -->
+= 2026.09.0 — 2026-09-03 =
+* [Improvement] Help text across the AWT Settings screens and the welcome wizard is shorter.
+* [New] WordPress now tells you when a new version of AWT is out, on Dashboard, Updates. You still install it yourself.
+* [New] A switch in AWT Settings, Tools turns the update check off.
+
 = 2026.08.0 — 2026-08-25 =
 * [New] **First release.** AWT is a WordPress block theme built on IBM's Carbon Design System, designed to be accessible before you change anything.
 * [New] Eight page templates, plus header, footer and side navigation parts you edit in the Site Editor.

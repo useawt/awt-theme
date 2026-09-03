@@ -20,7 +20,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-const AWT_THEME_VERSION = '2026.08.0';
+const AWT_THEME_VERSION = '2026.09.0';
 
 require_once __DIR__ . '/inc/settings.php';
 require_once __DIR__ . '/inc/upgrade.php';
