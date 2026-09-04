@@ -17,6 +17,21 @@
  */
 
 /* --------------------------------------------------------------------------
+   `<b>` has to look bold.
+
+   Carbon's reset sets `font-weight: inherit` across the whole element list,
+   then its type layer restores only `strong`. `<b>` is left at the paragraph's
+   own weight, so bold text authored with it renders identical to plain text —
+   the author's emphasis simply disappears. WordPress's editor produces `<b>`
+   from pasted content and from some inline formats, so this is not a rare
+   shape. Matches Carbon's own weight for `strong`.
+   -------------------------------------------------------------------------- */
+
+b {
+	font-weight: 600;
+}
+
+/* --------------------------------------------------------------------------
    Carbon spacing tokens.
 
    The carbon.min.css build we ship does NOT declare `--cds-spacing-*` at

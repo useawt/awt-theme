@@ -10,6 +10,13 @@
      markdownlint enforces the structure in CI. Newest release first.
      The Unreleased section accumulates entries between releases. -->
 
+## Unreleased
+
+### [A11y]
+
+- Text marked bold with `<b>` now looks bold. It was rendering at the same
+  weight as the text around it, so the emphasis was lost.
+
 ## 2026.09.0 — 2026-09-03
 
 ### [Improvement]
