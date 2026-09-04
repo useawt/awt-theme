@@ -1852,7 +1852,10 @@ SVG;
 					$c .= ' cds--tabs__nav-item--disabled'; }
 				return $c;
 			case 'nav-link':
-				return 'cds--tabs__nav-link';
+				$c = 'cds--tabs__nav-link';
+				if ( ! empty( $v['selected'] ) ) {
+					$c .= ' cds--tabs__nav-item--selected'; }
+				return $c;
 			case 'nav-item-label':
 				return 'cds--tabs__nav-item-label';
 			case 'tab-content':
