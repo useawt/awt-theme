@@ -17,6 +17,23 @@
  */
 
 /* --------------------------------------------------------------------------
+   The footer must contain its children's margins.
+
+   The footer group paints a background, and a block container lets its last
+   child's bottom margin collapse straight out through it. The margin then
+   lands below the painted band — a strip of page background under the footer
+   that no rule in the footer can explain, and that varies with whatever block
+   happens to be last inside it.
+
+   `flow-root` starts a block formatting context, which keeps those margins
+   inside where they belong. It changes nothing else about the layout.
+   -------------------------------------------------------------------------- */
+
+.cds--footer {
+	display: flow-root;
+}
+
+/* --------------------------------------------------------------------------
    `<b>` has to look bold.
 
    Carbon's reset sets `font-weight: inherit` across the whole element list,

@@ -12,6 +12,10 @@
 
 ## Unreleased
 
+### [Improvement]
+
+- The footer no longer leaves a thin strip of page colour underneath it.
+
 ### [A11y]
 
 - Text marked bold with `<b>` now looks bold. It was rendering at the same
