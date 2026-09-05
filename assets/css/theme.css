@@ -71,7 +71,13 @@ select:-webkit-autofill {
 	max-width: 30rem;
 	min-height: 2.5rem;
 	padding-inline: var(--cds-spacing-05, 1rem);
-	border: 1px solid var(--cds-border-strong, #8d8d8d);
+	/* Carbon's field shape: an underline, not a box. The sides carry a
+	   field-coloured border so the box keeps its size, and so the focus
+	   outline replaces the field colour rather than a grey line it barely
+	   contrasts with — a full box border left only 1px of the indicator
+	   visible and failed WCAG 2.4.13. */
+	border: 1px solid var(--cds-field, #f4f4f4);
+	border-block-end-color: var(--cds-border-strong, #8d8d8d);
 	border-radius: 0;
 	background-color: var(--cds-field, #f4f4f4);
 	color: var(--cds-text-primary, #161616);
@@ -178,9 +184,11 @@ select:-webkit-autofill {
 .wp-block-html button:not([class*="cds--"]):focus-visible,
 .wp-block-html input[type="submit"]:not([class*="cds--"]):focus-visible,
 .wp-block-html input[type="button"]:not([class*="cds--"]):focus-visible {
+	/* Outward, like every other button in the theme. Drawn inside, the ring
+	   is the same blue as the button's own fill and only the 1px white line
+	   beside it stays visible — 1px is not a focus indicator (WCAG 2.4.13). */
 	outline: 2px solid var(--cds-focus, #0f62fe);
-	outline-offset: -4px;
-	box-shadow: inset 0 0 0 1px var(--cds-background, #ffffff);
+	outline-offset: 1px;
 }
 
 /* WordPress's password form: the same treatment, scoped to itself.
@@ -1015,6 +1023,88 @@ ol.wp-block-list {
 
 .entry-content div:not( [class] ) > :is( h1, h2, h3, h4, h5, h6 ) {
 	margin-block-start: 2rem;
+}
+
+/* --------------------------------------------------------------------------
+   Tables, quotes and headings that no block rendered.
+
+   A Custom HTML block is where hand-written markup lives — imported content
+   leans on it heavily, one post carries 18 tables that way. Carbon's reset
+   strips tables to bare text with no borders, no padding and no header
+   emphasis, and gives headings inside that markup no space around them.
+
+   Same scoping rule as the form controls above: only markup the author wrote
+   by hand, never a control a block styled itself.
+   -------------------------------------------------------------------------- */
+
+.wp-block-html table {
+	border-collapse: collapse;
+	margin-block: 1rem;
+	line-height: 1.4;
+}
+
+
+.wp-block-html :is( th, td ) {
+	padding: 0.75rem 1rem;
+	border-block-end: 1px solid var(--cds-border-subtle-01, #e0e0e0);
+	text-align: start;
+	vertical-align: top;
+}
+
+.wp-block-html th {
+	font-weight: 600;
+	background-color: var(--cds-layer-accent-01, #e0e0e0);
+}
+
+/* A wide table scrolls inside itself rather than pushing the page sideways.
+   The scrolling goes on the table and not on the block around it: a scroll
+   container clips what overflows, and the block also holds the form beside
+   the table, whose focus rings are drawn just outside each control. */
+
+.wp-block-html table {
+	display: block;
+	overflow-x: auto;
+	max-inline-size: 100%;
+}
+
+.wp-block-html :is( h1, h2, h3, h4, h5, h6 ) {
+	margin-block: 2rem 1rem;
+}
+
+.wp-block-html :is( ul, ol ):not( [class] ) {
+	padding-inline-start: 1.5rem;
+	line-height: 1.5;
+	list-style: revert;
+	margin-block: 1rem;
+}
+
+.wp-block-html p {
+	margin-block: 1rem;
+}
+
+/* Quote block — Carbon ships no quote component, so the core block renders
+   with no indent and nothing marking it as set apart from the text. */
+
+.wp-block-quote {
+	border-inline-start: 3px solid var(--cds-border-strong-01, #8d8d8d);
+	padding-inline-start: 1.5rem;
+	margin-block: 1.5rem;
+}
+
+.wp-block-quote > :first-child {
+	margin-block-start: 0;
+}
+
+.wp-block-quote > :last-child {
+	margin-block-end: 0;
+}
+
+/* Featured images — when a featured image is cropped to a fixed aspect ratio,
+   keep the top of the picture rather than its middle: these images usually
+   carry their title or logo up there. */
+
+.wp-block-post-featured-image img {
+	object-position: top;
 }
 
 /* Post author byline — the core Post Author block's bio inherits Carbon's
