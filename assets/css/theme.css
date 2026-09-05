@@ -979,6 +979,66 @@ ol.wp-block-list {
 }
 
 /* --------------------------------------------------------------------------
+   Classic (non-block) post content — posts written in the classic editor
+   store plain HTML, so their lists, images and text carry none of the block
+   classes the rules above key on. Carbon's reset then leaves them bare: lists
+   lose their markers, their indent and their line spacing; wide images run
+   past the column; and text wrapped in a plain <div> falls outside the layout
+   rules that space block children apart. Restore the look block content gets.
+   Everything here is scoped to elements with no class of their own, so block
+   markup is untouched.
+   -------------------------------------------------------------------------- */
+
+.entry-content :is( ul, ol ):not( [class] ) {
+	padding-inline-start: 1.5rem;
+	line-height: 1.5;
+	list-style: revert;
+}
+
+.entry-content :is( ul, ol ):not( [class] ) li {
+	margin-block-end: 0.25rem;
+}
+
+.entry-content img {
+	max-inline-size: 100%;
+	block-size: auto;
+}
+
+.entry-content div:not( [class] ) {
+	line-height: 1.5;
+}
+
+.entry-content div:not( [class] ) > :is( p, h1, h2, h3, h4, h5, h6, ul, ol, blockquote, table, figure ),
+.entry-content div:not( [class] ) + div:not( [class] ) {
+	margin-block-start: 1rem;
+}
+
+.entry-content div:not( [class] ) > :is( h1, h2, h3, h4, h5, h6 ) {
+	margin-block-start: 2rem;
+}
+
+/* Post author byline — the core Post Author block's bio inherits Carbon's
+   reset (font: inherit, line-height 1), so the description under the name
+   rendered as cramped, undersized text. */
+
+.wp-block-post-author__name {
+	font-weight: 600;
+}
+
+.wp-block-post-author__bio {
+	font-size: 0.875rem;
+	line-height: 1.4;
+	margin-block-start: 0.25rem;
+}
+
+.entry-content hr:not( [class] ) {
+	border: 0;
+	border-block-start: 1px solid var(--cds-border-subtle-01, #e0e0e0);
+	block-size: 0;
+	margin-block: 2rem;
+}
+
+/* --------------------------------------------------------------------------
    Link icon — Carbon's compiled CSS sets `.cds--link__icon > svg` to 1.25rem
    (20px), which is larger than the surrounding 14px md-link text and ends up
    bigger than Carbon's own marketing/docs reference. Override to 1rem (16px)
