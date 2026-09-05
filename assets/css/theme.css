@@ -4929,3 +4929,20 @@ body.awt-form-text-body :is(.cds--form--fluid, .cds--text-input--fluid) .cds--la
 .entry-content > :last-child {
 	margin-block-end: 0 !important;
 }
+
+/* --------------------------------------------------------------------------
+   A post in a listing reads as a card: image beside the text, not above it.
+
+   The columns stack on their own below Carbon's medium breakpoint, which is
+   where a third of the width stops being enough for a picture.
+   -------------------------------------------------------------------------- */
+
+.awt-post-card {
+	margin-block-end: var(--cds-spacing-07, 2rem);
+}
+
+.awt-post-card .wp-block-post-featured-image img {
+	display: block;
+	inline-size: 100%;
+	block-size: auto;
+}
