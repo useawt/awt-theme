@@ -4909,3 +4909,20 @@ body.awt-form-text-body :is(.cds--form--fluid, .cds--text-input--fluid) .cds--la
 	line-height: 1rem;
 	letter-spacing: 0.32px;
 }
+
+/* --------------------------------------------------------------------------
+   Nothing trails after the last thing in the content.
+
+   Whatever ends a page — a section, a paragraph, a list — carries its own
+   bottom margin, and that margin lands between the content and the footer as a
+   band of page colour. There is nothing after it for the spacing to separate
+   it from, so it is only ever a gap.
+
+   The block spacing utilities above declare `!important`, so this matches that
+   weight and sits at the end of the file to win on order. Last in the file is
+   deliberate — moving it up makes it silently stop working.
+   -------------------------------------------------------------------------- */
+
+.entry-content > :last-child {
+	margin-block-end: 0 !important;
+}
