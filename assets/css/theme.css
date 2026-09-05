@@ -1034,24 +1034,26 @@ ol.wp-block-list {
    emphasis, and gives headings inside that markup no space around them.
 
    Same scoping rule as the form controls above: only markup the author wrote
-   by hand, never a control a block styled itself.
+   by hand, never a control a block styled itself. A block carrying its own
+   `<style>` is a widget rather than content — the price list draws a sticky
+   header with one — and is left exactly as it was written.
    -------------------------------------------------------------------------- */
 
-.wp-block-html table {
+.wp-block-html:not( :has( style ) ) table {
 	border-collapse: collapse;
 	margin-block: 1rem;
 	line-height: 1.4;
 }
 
 
-.wp-block-html :is( th, td ) {
+.wp-block-html:not( :has( style ) ) :is( th, td ) {
 	padding: 0.75rem 1rem;
 	border-block-end: 1px solid var(--cds-border-subtle-01, #e0e0e0);
 	text-align: start;
 	vertical-align: top;
 }
 
-.wp-block-html th {
+.wp-block-html:not( :has( style ) ) th {
 	font-weight: 600;
 	background-color: var(--cds-layer-accent-01, #e0e0e0);
 }
@@ -1061,7 +1063,7 @@ ol.wp-block-list {
    container clips what overflows, and the block also holds the form beside
    the table, whose focus rings are drawn just outside each control. */
 
-.wp-block-html table {
+.wp-block-html:not( :has( style ) ) table {
 	display: block;
 	overflow-x: auto;
 	max-inline-size: 100%;
@@ -1079,6 +1081,44 @@ ol.wp-block-list {
 }
 
 .wp-block-html p {
+	margin-block: 1rem;
+}
+
+/* The rest of the tags hand-written markup uses. Carbon's reset takes the
+   line-height down to 1 and the margins to 0 on all of them, so a definition
+   list, a postal address or a block of preformatted text arrived as a solid
+   run of text. */
+
+.wp-block-html:not( :has( style ) ) {
+	line-height: 1.5;
+}
+
+.wp-block-html:not( :has( style ) ) :is( dl, address ) {
+	margin-block: 1rem;
+}
+
+.wp-block-html:not( :has( style ) ) dt {
+	font-weight: 600;
+	margin-block-start: 0.75rem;
+}
+
+.wp-block-html:not( :has( style ) ) dd {
+	margin-inline-start: 1.5rem;
+}
+
+.wp-block-html:not( :has( style ) ) address {
+	font-style: normal;
+}
+
+.wp-block-html:not( :has( style ) ) pre {
+	padding: var(--cds-spacing-05, 1rem);
+	background-color: var(--cds-layer-01, #f4f4f4);
+	color: var(--cds-text-primary, #161616);
+	font-family: var(--cds-code-01-font-family, "IBM Plex Mono", monospace);
+	font-size: var(--cds-code-01-font-size, 0.875rem);
+	line-height: 1.4;
+	white-space: pre-wrap;
+	overflow-wrap: anywhere;
 	margin-block: 1rem;
 }
 
