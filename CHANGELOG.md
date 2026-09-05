@@ -15,11 +15,15 @@
 ### [Improvement]
 
 - The footer no longer leaves a thin strip of page colour underneath it.
+- The password form on a protected page now matches the rest of the site
+  instead of showing plain browser fields.
 
 ### [A11y]
 
 - Text marked bold with `<b>` now looks bold. It was rendering at the same
   weight as the text around it, so the emphasis was lost.
+- A field the browser fills in for you keeps the site's colours. It used to
+  turn pale yellow, which was unreadable in dark mode.
 
 ## 2026.09.0 — 2026-09-03
 
