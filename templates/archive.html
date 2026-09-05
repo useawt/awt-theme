@@ -8,10 +8,24 @@
 	<!-- wp:query {"queryId":0,"query":{"perPage":10,"pages":0,"offset":0,"postType":"post","order":"desc","orderBy":"date","inherit":true}} -->
 	<div class="wp-block-query">
 		<!-- wp:post-template -->
-			<!-- wp:post-featured-image {"isLink":true,"sizeSlug":"large"} /-->
-			<!-- wp:post-title {"isLink":true,"level":2} /-->
-			<!-- wp:post-date /-->
-			<!-- wp:post-excerpt /-->
+			<!-- wp:columns {"verticalAlignment":"top","className":"awt-post-card"} -->
+			<div class="wp-block-columns are-vertically-aligned-top awt-post-card">
+				<!-- wp:column {"verticalAlignment":"top","width":"33.33%"} -->
+				<div class="wp-block-column is-vertically-aligned-top" style="flex-basis:33.33%">
+					<!-- wp:post-featured-image {"isLink":true,"sizeSlug":"large"} /-->
+				</div>
+				<!-- /wp:column -->
+
+				<!-- wp:column {"verticalAlignment":"top"} -->
+				<div class="wp-block-column is-vertically-aligned-top">
+					<!-- wp:post-title {"isLink":true,"level":2} /-->
+					<!-- wp:post-date /-->
+					<!-- wp:post-terms {"term":"category"} /-->
+					<!-- wp:post-excerpt {"moreText":"Read more"} /-->
+				</div>
+				<!-- /wp:column -->
+			</div>
+			<!-- /wp:columns -->
 		<!-- /wp:post-template -->
 
 		<!-- wp:query-pagination -->
