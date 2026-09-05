@@ -15,9 +15,9 @@
 ### [Improvement]
 
 - The footer no longer leaves a thin strip of page colour underneath it.
-- Form fields and buttons that no block rendered — a password form, a custom
-  HTML block, a plugin's form — now match the rest of the site instead of
-  showing plain browser widgets.
+- Form fields, checkboxes, radios and buttons that no block rendered — a
+  password form, a custom HTML block, a plugin's form — now match the rest of
+  the site instead of showing plain browser widgets.
 
 ### [A11y]
 

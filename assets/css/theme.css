@@ -91,6 +91,52 @@ select:-webkit-autofill {
 	outline-offset: -2px;
 }
 
+/* Checkboxes and radios keep the browser's own control and take the theme's
+   colour through `accent-color`. Redrawing them with `appearance: none` would
+   mean reimplementing the checked, indeterminate and forced-colors states by
+   hand, on markup this theme does not control — a native control tinted to the
+   theme is both safer and more accessible than a custom one that is nearly
+   right. `color-scheme` is what makes the unchecked box's own border follow
+   light and dark. */
+.entry-content input[type="checkbox"]:not([class*="cds--"]),
+.entry-content input[type="radio"]:not([class*="cds--"]) {
+	accent-color: var(--cds-icon-primary, #161616);
+	color-scheme: inherit;
+	inline-size: 1rem;
+	block-size: 1rem;
+	margin-inline-end: var(--cds-spacing-03, 0.5rem);
+}
+
+.entry-content input[type="checkbox"]:not([class*="cds--"]):focus-visible,
+.entry-content input[type="radio"]:not([class*="cds--"]):focus-visible {
+	outline: 2px solid var(--cds-focus, #0f62fe);
+	outline-offset: 2px;
+}
+
+/* Their label sits beside the control, not above it, and reads at body size —
+   the small caption size below is for a field's label, which is a different
+   relationship. Both common shapes are covered: the input inside the label,
+   and the input followed by a `for=` label. */
+.entry-content label:not([class*="cds--"]):has( > input[type="checkbox"] ),
+.entry-content label:not([class*="cds--"]):has( > input[type="radio"] ) {
+	display: flex;
+	align-items: center;
+	margin-block-end: var(--cds-spacing-03, 0.5rem);
+	color: var(--cds-text-primary, #161616);
+	font-size: var(--cds-body-compact-01-font-size, 0.875rem);
+	letter-spacing: 0.16px;
+	line-height: var(--cds-body-compact-01-line-height, 1.28572);
+}
+
+.entry-content input[type="checkbox"]:not([class*="cds--"]) + label:not([class*="cds--"]),
+.entry-content input[type="radio"]:not([class*="cds--"]) + label:not([class*="cds--"]) {
+	display: inline;
+	margin-block-end: 0;
+	color: var(--cds-text-primary, #161616);
+	font-size: var(--cds-body-compact-01-font-size, 0.875rem);
+	letter-spacing: 0.16px;
+}
+
 /* A label sitting beside a bare control belongs above it, the way every other
    labelled field on the page reads. */
 .entry-content label:not([class*="cds--"]) {
