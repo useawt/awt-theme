@@ -41,45 +41,32 @@ select:-webkit-autofill {
 }
 
 /* --------------------------------------------------------------------------
-   WordPress's password form, in Carbon's clothes.
+   Form controls that no block rendered.
 
-   A password-protected page is served by core, not by a block, so it arrives
-   as a bare `<input type="password">` and a bare submit button — raw browser
-   widgets in the middle of a themed page. Component CSS ships per block in
-   AWT, so `.cds--text-input` styling is not necessarily on the page at all;
-   these rules restate the look with tokens rather than assume it.
+   Not everything on a page comes from a block. WordPress's password form is
+   core markup; a Custom HTML block can hold a hand-written form; a plugin can
+   print one. All of them arrive as bare browser widgets in the middle of a
+   themed page — different heights, different fonts, and a focus ring that
+   varies by browser, on a theme whose whole claim is consistent accessible
+   defaults.
+
+   These rules give a bare control the same look a Carbon one has. Anything
+   carrying a `cds--` class is left alone: that is a block styling itself, and
+   half-overriding it would be worse than doing nothing. Checkboxes and radios
+   are excluded — they are a different shape and want their own treatment.
+
+   Written with tokens rather than by borrowing `.cds--text-input`, because
+   component CSS ships per block in AWT: a page with no text-input block never
+   loads that class's rules.
    -------------------------------------------------------------------------- */
 
-/* The form is a child of the post content like any block, so it takes the
-   same constrained column the page title sits in and lines up with it. Only
-   the field itself is narrowed — a password box the width of the page reads as
-   a mistake, and a form pinned to the far left while its heading is centred
-   reads as a worse one. */
-.post-password-form {
-	display: flow-root;
-}
-
-.post-password-form input[type="password"] {
-	max-width: 30rem;
-}
-
-.post-password-form p {
-	margin-block: 0 var(--cds-spacing-05, 1rem);
-}
-
-.post-password-form label {
-	display: block;
-	color: var(--cds-text-secondary, #525252);
-	font-size: var(--cds-label-01-font-size, 0.75rem);
-	letter-spacing: var(--cds-label-01-letter-spacing, 0.32px);
-	line-height: var(--cds-label-01-line-height, 1.33333);
-}
-
-.post-password-form input[type="password"] {
+.entry-content input:not([class*="cds--"]):not([type="hidden"]):not([type="checkbox"]):not([type="radio"]):not([type="submit"]):not([type="button"]):not([type="file"]):not([type="range"]):not([type="color"]),
+.entry-content textarea:not([class*="cds--"]),
+.entry-content select:not([class*="cds--"]) {
 	display: block;
 	width: 100%;
-	height: 2.5rem;
-	margin-block-start: var(--cds-spacing-03, 0.5rem);
+	max-width: 30rem;
+	min-height: 2.5rem;
 	padding-inline: var(--cds-spacing-05, 1rem);
 	border: 1px solid var(--cds-border-strong, #8d8d8d);
 	border-radius: 0;
@@ -87,17 +74,40 @@ select:-webkit-autofill {
 	color: var(--cds-text-primary, #161616);
 	font-family: inherit;
 	font-size: var(--cds-body-compact-01-font-size, 0.875rem);
+	/* Enough that a form with no styling of its own does not run together.
+	   Small enough that it only loosens one that brings its own spacing. */
+	margin-block-end: var(--cds-spacing-03, 0.5rem);
 }
 
-.post-password-form input[type="password"]:focus,
-.post-password-form input[type="password"]:focus-visible {
+.entry-content textarea:not([class*="cds--"]) {
+	min-height: 6rem;
+	padding-block: var(--cds-spacing-04, 0.75rem);
+}
+
+.entry-content input:not([class*="cds--"]):focus-visible,
+.entry-content textarea:not([class*="cds--"]):focus-visible,
+.entry-content select:not([class*="cds--"]):focus-visible {
 	outline: 2px solid var(--cds-focus, #0f62fe);
 	outline-offset: -2px;
 }
 
-.post-password-form input[type="submit"] {
+/* A label sitting beside a bare control belongs above it, the way every other
+   labelled field on the page reads. */
+.entry-content label:not([class*="cds--"]) {
+	display: block;
+	margin-block-end: var(--cds-spacing-03, 0.5rem);
+	color: var(--cds-text-secondary, #525252);
+	font-size: var(--cds-label-01-font-size, 0.75rem);
+	letter-spacing: var(--cds-label-01-letter-spacing, 0.32px);
+	line-height: var(--cds-label-01-line-height, 1.33333);
+}
+
+.entry-content button:not([class*="cds--"]),
+.entry-content input[type="submit"]:not([class*="cds--"]),
+.entry-content input[type="button"]:not([class*="cds--"]) {
+	display: inline-flex;
+	align-items: center;
 	min-height: 3rem;
-	margin-block-start: var(--cds-spacing-05, 1rem);
 	padding-inline: var(--cds-spacing-05, 1rem) var(--cds-spacing-10, 4rem);
 	border: 1px solid transparent;
 	border-radius: 0;
@@ -107,16 +117,36 @@ select:-webkit-autofill {
 	font-family: inherit;
 	font-size: var(--cds-body-compact-01-font-size, 0.875rem);
 	letter-spacing: 0.16px;
+	margin-block-start: var(--cds-spacing-03, 0.5rem);
 }
 
-.post-password-form input[type="submit"]:hover {
+.entry-content button:not([class*="cds--"]):hover,
+.entry-content input[type="submit"]:not([class*="cds--"]):hover,
+.entry-content input[type="button"]:not([class*="cds--"]):hover {
 	background-color: var(--cds-button-primary-hover, #0050e6);
 }
 
-.post-password-form input[type="submit"]:focus-visible {
+.entry-content button:not([class*="cds--"]):focus-visible,
+.entry-content input[type="submit"]:not([class*="cds--"]):focus-visible,
+.entry-content input[type="button"]:not([class*="cds--"]):focus-visible {
 	outline: 2px solid var(--cds-focus, #0f62fe);
 	outline-offset: -4px;
 	box-shadow: inset 0 0 0 1px var(--cds-background, #ffffff);
+}
+
+/* WordPress's password form is one of these, plus a little layout of its own.
+   The field is a child of the post content like any block, so it takes the
+   same constrained column the page title sits in and lines up with it. */
+.post-password-form {
+	display: flow-root;
+}
+
+.post-password-form p {
+	margin-block: 0 var(--cds-spacing-05, 1rem);
+}
+
+.post-password-form input[type="submit"] {
+	margin-block-start: var(--cds-spacing-05, 1rem);
 }
 
 /* --------------------------------------------------------------------------
