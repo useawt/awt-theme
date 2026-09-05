@@ -50,18 +50,17 @@ select:-webkit-autofill {
    these rules restate the look with tokens rather than assume it.
    -------------------------------------------------------------------------- */
 
+/* The form is a child of the post content like any block, so it takes the
+   same constrained column the page title sits in and lines up with it. Only
+   the field itself is narrowed — a password box the width of the page reads as
+   a mistake, and a form pinned to the far left while its heading is centred
+   reads as a worse one. */
 .post-password-form {
 	display: flow-root;
-	max-width: 30rem;
 }
 
-/* The constrained layout centres any narrow child, which would leave this form
-   floating in the middle of the page, away from the heading it belongs to.
-   WordPress writes that rule as `margin-left: auto !important`, so specificity
-   cannot reach it — this matches its weight rather than escalating past it. */
-.entry-content .post-password-form,
-.wp-block-post-content .post-password-form {
-	margin-inline: 0 !important;
+.post-password-form input[type="password"] {
+	max-width: 30rem;
 }
 
 .post-password-form p {
