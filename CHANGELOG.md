@@ -14,6 +14,7 @@
 
 ### [Improvement]
 
+- Blog listings and single posts now show the post's featured image.
 - The footer no longer leaves a thin strip of page colour underneath it.
 - Form fields, checkboxes, radios and buttons that no block rendered — a
   password form, a custom HTML block, a plugin's form — now match the rest of
