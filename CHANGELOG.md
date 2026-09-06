@@ -23,6 +23,7 @@
 - Form fields, checkboxes, radios and buttons that no block rendered — a
   password form, a custom HTML block, a plugin's form — now match the rest of
   the site instead of showing plain browser widgets.
+- Saving AWT Settings without changing anything no longer reports an error.
 
 ### [A11y]
 
