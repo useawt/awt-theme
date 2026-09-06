@@ -78,13 +78,14 @@ select:-webkit-autofill {
 	max-width: 30rem;
 	min-height: 2.5rem;
 	padding-inline: var(--cds-spacing-05, 1rem);
-	/* Carbon's field shape: an underline, not a box. The sides carry a
-	   field-coloured border so the box keeps its size, and so the focus
-	   outline replaces the field colour rather than a grey line it barely
-	   contrasts with — a full box border left only 1px of the indicator
-	   visible and failed WCAG 2.4.13. */
-	border: 1px solid var(--cds-field, #f4f4f4);
-	border-block-end-color: var(--cds-border-strong, #8d8d8d);
+	/* Enclosed on all four sides — the theme's own departure from Carbon,
+	   applied here too. Carbon draws a field as a single bottom rule, which
+	   forced-colours mode can replace with a system colour and leave the
+	   control with no boundary at all; `--cds-border-strong` measures 3.02:1
+	   against the fill, so a box clears WCAG 1.4.11 on every side. A field an
+	   author wrote by hand should not be a different shape from the one a
+	   block renders beside it. */
+	border: 1px solid var(--cds-border-strong, #8d8d8d);
 	border-radius: 0;
 	background-color: var(--cds-field, #f4f4f4);
 	color: var(--cds-text-primary, #161616);
@@ -108,7 +109,11 @@ select:-webkit-autofill {
 .wp-block-html:not( :has( style ) ) select:not([class*="cds--"]):focus-visible,
 .post-password-form select:not([class*="cds--"]):focus-visible {
 	outline: 2px solid var(--cds-focus, #0f62fe);
-	outline-offset: -2px;
+	/* Outward, the way the theme rings its own fields. Carbon insets the
+	   ring, which paints it over the field's own border: on a framed field
+	   the first pixel then reads blue-on-grey, under the 3:1 that WCAG
+	   2.4.13 asks, and only half the ring counts. */
+	outline-offset: 1px;
 }
 
 /* Checkboxes and radios keep the browser's own control and take the theme's
