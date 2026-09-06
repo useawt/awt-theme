@@ -68,8 +68,11 @@ select:-webkit-autofill {
    -------------------------------------------------------------------------- */
 
 .wp-block-html:not( :has( style ) ) input:not([class*="cds--"]):not([type="hidden"]):not([type="checkbox"]):not([type="radio"]):not([type="submit"]):not([type="button"]):not([type="file"]):not([type="range"]):not([type="color"]),
+.post-password-form input:not([class*="cds--"]):not([type="hidden"]):not([type="checkbox"]):not([type="radio"]):not([type="submit"]):not([type="button"]):not([type="file"]):not([type="range"]):not([type="color"]),
 .wp-block-html:not( :has( style ) ) textarea:not([class*="cds--"]),
-.wp-block-html:not( :has( style ) ) select:not([class*="cds--"]) {
+.post-password-form textarea:not([class*="cds--"]),
+.wp-block-html:not( :has( style ) ) select:not([class*="cds--"]),
+.post-password-form select:not([class*="cds--"]) {
 	display: block;
 	width: 100%;
 	max-width: 30rem;
@@ -92,14 +95,18 @@ select:-webkit-autofill {
 	margin-block-end: var(--cds-spacing-03, 0.5rem);
 }
 
-.wp-block-html:not( :has( style ) ) textarea:not([class*="cds--"]) {
+.wp-block-html:not( :has( style ) ) textarea:not([class*="cds--"]),
+.post-password-form textarea:not([class*="cds--"]) {
 	min-height: 6rem;
 	padding-block: var(--cds-spacing-04, 0.75rem);
 }
 
 .wp-block-html:not( :has( style ) ) input:not([class*="cds--"]):focus-visible,
+.post-password-form input:not([class*="cds--"]):focus-visible,
 .wp-block-html:not( :has( style ) ) textarea:not([class*="cds--"]):focus-visible,
-.wp-block-html:not( :has( style ) ) select:not([class*="cds--"]):focus-visible {
+.post-password-form textarea:not([class*="cds--"]):focus-visible,
+.wp-block-html:not( :has( style ) ) select:not([class*="cds--"]):focus-visible,
+.post-password-form select:not([class*="cds--"]):focus-visible {
 	outline: 2px solid var(--cds-focus, #0f62fe);
 	outline-offset: -2px;
 }
@@ -112,7 +119,9 @@ select:-webkit-autofill {
    right. `color-scheme` is what makes the unchecked box's own border follow
    light and dark. */
 .wp-block-html:not( :has( style ) ) input[type="checkbox"]:not([class*="cds--"]),
-.wp-block-html:not( :has( style ) ) input[type="radio"]:not([class*="cds--"]) {
+.post-password-form input[type="checkbox"]:not([class*="cds--"]),
+.wp-block-html:not( :has( style ) ) input[type="radio"]:not([class*="cds--"]),
+.post-password-form input[type="radio"]:not([class*="cds--"]) {
 	accent-color: var(--cds-icon-primary, #161616);
 	color-scheme: inherit;
 	inline-size: 1rem;
@@ -121,7 +130,9 @@ select:-webkit-autofill {
 }
 
 .wp-block-html:not( :has( style ) ) input[type="checkbox"]:not([class*="cds--"]):focus-visible,
-.wp-block-html:not( :has( style ) ) input[type="radio"]:not([class*="cds--"]):focus-visible {
+.post-password-form input[type="checkbox"]:not([class*="cds--"]):focus-visible,
+.wp-block-html:not( :has( style ) ) input[type="radio"]:not([class*="cds--"]):focus-visible,
+.post-password-form input[type="radio"]:not([class*="cds--"]):focus-visible {
 	outline: 2px solid var(--cds-focus, #0f62fe);
 	outline-offset: 2px;
 }
@@ -131,7 +142,9 @@ select:-webkit-autofill {
    relationship. Both common shapes are covered: the input inside the label,
    and the input followed by a `for=` label. */
 .wp-block-html:not( :has( style ) ) label:not([class*="cds--"]):has( > input[type="checkbox"] ),
-.wp-block-html:not( :has( style ) ) label:not([class*="cds--"]):has( > input[type="radio"] ) {
+.post-password-form label:not([class*="cds--"]):has( > input[type="checkbox"] ),
+.wp-block-html:not( :has( style ) ) label:not([class*="cds--"]):has( > input[type="radio"] ),
+.post-password-form label:not([class*="cds--"]):has( > input[type="radio"] ) {
 	display: flex;
 	align-items: center;
 	margin-block-end: var(--cds-spacing-03, 0.5rem);
@@ -142,7 +155,9 @@ select:-webkit-autofill {
 }
 
 .wp-block-html:not( :has( style ) ) input[type="checkbox"]:not([class*="cds--"]) + label:not([class*="cds--"]),
-.wp-block-html:not( :has( style ) ) input[type="radio"]:not([class*="cds--"]) + label:not([class*="cds--"]) {
+.post-password-form input[type="checkbox"]:not([class*="cds--"]) + label:not([class*="cds--"]),
+.wp-block-html:not( :has( style ) ) input[type="radio"]:not([class*="cds--"]) + label:not([class*="cds--"]),
+.post-password-form input[type="radio"]:not([class*="cds--"]) + label:not([class*="cds--"]) {
 	display: inline;
 	margin-block-end: 0;
 	color: var(--cds-text-primary, #161616);
@@ -152,7 +167,8 @@ select:-webkit-autofill {
 
 /* A label sitting beside a bare control belongs above it, the way every other
    labelled field on the page reads. */
-.wp-block-html:not( :has( style ) ) label:not([class*="cds--"]) {
+.wp-block-html:not( :has( style ) ) label:not([class*="cds--"]),
+.post-password-form label:not([class*="cds--"]) {
 	display: block;
 	margin-block-end: var(--cds-spacing-03, 0.5rem);
 	color: var(--cds-text-secondary, #525252);
@@ -162,8 +178,11 @@ select:-webkit-autofill {
 }
 
 .wp-block-html:not( :has( style ) ) button:not([class*="cds--"]),
+.post-password-form button:not([class*="cds--"]),
 .wp-block-html:not( :has( style ) ) input[type="submit"]:not([class*="cds--"]),
-.wp-block-html:not( :has( style ) ) input[type="button"]:not([class*="cds--"]) {
+.post-password-form input[type="submit"]:not([class*="cds--"]),
+.wp-block-html:not( :has( style ) ) input[type="button"]:not([class*="cds--"]),
+.post-password-form input[type="button"]:not([class*="cds--"]) {
 	display: inline-flex;
 	align-items: center;
 	min-height: 3rem;
@@ -180,14 +199,20 @@ select:-webkit-autofill {
 }
 
 .wp-block-html:not( :has( style ) ) button:not([class*="cds--"]):hover,
+.post-password-form button:not([class*="cds--"]):hover,
 .wp-block-html:not( :has( style ) ) input[type="submit"]:not([class*="cds--"]):hover,
-.wp-block-html:not( :has( style ) ) input[type="button"]:not([class*="cds--"]):hover {
+.post-password-form input[type="submit"]:not([class*="cds--"]):hover,
+.wp-block-html:not( :has( style ) ) input[type="button"]:not([class*="cds--"]):hover,
+.post-password-form input[type="button"]:not([class*="cds--"]):hover {
 	background-color: var(--cds-button-primary-hover, #0050e6);
 }
 
 .wp-block-html:not( :has( style ) ) button:not([class*="cds--"]):focus-visible,
+.post-password-form button:not([class*="cds--"]):focus-visible,
 .wp-block-html:not( :has( style ) ) input[type="submit"]:not([class*="cds--"]):focus-visible,
-.wp-block-html:not( :has( style ) ) input[type="button"]:not([class*="cds--"]):focus-visible {
+.post-password-form input[type="submit"]:not([class*="cds--"]):focus-visible,
+.wp-block-html:not( :has( style ) ) input[type="button"]:not([class*="cds--"]):focus-visible,
+.post-password-form input[type="button"]:not([class*="cds--"]):focus-visible {
 	/* Outward, like every other button in the theme. Drawn inside, the ring
 	   is the same blue as the button's own fill and only the 1px white line
 	   beside it stays visible — 1px is not a focus indicator (WCAG 2.4.13). */
@@ -195,9 +220,11 @@ select:-webkit-autofill {
 	outline-offset: 1px;
 }
 
-/* WordPress's password form: the same treatment, scoped to itself.
-   The field is a child of the post content like any block, so it takes the
-   same constrained column the page title sits in and lines up with it. */
+/* WordPress's password form takes the same treatment, and has to be named to
+   get it: it is core markup in the post content, not inside a Custom HTML
+   block, so the scope above does not reach it. It went unstyled for a day
+   after that scope narrowed, behind a comment claiming core's form had rules
+   of its own — it had these three, which are spacing and nothing else. */
 .post-password-form {
 	display: flow-root;
 }
