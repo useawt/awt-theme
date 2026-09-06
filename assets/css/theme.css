@@ -225,6 +225,46 @@ select:-webkit-autofill {
 	outline-offset: 1px;
 }
 
+/* A field inside a widget that brings its own stylesheet.
+
+   The rules above stop at the edge of such a block, so a widget's own design
+   is never half-overridden. But a control the widget's CSS does not mention is
+   not the widget's design — it is a control nobody styled. The partner portal
+   is the case: its stylesheet sets the layout, the output box and the copy
+   button, and says nothing about the text fields, which were left at the
+   browser's 155x24.
+
+   The line between them is a class. A widget styles its own controls through
+   one — `.ac-pricing__search` on the price list's search box — so a control
+   with no class at all is one no stylesheet is claiming. Fields only: a
+   classless `button` inside such a block usually is the widget's own, like
+   that copy button, and giving it a fill would wreck it.
+   -------------------------------------------------------------------------- */
+
+.wp-block-html:has( style ) input:not( [class] ):not( [type="hidden"] ):not( [type="checkbox"] ):not( [type="radio"] ):not( [type="submit"] ):not( [type="button"] ):not( [type="file"] ):not( [type="range"] ):not( [type="color"] ),
+.wp-block-html:has( style ) textarea:not( [class] ),
+.wp-block-html:has( style ) select:not( [class] ) {
+	display: block;
+	width: 100%;
+	max-width: 30rem;
+	min-height: 2.5rem;
+	padding-inline: var(--cds-spacing-05, 1rem);
+	border: 1px solid var(--cds-border-strong, #8d8d8d);
+	border-radius: 0;
+	background-color: var(--cds-field, #f4f4f4);
+	color: var(--cds-text-primary, #161616);
+	font-family: inherit;
+	font-size: var(--cds-body-compact-01-font-size, 0.875rem);
+	margin-block-end: var(--cds-spacing-03, 0.5rem);
+}
+
+.wp-block-html:has( style ) input:not( [class] ):focus-visible,
+.wp-block-html:has( style ) textarea:not( [class] ):focus-visible,
+.wp-block-html:has( style ) select:not( [class] ):focus-visible {
+	outline: 2px solid var(--cds-focus, #0f62fe);
+	outline-offset: 1px;
+}
+
 /* WordPress's password form takes the same treatment, and has to be named to
    get it: it is core markup in the post content, not inside a Custom HTML
    block, so the scope above does not reach it. It went unstyled for a day
