@@ -388,6 +388,14 @@ function save( array $settings ): bool {
 	if ( $json === false ) {
 		return false;
 	}
+	// update_option() reports false both when the write failed and when the
+	// stored value already matches. Saving a form no one changed is a success,
+	// so tell those two apart before answering.
+	if ( get_option( OPTION_KEY ) === $json ) {
+		flush_cache();
+		return true;
+	}
+
 	$ok = update_option( OPTION_KEY, $json, false /* don't autoload — admin reads only */ );
 	flush_cache();
 	return $ok;

@@ -248,4 +248,17 @@ class Test_Settings extends WP_UnitTestCase {
 
 		$this->assertSame( 'dark', Settings\get( 'site.colorScheme' ) );
 	}
+
+	/**
+	 * Saving a value that is already stored is a success, not a failure.
+	 *
+	 * WordPress answers false both when the write failed and when there was
+	 * nothing to write. Passing that through told anyone who saved a form they
+	 * had not changed that the theme had refused it.
+	 */
+	public function test_saving_the_same_value_again_still_succeeds(): void {
+		$this->assertTrue( Settings\set( 'site.colorScheme', 'dark' ) );
+		$this->assertTrue( Settings\set( 'site.colorScheme', 'dark' ) );
+		$this->assertSame( 'dark', Settings\get( 'site.colorScheme' ) );
+	}
 }
