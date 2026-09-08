@@ -760,7 +760,8 @@ function render_tab_appearance(): void {
 		</form>
 		<?php
 	} elseif ( 'header' === $active_section ) {
-		$header_scheme = (string) ( \AWT\Theme\Settings\get( 'header.colorScheme' ) ?? 'default' );
+		$header_scheme  = (string) ( \AWT\Theme\Settings\get( 'header.colorScheme' ) ?? 'default' );
+		$header_contain = (bool) \AWT\Theme\Settings\get( 'header.containWidth' );
 		// "Default" means something different here than it does for the site.
 		// The site's default follows the visitor's device; the header's default
 		// follows whatever the site appearance resolved to. Sharing the site's
@@ -801,6 +802,21 @@ function render_tab_appearance(): void {
 						<?php echo esc_html( $label ); ?>
 					</label>
 				<?php endforeach; ?>
+			</fieldset>
+
+			<h2><?php esc_html_e( 'Header width', 'awt' ); ?></h2>
+			<p class="awt-field-help">
+				<?php esc_html_e( 'The header spans the whole screen. Contain it and the logo, menu and icons line up with your page content instead. The bar itself still spans the screen.', 'awt' ); ?>
+			</p>
+			<fieldset style="margin-block: 1em 2.5em;">
+				<legend class="screen-reader-text"><?php esc_html_e( 'Header width', 'awt' ); ?></legend>
+				<label for="awt-header-contain" style="display:flex; align-items:center; gap:0.5em;">
+					<input type="checkbox" id="awt-header-contain" name="headerContainWidth" value="1" <?php checked( $header_contain ); ?> />
+					<?php esc_html_e( 'Contain the header to your content width', 'awt' ); ?>
+				</label>
+				<p class="awt-field-help" style="margin:0.4em 0 0 1.85em; max-inline-size:42em;">
+					<?php esc_html_e( 'Your content width is set in the Site Editor, under Styles → Layout. On screens narrower than it, nothing changes.', 'awt' ); ?>
+				</p>
 			</fieldset>
 
 			<h2><?php esc_html_e( 'Header preset', 'awt' ); ?></h2>
@@ -1065,6 +1081,9 @@ function save_tab_appearance(): void {
 		// phpcs:ignore WordPress.Security.NonceVerification.Missing -- nonce verified in handle_form_submission().
 		$hscheme = sanitize_key( wp_unslash( $_POST['headerColorScheme'] ?? 'default' ) );
 		\AWT\Theme\Settings\set( 'header.colorScheme', in_array( $hscheme, array( 'default', 'light', 'dark' ), true ) ? $hscheme : 'default' );
+
+		// phpcs:ignore WordPress.Security.NonceVerification.Missing -- nonce verified in handle_form_submission().
+		\AWT\Theme\Settings\set( 'header.containWidth', ! empty( $_POST['headerContainWidth'] ) );
 
 		// phpcs:ignore WordPress.Security.NonceVerification.Missing, WordPress.Security.ValidatedSanitizedInput.InputNotSanitized -- nonce verified in handle_form_submission(); unslashed here, values validated against the brand-mode whitelist and re-sanitized by Settings\sanitize() on save.
 		$input       = wp_unslash( (array) ( $_POST['identity'] ?? array() ) );

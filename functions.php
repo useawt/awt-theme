@@ -565,6 +565,50 @@ function type_scale_css(): string {
 	return sprintf( 'html{font-size:calc(100%% * %s)}', rtrim( rtrim( number_format( $scale, 4, '.', '' ), '0' ), '.' ) );
 }
 
+/**
+ * "Header width" setting (AWT Settings → Appearance → Header). Off by default:
+ * Carbon's UI Shell header is `position: fixed; inset-inline: 0`, so it spans
+ * the screen and its contents sit at the two edges.
+ *
+ * On, the bar still spans the screen — the background and the bottom rule are
+ * full-bleed — and only its CONTENTS are pulled in, to the same width the page
+ * content uses, so the logo lines up with the text below it on a wide screen.
+ * That is what ibm.com does: its masthead host is full width and the row
+ * inside it is capped at the grid width and centred.
+ *
+ * One padding declaration does it, and the `max()` keeps it self-limiting:
+ * below the content width the padding is zero, so no breakpoint is involved
+ * and the collapsed (hamburger) header is untouched.
+ *
+ * It does need one thing on the JavaScript side. `fitHeader()` in header-nav's
+ * view.js decides whether the menu still fits by comparing `scrollWidth` with
+ * `clientWidth`, and on a box that overflows visibly `scrollWidth` counts only
+ * content that escapes the PADDING box — so a contained header reported no
+ * overflow at all while its menu spilled into the gutter. That measurement is
+ * taken under `overflow: hidden` for this reason.
+ *
+ * @return string CSS, or an empty string when the header spans the screen.
+ */
+function header_contain_css(): string {
+	if ( ! function_exists( '\\AWT\\Theme\\Settings\\get' ) ) {
+		return '';
+	}
+	if ( ! \AWT\Theme\Settings\get( 'header.containWidth' ) ) {
+		return '';
+	}
+
+	// `100%` is the header's own containing block: the viewport while it is
+	// fixed, the canvas while it is not. The fallback matches the width map in
+	// the Section block, so a theme.json without a contentSize still lands on
+	// the same number.
+	//
+	// `!important` because the header template part is a group block with its
+	// padding set to zero, and a block's spacing lands in the tag's own `style`
+	// attribute — which no stylesheet can outrank. Without it the rule is in
+	// the cascade and loses silently, which is exactly how it first read.
+	return '.cds--header{padding-inline:max(0px,(100% - var(--wp--style--global--content-size,66rem))/2) !important}';
+}
+
 add_action(
 	'wp_enqueue_scripts',
 	static function (): void {
@@ -577,6 +621,11 @@ add_action(
 		$scale_css = type_scale_css();
 		if ( $scale_css !== '' ) {
 			wp_add_inline_style( 'awt-theme', $scale_css );
+		}
+
+		$contain_css = header_contain_css();
+		if ( $contain_css !== '' ) {
+			wp_add_inline_style( 'awt-theme', $contain_css );
 		}
 	}
 );
@@ -743,6 +792,17 @@ add_filter(
 		if ( $scale_css !== '' ) {
 			$existing[] = array(
 				'css'            => str_replace( 'html{', ':root{', $scale_css ),
+				'__unstableType' => 'theme',
+			);
+		}
+
+		// The header width, so the Site Editor shows the header the width the
+		// page will. Prefixed here rather than left to the editor's selector
+		// rewrite, the same way the underline and form-text rules below are.
+		$contain_css = header_contain_css();
+		if ( $contain_css !== '' ) {
+			$existing[] = array(
+				'css'            => 'body.editor-styles-wrapper ' . $contain_css,
 				'__unstableType' => 'theme',
 			);
 		}

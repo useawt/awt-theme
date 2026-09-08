@@ -10,6 +10,14 @@
      markdownlint enforces the structure in CI. Newest release first.
      The Unreleased section accumulates entries between releases. -->
 
+## Unreleased
+
+### [New]
+
+- New setting in AWT Settings → Appearance → Header: contain the header to your
+  content width, so the logo, menu and icons line up with the page below
+  instead of sitting at the edges of a wide screen.
+
 ## 2026.09.2 — 2026-09-08
 
 ### [A11y]

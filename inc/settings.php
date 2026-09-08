@@ -138,7 +138,15 @@ function defaults(): array {
 		// scope regardless of the rest of the page (AWT Settings → Carbon →
 		// Header color; applied via the render_block filter in functions.php).
 		'header'        => array(
-			'colorScheme' => 'default', // One of: default | light | dark.
+			'colorScheme'  => 'default', // One of: default | light | dark.
+			// Header width. false (the default) = the header spans the screen,
+			// which is what Carbon's UI Shell does. true keeps the bar itself
+			// full width but pulls its contents in to the site's content
+			// width, so the logo, menu and icons line up with the page below
+			// instead of sitting at the edges of a wide screen. Applied as one
+			// padding rule from header_contain_css() in functions.php, on the
+			// front end and in the editor canvas.
+			'containWidth' => false,
 		),
 		// Whole-site light/dark appearance. 'default' = honor the visitor's
 		// system preference (and toggle). 'light' / 'dark' pin the site's
@@ -457,7 +465,8 @@ function sanitize( array $settings ): array {
 	// Header color scheme — one of default | light | dark.
 	$header_scheme = isset( $settings['header']['colorScheme'] ) ? (string) $settings['header']['colorScheme'] : 'default';
 	$out['header'] = array(
-		'colorScheme' => in_array( $header_scheme, array( 'default', 'light', 'dark' ), true ) ? $header_scheme : 'default',
+		'colorScheme'  => in_array( $header_scheme, array( 'default', 'light', 'dark' ), true ) ? $header_scheme : 'default',
+		'containWidth' => ! empty( $settings['header']['containWidth'] ),
 	);
 
 	// Site color scheme — one of default | light | dark.

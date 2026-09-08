@@ -106,6 +106,17 @@ class Test_Settings_Have_Effect extends WP_UnitTestCase {
 	}
 
 	/**
+	 * The header width, also CSS rather than a class.
+	 */
+	public function test_the_header_width_produces_css(): void {
+		Settings\set( 'header.containWidth', true );
+		$this->assertNotSame( '', \AWT\Theme\header_contain_css() );
+
+		Settings\set( 'header.containWidth', false );
+		$this->assertSame( '', \AWT\Theme\header_contain_css() );
+	}
+
+	/**
 	 * The breadcrumb switches, asked the way the emitter asks them.
 	 */
 	public function test_the_breadcrumb_switches_reach_the_emitter(): void {
