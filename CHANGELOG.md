@@ -10,6 +10,14 @@
      markdownlint enforces the structure in CI. Newest release first.
      The Unreleased section accumulates entries between releases. -->
 
+## Unreleased
+
+### [Improvement]
+
+- A Section set wider than the content width now gets that width. Picking
+  "Wide" on a section in a page's content changed nothing, because the page
+  layout was holding it to the content width.
+
 ## 2026.09.1 — 2026-09-08
 
 ### [Improvement]

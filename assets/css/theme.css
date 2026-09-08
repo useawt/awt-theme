@@ -395,6 +395,17 @@ b {
    space inside the row (matches the existing editor reset). */
 .awt-inline-set > [class*="awt-spacing-"] { margin-block-end: 0 !important; }
 
+/* A section set wider than the content width has to be allowed to take the
+   room. WordPress's constrained layout caps every ordinary child at the
+   content width, so a Section sitting in post content was held to 66rem
+   whatever its own Max width said — picking "Wide" changed nothing on the
+   page and said nothing about why. Core writes that cap with `:where()`, so
+   it carries no specificity and one class outranks it. Only sections that
+   asked for more than the content width carry this class, so anything at the
+   content width or below renders exactly as it did; the inner element still
+   does the capping. */
+.awt-section.awt-section--past-content-width { max-inline-size: none; }
+
 /* WordPress centers `.aligncenter` blocks only inside its own layout
    containers (`.is-layout-flow` / `.is-layout-constrained`), through
    generated `> .aligncenter { margin-inline: auto }` rules. awt/section
