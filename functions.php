@@ -538,6 +538,33 @@ add_filter(
 	static fn(): int => 150000
 );
 
+/**
+ * The typography size scale, as CSS.
+ *
+ * AWT Settings → Typography offers Compact, Default and Comfortable. The
+ * setting was being stored and sanitized and shown as a chosen radio, and
+ * then nothing rendered it: no rule existed anywhere that read it, so the
+ * three choices all looked the same on the page.
+ *
+ * It lands on the root element, because every Carbon size — including the
+ * line heights — is expressed in rem, so scaling the root scales the whole
+ * type system proportionally rather than one heading at a time.
+ *
+ * @return string CSS, or an empty string at the default scale.
+ */
+function type_scale_css(): string {
+	if ( ! function_exists( '\\AWT\\Theme\\Settings\\get' ) ) {
+		return '';
+	}
+
+	$scale = (float) \AWT\Theme\Settings\get( 'typography.sizeScale' );
+	if ( $scale <= 0 || abs( $scale - 1.0 ) < 0.0001 ) {
+		return '';
+	}
+
+	return sprintf( 'html{font-size:calc(100%% * %s)}', rtrim( rtrim( number_format( $scale, 4, '.', '' ), '0' ), '.' ) );
+}
+
 add_action(
 	'wp_enqueue_scripts',
 	static function (): void {
@@ -546,6 +573,11 @@ add_action(
 
 		wp_enqueue_style( 'awt-theme-carbon', get_template_directory_uri() . '/assets/css/foundation.min.css', array(), (string) filemtime( $carbon_path ) );
 		wp_enqueue_style( 'awt-theme', get_template_directory_uri() . '/assets/css/theme.css', array( 'awt-theme-carbon' ), (string) filemtime( $theme_path ) );
+
+		$scale_css = type_scale_css();
+		if ( $scale_css !== '' ) {
+			wp_add_inline_style( 'awt-theme', $scale_css );
+		}
 	}
 );
 
@@ -698,6 +730,19 @@ add_filter(
 		if ( $scope_css !== '' ) {
 			$existing[] = array(
 				'css'            => $scope_css,
+				'__unstableType' => 'theme',
+			);
+		}
+
+		// The type scale, so the canvas is the size the page will be. The
+		// editor rewrites a stylesheet's selectors to sit under
+		// `.editor-styles-wrapper`, and `html` would not survive that — but
+		// rem resolves against the root, so the root is what has to move.
+		// `:root` is left alone by the rewrite and is the same element.
+		$scale_css = type_scale_css();
+		if ( $scale_css !== '' ) {
+			$existing[] = array(
+				'css'            => str_replace( 'html{', ':root{', $scale_css ),
 				'__unstableType' => 'theme',
 			);
 		}

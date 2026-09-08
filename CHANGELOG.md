@@ -14,6 +14,9 @@
 
 ### [Improvement]
 
+- The text size setting in AWT Settings → Typography now changes the site.
+  Compact, Default and Comfortable were being saved and shown as chosen, but
+  nothing on the page ever changed.
 - The header now collapses to the menu button when the navigation does not
   fit, instead of at a fixed screen width. A long menu used to overflow — items
   wrapping and the last button cut off by the edge of the screen — while a short
