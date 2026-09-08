@@ -1709,10 +1709,8 @@ ol.wp-block-list {
  * at >=66rem, but AWT's own `.cds--header__action { display: inline-flex }`
  * (loaded later, equal specificity) would otherwise win and keep it showing.
  * Re-assert the hide here, after that rule, so the trigger is mobile-only. */
-@media (min-width: 66rem) {
-	.awt-header-nav__trigger {
-		display: none;
-	}
+html:not(.awt-header-collapsed) .awt-header-nav__trigger {
+	display: none;
 }
 
 /* The slide-in backdrop only exists on small screens (added when open). */
@@ -1720,103 +1718,127 @@ ol.wp-block-list {
 	display: none;
 }
 
-@media (max-width: 65.98rem) {
-	/* Match Carbon's UI Shell: the hamburger LEADS the header (far left),
-	 * brand follows it, and the action cluster stays pinned to the right.
-	 * (The header is normally space-between; on mobile we left-align and push
-	 * the global actions right so the trigger can sit first via order:-1.) */
-	.wp-block-group.cds--header {
-		justify-content: flex-start;
-		/* Drop the block-gap between header items on mobile so the hamburger,
-		 * logo and action icons sit flush (Carbon header items are gap-less). */
-		column-gap: 0;
-	}
-	.awt-header-nav__trigger {
-		order: -1;
-	}
-	.cds--header__global {
-		margin-inline-start: auto;
-	}
-	/* Drop Carbon's 16px inset on the logo area so it sits flush against the
-	 * leading hamburger on mobile. Selector matches Carbon's own
-	 * `a.cds--header__name` specificity (0,1,1) so theme.css's later source
-	 * order wins. */
-	a.cds--header__name {
-		padding-inline-start: 0;
-	}
-
-	/* The nav becomes Carbon's SideNav: a 16rem panel fixed to the left edge,
-	 * full height below the 3rem header bar, sliding in from the left
-	 * (translateX(-100%) -> 0) with Carbon's own .11s easing. */
-	.cds--header__nav {
-		display: block; /* override Carbon's mobile display:none so it can slide */
-		position: fixed;
-		inset-block-start: 3rem;
-		inset-inline-start: 0;
-		inline-size: 16rem;
-		max-inline-size: 80vw;
-		block-size: calc(100% - 3rem);
-		background: var(--cds-background, #ffffff);
-		box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
-		overflow-y: auto;
-		z-index: 8000;
-		transform: translateX(-100%);
-		visibility: hidden;
-		transition: transform 0.11s cubic-bezier(0.2, 0, 1, 0.9), visibility 0s linear 0.11s;
-	}
-	.cds--header__nav.awt-nav-open {
-		transform: translateX(0);
-		visibility: visible;
-		transition: transform 0.11s cubic-bezier(0.2, 0, 1, 0.9);
-	}
-	.cds--header__nav .cds--header__menu-bar {
-		flex-direction: column;
-		align-items: stretch;
-		block-size: auto;
-	}
-	.cds--header__nav .cds--header__menu-item {
-		block-size: auto;
-		min-block-size: 3rem;
-		inline-size: 100%;
-	}
-	/* Submenu = inline accordion inside the panel (not an absolute dropdown) */
-	.cds--header__nav .cds--header__submenu {
-		position: static;
-	}
-	.cds--header__nav .cds--header__menu-title[aria-expanded="true"] + .cds--header__menu {
-		position: static;
-		inset: auto;
-		transform: none;
-		box-shadow: none;
-		inline-size: 100%;
-		background: var(--cds-layer-01, #f4f4f4);
-	}
-
-	/* Dimmed backdrop (Carbon's side-nav overlay): tap outside to close. */
-	.awt-header-nav__overlay.awt-nav-open {
-		display: block;
-		position: fixed;
-		inset-block-start: 3rem;
-		inset-inline: 0;
-		inset-block-end: 0;
-		border: 0;
-		padding: 0;
-		margin: 0;
-		background: rgba(0, 0, 0, 0.5);
-		z-index: 7999;
-		cursor: pointer;
-	}
-
-	/* Admin-bar offsets mirror the header's own (.admin-bar .cds--header):
-	 * 32px on wider admin screens, 46px at <=782px. */
-	.admin-bar .cds--header__nav {
-		inset-block-start: calc(32px + 3rem);
-		block-size: calc(100% - 32px - 3rem);
-	}
-	.admin-bar .awt-header-nav__overlay.awt-nav-open {
-		inset-block-start: calc(32px + 3rem);
-	}
+/* Carbon hides the nav below its own breakpoint and shows it above. AWT
+ * decides that by measurement instead, so the nav is always laid out as a row
+ * and the collapsed rules below turn it into the drawer. Without this the nav
+ * would be display:none on a narrow screen with nothing to reveal it. */
+.cds--header__nav {
+	display: block;
 }
+
+/* The row never wraps: a wrapped menu is the thing being avoided, and with
+ * nowrap an overflow is a real overflow, which is what view.js measures. */
+.cds--header__nav .cds--header__menu-bar {
+	flex-wrap: nowrap;
+}
+
+/* The collapsed header: a hamburger and a slide-in drawer.
+ *
+ * Driven by a class, not by a width. The width the row needs depends on how
+ * many items the menu has and how long their labels are, which no breakpoint
+ * can know: at Carbon's 66rem this site's nine items wrapped and the Log in
+ * button was cut off by the edge of the screen. view.js measures whether the
+ * row fits and sets `awt-header-collapsed` on <html> when it does not.
+ *
+ * With no JavaScript nothing sets the class, so the nav stays a row and wraps
+ * if it must — which is worse-looking but still navigable. The hamburger it
+ * would otherwise show needs JavaScript to open anything at all. */
+/* Match Carbon's UI Shell: the hamburger LEADS the header (far left),
+ * brand follows it, and the action cluster stays pinned to the right.
+ * (The header is normally space-between; on mobile we left-align and push
+ * the global actions right so the trigger can sit first via order:-1.) */
+html.awt-header-collapsed .wp-block-group.cds--header {
+	justify-content: flex-start;
+	/* Drop the block-gap between header items on mobile so the hamburger,
+	 * logo and action icons sit flush (Carbon header items are gap-less). */
+	column-gap: 0;
+}
+html.awt-header-collapsed .awt-header-nav__trigger {
+	order: -1;
+}
+html.awt-header-collapsed .cds--header__global {
+	margin-inline-start: auto;
+}
+/* Drop Carbon's 16px inset on the logo area so it sits flush against the
+ * leading hamburger on mobile. Selector matches Carbon's own
+ * `a.cds--header__name` specificity (0,1,1) so theme.css's later source
+ * order wins. */
+html.awt-header-collapsed a.cds--header__name {
+	padding-inline-start: 0;
+}
+
+/* The nav becomes Carbon's SideNav: a 16rem panel fixed to the left edge,
+ * full height below the 3rem header bar, sliding in from the left
+ * (translateX(-100%) -> 0) with Carbon's own .11s easing. */
+html.awt-header-collapsed .cds--header__nav {
+	display: block; /* override Carbon's mobile display:none so it can slide */
+	position: fixed;
+	inset-block-start: 3rem;
+	inset-inline-start: 0;
+	inline-size: 16rem;
+	max-inline-size: 80vw;
+	block-size: calc(100% - 3rem);
+	background: var(--cds-background, #ffffff);
+	box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+	overflow-y: auto;
+	z-index: 8000;
+	transform: translateX(-100%);
+	visibility: hidden;
+	transition: transform 0.11s cubic-bezier(0.2, 0, 1, 0.9), visibility 0s linear 0.11s;
+}
+html.awt-header-collapsed .cds--header__nav.awt-nav-open {
+	transform: translateX(0);
+	visibility: visible;
+	transition: transform 0.11s cubic-bezier(0.2, 0, 1, 0.9);
+}
+html.awt-header-collapsed .cds--header__nav .cds--header__menu-bar {
+	flex-direction: column;
+	align-items: stretch;
+	block-size: auto;
+}
+html.awt-header-collapsed .cds--header__nav .cds--header__menu-item {
+	block-size: auto;
+	min-block-size: 3rem;
+	inline-size: 100%;
+}
+/* Submenu = inline accordion inside the panel (not an absolute dropdown) */
+html.awt-header-collapsed .cds--header__nav .cds--header__submenu {
+	position: static;
+}
+html.awt-header-collapsed .cds--header__nav .cds--header__menu-title[aria-expanded="true"] + .cds--header__menu {
+	position: static;
+	inset: auto;
+	transform: none;
+	box-shadow: none;
+	inline-size: 100%;
+	background: var(--cds-layer-01, #f4f4f4);
+}
+
+/* Dimmed backdrop (Carbon's side-nav overlay): tap outside to close. */
+html.awt-header-collapsed .awt-header-nav__overlay.awt-nav-open {
+	display: block;
+	position: fixed;
+	inset-block-start: 3rem;
+	inset-inline: 0;
+	inset-block-end: 0;
+	border: 0;
+	padding: 0;
+	margin: 0;
+	background: rgba(0, 0, 0, 0.5);
+	z-index: 7999;
+	cursor: pointer;
+}
+
+/* Admin-bar offsets mirror the header's own (.admin-bar .cds--header):
+ * 32px on wider admin screens, 46px at <=782px. */
+html.awt-header-collapsed .admin-bar .cds--header__nav {
+	inset-block-start: calc(32px + 3rem);
+	block-size: calc(100% - 32px - 3rem);
+}
+html.awt-header-collapsed .admin-bar .awt-header-nav__overlay.awt-nav-open {
+	inset-block-start: calc(32px + 3rem);
+}
+
 
 @media (max-width: 782px) {
 	.admin-bar .cds--header__nav {
