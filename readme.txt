@@ -260,6 +260,16 @@ Reports about real barriers are treated as bugs, not feature requests.
 == Changelog ==
 
 <!-- CHANGELOG_START -->
+= 2026.09.1 — 2026-09-08 =
+* [Improvement] Blog listings and single posts now show the post's featured image, with the image beside the text rather than above it.
+* [Improvement] A post's categories appear under its date.
+* [Improvement] Post text is held to a comfortable reading width instead of running the full page.
+* [Improvement] The footer no longer leaves a thin strip of page colour underneath it.
+* [Improvement] Form fields, checkboxes, radios and buttons that no block rendered — a password form, a custom HTML block, a plugin's form — now match the rest of the site instead of showing plain browser widgets.
+* [Improvement] Saving AWT Settings without changing anything no longer reports an error.
+* [A11y] Text marked bold with `<b>` now looks bold. It was rendering at the same weight as the text around it, so the emphasis was lost.
+* [A11y] A field the browser fills in for you keeps the site's colours. It used to turn pale yellow, which was unreadable in dark mode.
+
 = 2026.09.0 — 2026-09-03 =
 * [Improvement] Help text across the AWT Settings screens and the welcome wizard is shorter.
 * [New] WordPress now tells you when a new version of AWT is out, on Dashboard, Updates. You still install it yourself.
