@@ -1,15 +1,10 @@
-## 2026.09.1 — 2026-09-08
-
-### [Improvement]
-
-- Blog listings and single posts now show the post's featured image, with the image beside the text rather than above it.
-- A post's categories appear under its date.
-- Post text is held to a comfortable reading width instead of running the full page.
-- The footer no longer leaves a thin strip of page colour underneath it.
-- Form fields, checkboxes, radios and buttons that no block rendered — a password form, a custom HTML block, a plugin's form — now match the rest of the site instead of showing plain browser widgets.
-- Saving AWT Settings without changing anything no longer reports an error.
+## 2026.09.2 — 2026-09-08
 
 ### [A11y]
 
-- Text marked bold with `<b>` now looks bold. It was rendering at the same weight as the text around it, so the emphasis was lost.
-- A field the browser fills in for you keeps the site's colours. It used to turn pale yellow, which was unreadable in dark mode.
+- The header now collapses to the menu button when the navigation does not fit, instead of at a fixed screen width. A long menu used to overflow — items wrapping and the last button cut off by the edge of the screen — while a short one was hidden behind the menu button with room to spare.
+
+### [Improvement]
+
+- The text size setting in AWT Settings → Typography now changes the site. Compact, Default and Comfortable were being saved and shown as chosen, but nothing on the page ever changed.
+- A Section set wider than the content width now gets that width, on the page and in the editor. Picking "Wide" on a section in a page's content changed nothing, because the page layout was holding it to the content width.
