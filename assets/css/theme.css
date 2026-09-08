@@ -1767,6 +1767,24 @@ html.awt-header-collapsed a.cds--header__name {
 	padding-inline-start: 0;
 }
 
+/* Nothing in the header animates while it is being measured.
+ *
+ * To decide whether the menu still fits, view.js takes `awt-header-collapsed`
+ * off, reads the width, and puts it back inside one frame. Reading the width
+ * forces the browser to work out the in-between state, so the drawer really
+ * does become an untransformed, visible row for an instant — and putting the
+ * class back animated it out again, `visibility` held for the whole 0.11s
+ * slide. On a phone that fires on every scroll, because hiding the URL bar
+ * resizes the window: the closed menu slid in and out continuously.
+ *
+ * The transition belongs to opening and closing the drawer, which is driven by
+ * `awt-nav-open` and never happens during a measurement, so suppressing it
+ * here costs nothing. */
+html.awt-header-measuring .cds--header,
+html.awt-header-measuring .cds--header * {
+	transition: none !important;
+}
+
 /* The nav becomes Carbon's SideNav: a 16rem panel fixed to the left edge,
  * full height below the 3rem header bar, sliding in from the left
  * (translateX(-100%) -> 0) with Carbon's own .11s easing. */

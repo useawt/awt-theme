@@ -23,6 +23,8 @@
 - A three- or four-column feature grid now shows two columns on medium screens
   instead of holding every column. Four columns on a 700px window left 195px
   tiles, with headings broken over three lines.
+- The menu no longer slides in and out while you scroll on a phone or resize
+  the window.
 
 ## 2026.09.2 — 2026-09-08
 
