@@ -14,9 +14,9 @@
 
 ### [Improvement]
 
-- A Section set wider than the content width now gets that width. Picking
-  "Wide" on a section in a page's content changed nothing, because the page
-  layout was holding it to the content width.
+- A Section set wider than the content width now gets that width, on the page
+  and in the editor. Picking "Wide" on a section in a page's content changed
+  nothing, because the page layout was holding it to the content width.
 
 ## 2026.09.1 — 2026-09-08
 

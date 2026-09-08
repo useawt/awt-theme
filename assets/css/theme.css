@@ -406,6 +406,12 @@ b {
    does the capping. */
 .awt-section.awt-section--past-content-width { max-inline-size: none; }
 
+/* And in the editor canvas, where the cap comes from the root container
+   (`.is-root-container.is-layout-constrained`, two classes) and so outranks
+   the front-end rule above. Prefixed the same way as the other canvas rules
+   in this file, which puts it a class ahead. */
+.editor-styles-wrapper .awt-section.awt-section--past-content-width { max-inline-size: none; }
+
 /* WordPress centers `.aligncenter` blocks only inside its own layout
    containers (`.is-layout-flow` / `.is-layout-constrained`), through
    generated `> .aligncenter { margin-inline: auto }` rules. awt/section
