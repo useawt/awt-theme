@@ -2410,9 +2410,29 @@ html.awt-header-collapsed .admin-bar .awt-header-nav__overlay.awt-nav-open {
 	grid-template-columns: 1fr;
 }
 
+/* The column count an author picks is the count on a WIDE screen, and every
+ * grid steps down through 2 on the way there.
+ *
+ * All three used to reach their full count at Carbon's md (672px) and stay
+ * there, so a four-column grid was four columns on a 700px laptop window: a
+ * 195px tile, headings broken over three lines, body text two or three words
+ * wide. Found on a live site (2026-09-08).
+ *
+ * Where each count is reached is the width at which its tiles are wide enough
+ * to read: three columns at lg (1056px, ~325px each) and four at xlg (1312px,
+ * ~266px each). Four items step to 2 rather than 3 so the last one is not left
+ * on a row of its own. */
 @media (min-width: 672px) {
-	.awt-feature-grid--cols-2 { grid-template-columns: repeat(2, 1fr); }
+	.awt-feature-grid--cols-2,
+	.awt-feature-grid--cols-3,
+	.awt-feature-grid--cols-4 { grid-template-columns: repeat(2, 1fr); }
+}
+
+@media (min-width: 1056px) {
 	.awt-feature-grid--cols-3 { grid-template-columns: repeat(3, 1fr); }
+}
+
+@media (min-width: 1312px) {
 	.awt-feature-grid--cols-4 { grid-template-columns: repeat(4, 1fr); }
 }
 
