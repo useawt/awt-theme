@@ -1,10 +1,10 @@
-## 2026.09.2 — 2026-09-08
+## 2026.09.3 — 2026-09-08
 
-### [A11y]
+### [New]
 
-- The header now collapses to the menu button when the navigation does not fit, instead of at a fixed screen width. A long menu used to overflow — items wrapping and the last button cut off by the edge of the screen — while a short one was hidden behind the menu button with room to spare.
+- New setting in AWT Settings → Appearance → Header: contain the header to your content width, so the logo, menu and icons line up with the page below instead of sitting at the edges of a wide screen.
 
 ### [Improvement]
 
-- The text size setting in AWT Settings → Typography now changes the site. Compact, Default and Comfortable were being saved and shown as chosen, but nothing on the page ever changed.
-- A Section set wider than the content width now gets that width, on the page and in the editor. Picking "Wide" on a section in a page's content changed nothing, because the page layout was holding it to the content width.
+- A three- or four-column feature grid now shows two columns on medium screens instead of holding every column. Four columns on a 700px window left 195px tiles, with headings broken over three lines.
+- The menu no longer slides in and out while you scroll on a phone or resize the window.
