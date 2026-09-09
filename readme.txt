@@ -260,6 +260,9 @@ Reports about real barriers are treated as bugs, not feature requests.
 == Changelog ==
 
 <!-- CHANGELOG_START -->
+= 2026.09.8 — 2026-09-09 =
+* [New] Styling for the Testimonial block's new source link.
+
 = 2026.09.7 — 2026-09-09 =
 * [Improvement] No changes in the theme itself. It carries the same version number as AWT Blocks, which has changes in this release.
 

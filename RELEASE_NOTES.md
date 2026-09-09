@@ -1,5 +1,5 @@
-## 2026.09.7 — 2026-09-09
+## 2026.09.8 — 2026-09-09
 
-### [Improvement]
+### [New]
 
-- No changes in the theme itself. It carries the same version number as AWT Blocks, which has changes in this release.
+- Styling for the Testimonial block's new source link.
