@@ -1,5 +1,5 @@
-## 2026.09.5 — 2026-09-09
+## 2026.09.6 — 2026-09-09
 
 ### [Improvement]
 
-- No changes in the theme itself. It carries the same version number as AWT Blocks, which has changes in this release.
+- Breadcrumbs sit the same distance below the header whether or not you are signed in. With the admin bar showing they sat lower than the rest of the page.
