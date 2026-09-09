@@ -10,6 +10,12 @@
      markdownlint enforces the structure in CI. Newest release first.
      The Unreleased section accumulates entries between releases. -->
 
+## Unreleased
+
+### [New]
+
+- Styling for the Testimonial block's new source link.
+
 ## 2026.09.7 — 2026-09-09
 
 ### [Improvement]

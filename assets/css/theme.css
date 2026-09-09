@@ -2646,6 +2646,34 @@ html.awt-header-collapsed .admin-bar .awt-header-nav__overlay.awt-nav-open {
 	color: var(--cds-text-primary, #161616);
 }
 
+/* The source link is the last line of the attribution, so it starts where the
+   name and the role start rather than sitting off to the side of them. Carbon's
+   `.cds--link` carries the colour, underline and focus ring; only its place in
+   the column is set here.
+
+   `align-self` matters more than it looks: the details are a flex column, and a
+   stretched anchor would take the full width of the column, so the hover and
+   focus ring would run far past the end of the words. */
+.awt-testimonial__source-link {
+	align-self: flex-start;
+	margin-block-start: 0.25rem;
+	font-size: var(--cds-body-02-font-size, 1rem);
+	line-height: var(--cds-body-02-line-height, 1.5);
+}
+
+/* Centre-aligned testimonial: the attribution is centred, so the link is too. */
+.awt-testimonial--align-center .awt-testimonial__source-link {
+	align-self: center;
+}
+
+/* Inline attribution puts the details on one row, so the link joins the row
+   and needs the gap the bullet separators give the parts before it. */
+.awt-testimonial--attr-inline .awt-testimonial__source-link {
+	align-self: center;
+	margin-block-start: 0;
+	margin-inline-start: 0.5rem;
+}
+
 /* Inline attribution: join name / role / org with bullet separators on one line. */
 .awt-testimonial--attr-inline .awt-testimonial__source-details {
 	flex-direction: row;
