@@ -10,6 +10,14 @@
      markdownlint enforces the structure in CI. Newest release first.
      The Unreleased section accumulates entries between releases. -->
 
+## Unreleased
+
+### [New]
+
+- An AWT menu in the toolbar, on the front end and in wp-admin: a dot that is
+  green when your site is up to date and red when a new version is out, and
+  shortcuts to the header, the footer and AWT settings.
+
 ## 2026.09.3 — 2026-09-08
 
 ### [New]

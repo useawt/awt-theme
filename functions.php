@@ -34,6 +34,7 @@ require_once __DIR__ . '/inc/contrast.php';
 require_once __DIR__ . '/inc/header-presets.php';
 require_once __DIR__ . '/inc/style-variations.php';
 require_once __DIR__ . '/inc/admin-settings-page.php';
+require_once __DIR__ . '/inc/admin-bar.php';
 require_once __DIR__ . '/inc/breadcrumb-auto-emit.php';
 require_once __DIR__ . '/inc/welcome-wizard.php';
 // §A: block-inserter filter + design-system-aware pattern registration.

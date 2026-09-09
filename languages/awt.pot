@@ -2,14 +2,14 @@
 # This file is distributed under the GPL-3.0-or-later.
 msgid ""
 msgstr ""
-"Project-Id-Version: AWT 2026.09.2\n"
+"Project-Id-Version: AWT 2026.09.3\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/theme/awt-theme\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2026-09-08T15:48:34+00:00\n"
+"POT-Creation-Date: 2026-09-09T06:47:19+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.12.0\n"
 "X-Domain: awt\n"
@@ -31,18 +31,54 @@ msgstr ""
 msgid "An accessibility-first block theme built on IBM's open-source Carbon Design System. Four paired light/dark style variations, a visitor-facing color scheme switch that works with page caching out of the box, and 42 ready-made patterns — every one reviewed against WCAG 2.2 AA in both light and dark mode. Designed for the AWT Blocks plugin, which adds 58 matching accessible blocks and an accessibility checker inside the editor."
 msgstr ""
 
-#: functions.php:354
+#: functions.php:355
 msgid "AWT — Sections"
 msgstr ""
 
-#: functions.php:436
+#: functions.php:437
 msgctxt "template name"
 msgid "Page"
 msgstr ""
 
-#: functions.php:968
+#: functions.php:971
 #: inc/admin-settings-page.php:1849
 msgid "Skip to main content"
+msgstr ""
+
+#: inc/admin-bar.php:98
+msgid "Update available"
+msgstr ""
+
+#: inc/admin-bar.php:100
+msgid "Update checks are off"
+msgstr ""
+
+#: inc/admin-bar.php:102
+msgid "Up to date"
+msgstr ""
+
+#. translators: %s: the update state, e.g. "Up to date".
+#: inc/admin-bar.php:160
+#, php-format
+msgid "AWT: %s"
+msgstr ""
+
+#: inc/admin-bar.php:178
+#: inc/admin-settings-page.php:686
+#: inc/admin-settings-page.php:1136
+#: inc/welcome-wizard.php:202
+#: inc/welcome-wizard.php:359
+msgid "Header"
+msgstr ""
+
+#: inc/admin-bar.php:179
+#: inc/admin-settings-page.php:1148
+#: inc/admin-settings-page.php:1825
+msgid "Footer"
+msgstr ""
+
+#: inc/admin-bar.php:201
+msgid "AWT settings"
 msgstr ""
 
 #: inc/admin-settings-page.php:69
@@ -202,13 +238,6 @@ msgstr ""
 
 #: inc/admin-settings-page.php:685
 msgid "Light & dark"
-msgstr ""
-
-#: inc/admin-settings-page.php:686
-#: inc/admin-settings-page.php:1136
-#: inc/welcome-wizard.php:202
-#: inc/welcome-wizard.php:359
-msgid "Header"
 msgstr ""
 
 #: inc/admin-settings-page.php:687
@@ -508,11 +537,6 @@ msgstr ""
 
 #: inc/admin-settings-page.php:1145
 msgid "Links in the breadcrumb trail."
-msgstr ""
-
-#: inc/admin-settings-page.php:1148
-#: inc/admin-settings-page.php:1825
-msgid "Footer"
 msgstr ""
 
 #: inc/admin-settings-page.php:1149
