@@ -937,23 +937,18 @@ div:has(.cds--header) ~ .awt-breadcrumb-region {
 	inset-block-start: 32px;
 }
 
-.admin-bar .cds--content,
-.admin-bar .awt-breadcrumb-region {
-	/* !important matches the base .cds--content rule — both override the
-	 * WP template's inline padding-top. Without !important the admin-bar
-	 * variant has higher specificity but loses to the base rule's
-	 * !important. */
-	padding-block-start: calc(32px + 3rem + 2rem) !important;
-}
+/* The clearance below the header needs no admin-bar variant, and used to have
+   one that added the bar's height on top of the base value. It counted the bar
+   twice: WordPress already pushes the whole document down with
+   `html { margin-top }`, and the header moves down with it (the rule above),
+   so the distance from the header's bottom edge to the first line of content
+   is unchanged by the bar being there. The extra 32px showed as a breadcrumb
+   sitting lower than the same page's hero eyebrow, but only for logged-in
+   viewers — which is every author looking at their own site. */
 
 @media screen and (max-width: 782px) {
 	.admin-bar .cds--header {
 		inset-block-start: 46px;
-	}
-
-	.admin-bar .cds--content,
-	.admin-bar .awt-breadcrumb-region {
-		padding-block-start: calc(46px + 3rem + 2rem) !important;
 	}
 }
 
