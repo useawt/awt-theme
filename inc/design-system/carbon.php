@@ -1180,10 +1180,7 @@ SVG;
 				if ( ! empty( $v['icon_only'] ) ) {
 					$modifiers[] = 'icon-only'; }
 				$parts = array_merge( array( 'cds--btn' ), array_map( static fn( $m ) => 'cds--btn--' . $m, $modifiers ) );
-				if ( in_array( $size, array( 'xs', 'sm', 'md', 'lg', 'xl', '2xl' ), true ) ) {
-					$parts[] = 'cds--layout--size-' . $size;
-				}
-				return implode( ' ', $parts );
+				return implode( ' ', $parts ) . self::layout_size( $size );
 		}
 	}
 
@@ -1552,7 +1549,7 @@ SVG;
 			case 'trigger':
 				$kind = $v['kind'] ?? 'primary';
 				$size = $v['size'] ?? 'lg';
-				return 'cds--btn cds--btn--' . $kind . ' cds--btn--' . $size . ' cds--menu-button__trigger';
+				return 'cds--btn cds--btn--' . $kind . ' cds--btn--' . $size . self::layout_size( $size ) . ' cds--menu-button__trigger';
 			case 'menu':
 				$alignment = $v['menuAlignment'] ?? 'bottom';
 				return 'cds--menu cds--menu--' . $alignment;
@@ -1597,13 +1594,32 @@ SVG;
 			case 'opener':
 				$kind = $v['kind'] ?? 'primary';
 				$sz   = $v['size'] ?? 'md';
-				return 'cds--btn cds--btn--' . $kind . ' cds--btn--' . $sz;
+				return 'cds--btn cds--btn--' . $kind . ' cds--btn--' . $sz . self::layout_size( $sz );
 			default:
 				$c = 'cds--modal cds--modal--' . $size;
 				if ( $danger ) {
 					$c .= ' cds--modal--danger'; }
 				return $c;
 		}
+	}
+
+	/**
+	 * The layout class that actually sizes a Carbon button.
+	 *
+	 * `cds--btn--sm` does not set a height. Carbon v11 sizes a button through
+	 * its layout API: `.cds--btn` reads `--cds-layout-size-height-local`, and
+	 * the only thing that sets it is `.cds--layout--size-*`. A button carrying
+	 * the size modifier alone silently stays at Carbon's default of `lg` —
+	 * which is what the Modal opener and the Menu button did, so their Size
+	 * control changed the markup and nothing else (2026-09-09).
+	 *
+	 * @param string $size One of Carbon's size names.
+	 * @return string The class, with a leading space, or an empty string.
+	 */
+	private static function layout_size( string $size ): string {
+		return in_array( $size, array( 'xs', 'sm', 'md', 'lg', 'xl', '2xl' ), true )
+			? ' cds--layout--size-' . $size
+			: '';
 	}
 
 	/**
