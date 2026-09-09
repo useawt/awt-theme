@@ -1,6 +1,6 @@
 {
 	"name": "awt-theme",
-	"version": "2026.09.4",
+	"version": "2026.09.5",
 	"description": "AWT theme — Stage 1",
 	"main": "index.js",
 	"license": "GPL-3.0-or-later",
