@@ -216,9 +216,12 @@ add_action( 'admin_bar_menu', __NAMESPACE__ . '\\add_menu', 80 );
  * The wordmark is the marketing site's: IBM Plex Mono at 700, which the theme
  * bundles at 400 and the browser thickens. No `@font-face` is added here —
  * WordPress prints the theme's font faces in wp-admin as well as on the front
- * end, so the family is already declared in both. Worth knowing what that
- * costs: a face is only fetched when something uses it, and these three
- * letters are what makes wp-admin fetch this one — 45 KB, once, then cached.
+ * end, so the family is already declared in both, and both resolve to the one
+ * file the theme ships. Measured rather than assumed: same URL in wp-admin and
+ * on the front end, 45 KB, served `max-age=31536000`. A face is only fetched
+ * when something uses it, so on a site that uses mono type anywhere the
+ * toolbar costs nothing, and on one that does not it is a single download per
+ * browser per year, shared by both.
  *
  * @return string CSS.
  */
