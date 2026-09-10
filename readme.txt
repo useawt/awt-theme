@@ -260,6 +260,9 @@ Reports about real barriers are treated as bugs, not feature requests.
 == Changelog ==
 
 <!-- CHANGELOG_START -->
+= 2026.09.10 — 2026-09-10 =
+* [A11y] On screens under 672px a header action shows its icon only. Two labelled actions did not fit beside the logo and the menu button, and the last one — usually the light/dark toggle — was pushed off the edge of the screen.
+
 = 2026.09.9 — 2026-09-10 =
 * [A11y] A header action set to "icon with label" is now as wide as its label. The label ran outside the button and over the one next to it.
 
@@ -298,11 +301,6 @@ Reports about real barriers are treated as bugs, not feature requests.
 * [Improvement] Saving AWT Settings without changing anything no longer reports an error.
 * [A11y] Text marked bold with `<b>` now looks bold. It was rendering at the same weight as the text around it, so the emphasis was lost.
 * [A11y] A field the browser fills in for you keeps the site's colours. It used to turn pale yellow, which was unreadable in dark mode.
-
-= 2026.09.0 — 2026-09-03 =
-* [Improvement] Help text across the AWT Settings screens and the welcome wizard is shorter.
-* [New] WordPress now tells you when a new version of AWT is out, on Dashboard, Updates. You still install it yourself.
-* [New] A switch in AWT Settings, Tools turns the update check off.
 <!-- CHANGELOG_END -->
 
 == Upgrade Notice ==
