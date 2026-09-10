@@ -10,6 +10,14 @@
      markdownlint enforces the structure in CI. Newest release first.
      The Unreleased section accumulates entries between releases. -->
 
+## Unreleased
+
+### [A11y]
+
+- On screens under 672px a header action shows its icon only. Two labelled
+  actions did not fit beside the logo and the menu button, and the last one —
+  usually the light/dark toggle — was pushed off the edge of the screen.
+
 ## 2026.09.9 — 2026-09-10
 
 ### [A11y]

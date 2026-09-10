@@ -1677,6 +1677,24 @@ ol.wp-block-list {
 .cds--header__action:has(.cds--header__action-label) {
 	inline-size: auto;
 }
+/* Below 672px the label is dropped and the action goes back to being an icon.
+ * A label costs about 100px against a row that also holds a logo, a menu
+ * button and the other actions; on a 390px screen the row ran 35px past the
+ * edge and pushed the last action — the colour-scheme toggle — off it, with
+ * nothing on screen to say a control was missing. The name is on the
+ * element's `aria-label`, not in this span, so hiding it takes nothing away
+ * from a screen reader. The square is restored explicitly: `auto` around a
+ * hidden label still measures the padding and would leave these four pixels
+ * wider than every other icon in the row. */
+@media (max-width: 671.98px) {
+	.cds--header__action-label {
+		display: none;
+	}
+
+	.cds--header__action:has(.cds--header__action-label) {
+		inline-size: 3rem;
+	}
+}
 .cds--header__action:hover {
 	background: var(--cds-background-hover, rgba(141, 141, 141, 0.12));
 }
