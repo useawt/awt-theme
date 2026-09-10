@@ -10,6 +10,13 @@
      markdownlint enforces the structure in CI. Newest release first.
      The Unreleased section accumulates entries between releases. -->
 
+## Unreleased
+
+### [A11y]
+
+- A header action set to "icon with label" is now as wide as its label. The
+  label ran outside the button and over the one next to it.
+
 ## 2026.09.8 — 2026-09-09
 
 ### [New]

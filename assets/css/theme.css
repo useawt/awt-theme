@@ -1663,6 +1663,20 @@ ol.wp-block-list {
 .cds--header__action-label {
 	margin-inline-start: 0.5rem;
 }
+/* An action that carries a label has to be allowed to be wider than an icon.
+ * Carbon sizes `.cds--header__action` as a square — `inline-size: 3rem` — and
+ * the rule above only ever set `min-inline-size`, so the square stood and the
+ * label ran out of the button and across the one beside it. Reported from a
+ * live site, 2026-09-10: two labelled actions, the first label overlapping the
+ * second button by 11px.
+ *
+ * Scoped with `:has()` so an icon-only action keeps the exact square it has
+ * today — releasing the width for every action would nudge every existing
+ * header a few pixels wider for a variant it does not use. `min-inline-size`
+ * above still holds the square as the floor. */
+.cds--header__action:has(.cds--header__action-label) {
+	inline-size: auto;
+}
 .cds--header__action:hover {
 	background: var(--cds-background-hover, rgba(141, 141, 141, 0.12));
 }
