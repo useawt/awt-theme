@@ -1,5 +1,5 @@
-## 2026.09.11 — 2026-09-10
+## 2026.09.12 — 2026-09-10
 
 ### [Improvement]
 
-- What's new now lists the theme's release notes as well as the plugin's. It showed only the plugin's, so a release that changed the theme looked empty.
+- No changes in the theme itself. It carries the same version number as AWT Blocks, which has changes in this release.
