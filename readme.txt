@@ -260,6 +260,9 @@ Reports about real barriers are treated as bugs, not feature requests.
 == Changelog ==
 
 <!-- CHANGELOG_START -->
+= 2026.09.11 — 2026-09-10 =
+* [Improvement] What's new now lists the theme's release notes as well as the plugin's. It showed only the plugin's, so a release that changed the theme looked empty.
+
 = 2026.09.10 — 2026-09-10 =
 * [A11y] On screens under 672px a header action shows its icon only. Two labelled actions did not fit beside the logo and the menu button, and the last one — usually the light/dark toggle — was pushed off the edge of the screen.
 
@@ -291,16 +294,6 @@ Reports about real barriers are treated as bugs, not feature requests.
 * [A11y] The header now collapses to the menu button when the navigation does not fit, instead of at a fixed screen width. A long menu used to overflow — items wrapping and the last button cut off by the edge of the screen — while a short one was hidden behind the menu button with room to spare.
 * [Improvement] The text size setting in AWT Settings → Typography now changes the site. Compact, Default and Comfortable were being saved and shown as chosen, but nothing on the page ever changed.
 * [Improvement] A Section set wider than the content width now gets that width, on the page and in the editor. Picking "Wide" on a section in a page's content changed nothing, because the page layout was holding it to the content width.
-
-= 2026.09.1 — 2026-09-08 =
-* [Improvement] Blog listings and single posts now show the post's featured image, with the image beside the text rather than above it.
-* [Improvement] A post's categories appear under its date.
-* [Improvement] Post text is held to a comfortable reading width instead of running the full page.
-* [Improvement] The footer no longer leaves a thin strip of page colour underneath it.
-* [Improvement] Form fields, checkboxes, radios and buttons that no block rendered — a password form, a custom HTML block, a plugin's form — now match the rest of the site instead of showing plain browser widgets.
-* [Improvement] Saving AWT Settings without changing anything no longer reports an error.
-* [A11y] Text marked bold with `<b>` now looks bold. It was rendering at the same weight as the text around it, so the emphasis was lost.
-* [A11y] A field the browser fills in for you keeps the site's colours. It used to turn pale yellow, which was unreadable in dark mode.
 <!-- CHANGELOG_END -->
 
 == Upgrade Notice ==
