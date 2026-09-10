@@ -38,10 +38,52 @@ add_action( 'admin_init', __NAMESPACE__ . '\\handle_ack' );
 add_action( 'admin_enqueue_scripts', __NAMESPACE__ . '\\enqueue_indicator_style' );
 
 /**
- * The parsed changelog bundled with the awt-blocks plugin, or null when
- * the plugin (or its changelog) isn't available. Cached per request.
+ * Read and validate one bundled changelog file.
  *
- * @return array|null { currentVersion: string, releases: array } or null.
+ * @param string $file Absolute path to a build/changelog.json.
+ * @return array|null The decoded file, or null when it is missing or not the
+ *                    shape this panel understands.
+ */
+function read_changelog_file( string $file ): ?array {
+	if ( ! is_readable( $file ) ) {
+		return null;
+	}
+	$data = json_decode( (string) file_get_contents( $file ), true ); // phpcs:ignore WordPress.WP.AlternativeFunctions.file_get_contents_file_get_contents -- local bundled file.
+	if ( ! is_array( $data ) || 1 !== (int) ( $data['schemaVersion'] ?? 0 ) || empty( $data['releases'] ) ) {
+		return null;
+	}
+	return $data;
+}
+
+/**
+ * Sort key for a CalVer version, newest first.
+ *
+ * String comparison puts 2026.09.9 above 2026.09.10, which is the wrong way
+ * round the moment a month reaches a tenth release — and September 2026 did.
+ *
+ * @param string $version e.g. "2026.09.10".
+ * @return array<int> Numeric parts, missing ones as 0.
+ */
+function version_key( string $version ): array {
+	$parts = array_map( 'intval', explode( '.', $version ) );
+	return array_pad( array_slice( $parts, 0, 3 ), 3, 0 );
+}
+
+/**
+ * The release notes for AWT, from both halves of it.
+ *
+ * AWT is a theme and a plugin released together under one version number, so
+ * "what changed in 2026.09.10" is the theme's entries and the plugin's
+ * entries, together. This panel read only the plugin's file until 2026-09-10,
+ * which meant every change the theme shipped was invisible here — the site
+ * owner who reported it was looking at a release whose only entry said the
+ * plugin had not changed.
+ *
+ * Either file may be missing: a site can run the theme without the plugin,
+ * and an older plugin will not have been built with a changelog at all.
+ *
+ * @return array|null { currentVersion: string, releases: array } or null when
+ *                    neither half has notes to show.
  */
 function changelog(): ?array {
 	static $cache   = null;
@@ -51,16 +93,68 @@ function changelog(): ?array {
 	}
 	$checked = true;
 
-	$file = WP_PLUGIN_DIR . '/awt-blocks/build/changelog.json';
-	if ( ! is_readable( $file ) ) {
-		return null;
-	}
-	$data = json_decode( (string) file_get_contents( $file ), true ); // phpcs:ignore WordPress.WP.AlternativeFunctions.file_get_contents_file_get_contents -- local plugin-bundled file.
-	if ( ! is_array( $data ) || 1 !== (int) ( $data['schemaVersion'] ?? 0 ) || empty( $data['releases'] ) ) {
-		return null;
-	}
-	$cache = $data;
+	$cache = merge_changelogs(
+		array_filter(
+			array(
+				read_changelog_file( get_template_directory() . '/build/changelog.json' ),
+				read_changelog_file( WP_PLUGIN_DIR . '/awt-blocks/build/changelog.json' ),
+			)
+		)
+	);
 	return $cache;
+}
+
+/**
+ * Fold several changelog files into the one list the panel renders.
+ *
+ * Separate from changelog() so it can be tested without files on disk: the
+ * ordering is the part that was wrong and the part worth pinning.
+ *
+ * @param array<array> $sources Decoded changelog files, in display priority.
+ * @return array|null { currentVersion: string, releases: array } or null.
+ */
+function merge_changelogs( array $sources ): ?array {
+	if ( ! $sources ) {
+		return null;
+	}
+
+	// One entry list per version, in the order the sources are given: the
+	// theme's notes for a release come before the plugin's.
+	$merged  = array();
+	$current = '';
+	foreach ( $sources as $data ) {
+		if ( version_key( (string) ( $data['currentVersion'] ?? '' ) ) > version_key( $current ) ) {
+			$current = (string) $data['currentVersion'];
+		}
+		foreach ( (array) $data['releases'] as $release ) {
+			$version = (string) ( $release['version'] ?? '' );
+			if ( '' === $version ) {
+				continue;
+			}
+			if ( ! isset( $merged[ $version ] ) ) {
+				$merged[ $version ] = array(
+					'version' => $version,
+					'date'    => (string) ( $release['date'] ?? '' ),
+					'entries' => array(),
+				);
+			}
+			$merged[ $version ]['entries'] = array_merge(
+				$merged[ $version ]['entries'],
+				(array) ( $release['entries'] ?? array() )
+			);
+		}
+	}
+
+	uasort(
+		$merged,
+		static fn( array $a, array $b ) => version_key( $b['version'] ) <=> version_key( $a['version'] )
+	);
+
+	return array(
+		'schemaVersion'  => 1,
+		'currentVersion' => $current,
+		'releases'       => array_values( $merged ),
+	);
 }
 
 /**
@@ -294,5 +388,5 @@ function render_tab(): void {
 		echo '</details>';
 	}
 
-	echo '<p class="awt-field-help">' . esc_html__( 'Release notes come from the AWT Blocks plugin bundled with each update. Nothing is fetched from the internet.', 'awt' ) . '</p>';
+	echo '<p class="awt-field-help">' . esc_html__( 'Release notes ship with the theme and the AWT Blocks plugin, and are listed here together. Nothing is fetched from the internet.', 'awt' ) . '</p>';
 }
