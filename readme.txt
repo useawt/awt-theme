@@ -260,6 +260,9 @@ Reports about real barriers are treated as bugs, not feature requests.
 == Changelog ==
 
 <!-- CHANGELOG_START -->
+= 2026.09.13 — 2026-09-18 =
+* [Improvement] No changes in the theme itself. It carries the same version number as AWT Blocks, which has changes in this release.
+
 = 2026.09.12 — 2026-09-10 =
 * [Improvement] No changes in the theme itself. It carries the same version number as AWT Blocks, which has changes in this release.
 
@@ -287,11 +290,6 @@ Reports about real barriers are treated as bugs, not feature requests.
 = 2026.09.4 — 2026-09-09 =
 * [New] An AWT menu in the toolbar, on the front end and in wp-admin: a dot that is green when your site is up to date and red when a new version is out, and shortcuts to the header, the footer and AWT settings.
 * [Improvement] The size you pick for a Modal opener or a Menu button now changes the button. Both stayed at the largest size whatever you chose.
-
-= 2026.09.3 — 2026-09-08 =
-* [New] New setting in AWT Settings → Appearance → Header: contain the header to your content width, so the logo, menu and icons line up with the page below instead of sitting at the edges of a wide screen.
-* [Improvement] A three- or four-column feature grid now shows two columns on medium screens instead of holding every column. Four columns on a 700px window left 195px tiles, with headings broken over three lines.
-* [Improvement] The menu no longer slides in and out while you scroll on a phone or resize the window.
 <!-- CHANGELOG_END -->
 
 == Upgrade Notice ==
