@@ -10,6 +10,14 @@
      markdownlint enforces the structure in CI. Newest release first.
      The Unreleased section accumulates entries between releases. -->
 
+## Unreleased
+
+### [A11y]
+
+- The editor shows your own colour scheme again. On a dark desktop a site that
+  follows the visitor's setting showed the page's light backgrounds behind
+  dark-mode text, which left the content nearly unreadable while editing.
+
 ## 2026.09.15 — 2026-09-18
 
 ### [Improvement]

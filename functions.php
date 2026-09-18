@@ -223,6 +223,65 @@ function editor_scope_css(): string {
 }
 
 /**
+ * Re-root one scope family's selectors onto the canvas root.
+ *
+ * @param string   $css    The Custom CSS.
+ * @param string[] $family The scope classes to replace.
+ */
+function reroot_scope( string $css, array $family ): string {
+	$patterns = array_map(
+		static function ( string $sel ): string {
+			return '/' . preg_quote( $sel, '/' ) . '\b/';
+		},
+		$family
+	);
+	$out      = preg_replace( $patterns, 'body.editor-styles-wrapper', $css );
+	return is_string( $out ) ? $out : '';
+}
+
+/**
+ * The site's Custom CSS, re-rooted for the editor canvas.
+ *
+ * On the front end the colour overrides are keyed to the scope classes
+ * (`.cds--white` … `.cds--g100`) and the body carries the one in force. The
+ * canvas body carries none, so the active family's selectors are re-rooted
+ * onto `body.editor-styles-wrapper`, which is always there.
+ *
+ * Which family is active depends on the same setting the scope tokens use.
+ * `light` and `dark` pin one. **`default` means the site follows each
+ * visitor's own system setting, and the author is a visitor too** — so the
+ * light family applies as before and the dark family goes behind
+ * `prefers-color-scheme`, exactly as `editor_scope_css()` does for the tokens
+ * it emits.
+ *
+ * Getting that last case wrong is what made a dark desktop unusable for
+ * authoring: the tokens went dark, the site's own backgrounds stayed light,
+ * and the canvas showed near-white text on a near-white page (found on a live
+ * site, 2026-09-18).
+ *
+ * @param string $css      The Custom CSS.
+ * @param string $site_cs  'light', 'dark' or 'default'.
+ */
+function editor_custom_css( string $css, string $site_cs ): string {
+	$light = array( '.cds--white', '.cds--g10' );
+	$dark  = array( '.cds--g90', '.cds--g100' );
+
+	if ( $site_cs === 'dark' ) {
+		return reroot_scope( $css, $dark );
+	}
+	if ( $site_cs === 'light' ) {
+		return reroot_scope( $css, $light );
+	}
+
+	$dark_css = reroot_scope( $css, $dark );
+	if ( $dark_css === '' ) {
+		return reroot_scope( $css, $light );
+	}
+	return reroot_scope( $css, $light )
+		. '@media (prefers-color-scheme: dark){' . $dark_css . '}';
+}
+
+/**
  * Default scheme + honor-system-preference + allow-visitor-override flags.
  *
  * @return array{default: string, honorSystemPreference: bool, allowVisitorOverride: bool}
@@ -823,20 +882,10 @@ add_filter(
 		// survives the editor's canvas re-renders. Unlike the front end, only the
 		// active scheme's colours apply — the editor previews one scheme at a time.
 		$site_cs    = function_exists( '\\AWT\\Theme\\Settings\\get' ) ? (string) \AWT\Theme\Settings\get( 'site.colorScheme' ) : 'default';
-		$variant    = $site_cs === 'dark' ? $scopes['dark'] : $scopes['light'];
 		$custom_css = function_exists( '\\AWT\\Theme\\Settings\\get' ) ? (string) \AWT\Theme\Settings\get( 'customCss' ) : '';
 		if ( trim( $custom_css ) !== '' ) {
-			$active     = in_array( $variant, array( 'g90', 'g100' ), true )
-				? array( '.cds--g90', '.cds--g100' )   // Dark family active.
-				: array( '.cds--white', '.cds--g10' ); // Light family active.
-			$patterns   = array_map(
-				static function ( string $sel ): string {
-					return '/' . preg_quote( $sel, '/' ) . '\b/';
-				},
-				$active
-			);
-			$editor_css = preg_replace( $patterns, 'body.editor-styles-wrapper', $custom_css );
-			if ( is_string( $editor_css ) && trim( $editor_css ) !== '' ) {
+			$editor_css = editor_custom_css( $custom_css, $site_cs );
+			if ( $editor_css !== '' ) {
 				$existing[] = array(
 					'css'            => $editor_css,
 					'__unstableType' => 'user',
