@@ -1,5 +1,5 @@
-## 2026.09.15 — 2026-09-18
+## 2026.09.16 — 2026-09-18
 
-### [Improvement]
+### [A11y]
 
-- No changes in the theme itself. It carries the same version number as AWT Blocks, which has changes in this release.
+- The editor shows your own colour scheme again. On a dark desktop a site that follows the visitor's setting showed the page's light backgrounds behind dark-mode text, which left the content nearly unreadable while editing.

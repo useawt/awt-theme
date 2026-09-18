@@ -260,6 +260,9 @@ Reports about real barriers are treated as bugs, not feature requests.
 == Changelog ==
 
 <!-- CHANGELOG_START -->
+= 2026.09.16 — 2026-09-18 =
+* [A11y] The editor shows your own colour scheme again. On a dark desktop a site that follows the visitor's setting showed the page's light backgrounds behind dark-mode text, which left the content nearly unreadable while editing.
+
 = 2026.09.15 — 2026-09-18 =
 * [Improvement] No changes in the theme itself. It carries the same version number as AWT Blocks, which has changes in this release.
 
@@ -286,9 +289,6 @@ Reports about real barriers are treated as bugs, not feature requests.
 
 = 2026.09.7 — 2026-09-09 =
 * [Improvement] No changes in the theme itself. It carries the same version number as AWT Blocks, which has changes in this release.
-
-= 2026.09.6 — 2026-09-09 =
-* [Improvement] Breadcrumbs sit the same distance below the header whether or not you are signed in. With the admin bar showing they sat lower than the rest of the page.
 <!-- CHANGELOG_END -->
 
 == Upgrade Notice ==
