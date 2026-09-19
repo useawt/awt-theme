@@ -4425,6 +4425,14 @@ body.editor-styles-wrapper .wp-block-awt-icon   + .wp-block-awt-icon {
 	grid-template-columns: repeat(4, minmax(0, 1fr));
 	column-gap: 0;
 }
+/* Carbon draws the strip's right edge as an inset shadow on the element that
+   IS the strip. Here that element is the grid around both columns, so the same
+   rule draws a line down the right of the panel — it moves to
+   `.awt-tabs__strip` below. Two classes, to beat Carbon's own one-class rule
+   (its stylesheet loads after this one). */
+.cds--tabs.cds--tabs--vertical {
+	box-shadow: none;
+}
 @media (min-width: 42rem) {
 	.cds--tabs--vertical {
 		grid-template-columns: repeat(8, minmax(0, 1fr));
@@ -4486,7 +4494,12 @@ body.editor-styles-wrapper .wp-block-awt-icon   + .wp-block-awt-icon {
 .cds--tabs--vertical > .awt-tabs__strip {
 	grid-column: span 2;
 	grid-row: 1 / -1;       /* sidebar spans every panel row */
-	border-inline-end: 1px solid var(--cds-border-subtle, #e0e0e0);
+	/* Carbon's edge line. An inset shadow, not a border, because each tab
+	   paints over it: the line you see beside a tab is that tab's own right
+	   border, and the selected tab — which drops its borders — shows no line
+	   at all and joins the panel. Below the last tab nothing covers the
+	   shadow, so the edge carries on down. */
+	box-shadow: inset -1px 0 0 0 var(--cds-border-subtle, #e0e0e0);
 }
 @media (min-width: 66rem) {
 	.cds--tabs--vertical > .awt-tabs__strip {
@@ -4518,19 +4531,31 @@ body.editor-styles-wrapper .wp-block-awt-icon   + .wp-block-awt-icon {
 	inline-size: 100%;
 	block-size: 4rem;
 }
-/* Selected indicator moves from bottom-border (horizontal) to left-border
- * (vertical) — Carbon paints it via `box-shadow: inset 3px 0 0 0 …`. */
 .cds--tabs--vertical .cds--tabs__nav-link {
 	display: flex;
 	align-items: center;
 	border-block-end: none;
-	border-inline-start: 2px solid var(--cds-border-subtle, #e0e0e0);
 	inline-size: 100%;
 }
-.cds--tabs--vertical .cds--tab--list > .cds--tabs__nav-item:has(.cds--tabs__nav-item--selected) .cds--tabs__nav-link,
-.cds--tabs--vertical .cds--tab--list > .cds--tabs__nav-item .cds--tabs__nav-item--selected {
-	border-inline-start: 2px solid var(--cds-border-interactive, #0f62fe);
-	border-block-end: none;
+/* The selected tab, by Carbon's own rules: the indicator is an inset shadow
+ * on the left, and `border-inline: none` takes away the right edge so the tab
+ * merges into its panel. Carbon puts `cds--tabs__nav-item--selected` on the
+ * item itself; ours sits on the button inside a presentational <li>, so the
+ * same rules reach the item through `:has()`. The `:hover` half is needed for
+ * the same reason — Carbon's hover rule excludes the selected item by a class
+ * our <li> never carries, so without it hovering the open tab would grey out
+ * its own indicator. */
+.cds--tabs--vertical .cds--tab--list > .cds--tabs__nav-item:has( .cds--tabs__nav-item--selected ) {
+	border-inline: none;
+	box-shadow: inset 3px 0 0 0 var(--cds-border-interactive, #0f62fe);
+}
+/* Carbon leaves the open tab alone on hover — its hover rule excludes the
+   selected item. That exclusion is a `:not()` on a class our <li> never
+   carries, so the rule reaches our open tab and would grey out its indicator.
+   Same shape as Carbon's rule, one selector heavier, so it wins. */
+.cds--tabs.cds--tabs--vertical .cds--tab--list > .cds--tabs__nav-item:has( .cds--tabs__nav-item--selected ):not( .cds--tabs__nav-item--disabled ):not( .cds--tabs__nav-item--hover-off ):hover {
+	background-color: var(--cds-layer-01, #f4f4f4);
+	box-shadow: inset 3px 0 0 0 var(--cds-border-interactive, #0f62fe);
 }
 
 /* Carbon's `.cds--tabs .cds--tabs__nav-link` rule already provides the
