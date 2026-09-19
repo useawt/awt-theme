@@ -930,11 +930,32 @@ div:has(.cds--header) ~ .awt-breadcrumb-region {
 	}
 }
 
-/* Admin-bar offset — applied when WordPress is rendering the admin bar above
-   the Carbon UI shell. Mirrors WP core's own breakpoint: 46px tall ≤782px,
-   32px tall otherwise. */
+/* Admin-bar offset — how far the fixed UI shell sits below the WordPress
+   admin bar. One value, used by the header, the nav drawer and the side nav,
+   so they can never disagree about where the bar ends.
+ *
+ * The two numbers are WP core's own: the bar is 46px tall at <=782px and 32px
+ * above that. They are fallbacks, and they are only ever right while the bar
+ * stays put. Core has a SECOND, lower breakpoint — at 600px and below the bar
+ * becomes `position: absolute` and scrolls away with the page — and a fixed
+ * header holding a 46px offset for a bar that has gone then floats 46px below
+ * the top of the screen, with page content showing through the gap.
+ *
+ * An inline script (functions.php, printed only when the bar is showing) sets
+ * `--awt-admin-bar-offset` to the bar's own bottom edge, clamped at zero. That
+ * is the right answer at every width without knowing either breakpoint: a
+ * constant while the bar is fixed, falling to zero as it scrolls away. Without
+ * JavaScript the fallbacks give exactly today's behaviour. */
+.admin-bar {
+	--awt-admin-bar: var(--awt-admin-bar-offset, 32px);
+}
+@media screen and (max-width: 782px) {
+	.admin-bar {
+		--awt-admin-bar: var(--awt-admin-bar-offset, 46px);
+	}
+}
 .admin-bar .cds--header {
-	inset-block-start: 32px;
+	inset-block-start: var(--awt-admin-bar);
 }
 
 /* The clearance below the header needs no admin-bar variant, and used to have
@@ -945,12 +966,6 @@ div:has(.cds--header) ~ .awt-breadcrumb-region {
    is unchanged by the bar being there. The extra 32px showed as a breadcrumb
    sitting lower than the same page's hero eyebrow, but only for logged-in
    viewers — which is every author looking at their own site. */
-
-@media screen and (max-width: 782px) {
-	.admin-bar .cds--header {
-		inset-block-start: 46px;
-	}
-}
 
 /* "Page without title" template: no post-title renders, so the base clearance
    above leaves an empty band where the title would sit. Two adjustments so the
@@ -1528,20 +1543,11 @@ ol.wp-block-list {
 }
 
 .admin-bar .cds--side-nav--ux {
-	inset-block-start: calc(32px + 3rem);
-	block-size: calc(100% - 32px - 3rem);
+	inset-block-start: calc(var(--awt-admin-bar) + 3rem);
+	block-size: calc(100% - var(--awt-admin-bar) - 3rem);
 }
 .admin-bar .cds--side-nav:not(.cds--side-nav--ux) {
-	inset-block-start: 32px;
-}
-@media screen and (max-width: 782px) {
-	.admin-bar .cds--side-nav--ux {
-		inset-block-start: calc(46px + 3rem);
-		block-size: calc(100% - 46px - 3rem);
-	}
-	.admin-bar .cds--side-nav:not(.cds--side-nav--ux) {
-		inset-block-start: 46px;
-	}
+	inset-block-start: var(--awt-admin-bar);
 }
 
 /* Header action buttons — center their icons.
@@ -1898,25 +1904,17 @@ html.awt-header-collapsed .awt-header-nav__overlay.awt-nav-open {
 	cursor: pointer;
 }
 
-/* Admin-bar offsets mirror the header's own (.admin-bar .cds--header):
- * 32px on wider admin screens, 46px at <=782px. */
+/* Admin-bar offsets take the header's own value, so the drawer always starts
+ * where the header ends. The breakpoint pair these rules used to carry had a
+ * flaw the single value removes: the <=782px half was the less specific of the
+ * two, and at that width the header is always collapsed — so the rule meant
+ * for narrow screens was the one that never applied. */
 html.awt-header-collapsed .admin-bar .cds--header__nav {
-	inset-block-start: calc(32px + 3rem);
-	block-size: calc(100% - 32px - 3rem);
+	inset-block-start: calc(var(--awt-admin-bar) + 3rem);
+	block-size: calc(100% - var(--awt-admin-bar) - 3rem);
 }
 html.awt-header-collapsed .admin-bar .awt-header-nav__overlay.awt-nav-open {
-	inset-block-start: calc(32px + 3rem);
-}
-
-
-@media (max-width: 782px) {
-	.admin-bar .cds--header__nav {
-		inset-block-start: calc(46px + 3rem);
-		block-size: calc(100% - 46px - 3rem);
-	}
-	.admin-bar .awt-header-nav__overlay.awt-nav-open {
-		inset-block-start: calc(46px + 3rem);
-	}
+	inset-block-start: calc(var(--awt-admin-bar) + 3rem);
 }
 
 /* Header search inline-expand styles (awt/header-search) moved to AWT Premium

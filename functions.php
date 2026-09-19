@@ -756,6 +756,40 @@ add_action(
 );
 
 /**
+ * Keep the fixed UI shell under the WordPress admin bar, wherever the bar is.
+ *
+ * At 600px and below WordPress makes the admin bar `position: absolute`, so it
+ * scrolls away with the page. The header is `position: fixed` and holds a 46px
+ * offset for it, so once the bar had scrolled off the header floated 46px
+ * below the top of the screen with page content showing through the gap. (The
+ * better-known 782px line is the bar's HEIGHT, 46px below it and 32px above;
+ * the position changes lower down, which is why this only shows on a phone.)
+ *
+ * `--awt-admin-bar-offset` is the bar's own bottom edge, never below zero —
+ * the same expression whether the bar is fixed (a constant 32px or 46px) or
+ * scrolling (46px, falling to 0), so neither breakpoint is written down here.
+ * theme.css carries WP's two heights as fallbacks, so with no JavaScript
+ * nothing changes.
+ *
+ * Printed only for viewers who actually see the bar, at `wp_footer` so the
+ * element exists. Logged-out visitors get nothing.
+ */
+add_action(
+	'wp_footer',
+	static function (): void {
+		if ( ! is_admin_bar_showing() ) {
+			return;
+		}
+		echo '<script id="awt-admin-bar-offset">(function(){var b=document.getElementById("wpadminbar");if(!b){return}'
+			. 'var r=document.documentElement,q=0;'
+			. 'function set(){q=0;r.style.setProperty("--awt-admin-bar-offset",Math.max(0,b.getBoundingClientRect().bottom)+"px")}'
+			. 'function go(){if(q){return}q=1;requestAnimationFrame(set)}'
+			. 'set();addEventListener("scroll",go,{passive:true});addEventListener("resize",go)})();</script>';
+	},
+	100
+);
+
+/**
  * Front-end emission of AWT Settings → Typography size multiplier.
  *
  * Applies `font-size: calc(100% * X)` at the html root so every rem-based

@@ -10,6 +10,15 @@
      markdownlint enforces the structure in CI. Newest release first.
      The Unreleased section accumulates entries between releases. -->
 
+## Unreleased
+
+### [Improvement]
+
+- The header stays under the WordPress admin bar on a phone. Below 600px the
+  admin bar scrolls away with the page, and the header was left floating below
+  the top of the screen with content showing through the gap. Only logged-in
+  viewers ever saw this.
+
 ## 2026.09.19 — 2026-09-19
 
 ### [A11y]
