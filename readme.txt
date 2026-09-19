@@ -260,6 +260,9 @@ Reports about real barriers are treated as bugs, not feature requests.
 == Changelog ==
 
 <!-- CHANGELOG_START -->
+= 2026.09.20 — 2026-09-19 =
+* [Improvement] The header stays under the WordPress admin bar on a phone. Below 600px the admin bar scrolls away with the page, and the header was left floating below the top of the screen with content showing through the gap. Only logged-in viewers ever saw this.
+
 = 2026.09.19 — 2026-09-19 =
 * [A11y] Every header control stays on a narrow screen. With a logo in the header, the last icon on the right sat off the side of a 320px screen with no way to reach it; the logo now scales down instead.
 * [A11y] A button with a long label stays inside the column it is in. It could stick out past the edge of a phone screen and take the page's sideways scrolling with it.
@@ -287,9 +290,6 @@ Reports about real barriers are treated as bugs, not feature requests.
 
 = 2026.09.11 — 2026-09-10 =
 * [Improvement] What's new now lists the theme's release notes as well as the plugin's. It showed only the plugin's, so a release that changed the theme looked empty.
-
-= 2026.09.10 — 2026-09-10 =
-* [A11y] On screens under 672px a header action shows its icon only. Two labelled actions did not fit beside the logo and the menu button, and the last one — usually the light/dark toggle — was pushed off the edge of the screen.
 <!-- CHANGELOG_END -->
 
 == Upgrade Notice ==

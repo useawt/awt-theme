@@ -1,6 +1,5 @@
-## 2026.09.19 — 2026-09-19
+## 2026.09.20 — 2026-09-19
 
-### [A11y]
+### [Improvement]
 
-- Every header control stays on a narrow screen. With a logo in the header, the last icon on the right sat off the side of a 320px screen with no way to reach it; the logo now scales down instead.
-- A button with a long label stays inside the column it is in. It could stick out past the edge of a phone screen and take the page's sideways scrolling with it.
+- The header stays under the WordPress admin bar on a phone. Below 600px the admin bar scrolls away with the page, and the header was left floating below the top of the screen with content showing through the gap. Only logged-in viewers ever saw this.
