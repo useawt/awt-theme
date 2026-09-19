@@ -260,6 +260,10 @@ Reports about real barriers are treated as bugs, not feature requests.
 == Changelog ==
 
 <!-- CHANGELOG_START -->
+= 2026.09.19 — 2026-09-19 =
+* [A11y] Every header control stays on a narrow screen. With a logo in the header, the last icon on the right sat off the side of a 320px screen with no way to reach it; the logo now scales down instead.
+* [A11y] A button with a long label stays inside the column it is in. It could stick out past the edge of a phone screen and take the page's sideways scrolling with it.
+
 = 2026.09.18 — 2026-09-19 =
 * [Improvement] The open vertical tab joins its panel. It kept a line down its right side, so it read as a box beside the panel rather than the open part of it.
 
@@ -286,9 +290,6 @@ Reports about real barriers are treated as bugs, not feature requests.
 
 = 2026.09.10 — 2026-09-10 =
 * [A11y] On screens under 672px a header action shows its icon only. Two labelled actions did not fit beside the logo and the menu button, and the last one — usually the light/dark toggle — was pushed off the edge of the screen.
-
-= 2026.09.9 — 2026-09-10 =
-* [A11y] A header action set to "icon with label" is now as wide as its label. The label ran outside the button and over the one next to it.
 <!-- CHANGELOG_END -->
 
 == Upgrade Notice ==
