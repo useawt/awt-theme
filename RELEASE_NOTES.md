@@ -1,5 +1,5 @@
-## 2026.09.21 — 2026-09-19
+## 2026.09.22 — 2026-09-19
 
-### [New]
+### [A11y]
 
-- A warning when the AWT Blocks plugin is missing or turned off. Without it the theme's blocks do not appear on your pages or in the editor, and nothing said so. The warning offers a button to turn the plugin on, or the file to download when it is not installed.
+- The editor shows the colour scheme you chose on the site. If you had set the site to light while your computer was set to dark, you authored in dark against a light site — two settings, and the editor followed the one that was not about the site.

@@ -260,6 +260,9 @@ Reports about real barriers are treated as bugs, not feature requests.
 == Changelog ==
 
 <!-- CHANGELOG_START -->
+= 2026.09.22 — 2026-09-19 =
+* [A11y] The editor shows the colour scheme you chose on the site. If you had set the site to light while your computer was set to dark, you authored in dark against a light site — two settings, and the editor followed the one that was not about the site.
+
 = 2026.09.21 — 2026-09-19 =
 * [New] A warning when the AWT Blocks plugin is missing or turned off. Without it the theme's blocks do not appear on your pages or in the editor, and nothing said so. The warning offers a button to turn the plugin on, or the file to download when it is not installed.
 
@@ -286,9 +289,6 @@ Reports about real barriers are treated as bugs, not feature requests.
 * [Improvement] No changes in the theme itself. It carries the same version number as AWT Blocks, which has changes in this release.
 
 = 2026.09.13 — 2026-09-18 =
-* [Improvement] No changes in the theme itself. It carries the same version number as AWT Blocks, which has changes in this release.
-
-= 2026.09.12 — 2026-09-10 =
 * [Improvement] No changes in the theme itself. It carries the same version number as AWT Blocks, which has changes in this release.
 <!-- CHANGELOG_END -->
 
