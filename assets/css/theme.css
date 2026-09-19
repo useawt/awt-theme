@@ -1589,6 +1589,30 @@ ol.wp-block-list {
 	max-inline-size: 12rem;
 	flex: 0 0 auto;
 }
+/* The last thing to give way, and only once everything else has.
+ *
+ * Carbon's header is one flex row and assumes a short product name; a logo is
+ * a fixed-width image instead. On a 320px screen the menu had already gone
+ * into the drawer and the row still measured 336px, so the last global action
+ * — the colour-scheme toggle — sat off the side with no way to reach it.
+ *
+ * Only while the header is collapsed. The row/drawer decision is made by
+ * measuring whether the row overflows, with the collapsed class taken off
+ * first; a brand that can shrink at any time removes that overflow, and the
+ * menu would stay a row on a phone with a squashed logo beside it. Scoped
+ * this way the measurement sees the full-width brand exactly as before.
+ *
+ * `contain` keeps the logo's shape inside the narrower box, so it scales down
+ * rather than squashing. */
+.awt-header-collapsed .cds--header__name {
+	min-inline-size: 0;
+}
+.awt-header-collapsed .cds--header__logo {
+	flex: 0 1 auto;
+	max-inline-size: min(12rem, 100%);
+	object-fit: contain;
+	object-position: left center;
+}
 .cds--header__logo + .cds--header__name--text,
 .cds--header__logo + .cds--header__name--prefix {
 	margin-inline-start: 0.5rem;
@@ -5170,6 +5194,20 @@ a:not([class*="cds--"]):focus-visible {
  * half the outer tone's width; if Carbon drops it, this rule should not
  * silently thin out. Disabled buttons keep `box-shadow: none` — Carbon's
  * disabled rule is more specific, which is correct. */
+/* A button stops at the width it has.
+ *
+ * Carbon caps a button at 20rem and reserves 4rem of trailing padding for the
+ * icon slot, whether or not there is an icon — so a long label ("Contact us to
+ * become a referrer") makes a 320px-wide button. Nothing then made it fit a
+ * narrower column: it is laid out at its content width, and 20rem is wider
+ * than a 320px phone screen minus the page's own padding, so the button hung
+ * off the side and took the page's horizontal scrollbar with it. Carbon's cap
+ * is kept; it just can no longer exceed the space the button is in, and the
+ * label wraps the way Carbon already allows. */
+.cds--btn {
+	max-inline-size: min(20rem, 100%);
+}
+
 .cds--btn:focus,
 .cds--btn--icon-only.cds--btn--ghost:focus {
 	border-color: var(--cds-focus, #0f62fe);
