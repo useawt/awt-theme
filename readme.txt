@@ -260,6 +260,9 @@ Reports about real barriers are treated as bugs, not feature requests.
 == Changelog ==
 
 <!-- CHANGELOG_START -->
+= 2026.09.17 — 2026-09-19 =
+* [A11y] Vertical tabs become a row of tabs on a narrow screen, and on a wide one the tab list takes a quarter of the width instead of a fixed size. They kept a fixed sidebar at every screen size, so on a phone the panel ran off the side of the screen and the page scrolled sideways.
+
 = 2026.09.16 — 2026-09-18 =
 * [A11y] The editor shows your own colour scheme again. On a dark desktop a site that follows the visitor's setting showed the page's light backgrounds behind dark-mode text, which left the content nearly unreadable while editing.
 
@@ -286,9 +289,6 @@ Reports about real barriers are treated as bugs, not feature requests.
 
 = 2026.09.8 — 2026-09-09 =
 * [New] Styling for the Testimonial block's new source link.
-
-= 2026.09.7 — 2026-09-09 =
-* [Improvement] No changes in the theme itself. It carries the same version number as AWT Blocks, which has changes in this release.
 <!-- CHANGELOG_END -->
 
 == Upgrade Notice ==

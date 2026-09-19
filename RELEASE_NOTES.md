@@ -1,5 +1,5 @@
-## 2026.09.16 — 2026-09-18
+## 2026.09.17 — 2026-09-19
 
 ### [A11y]
 
-- The editor shows your own colour scheme again. On a dark desktop a site that follows the visitor's setting showed the page's light backgrounds behind dark-mode text, which left the content nearly unreadable while editing.
+- Vertical tabs become a row of tabs on a narrow screen, and on a wide one the tab list takes a quarter of the width instead of a fixed size. They kept a fixed sidebar at every screen size, so on a phone the panel ran off the side of the screen and the page scrolled sideways.

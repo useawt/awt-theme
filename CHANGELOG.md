@@ -10,7 +10,7 @@
      markdownlint enforces the structure in CI. Newest release first.
      The Unreleased section accumulates entries between releases. -->
 
-## Unreleased
+## 2026.09.17 — 2026-09-19
 
 ### [A11y]
 
