@@ -188,22 +188,20 @@ function editor_scope_tokens( string $scope ): string {
 }
 
 /**
- * The scope CSS the editor canvas should carry, for the site as configured.
+ * The scope CSS the editor canvas should carry, for this author.
  *
- * `light` and `dark` pin a scope, so the canvas gets that one. `default` means
- * the front end follows each visitor's own system setting, and the author is a
- * visitor too: the canvas gets the light scope, with the dark one behind
- * `prefers-color-scheme` so an author working on a dark desktop previews what
- * they would themselves see on the site.
+ * `editor_scheme()` answers which scheme that is — the site's pin, else the
+ * author's own choice on the site, else the desktop. A pinned or chosen scheme
+ * gets that one scope; "follow the desktop" gets the light scope with the dark
+ * one behind `prefers-color-scheme`, so the canvas moves with the desktop the
+ * way the page would.
  *
  * @return string CSS, or '' when nothing could be resolved.
  */
 function editor_scope_css(): string {
 	$scopes = theme_scopes();
 
-	$site_cs = function_exists( '\\AWT\\Theme\\Settings\\get' )
-		? (string) \AWT\Theme\Settings\get( 'site.colorScheme' )
-		: 'default';
+	$site_cs = editor_scheme();
 
 	if ( $site_cs === 'dark' ) {
 		return editor_scope_tokens( $scopes['dark'] );
@@ -248,12 +246,12 @@ function reroot_scope( string $css, array $family ): string {
  * canvas body carries none, so the active family's selectors are re-rooted
  * onto `body.editor-styles-wrapper`, which is always there.
  *
- * Which family is active depends on the same setting the scope tokens use.
- * `light` and `dark` pin one. **`default` means the site follows each
- * visitor's own system setting, and the author is a visitor too** — so the
- * light family applies as before and the dark family goes behind
- * `prefers-color-scheme`, exactly as `editor_scope_css()` does for the tokens
- * it emits.
+ * Which family is active is the same answer the scope tokens use, from
+ * `editor_scheme()`. A scheme the site pins, or the author has chosen on the
+ * site, applies that family alone. **"Follow the desktop" means the author is
+ * a visitor like any other** — so the light family applies as before and the
+ * dark family goes behind `prefers-color-scheme`, exactly as
+ * `editor_scope_css()` does for the tokens it emits.
  *
  * Getting that last case wrong is what made a dark desktop unusable for
  * authoring: the tokens went dark, the site's own backgrounds stayed light,
@@ -261,7 +259,8 @@ function reroot_scope( string $css, array $family ): string {
  * site, 2026-09-18).
  *
  * @param string $css      The Custom CSS.
- * @param string $site_cs  'light', 'dark' or 'default'.
+ * @param string $site_cs  'light', 'dark', or 'default' for "follow the
+ *                         desktop" — what `editor_scheme()` resolved.
  */
 function editor_custom_css( string $css, string $site_cs ): string {
 	$light = array( '.cds--white', '.cds--g10' );
@@ -346,6 +345,51 @@ function active_scheme_server_guess(): string {
 		return $cookie_scheme;
 	}
 	return $settings['default'];
+}
+
+/**
+ * The colour scheme the editor canvas should preview, for this author.
+ *
+ * The canvas is a preview of the page, so it has to answer the same question
+ * the page answers for the person looking at it — and the site is allowed to
+ * give three different answers:
+ *
+ * 1. The site pins light or dark for everyone. The canvas takes that.
+ * 2. The site follows each visitor, and this author has chosen one with the
+ *    site's own toggle. The choice is a cookie on the site's domain with
+ *    `Path=/`, so an admin request carries it, and the canvas takes it.
+ * 3. Neither. The canvas follows the desktop, through `prefers-color-scheme`,
+ *    which is what the page would do for this person too.
+ *
+ * Only the first and third were read before, so an author who had set the
+ * site to light while their desktop was dark authored in dark against a light
+ * site — two preferences, and the editor honoured the wrong one.
+ *
+ * `auto` is a real value of that cookie and means "follow the desktop", so it
+ * resolves to the third case rather than to a scheme.
+ *
+ * @return string 'light', 'dark', or 'default' for "follow the desktop".
+ */
+function editor_scheme(): string {
+	$site = function_exists( '\\AWT\\Theme\\Settings\\get' )
+		? (string) \AWT\Theme\Settings\get( 'site.colorScheme' )
+		: 'default';
+
+	if ( 'light' === $site || 'dark' === $site ) {
+		return $site;
+	}
+
+	$cookie = isset( $_COOKIE['awt_color_scheme'] )
+		? sanitize_key( wp_unslash( $_COOKIE['awt_color_scheme'] ) )
+		: '';
+
+	if ( color_scheme_settings()['allowVisitorOverride']
+		&& in_array( $cookie, array( 'light', 'dark' ), true )
+	) {
+		return $cookie;
+	}
+
+	return 'default';
 }
 
 add_action(
@@ -916,7 +960,7 @@ add_filter(
 		// in the canvas. Injected via `styles` (not a wp_head-style <style>) so it
 		// survives the editor's canvas re-renders. Unlike the front end, only the
 		// active scheme's colours apply — the editor previews one scheme at a time.
-		$site_cs    = function_exists( '\\AWT\\Theme\\Settings\\get' ) ? (string) \AWT\Theme\Settings\get( 'site.colorScheme' ) : 'default';
+		$site_cs    = editor_scheme();
 		$custom_css = function_exists( '\\AWT\\Theme\\Settings\\get' ) ? (string) \AWT\Theme\Settings\get( 'customCss' ) : '';
 		if ( trim( $custom_css ) !== '' ) {
 			$editor_css = editor_custom_css( $custom_css, $site_cs );
