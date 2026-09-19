@@ -260,6 +260,9 @@ Reports about real barriers are treated as bugs, not feature requests.
 == Changelog ==
 
 <!-- CHANGELOG_START -->
+= 2026.09.21 — 2026-09-19 =
+* [New] A warning when the AWT Blocks plugin is missing or turned off. Without it the theme's blocks do not appear on your pages or in the editor, and nothing said so. The warning offers a button to turn the plugin on, or the file to download when it is not installed.
+
 = 2026.09.20 — 2026-09-19 =
 * [Improvement] The header stays under the WordPress admin bar on a phone. Below 600px the admin bar scrolls away with the page, and the header was left floating below the top of the screen with content showing through the gap. Only logged-in viewers ever saw this.
 
@@ -287,9 +290,6 @@ Reports about real barriers are treated as bugs, not feature requests.
 
 = 2026.09.12 — 2026-09-10 =
 * [Improvement] No changes in the theme itself. It carries the same version number as AWT Blocks, which has changes in this release.
-
-= 2026.09.11 — 2026-09-10 =
-* [Improvement] What's new now lists the theme's release notes as well as the plugin's. It showed only the plugin's, so a release that changed the theme looked empty.
 <!-- CHANGELOG_END -->
 
 == Upgrade Notice ==
