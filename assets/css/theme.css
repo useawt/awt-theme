@@ -4411,16 +4411,29 @@ body.editor-styles-wrapper .wp-block-awt-icon   + .wp-block-awt-icon {
  * sets `flex-direction: column` on `.cds--tab--list` and bumps each nav-item
  * to `block-size: 4rem; inline-size: 100%`, but it relies on a PARENT grid
  * container to put the tab list and the panels side by side (the React
- * component composes `<TabList>` and `<TabPanels>` inside a `display: grid`
- * wrapper with `grid-column: span 2` on the tablist).
+ * component composes `<TabList>` and `<TabPanels>` inside a `.cds--css-grid`
+ * wrapper and places them with `grid-column: span 2` / `3 / -1`, becoming
+ * `span 4` / `5 / -1` at `lg`).
  *
  * We render tabs + panels as siblings inside `.cds--tabs`. Make
- * `.cds--tabs--vertical` itself the grid container so the tab list becomes
- * a left sidebar and the panels stack in the right column. */
+ * `.cds--tabs--vertical` itself that grid, with the same column counts
+ * Carbon's grid uses — 4 at `sm`, 8 at `md`, 16 at `lg` — and the same
+ * `minmax(0, 1fr)` tracks, so the tab strip is a quarter of the width rather
+ * than a fixed size and neither column can be pushed wider than its share. */
 .cds--tabs--vertical {
 	display: grid;
-	grid-template-columns: 12rem 1fr;
+	grid-template-columns: repeat(4, minmax(0, 1fr));
 	column-gap: 0;
+}
+@media (min-width: 42rem) {
+	.cds--tabs--vertical {
+		grid-template-columns: repeat(8, minmax(0, 1fr));
+	}
+}
+@media (min-width: 66rem) {
+	.cds--tabs--vertical {
+		grid-template-columns: repeat(16, minmax(0, 1fr));
+	}
 }
 /* Editor only — the block editor renders tab + tab-panel children as flat
    block-list siblings (no `.cds--tab--list` / `.cds--tab-content` wrappers),
@@ -4445,7 +4458,11 @@ body.editor-styles-wrapper .wp-block-awt-icon   + .wp-block-awt-icon {
 	   starting at row 4 (leaving a big empty gap up top). Dense back-fills col 2
 	   from row 1, so each panel lands beside its own tab. */
 	display: grid !important;
-	grid-template-columns: 12rem 1fr;
+	/* !important for the same reason as `display` above, and now also
+	   because the published grid below switches column counts by
+	   breakpoint — the editor preview is a flat block list and needs the
+	   plain two-column placement at every canvas width. */
+	grid-template-columns: 12rem 1fr !important;
 	grid-auto-flow: dense;
 }
 /* The editor renders tab + tab-panel blocks as flat siblings (no
@@ -4466,17 +4483,36 @@ body.editor-styles-wrapper .wp-block-awt-icon   + .wp-block-awt-icon {
    page has. Restore it to match published. !important beats the block-list
    reset. */
 .editor-styles-wrapper .cds--tab-content { padding-inline: 1rem !important; }
-.cds--tabs--vertical > .cds--tab--list {
-	grid-column: 1;
+.cds--tabs--vertical > .awt-tabs__strip {
+	grid-column: span 2;
 	grid-row: 1 / -1;       /* sidebar spans every panel row */
-	flex-direction: column;
-	inline-size: 100%;
 	border-inline-end: 1px solid var(--cds-border-subtle, #e0e0e0);
 }
+@media (min-width: 66rem) {
+	.cds--tabs--vertical > .awt-tabs__strip {
+		grid-column: span 4;
+	}
+}
+/* Carbon's vertical tabs scroll the list itself (it has top/bottom fade
+ * gradients, not chevrons) — the prev/next buttons belong to the horizontal
+ * tabs the block collapses into on small screens. */
+.cds--tabs--vertical > .awt-tabs__strip > .cds--tab--overflow-nav-button {
+	display: none;
+}
+.cds--tabs--vertical .cds--tab--list {
+	flex-direction: column;
+	inline-size: 100%;
+	overflow: visible auto;
+}
 .cds--tabs--vertical > .cds--tab-content {
-	grid-column: 2;
+	grid-column: 3 / -1;
 	padding-inline: 1rem;
 	padding-block: 1rem 0;
+}
+@media (min-width: 66rem) {
+	.cds--tabs--vertical > .cds--tab-content {
+		grid-column: 5 / -1;
+	}
 }
 .cds--tabs--vertical .cds--tabs__nav-item {
 	inline-size: 100%;
@@ -4491,8 +4527,8 @@ body.editor-styles-wrapper .wp-block-awt-icon   + .wp-block-awt-icon {
 	border-inline-start: 2px solid var(--cds-border-subtle, #e0e0e0);
 	inline-size: 100%;
 }
-.cds--tabs--vertical > .cds--tab--list > .cds--tabs__nav-item:has(.cds--tabs__nav-item--selected) .cds--tabs__nav-link,
-.cds--tabs--vertical > .cds--tab--list > .cds--tabs__nav-item .cds--tabs__nav-item--selected {
+.cds--tabs--vertical .cds--tab--list > .cds--tabs__nav-item:has(.cds--tabs__nav-item--selected) .cds--tabs__nav-link,
+.cds--tabs--vertical .cds--tab--list > .cds--tabs__nav-item .cds--tabs__nav-item--selected {
 	border-inline-start: 2px solid var(--cds-border-interactive, #0f62fe);
 	border-block-end: none;
 }
