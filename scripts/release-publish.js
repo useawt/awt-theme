@@ -9,8 +9,9 @@
  *      RELEASE_NOTES.md and every file that carries the number — the
  *      theme/plugin header, the AWT_*_VERSION constants, readme.txt's
  *      stable tag — and refuses if any of them disagree.
- *   2. Checks the working tree is clean, the branch is main, and no
- *      v<version> tag exists yet.
+ *   2. Checks the working tree is clean, the branch is main, no
+ *      v<version> tag exists yet, and that the only commit this branch
+ *      has beyond origin is the release commit itself.
  *   3. Checks the built zip exists and is newer than the commit being
  *      tagged — a zip built before the last commit is not what shipped.
  *   4. Tags v<version>, pushes the branch and the tag, and creates the
@@ -151,6 +152,74 @@ function versionSightings() {
 	return sightings;
 }
 
+/**
+ * Refuse a release carrying commits it does not know about.
+ *
+ * This checkout is shared. Another session can commit to it, and a commit
+ * sitting under the release commit goes into the zip and onto every site that
+ * updates — while the release notes, which are written from CHANGELOG.md
+ * alone, say nothing about it. On 2026-09-20 that happened: a header
+ * focus-ring change from a parallel session shipped inside 2026.09.28, and
+ * what caught it was the commit-identity hook, which is not what that hook is
+ * for. Nothing about releasing had an opinion.
+ *
+ * The rule is the narrowest one that would have caught it: everything except
+ * the release commit itself is already on the remote, and the remote holds
+ * nothing this build has not got. Both directions matter — commits ahead ride
+ * along unannounced, commits behind mean the zip was built without them.
+ *
+ * It is a prompt, not a veto: push the commits (or drop them) and run again.
+ */
+function assertNothingRidesAlong() {
+	try {
+		sh('git rev-parse --abbrev-ref --symbolic-full-name @{u}');
+	} catch {
+		fail(
+			'This branch has no upstream, so there is no way to tell which ' +
+				'commits this release is carrying. Set one and run again.'
+		);
+	}
+	try {
+		sh('git fetch --quiet origin');
+	} catch {
+		fail(
+			'Could not reach origin to check what this release is carrying. ' +
+				'A release that cannot be checked is not one to publish.'
+		);
+	}
+
+	const behind = Number(sh('git rev-list --count HEAD..@{u}'));
+	if (behind > 0) {
+		fail(
+			`origin has ${behind} commit(s) this build does not, so the zip ` +
+				'was built without them. Pull, rebuild, and run again.'
+		);
+	}
+
+	// Newest first, so the release commit is the first line — that one is
+	// meant to be here. Anything under it is not.
+	// Quoted: the separator is a pipe and these commands run through a shell.
+	const ahead = sh("git log --format='%h|%an|%s' @{u}..HEAD")
+		.split('\n')
+		.filter(Boolean);
+	const ridingAlong = ahead.slice(1);
+	if (ridingAlong.length) {
+		const listed = ridingAlong
+			.map((line) => {
+				const [hash, author, ...rest] = line.split('|');
+				return `    ${hash}  ${author}  ${rest.join('|')}`;
+			})
+			.join('\n');
+		fail(
+			`${ridingAlong.length} commit(s) here are not on origin and are ` +
+				`not the release commit:\n${listed}\n  Their code is in the ` +
+				'zip, and the release notes come from CHANGELOG.md alone — so ' +
+				'either push them and give them changelog entries, or take ' +
+				'them off this branch, then run again.'
+		);
+	}
+}
+
 function main() {
 	const args = process.argv.slice(2);
 	const version = args.find((a) => !a.startsWith('--'));
@@ -211,6 +280,7 @@ function main() {
 	if (branch !== 'main') {
 		fail(`On branch ${branch}. Releases are cut from main.`);
 	}
+	assertNothingRidesAlong();
 	// --- the zip has to be the one built from this commit -------------------
 	const zip = findZip();
 	const zipTime = Math.floor(
