@@ -1047,8 +1047,24 @@ div:has(.cds--header) ~ .awt-breadcrumb-region {
 .cds--list--ordered,
 .cds--list--ordered--native {
 	display: block;
-	padding-inline-start: 1.5rem;
 	margin-block: 0;
+}
+
+/* The room the markers need, and the sub-list indent, both come from padding
+ * rather than margin. Carbon uses a margin for each (1rem on a top-level
+ * unordered list, 2rem on a sub-list), but a top-level block's inline margins
+ * belong to WordPress's layout — they are what centres it — so a margin here
+ * is either silently overridden by the layout or breaks the centring. Keeping
+ * both as padding means a sub-list indents by the same amount wherever it
+ * sits. */
+.cds--list--unordered:not(.cds--list--nested),
+.cds--list--ordered:not(.cds--list--nested),
+.cds--list--ordered--native:not(.cds--list--nested) {
+	padding-inline-start: 1.5rem;
+}
+
+.cds--list--nested {
+	padding-inline-start: 2rem;
 }
 
 /* (`.cds--list--unordered { list-style: none }` is Carbon's own rule, shipped
@@ -1063,9 +1079,14 @@ div:has(.cds--header) ~ .awt-breadcrumb-region {
 	margin-block-end: 0.25rem;
 }
 
-/* Nested lists — when a list contains another list as an inner block, the
- * inner list still gets its own padding-inline-start, producing a visual
- * indent matching Carbon's nested-list reference (no extra rules needed). */
+/* Inside a list item there is no layout margin to preserve, so Carbon's own
+ * 2rem sub-list margin lands on top of the padding above and indents a
+ * sub-list by 60px where Carbon indents it by 36px. Measured against Carbon's
+ * UnorderedList → Nested story, 2026-09-20: 36px from the parent item's text,
+ * which is 32px of indent plus the 4px Carbon puts on a sub-list's items. */
+.cds--list__item > .cds--list--nested {
+	margin-inline-start: 0;
+}
 
 /* Core List block — Carbon's reset strips native list styling site-wide
  * (`ol, ul { list-style: none }`, padding zeroed, `font: inherit` down to the
