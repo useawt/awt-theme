@@ -4,7 +4,10 @@ An accessibility-first WordPress block theme built on the
 [Carbon Design System](https://carbondesignsystem.com/). Used together with
 [AWT Blocks](https://github.com/useawt/awt-blocks).
 
-**Status: pre-release.** Stage 1 development — not yet published on WordPress.org.
+**Status: released.** Download the latest version from
+[Releases](https://github.com/useawt/awt-theme/releases); installed sites are offered
+updates in WordPress's own Updates screen. AWT is not distributed through the
+WordPress.org directory.
 
 ## Development setup
 
