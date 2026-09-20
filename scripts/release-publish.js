@@ -5,8 +5,10 @@
  *   npm run release:publish 2026.09.0
  *
  * and the script:
- *   1. Checks the version against package.json, CHANGELOG.md and
- *      RELEASE_NOTES.md, and refuses if they disagree.
+ *   1. Checks the version against package.json, CHANGELOG.md,
+ *      RELEASE_NOTES.md and every file that carries the number — the
+ *      theme/plugin header, the AWT_*_VERSION constants, readme.txt's
+ *      stable tag — and refuses if any of them disagree.
  *   2. Checks the working tree is clean, the branch is main, and no
  *      v<version> tag exists yet.
  *   3. Checks the built zip exists and is newer than the commit being
@@ -22,7 +24,8 @@
  *
  * One copy of this script lives in each repo (kept in sync manually — see
  * the spec). Repo differences are feature-detected: the zip is whichever
- * single *.zip sits in the repo root.
+ * single *.zip sits in the repo root, and the version sightings are the
+ * ones this repo happens to have.
  *
  * Usage:
  *   node scripts/release-publish.js <version> [--dry-run]
@@ -80,6 +83,74 @@ function findZip() {
 	return zips[0];
 }
 
+/**
+ * Every file in this repo that carries the version number, and what it says.
+ *
+ * The number lives in more places than package.json — a theme's style.css
+ * header and AWT_THEME_VERSION, a plugin's header and AWT_BLOCKS_VERSION,
+ * readme.txt's stable tag — and all but the stable tag are bumped by hand
+ * before the release commit. Missing one ships a version that disagrees with
+ * itself: readme.txt's stable tag sat eight releases behind the plugin header
+ * before anyone noticed. Which of these files a repo has differs, so they are
+ * found rather than listed.
+ *
+ * @return {Array<{file: string, what: string, says: string|null}>} Sightings.
+ */
+function versionSightings() {
+	const sightings = [];
+	const read = (file) => {
+		const full = path.join(ROOT, file);
+		return fs.existsSync(full) ? fs.readFileSync(full, 'utf8') : null;
+	};
+	const first = (src, re) => {
+		const m = src.match(re);
+		return m ? m[1] : null;
+	};
+
+	const style = read('style.css');
+	if (style && /^Theme Name:/m.test(style)) {
+		sightings.push({
+			file: 'style.css',
+			what: 'theme header',
+			says: first(style, /^Version:[ \t]*(\S+)[ \t]*$/m),
+		});
+	}
+
+	const readme = read('readme.txt');
+	const stable = readme && first(readme, /^Stable tag:[ \t]*(\S+)[ \t]*$/m);
+	if (stable) {
+		sightings.push({
+			file: 'readme.txt',
+			what: 'stable tag',
+			says: stable,
+		});
+	}
+
+	for (const file of fs.readdirSync(ROOT)) {
+		if (!file.endsWith('.php')) {
+			continue;
+		}
+		const src = read(file);
+		if (/^[ \t]*\*[ \t]*Plugin Name:/m.test(src)) {
+			sightings.push({
+				file,
+				what: 'plugin header',
+				says: first(src, /^[ \t]*\*[ \t]*Version:[ \t]*(\S+)[ \t]*$/m),
+			});
+		}
+		const constant = src.match(/^const (AWT_[A-Z_]*VERSION) = '([^']*)';/m);
+		if (constant) {
+			sightings.push({
+				file,
+				what: constant[1],
+				says: constant[2],
+			});
+		}
+	}
+
+	return sightings;
+}
+
 function main() {
 	const args = process.argv.slice(2);
 	const version = args.find((a) => !a.startsWith('--'));
@@ -114,6 +185,22 @@ function main() {
 	const firstLine = fs.readFileSync(notesPath, 'utf8').split('\n')[0].trim();
 	if (!firstLine.startsWith(`## ${version}`)) {
 		fail(`RELEASE_NOTES.md opens with "${firstLine}", not ## ${version}.`);
+	}
+
+	const disagreements = versionSightings().filter((s) => s.says !== version);
+	if (disagreements.length) {
+		fail(
+			`You asked for ${version}, and these do not say it:\n` +
+				disagreements
+					.map(
+						(s) =>
+							`    ${s.file} (${s.what}) says ${
+								s.says || 'nothing'
+							}`
+					)
+					.join('\n') +
+				'\n  Bump them and commit before publishing.'
+		);
 	}
 
 	// --- the repository has to be in a publishable state --------------------
