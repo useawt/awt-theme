@@ -1,8 +1,10 @@
 # Accessibility statement
 
 <!-- Canonical source. The awt-blocks release script injects this file into
-     the WordPress.org readme.txt between the ACCESSIBILITY_START/END
-     markers. Review on every YYYY.MM release (see the Stage 1 spec,
+     that plugin's readme.txt between the ACCESSIBILITY_START/END markers.
+     (It said "the WordPress.org readme.txt" until 2026-09-20; the file is
+     still the readme, there is just no directory listing it any more.)
+     Review on every YYYY.MM release (see the Stage 1 spec,
      "Accessibility statement → Maintenance cadence").
 
      STANDING RULE: when a finding from the outside accessibility review is
