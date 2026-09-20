@@ -10,6 +10,18 @@
      markdownlint enforces the structure in CI. Newest release first.
      The Unreleased section accumulates entries between releases. -->
 
+## Unreleased
+
+### [A11y]
+
+- The design systems that are not available yet are no longer dimmed, so
+  every line on their cards is readable.
+
+### [Improvement]
+
+- Settings → Design system: asking for a design system that is not listed is
+  now a link to the contact page instead of an email address to copy out.
+
 ## 2026.09.28 — 2026-09-20
 
 ### [Improvement]

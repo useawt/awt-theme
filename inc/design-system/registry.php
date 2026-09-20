@@ -198,13 +198,16 @@ function bootstrap(): void {
 	);
 
 	// Catch-all "More" tile: invites requests for design systems not yet on
-	// the list. No premium_url — it carries its own contact prompt instead of
-	// the shared upgrade CTA.
+	// the list. No premium_url — nothing is being sold here, so it carries a
+	// link to the contact form instead of the shared upgrade CTA.
 	Registry::register(
 		new LockedPremiumSystem(
 			'more',
 			__( 'More', 'awt' ),
-			__( 'More accessible design systems are coming soon. To request one, email hello@useawt.com.', 'awt' )
+			__( 'More accessible design systems are coming soon.', 'awt' ),
+			null,
+			'',
+			'https://useawt.com/contact/'
 		)
 	);
 }

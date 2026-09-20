@@ -92,6 +92,52 @@ class Test_Design_System_Selector extends WP_UnitTestCase {
 	}
 
 	/**
+	 * The catch-all tile asks for a design system through the contact page.
+	 *
+	 * It used to print an email address as plain text. A link is one click
+	 * rather than a copy-and-paste, and it sits OUTSIDE the tile's <label> —
+	 * a label names its control, so a link inside one both lengthens the
+	 * radio's accessible name and gives the tile two things to click.
+	 */
+	public function test_the_catch_all_tile_links_to_the_contact_page(): void {
+		$this->assertSame(
+			'https://useawt.com/contact/',
+			Registry::all()['more']->request_url()
+		);
+		$this->assertSame(
+			'',
+			Registry::all()['uswds']->request_url(),
+			'only the catch-all tile asks for a system'
+		);
+
+		ob_start();
+		\AWT\Theme\AdminPage\render_tab_design_system();
+		$html = (string) ob_get_clean();
+
+		$this->assertStringContainsString( 'https://useawt.com/contact/', $html );
+		$this->assertStringNotContainsString( 'hello@useawt.com', $html );
+
+		// A locked tile is not dimmed. Opacity blended every line on it below
+		// 4.5:1, and the only reason the contrast gate stayed quiet was that
+		// text inside a disabled control's label is exempt from it.
+		$this->assertStringNotContainsString( 'opacity:', $html );
+
+		// The link must not be inside a label. Every <label> the tab renders
+		// has to close before the first <a> that follows it.
+		$labels = preg_split( '/<label\b/', $html );
+		array_shift( $labels );
+		foreach ( $labels as $index => $after ) {
+			$close = strpos( $after, '</label>' );
+			$this->assertNotFalse( $close, "label $index never closes" );
+			$this->assertStringNotContainsString(
+				'<a ',
+				substr( $after, 0, $close ),
+				"label $index contains a link"
+			);
+		}
+	}
+
+	/**
 	 * The tab offers one radio per system, with the locked ones disabled and
 	 * labelled, and Carbon pre-selected.
 	 */

@@ -67,6 +67,17 @@ class LockedPremiumSystem implements DesignSystemInterface {
 	private string $component_delta;
 
 	/**
+	 * Where someone asks for a design system that is not on the list.
+	 *
+	 * Only the catch-all tile has one. It is separate from premium_url()
+	 * because it is not an upgrade: nothing is being sold, the tile is asking
+	 * to be told what to build.
+	 *
+	 * @var string
+	 */
+	private string $request_url;
+
+	/**
 	 * Build a locked placeholder for one Premium design system.
 	 *
 	 * @param string      $slug            Stable machine slug, e.g. 'bootstrap'.
@@ -74,19 +85,22 @@ class LockedPremiumSystem implements DesignSystemInterface {
 	 * @param string      $description     One-line description for the selector tile.
 	 * @param string|null $premium_url     Upgrade-CTA URL, or null when the tile carries its own contact prompt.
 	 * @param string      $component_delta Optional component-delta blurb for the locked tile.
+	 * @param string      $request_url     Where to ask for a design system that is not listed.
 	 */
 	public function __construct(
 		string $slug,
 		string $name,
 		string $description,
 		?string $premium_url = null,
-		string $component_delta = ''
+		string $component_delta = '',
+		string $request_url = ''
 	) {
 		$this->slug            = $slug;
 		$this->name            = $name;
 		$this->description     = $description;
 		$this->premium_url     = $premium_url;
 		$this->component_delta = $component_delta;
+		$this->request_url     = $request_url;
 	}
 
 	/* --- Identity -------------------------------------------------------- */
@@ -138,6 +152,14 @@ class LockedPremiumSystem implements DesignSystemInterface {
 	 */
 	public function component_delta(): string {
 		return $this->component_delta; }
+
+	/**
+	 * Where someone asks for a design system that is not on the list.
+	 *
+	 * @return string The URL passed at construction, or '' when the tile has none.
+	 */
+	public function request_url(): string {
+		return $this->request_url; }
 
 	/* --- Everything else: empty (a locked system never renders) ---------- */
 

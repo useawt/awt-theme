@@ -506,10 +506,31 @@ function render_tab_design_system(): void {
 				$premium_url = (string) $system->premium_url();
 			}
 			?>
-			<label style="display:block; padding:1em; border:2px solid <?php echo esc_attr( $border ); ?>; border-radius:6px; background:<?php echo esc_attr( $bg ); ?>; cursor:<?php echo $available ? 'pointer' : 'default'; ?>; opacity:<?php echo $available ? '1' : '0.8'; ?>;">
+			<?php
+			// A locked tile is not dimmed. The 0.8 opacity it used to carry
+			// blended every line on it toward the background — the badge to
+			// 4.48:1, the description to 3.66, the status line to 3.4 — and
+			// only escaped the contrast gate because text inside a disabled
+			// control's label is exempt from it. Moving that text out of the
+			// label is what made it visible; the fix is to stop dimming, not
+			// to put it back. What the tile is locked is said by the badge,
+			// the disabled radio and the status line, which is three ways
+			// without spending readability on a fourth.
+			//
+			// Only the radio and the system's name sit inside the <label>.
+			// A label names its control, so everything inside one is read out
+			// as part of that name — and the badge and the contact link are
+			// real links, which inside a label also give the tile two things
+			// to click with no way to tell them apart. The description and the
+			// status line stay next to the control as ordinary text.
+			$request_url = method_exists( $system, 'request_url' ) ? $system->request_url() : '';
+			?>
+			<div style="padding:1em; border:2px solid <?php echo esc_attr( $border ); ?>; border-radius:6px; background:<?php echo esc_attr( $bg ); ?>;">
 				<span style="display:flex; align-items:flex-start; gap:.5em;">
-					<input type="radio" name="designSystem" value="<?php echo esc_attr( $slug ); ?>" <?php checked( $selected ); ?> <?php echo $available ? '' : 'disabled aria-disabled="true"'; ?> style="margin-block-start:.2em;" />
-					<strong style="flex:1 1 auto; min-inline-size:0;"><?php echo esc_html( $system->name() ); ?></strong>
+					<label style="display:flex; align-items:flex-start; gap:.5em; flex:1 1 auto; min-inline-size:0; cursor:<?php echo $available ? 'pointer' : 'default'; ?>;">
+						<input type="radio" name="designSystem" value="<?php echo esc_attr( $slug ); ?>" <?php checked( $selected ); ?> <?php echo $available ? '' : 'disabled aria-disabled="true"'; ?> style="margin-block-start:.2em;" />
+						<strong style="flex:1 1 auto; min-inline-size:0;"><?php echo esc_html( $system->name() ); ?></strong>
+					</label>
 					<?php if ( ! $available ) : ?>
 						<span style="flex-shrink:0;"><?php echo premium_badge(); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- premium_badge() returns escaped markup. ?></span>
 					<?php elseif ( $selected ) : ?>
@@ -520,7 +541,14 @@ function render_tab_design_system(): void {
 				<?php if ( ! $available ) : ?>
 					<span style="display:block; margin-block-start:.5em; font-size:12px; color:#6f6f6f; font-style:italic;"><?php esc_html_e( 'Coming soon to AWT Premium.', 'awt' ); ?></span>
 				<?php endif; ?>
-			</label>
+				<?php if ( $request_url !== '' ) : ?>
+					<span style="display:block; margin-block-start:.5em; font-size:13px;">
+						<a href="<?php echo esc_url( $request_url ); ?>" target="_blank" rel="noopener noreferrer">
+							<?php esc_html_e( 'Ask for a design system (opens in a new tab)', 'awt' ); ?>
+						</a>
+					</span>
+				<?php endif; ?>
+			</div>
 		<?php endforeach; ?>
 	</div>
 	<?php if ( $premium_url !== '' ) : ?>
