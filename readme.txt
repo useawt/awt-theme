@@ -260,6 +260,11 @@ Reports about real barriers are treated as bugs, not feature requests.
 == Changelog ==
 
 <!-- CHANGELOG_START -->
+= 2026.09.29 — 2026-09-20 =
+* [A11y] A button in the header shows its focus ring again. In 2026.09.28 the ring was drawn in the same colour as the button underneath it, so keyboard users could not see where they were.
+* [A11y] The design systems that are not available yet are no longer dimmed, so every line on their cards is readable.
+* [Improvement] Settings → Design system: asking for a design system that is not listed is now a link to the contact page instead of an email address to copy out.
+
 = 2026.09.28 — 2026-09-20 =
 * [Improvement] Sub-lists are indented by the same amount as the design system they follow. They were indented half as far again, and a list marked as a sub-list on its own was barely indented at all.
 * [Improvement] Header buttons mark focus in the same colour as every other control on the site.
@@ -287,10 +292,6 @@ Reports about real barriers are treated as bugs, not feature requests.
 
 = 2026.09.20 — 2026-09-19 =
 * [Improvement] The header stays under the WordPress admin bar on a phone. Below 600px the admin bar scrolls away with the page, and the header was left floating below the top of the screen with content showing through the gap. Only logged-in viewers ever saw this.
-
-= 2026.09.19 — 2026-09-19 =
-* [A11y] Every header control stays on a narrow screen. With a logo in the header, the last icon on the right sat off the side of a 320px screen with no way to reach it; the logo now scales down instead.
-* [A11y] A button with a long label stays inside the column it is in. It could stick out past the edge of a phone screen and take the page's sideways scrolling with it.
 <!-- CHANGELOG_END -->
 
 == Upgrade Notice ==
