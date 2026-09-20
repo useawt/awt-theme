@@ -10,6 +10,15 @@
      markdownlint enforces the structure in CI. Newest release first.
      The Unreleased section accumulates entries between releases. -->
 
+## Unreleased
+
+### [Improvement]
+
+- The automatic breadcrumb lines up with the page on templates whose main area
+  has no side padding of its own, including the theme's own "Page without
+  title". The trail sat against the edge of the screen on any window narrower
+  than the content width.
+
 ## 2026.09.22 — 2026-09-19
 
 ### [A11y]

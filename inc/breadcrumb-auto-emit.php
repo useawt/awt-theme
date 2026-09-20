@@ -423,6 +423,22 @@ function render_fallback( array $trail, string $classes ): string {
 }
 
 /**
+ * Does this padding value leave the element against the edge?
+ *
+ * Nothing at all, an empty string, and a zero in any unit all mean the same
+ * thing here: <main> is not supplying the gutter, so something else is.
+ *
+ * @param string $value A padding value as the block stores it.
+ */
+function is_blank_padding( string $value ): bool {
+	$value = trim( $value );
+	if ( '' === $value ) {
+		return true;
+	}
+	return 1 === preg_match( '/^0+(\.0+)?(px|em|rem|%|vw|vh|ch|ex|pt|cm|mm|in|pc)?$/i', $value );
+}
+
+/**
  * Wrap the breadcrumb in the region that sits above <main>.
  *
  * Only the side padding is copied from <main>, so the trail keeps lining up
@@ -431,6 +447,19 @@ function render_fallback( array $trail, string $classes ): string {
  * inline value at all — theme.css overrides it with `!important` to clear the
  * fixed header — so the region takes its own top spacing from the same
  * theme.css rules instead. See "Breadcrumb region" there.
+ *
+ * **A <main> with no side padding of its own is not a <main> with no gutter.**
+ * The theme's own `page-no-title` template zeroes all four sides and lets the
+ * gutter come from the post-content block's constrained layout one level in;
+ * copying that zero faithfully put the trail against the edge of the screen
+ * while the content below it kept its inset. It only showed below the content
+ * width, because above it the `margin-inline: auto` that centres the trail
+ * supplies an inset of its own and hides the gap — so the bug was invisible at
+ * every width anyone tests at (reported as awt-theme#1, 2026-09-20).
+ *
+ * So a side that is missing, empty or zero falls back to the site's own root
+ * padding, which is where the gutter is in that arrangement. Any template that
+ * makes the same choice gets the same answer, not just the one AWT ships.
  *
  * The <div> is deliberately unlabelled. The breadcrumb's accessible name lives
  * on the <nav aria-label="Breadcrumbs"> inside it, which is the element that
@@ -444,9 +473,10 @@ function render_fallback( array $trail, string $classes ): string {
 function wrap_region( string $breadcrumb, array $padding ): string {
 	$sides = array();
 	foreach ( array( 'right', 'left' ) as $side ) {
-		if ( isset( $padding[ $side ] ) && $padding[ $side ] !== '' ) {
-			$sides[ $side ] = $padding[ $side ];
-		}
+		$value          = isset( $padding[ $side ] ) ? (string) $padding[ $side ] : '';
+		$sides[ $side ] = is_blank_padding( $value )
+			? 'var(--wp--style--root--padding-' . $side . ')'
+			: $value;
 	}
 
 	$style = '';
