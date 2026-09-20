@@ -260,6 +260,9 @@ Reports about real barriers are treated as bugs, not feature requests.
 == Changelog ==
 
 <!-- CHANGELOG_START -->
+= 2026.09.25 — 2026-09-20 =
+* [Improvement] No changes in the theme itself. It carries the same version number as AWT Blocks, which has changes in this release.
+
 = 2026.09.24 — 2026-09-20 =
 * [Improvement] The footer credit reads "Built with AWT, an accessible WordPress theme."
 
@@ -287,9 +290,6 @@ Reports about real barriers are treated as bugs, not feature requests.
 
 = 2026.09.16 — 2026-09-18 =
 * [A11y] The editor shows your own colour scheme again. On a dark desktop a site that follows the visitor's setting showed the page's light backgrounds behind dark-mode text, which left the content nearly unreadable while editing.
-
-= 2026.09.15 — 2026-09-18 =
-* [Improvement] No changes in the theme itself. It carries the same version number as AWT Blocks, which has changes in this release.
 <!-- CHANGELOG_END -->
 
 == Upgrade Notice ==
