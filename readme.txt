@@ -260,6 +260,9 @@ Reports about real barriers are treated as bugs, not feature requests.
 == Changelog ==
 
 <!-- CHANGELOG_START -->
+= 2026.09.27 — 2026-09-20 =
+* [Improvement] No changes in the theme itself. It carries the same version number as AWT Blocks, which has changes in this release.
+
 = 2026.09.26 — 2026-09-20 =
 * [New] Settings → Design system lists the design systems AWT will support. Carbon is the one you can pick today; the rest are marked as coming to AWT Premium.
 
@@ -287,9 +290,6 @@ Reports about real barriers are treated as bugs, not feature requests.
 
 = 2026.09.18 — 2026-09-19 =
 * [Improvement] The open vertical tab joins its panel. It kept a line down its right side, so it read as a box beside the panel rather than the open part of it.
-
-= 2026.09.17 — 2026-09-19 =
-* [A11y] Vertical tabs become a row of tabs on a narrow screen, and on a wide one the tab list takes a quarter of the width instead of a fixed size. They kept a fixed sidebar at every screen size, so on a phone the panel ran off the side of the screen and the page scrolled sideways.
 <!-- CHANGELOG_END -->
 
 == Upgrade Notice ==

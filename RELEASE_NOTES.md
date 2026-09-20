@@ -1,5 +1,5 @@
-## 2026.09.26 — 2026-09-20
+## 2026.09.27 — 2026-09-20
 
-### [New]
+### [Improvement]
 
-- Settings → Design system lists the design systems AWT will support. Carbon is the one you can pick today; the rest are marked as coming to AWT Premium.
+- No changes in the theme itself. It carries the same version number as AWT Blocks, which has changes in this release.
