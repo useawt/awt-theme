@@ -8,9 +8,10 @@
  *   1. Reads CHANGELOG.md and locates the requested release section
  *      (an "## Unreleased" section may be promoted with --promote).
  *   2. Refreshes the readme.txt Changelog section (plain text, severity
- *      tags inline) between the CHANGELOG_START/END markers, and injects
- *      the accessibility statement from the sibling awt-theme clone
- *      between the ACCESSIBILITY_START/END markers (plugin repo only).
+ *      tags inline) between the CHANGELOG_START/END markers, sets its
+ *      "Stable tag" line to this version, and injects the accessibility
+ *      statement from the sibling awt-theme clone between the
+ *      ACCESSIBILITY_START/END markers (plugin repo only).
  *   3. Writes build/changelog.json (schemaVersion 1, last 10 releases) —
  *      the What's new panel reads this bundled file.
  *   4. Writes RELEASE_NOTES.md (the GitHub Release body).
@@ -19,7 +20,7 @@
  * One copy of this script lives in each repo (kept in sync manually —
  * see the spec). Repo differences are feature-detected: no readme.txt →
  * step 2 is skipped; no sibling awt-theme → accessibility injection is
- * skipped with a warning.
+ * skipped with a warning; no "Stable tag" line → it is not written.
  *
  * Usage:
  *   node scripts/release.js <version> [--promote] [--dry-run]
@@ -161,6 +162,16 @@ function main() {
 	if (fs.existsSync(readmePath)) {
 		let readme = fs.readFileSync(readmePath, 'utf8');
 
+		// readme.txt's own version line. Nothing else rewrote it and nothing
+		// reads it now, so it sat eight releases behind the plugin header
+		// before 2026.09.25. It follows the release from here.
+		let stableTagNote = '';
+		const stableTagRe = /^(Stable tag:[ \t]*)(\S+)[ \t]*$/m;
+		if (stableTagRe.test(readme)) {
+			readme = readme.replace(stableTagRe, `$1${version}`);
+			stableTagNote = ` + stable tag ${version}`;
+		}
+
 		const changelogTxt = releases
 			.slice(0, 10)
 			.map((r) => {
@@ -207,7 +218,7 @@ function main() {
 		}
 		staged.push('readme.txt');
 		console.log(
-			'→ readme.txt refreshed (changelog + accessibility statement).'
+			`→ readme.txt refreshed (changelog + accessibility statement${stableTagNote}).`
 		);
 	} else {
 		console.log('→ no readme.txt in this repo — skipped.');
