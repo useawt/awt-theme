@@ -5272,23 +5272,31 @@ body.awt-btn-focus-outline .cds--btn--icon-only.cds--btn--ghost:focus:not(:disab
  * which has always drawn its ring at `outline-offset: -2px`. Two neighbouring
  * controls marking focus in opposite directions is what got this noticed.
  *
- * The ring keeps `--cds-focus` like every other ring in this file, so a header
- * button marks focus in the same color as the rest of the site.
- *
- * It used to take `currentColor` instead, guarding against an inward ring
- * landing on a fill it could not be seen against: in a light-scoped header
- * `--cds-focus` and `--cds-button-primary` would both be #0f62fe. Measured
- * 2026-09-20, that case does not arise. The UI Shell header carries `cds--g100`
- * in every scheme, on a light site as much as a dark one, so `--cds-focus`
- * inside it is always #ffffff and never collides with the button beneath it.
- *
- * What the guard did cost was consistency. `currentColor` is the label's color,
- * so on any palette whose primary button is light with a dark label the header
- * ring came out dark while every other ring on the site stayed white, and the
- * header became the one control marking focus differently. */
+ * The color has to change with the offset, and this is the part worth
+ * remembering. `--cds-focus` is guaranteed against the SCOPE SURFACE, which is
+ * why every outward ring in this file can use it. An inward ring lands on the
+ * button's own fill instead, and in a light-scoped header `--cds-focus` and
+ * `--cds-button-primary` are the same #0f62fe — so the ring would be drawn on
+ * the exact color it is meant to stand out from. `currentColor` cannot have
+ * that problem: it is the label's color, so it already clears 4.5:1 against
+ * the fill or the label would be unreadable. Same reasoning as the tag dismiss
+ * button further up this file, and the same fix. */
 body.awt-btn-focus-outline .cds--header .cds--btn:focus:not(:disabled):not(.cds--btn--disabled) {
+	outline-color: currentColor;
 	outline-offset: -2px;
 }
+
+/* Reverted 2026-09-20. The rule above spent part of a day taking `--cds-focus`
+ * instead, on the reading that the header is always `cds--g100` so the two can
+ * never collide. The focus gate's header case exists to hold exactly this and
+ * said so in its own comment: swap the rule to the token and the walk reports
+ * 0px. It did — a primary button in the header drew no visible focus ring at
+ * all, and that shipped in 2026.09.28.
+ *
+ * The consistency the swap was after is not lost by going back. `currentColor`
+ * on a primary button in a dark header IS white, the same as `--cds-focus`
+ * there. It only differs where the fill is light, and there a light ring would
+ * be the invisible one — an inward ring has to follow the fill it sits on. */
 
 /* The current page's nav item keeps all four sides of its focus ring.
  *
