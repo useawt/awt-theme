@@ -192,7 +192,7 @@ function render_page(): void {
 		// button wrapping everything) opt out of the standard save-form
 		// shell. The welcome wizard does this per step; the Appearance
 		// tab does it because its two pickers each save independently.
-		$self_form_tabs = array( 'welcome', 'design-system', 'appearance', 'tools', 'whats-new' );
+		$self_form_tabs = array( 'welcome', 'appearance', 'tools', 'whats-new' );
 		if ( in_array( $active, $self_form_tabs, true ) ) {
 			call_user_func( $renderer );
 		} else {
@@ -478,25 +478,77 @@ function premium_badge( ?string $label = null ): string {
  */
 
 /**
- * Design system (§A). An informational page about Carbon — what a design
- * system is and what building on Carbon gives the site. Read-only: it renders
- * outside the save-form shell (listed in $self_form_tabs), so no Save button
- * appears.
+ * Design system (§A). The selector: one card per registered system, Carbon
+ * selectable and the rest locked behind AWT Premium. Registry::all() supplies
+ * the catalogue, so a system added there appears here with no change to this
+ * function.
  */
 function render_tab_design_system(): void {
+	if ( ! class_exists( '\\AWT\\Theme\\DesignSystem\\Registry' ) ) {
+		echo '<p>' . esc_html__( 'Design system registry unavailable.', 'awt' ) . '</p>';
+		return;
+	}
+	$systems     = \AWT\Theme\DesignSystem\Registry::all();
+	$active      = \AWT\Theme\DesignSystem\Registry::get_active()->slug();
+	$premium_url = '';
 	?>
 	<p class="awt-field-help" style="margin-block: 1em 1.5em; max-inline-size: 50em;">
-		<?php esc_html_e( 'A design system sets the look of every AWT block: colors, fonts, spacing, and component style.', 'awt' ); ?>
+		<?php esc_html_e( 'A design system sets the look of every AWT block: colors, fonts, spacing, and component style. AWT Free includes Carbon. More design systems are coming to AWT Premium.', 'awt' ); ?>
 	</p>
-	<p style="max-inline-size:50em;">
-		<?php esc_html_e( 'AWT is built on Carbon, IBM\'s open-source design system. Every block follows Carbon\'s components, spacing and type scale, ships with matching light and dark themes, and meets WCAG 2.2 AA.', 'awt' ); ?>
-	</p>
+	<div style="display:grid; grid-template-columns:repeat(auto-fill,minmax(300px,1fr)); gap:1em; max-inline-size:76em;">
+		<?php
+		foreach ( $systems as $slug => $system ) :
+			$available = $system->is_available();
+			$selected  = ( $slug === $active );
+			$border    = $selected ? '#0073aa' : '#c3c4c7';
+			$bg        = $selected ? '#f0f6fc' : '#ffffff';
+			if ( ! $available && $premium_url === '' && $system->premium_url() ) {
+				$premium_url = (string) $system->premium_url();
+			}
+			?>
+			<label style="display:block; padding:1em; border:2px solid <?php echo esc_attr( $border ); ?>; border-radius:6px; background:<?php echo esc_attr( $bg ); ?>; cursor:<?php echo $available ? 'pointer' : 'default'; ?>; opacity:<?php echo $available ? '1' : '0.8'; ?>;">
+				<span style="display:flex; align-items:flex-start; gap:.5em;">
+					<input type="radio" name="designSystem" value="<?php echo esc_attr( $slug ); ?>" <?php checked( $selected ); ?> <?php echo $available ? '' : 'disabled aria-disabled="true"'; ?> style="margin-block-start:.2em;" />
+					<strong style="flex:1 1 auto; min-inline-size:0;"><?php echo esc_html( $system->name() ); ?></strong>
+					<?php if ( ! $available ) : ?>
+						<span style="flex-shrink:0;"><?php echo premium_badge(); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- premium_badge() returns escaped markup. ?></span>
+					<?php elseif ( $selected ) : ?>
+						<span style="flex-shrink:0; white-space:nowrap; font-size:11px; font-weight:600; color:#0073aa;"><?php esc_html_e( 'Selected', 'awt' ); ?></span>
+					<?php endif; ?>
+				</span>
+				<span style="display:block; margin-block-start:.5em; color:#646970; font-size:13px;"><?php echo esc_html( $system->description() ); ?></span>
+				<?php if ( ! $available ) : ?>
+					<span style="display:block; margin-block-start:.5em; font-size:12px; color:#6f6f6f; font-style:italic;"><?php esc_html_e( 'Coming soon to AWT Premium.', 'awt' ); ?></span>
+				<?php endif; ?>
+			</label>
+		<?php endforeach; ?>
+	</div>
+	<?php if ( $premium_url !== '' ) : ?>
+		<p style="margin-block-start:1.5em;">
+			<a class="button button-secondary" href="<?php echo esc_url( $premium_url ); ?>" target="_blank" rel="noopener noreferrer">
+				<?php esc_html_e( 'Learn more about AWT Premium →', 'awt' ); ?>
+			</a>
+		</p>
+	<?php endif; ?>
 	<p>
 		<a href="https://carbondesignsystem.com/" target="_blank" rel="noopener noreferrer">
 			<?php esc_html_e( 'Explore the Carbon Design System (opens in a new tab)', 'awt' ); ?>
 		</a>
 	</p>
 	<?php
+}
+
+/**
+ * Save the chosen design system. Settings\sanitize() clamps the slug to
+ * Registry::available(), so a locked or unknown slug snaps back to 'carbon'.
+ */
+function save_tab_design_system(): void {
+	// phpcs:ignore WordPress.Security.NonceVerification.Missing -- nonce verified in handle_form_submission().
+	$slug = sanitize_key( wp_unslash( $_POST['designSystem'] ?? '' ) );
+	if ( $slug === '' ) {
+		return;
+	}
+	\AWT\Theme\Settings\set( 'designSystem.slug', $slug );
 }
 
 /**

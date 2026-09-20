@@ -2,14 +2,19 @@
 /**
  * Registry — holds the design-system catalog and resolves the active one.
  *
- * §A "Design system abstraction". AWT registers Carbon at bootstrap; every
- * consumer (settings UI, wizard, block render.php files) resolves it through
- * Registry::get_active() rather than instantiating Carbon directly, so there
- * is exactly one resolution path to reason about and to reset in tests.
+ * §A "Design system abstraction". AWT registers Carbon at bootstrap, plus one
+ * LockedPremiumSystem placeholder per system reserved for AWT Premium, so the
+ * selector can show the whole catalogue. AWT Premium registers real
+ * implementations later under the same slugs; register() replaces the
+ * placeholder atomically. Every consumer (settings UI, wizard, block
+ * render.php files) resolves the active system through Registry::get_active()
+ * rather than instantiating Carbon directly, so there is exactly one
+ * resolution path to reason about and to reset in tests.
  *
  * The active selection is read from awt_theme_settings.designSystem.slug, defaulting
  * to 'carbon'. An unknown or unavailable slug falls back to Carbon so the
- * site never renders without a design system.
+ * site never renders without a design system — that is what keeps a locked
+ * slug from ever becoming active.
  *
  * @package AWT\Theme
  */
@@ -152,5 +157,54 @@ function classes_for( string $component, array $variants = array() ): string {
  * the inserter filter, etc.).
  */
 function bootstrap(): void {
+	$premium_url = 'https://useawt.com/premium';
+
+	// Carbon is the one real system AWT Free ships. The rest are locked
+	// placeholders so the selector can show the whole catalogue; AWT Premium
+	// registers real implementations later under the same slugs and
+	// Registry::register() replaces each placeholder atomically.
 	Registry::register( new Carbon() );
+	Registry::register(
+		new LockedPremiumSystem(
+			'uswds',
+			__( 'USWDS', 'awt' ),
+			__( "The U.S. government's design system.", 'awt' ),
+			$premium_url
+		)
+	);
+	Registry::register(
+		new LockedPremiumSystem(
+			'bootstrap',
+			__( 'Bootstrap 5', 'awt' ),
+			__( "The world's most popular CSS framework.", 'awt' ),
+			$premium_url
+		)
+	);
+	Registry::register(
+		new LockedPremiumSystem(
+			'govuk',
+			__( 'GOV.UK Frontend', 'awt' ),
+			__( "The UK government's design system.", 'awt' ),
+			$premium_url
+		)
+	);
+	Registry::register(
+		new LockedPremiumSystem(
+			'ecl',
+			__( 'ECL', 'awt' ),
+			__( "Europa Component Library — the European Commission's design system.", 'awt' ),
+			$premium_url
+		)
+	);
+
+	// Catch-all "More" tile: invites requests for design systems not yet on
+	// the list. No premium_url — it carries its own contact prompt instead of
+	// the shared upgrade CTA.
+	Registry::register(
+		new LockedPremiumSystem(
+			'more',
+			__( 'More', 'awt' ),
+			__( 'More accessible design systems are coming soon. To request one, email hello@useawt.com.', 'awt' )
+		)
+	);
 }

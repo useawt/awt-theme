@@ -45,14 +45,18 @@ class Carbon implements DesignSystemInterface {
 	public function name(): string {
 		return __( 'Carbon', 'awt' ); }
 
-	/** One-line description for the Design system settings tab. */
+	/** One-line description for the Design system selector card. */
 	public function description(): string {
 		return __( "IBM's open-source design system for products and digital experiences.", 'awt' );
 	}
 
-	/** Whether this system is selectable. Always true. */
+	/** Whether this system is selectable. Always true — Carbon ships with AWT Free. */
 	public function is_available(): bool {
 		return true; }
+
+	/** Upgrade-CTA URL for locked tiles. Null — Carbon is not a placeholder. */
+	public function premium_url(): ?string {
+		return null; }
 
 	/*
 	====================================================================

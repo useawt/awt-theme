@@ -11,7 +11,7 @@
  *
  * The interface groups its methods into wrapped surfaces:
  *
- *   1. Identity            — slug / name / description / availability
+ *   1. Identity            — slug / name / description / availability / CTA URL
  *   2. Visual tokens       — palette / typography / spacing
  *   3. Style variations    — light/dark pairings
  *   4. Header presets      — composition markup + preview SVG + icon catalogue
@@ -45,11 +45,14 @@ interface DesignSystemInterface {
 	/** Human-readable name, e.g. 'Carbon'. Used as the per-system AWT-Settings tab label. */
 	public function name(): string;
 
-	/** One-line description for the Design system settings tab. */
+	/** One-line description for the Design system selector card. */
 	public function description(): string;
 
-	/** Whether the system can be made active. Registry::get_active() only ever returns an available system. */
+	/** False for locked placeholders; true for a real, selectable system. Registry::get_active() only ever returns an available system. */
 	public function is_available(): bool;
+
+	/** Upgrade-CTA URL for locked tiles; null for available systems. */
+	public function premium_url(): ?string;
 
 	/* --- 2. Visual tokens ----------------------------------------------- */
 

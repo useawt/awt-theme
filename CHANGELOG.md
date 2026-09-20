@@ -10,6 +10,13 @@
      markdownlint enforces the structure in CI. Newest release first.
      The Unreleased section accumulates entries between releases. -->
 
+## Unreleased
+
+### [New]
+
+- Settings → Design system lists the design systems AWT will support. Carbon
+  is the one you can pick today; the rest are marked as coming to AWT Premium.
+
 ## 2026.09.25 — 2026-09-20
 
 ### [Improvement]

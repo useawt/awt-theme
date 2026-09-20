@@ -29,6 +29,7 @@ require_once __DIR__ . '/inc/upgrade.php';
 // delegating to Registry::get_active().
 require_once __DIR__ . '/inc/design-system/interface.php';
 require_once __DIR__ . '/inc/design-system/carbon.php';
+require_once __DIR__ . '/inc/design-system/locked-premium.php';
 require_once __DIR__ . '/inc/design-system/registry.php';
 require_once __DIR__ . '/inc/contrast.php';
 require_once __DIR__ . '/inc/header-presets.php';
