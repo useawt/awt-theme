@@ -10,6 +10,12 @@
      markdownlint enforces the structure in CI. Newest release first.
      The Unreleased section accumulates entries between releases. -->
 
+## Unreleased
+
+### [Improvement]
+
+- The footer credit reads "Built with AWT, an accessible WordPress theme."
+
 ## 2026.09.23 — 2026-09-20
 
 ### [Improvement]
