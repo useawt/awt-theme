@@ -260,6 +260,9 @@ Reports about real barriers are treated as bugs, not feature requests.
 == Changelog ==
 
 <!-- CHANGELOG_START -->
+= 2026.09.24 — 2026-09-20 =
+* [Improvement] The footer credit reads "Built with AWT, an accessible WordPress theme."
+
 = 2026.09.23 — 2026-09-20 =
 * [Improvement] The automatic breadcrumb lines up with the page on templates whose main area has no side padding of its own, including the theme's own "Page without title". The trail sat against the edge of the screen on any window narrower than the content width.
 
@@ -286,9 +289,6 @@ Reports about real barriers are treated as bugs, not feature requests.
 * [A11y] The editor shows your own colour scheme again. On a dark desktop a site that follows the visitor's setting showed the page's light backgrounds behind dark-mode text, which left the content nearly unreadable while editing.
 
 = 2026.09.15 — 2026-09-18 =
-* [Improvement] No changes in the theme itself. It carries the same version number as AWT Blocks, which has changes in this release.
-
-= 2026.09.14 — 2026-09-18 =
 * [Improvement] No changes in the theme itself. It carries the same version number as AWT Blocks, which has changes in this release.
 <!-- CHANGELOG_END -->
 
