@@ -260,6 +260,10 @@ Reports about real barriers are treated as bugs, not feature requests.
 == Changelog ==
 
 <!-- CHANGELOG_START -->
+= 2026.09.28 — 2026-09-20 =
+* [Improvement] Sub-lists are indented by the same amount as the design system they follow. They were indented half as far again, and a list marked as a sub-list on its own was barely indented at all.
+* [Improvement] Header buttons mark focus in the same colour as every other control on the site.
+
 = 2026.09.27 — 2026-09-20 =
 * [Improvement] No changes in the theme itself. It carries the same version number as AWT Blocks, which has changes in this release.
 
@@ -287,9 +291,6 @@ Reports about real barriers are treated as bugs, not feature requests.
 = 2026.09.19 — 2026-09-19 =
 * [A11y] Every header control stays on a narrow screen. With a logo in the header, the last icon on the right sat off the side of a 320px screen with no way to reach it; the logo now scales down instead.
 * [A11y] A button with a long label stays inside the column it is in. It could stick out past the edge of a phone screen and take the page's sideways scrolling with it.
-
-= 2026.09.18 — 2026-09-19 =
-* [Improvement] The open vertical tab joins its panel. It kept a line down its right side, so it read as a box beside the panel rather than the open part of it.
 <!-- CHANGELOG_END -->
 
 == Upgrade Notice ==
