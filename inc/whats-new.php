@@ -160,11 +160,16 @@ function merge_changelogs( array $sources ): ?array {
 /**
  * Whether a release carries [Security] or [Breaking] entries.
  *
+ * `A11y` joined `Security` and `Breaking` on 2026-09-21. If a fix is
+ * important enough to install on somebody's site without asking — and since
+ * that release, it is — then it is important enough to stay on screen until
+ * they have read what it changed.
+ *
  * @param array $release One release from the changelog JSON.
  */
 function is_high_severity( array $release ): bool {
 	foreach ( (array) ( $release['entries'] ?? array() ) as $entry ) {
-		if ( in_array( $entry['severity'] ?? '', array( 'Security', 'Breaking' ), true ) ) {
+		if ( in_array( $entry['severity'] ?? '', array( 'Security', 'A11y', 'Breaking' ), true ) ) {
 			return true;
 		}
 	}

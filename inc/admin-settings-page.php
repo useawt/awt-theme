@@ -2195,7 +2195,7 @@ function render_updates_section(): void {
 	</p>
 
 	<p class="awt-field-help">
-		<?php esc_html_e( 'A version that changes something you may need to look at is the exception. AWT never installs one of those on its own — it tells you, and you install it with one button. You can change any of this below.', 'awt' ); ?>
+		<?php esc_html_e( 'The exception is a version that comes with changes that could affect your site. AWT does not automatically update itself to one of those — it tells you, and you install it with one button. You can change any of this below.', 'awt' ); ?>
 	</p>
 
 	<p class="awt-field-help">
@@ -2222,7 +2222,7 @@ function render_updates_section(): void {
 					$modes        = array(
 						'auto'   => array(
 							__( 'Keep AWT up to date automatically', 'awt' ),
-							__( 'New versions install themselves three days after release. A version that changes something you may need to look at never installs on its own — AWT tells you instead, and you install it with one button.', 'awt' ),
+							__( 'New versions install themselves three days after release. The exception is a version that comes with changes that could affect your site: AWT does not automatically update itself to one of those, it tells you instead, and you install it with one button.', 'awt' ),
 						),
 						'notify' => array(
 							__( 'Tell me, and I will update myself', 'awt' ),
