@@ -134,4 +134,82 @@ class Test_Whats_New extends WP_UnitTestCase {
 			\AWT\Theme\WhatsNew\read_changelog_file( '/definitely/not/a/file.json' )
 		);
 	}
+
+	/* ------------------------------------------- pinning, and edited parts */
+
+	/**
+	 * An accessibility fix pins like a security one.
+	 *
+	 * Added 2026-09-21, when AWT started installing its own updates: if a fix
+	 * is important enough to put on somebody's site without asking, it is
+	 * important enough to stay on screen until they have read what it did.
+	 */
+	public function test_an_accessibility_release_is_high_severity(): void {
+		$release = array( 'entries' => array( array( 'severity' => 'A11y' ) ) );
+
+		$this->assertTrue( \AWT\Theme\WhatsNew\is_high_severity( $release ) );
+	}
+
+	/** An ordinary release still is not. */
+	public function test_an_ordinary_release_is_not_high_severity(): void {
+		$release = array(
+			'entries' => array(
+				array( 'severity' => 'Improvement' ),
+				array( 'severity' => 'New' ),
+			),
+		);
+
+		$this->assertFalse( \AWT\Theme\WhatsNew\is_high_severity( $release ) );
+	}
+
+	/** A site with nothing edited is told nothing. */
+	public function test_no_note_when_nothing_has_been_edited(): void {
+		ob_start();
+		\AWT\Theme\WhatsNew\render_customized_parts_note();
+
+		$this->assertSame( '', trim( (string) ob_get_clean() ) );
+	}
+
+	/**
+	 * A site that edited its header is told what that costs.
+	 *
+	 * The edit is kept through every update, which is the point — and by the
+	 * same mechanism it stops receiving AWT's changes to that part. Saying so
+	 * is the whole of the answer: knowing *which* fix touched a header would
+	 * mean tagging every entry with the markup it changed.
+	 */
+	public function test_an_edited_part_is_named(): void {
+		$part = self::factory()->post->create(
+			array(
+				'post_type'   => 'wp_template_part',
+				'post_title'  => 'header',
+				'post_name'   => 'header',
+				'post_status' => 'publish',
+			)
+		);
+		wp_set_object_terms( $part, get_stylesheet(), 'wp_theme' );
+
+		$this->assertSame( array( 'header' ), \AWT\Theme\WhatsNew\customized_parts() );
+
+		ob_start();
+		\AWT\Theme\WhatsNew\render_customized_parts_note();
+		$html = (string) ob_get_clean();
+
+		$this->assertStringContainsString( 'header', $html );
+		$this->assertStringContainsString( 'do not reach them', $html );
+	}
+
+	/** Another theme's parts are not this theme's problem. */
+	public function test_another_themes_parts_are_ignored(): void {
+		$part = self::factory()->post->create(
+			array(
+				'post_type'   => 'wp_template_part',
+				'post_title'  => 'header',
+				'post_status' => 'publish',
+			)
+		);
+		wp_set_object_terms( $part, 'twentytwentyfive', 'wp_theme' );
+
+		$this->assertSame( array(), \AWT\Theme\WhatsNew\customized_parts() );
+	}
 }

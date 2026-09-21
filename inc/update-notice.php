@@ -46,6 +46,7 @@ const REPORT_FOR = 5 * DAY_IN_SECONDS;
 const PATIENCE = 14 * DAY_IN_SECONDS;
 
 add_action( 'automatic_updates_complete', __NAMESPACE__ . '\\record_automatic_run' );
+add_filter( 'auto_plugin_theme_update_email', __NAMESPACE__ . '\\rewrite_failure_email', 10, 4 );
 add_action( 'admin_notices', __NAMESPACE__ . '\\render' );
 
 /**
@@ -81,6 +82,78 @@ function record_automatic_run( $results ): void {
 			return;
 		}
 	}
+}
+
+/**
+ * Replace the email WordPress sends when AWT fails to update itself.
+ *
+ * Core's version says: *"The following plugins failed to update. If there was
+ * a fatal error in the update, the previously installed version has been
+ * restored."* For AWT that is almost always untrue — there was no fatal error
+ * and nothing was restored — and it arrives unprompted in a site owner's
+ * inbox saying their site may be broken. Meanwhile AWT's own explanation goes
+ * into the background upgrade log, which nobody reads.
+ *
+ * Only the failure email is touched. Core's success email is fine as it is,
+ * and rewriting it would be effort spent on a message that already works.
+ *
+ * When something other than AWT failed in the same run, core's text is left
+ * alone and ours is added to it: the sentence about restoring is accurate
+ * enough for an ordinary plugin, and it is not this code's business to
+ * rewrite what core says about somebody else's.
+ *
+ * @param array  $email  Subject, body, headers and recipient.
+ * @param string $type   'success', 'fail', 'mixed' or 'critical'.
+ * @param array  $ok     Items that updated.
+ * @param array  $failed Items that did not.
+ * @return array The email to send.
+ */
+function rewrite_failure_email( $email, $type, $ok, $failed ) {
+	if ( ! is_array( $email ) || ! in_array( $type, array( 'fail', 'mixed', 'critical' ), true ) ) {
+		return $email;
+	}
+
+	$failed = (array) $failed;
+	$ours   = array();
+	foreach ( $failed as $item ) {
+		$name = (string) ( $item->item->theme ?? $item->item->slug ?? '' );
+		if ( $name === Updates\slug() || $name === 'awt-blocks' ) {
+			$ours[] = (string) ( $item->item->new_version ?? '' );
+		}
+	}
+	if ( ! $ours ) {
+		return $email;
+	}
+
+	$version   = (string) reset( $ours );
+	$installed = \AWT\Theme\AWT_THEME_VERSION;
+	$updates   = admin_url( 'update-core.php' );
+
+	$ours_said = sprintf(
+		/* translators: 1: version AWT tried to install. 2: version still running. */
+		__( 'AWT tried to install version %1$s and could not. Your site is still on %2$s and is working normally — nothing was changed and nothing was lost.', 'awt' ),
+		$version,
+		$installed
+	) . "\n\n" . sprintf(
+		/* translators: %s: URL of the Updates screen. */
+		__( 'You can install it yourself here: %s', 'awt' ),
+		$updates
+	) . "\n\n" . __( 'If it keeps failing, your host may not allow WordPress to install files. Your hosting control panel is the place to check.', 'awt' );
+
+	// Something else failed too, so core still has accurate things to say.
+	if ( count( $failed ) > count( $ours ) ) {
+		$email['body'] = (string) ( $email['body'] ?? '' ) . "\n\n" . $ours_said;
+		return $email;
+	}
+
+	$email['subject'] = sprintf(
+		/* translators: %s: site name. */
+		__( '[%s] AWT could not update itself', 'awt' ),
+		wp_specialchars_decode( (string) get_bloginfo( 'name' ), ENT_QUOTES )
+	);
+	$email['body'] = $ours_said;
+
+	return $email;
 }
 
 /**

@@ -304,6 +304,65 @@ function handle_ack(): void {
 }
 
 /**
+ * The parts of this site that have been edited, and so stopped following AWT.
+ *
+ * The moment somebody edits a header or footer in the Site Editor, WordPress
+ * saves a copy of it in the database, and from then on that copy is what the
+ * site renders. Their work is safe from every future update, which is the
+ * point — and by exactly the same mechanism it stops receiving ours. An
+ * accessibility fix to header markup never reaches a site whose header was
+ * customized.
+ *
+ * @return string[] Human names of the customized parts, newest first.
+ */
+function customized_parts(): array {
+	$posts = get_posts(
+		array(
+			'post_type'      => 'wp_template_part',
+			'post_status'    => array( 'publish' ),
+			'posts_per_page' => 20,
+			'no_found_rows'  => true,
+			'tax_query'      => array( // phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_tax_query -- the only way to ask which parts belong to this theme.
+				array(
+					'taxonomy' => 'wp_theme',
+					'field'    => 'name',
+					'terms'    => get_stylesheet(),
+				),
+			),
+		)
+	);
+
+	$names = array();
+	foreach ( $posts as $post ) {
+		$title   = trim( (string) $post->post_title );
+		$names[] = $title !== '' ? $title : (string) $post->post_name;
+	}
+	return $names;
+}
+
+/**
+ * Say so, once, above the notes.
+ *
+ * Not per release: knowing *which* fix touched a header would mean tagging
+ * every entry with the markup it changed, and a guess dressed up as a fact is
+ * worse than a plain standing statement.
+ */
+function render_customized_parts_note(): void {
+	$parts = customized_parts();
+	if ( ! $parts ) {
+		return;
+	}
+
+	echo '<div class="notice notice-info inline"><p>';
+	printf(
+		/* translators: %s: comma-separated list of edited parts, e.g. "Header, Footer". */
+		esc_html__( 'You have edited these parts of your site: %s. Your edits are kept through every update — and for the same reason, changes AWT makes to those parts do not reach them. If a fix below is about one of them, you may need to make the same change yourself.', 'awt' ),
+		'<strong>' . esc_html( implode( ', ', $parts ) ) . '</strong>'
+	);
+	echo '</p></div>';
+}
+
+/**
  * Render one release's entries as a definition-style list.
  *
  * @param array $release One release from the changelog JSON.
@@ -358,6 +417,8 @@ function render_tab(): void {
 	update_user_meta( get_current_user_id(), SEEN_META, (string) $data['currentVersion'] );
 
 	echo '<h2>' . esc_html__( 'What\'s new in AWT', 'awt' ) . '</h2>';
+
+	render_customized_parts_note();
 
 	if ( $pinned ) {
 		echo '<div class="awt-whats-new-pinned" role="region" aria-label="' . esc_attr__( 'Important release notes', 'awt' ) . '">';

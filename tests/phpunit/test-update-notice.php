@@ -313,4 +313,96 @@ class Test_Update_Notice extends WP_UnitTestCase {
 		$this->assertStringContainsString( '2026.09.29', $text );
 		$this->assertStringContainsString( '2026.09.28', $text );
 	}
+
+	/* --------------------------------------------- the email core would send */
+
+	/**
+	 * A failed AWT update produces our email, not core's.
+	 *
+	 * Core's says: *"If there was a fatal error in the update, the previously
+	 * installed version has been restored."* For AWT that is almost always
+	 * untrue, and it lands unprompted in an inbox telling somebody their site
+	 * may be broken.
+	 */
+	public function test_our_words_replace_core_s_when_only_awt_failed(): void {
+		$email = UpdateNotice\rewrite_failure_email(
+			array(
+				'subject' => 'Some plugins and themes have failed to update',
+				'body'    => 'If there was a fatal error in the update, the previously installed version has been restored.',
+			),
+			'fail',
+			array(),
+			array( $this->failure( 'awt', '2099.01.0' ) )
+		);
+
+		$this->assertStringContainsString( 'AWT could not update itself', $email['subject'] );
+		$this->assertStringNotContainsString( 'fatal error', $email['body'] );
+		$this->assertStringContainsString( 'working normally', $email['body'] );
+		$this->assertStringContainsString( '2099.01.0', $email['body'] );
+	}
+
+	/**
+	 * When something else failed too, core keeps its say and we add ours.
+	 *
+	 * Core's sentence is accurate enough for an ordinary plugin, and it is
+	 * not our business to rewrite what it says about somebody else's.
+	 */
+	public function test_core_keeps_its_say_when_another_plugin_failed_too(): void {
+		$email = UpdateNotice\rewrite_failure_email(
+			array(
+				'subject' => 'Some plugins and themes have failed to update',
+				'body'    => 'CORE TEXT',
+			),
+			'fail',
+			array(),
+			array( $this->failure( 'awt', '2099.01.0' ), $this->failure( 'akismet', '5.0' ) )
+		);
+
+		$this->assertSame( 'Some plugins and themes have failed to update', $email['subject'] );
+		$this->assertStringContainsString( 'CORE TEXT', $email['body'] );
+		$this->assertStringContainsString( 'AWT tried to install', $email['body'] );
+	}
+
+	/** A run that did not involve AWT is left entirely alone. */
+	public function test_someone_else_s_failure_is_not_ours_to_rewrite(): void {
+		$original = array(
+			'subject' => 'Some plugins and themes have failed to update',
+			'body'    => 'CORE TEXT',
+		);
+
+		$this->assertSame(
+			$original,
+			UpdateNotice\rewrite_failure_email( $original, 'fail', array(), array( $this->failure( 'akismet', '5.0' ) ) )
+		);
+	}
+
+	/** The success email is core's, and stays core's. */
+	public function test_the_success_email_is_left_alone(): void {
+		$original = array(
+			'subject' => 'Some plugins and themes were automatically updated',
+			'body'    => 'CORE TEXT',
+		);
+
+		$this->assertSame(
+			$original,
+			UpdateNotice\rewrite_failure_email( $original, 'success', array( $this->failure( 'awt', '1' ) ), array() )
+		);
+	}
+
+	/**
+	 * One entry in the shape core hands to the email filter.
+	 *
+	 * @param string $slug    Theme directory or plugin slug.
+	 * @param string $version Version it was trying to reach.
+	 * @return object A result row.
+	 */
+	private function failure( string $slug, string $version ): object {
+		return (object) array(
+			'item' => (object) array(
+				'theme'       => $slug,
+				'slug'        => $slug,
+				'new_version' => $version,
+			),
+		);
+	}
 }
