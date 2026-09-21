@@ -225,6 +225,19 @@ function state(): array {
 		return array( 'id' => 'checks-off' );
 	}
 
+	// Before anything about installing: does this site install at all? A site
+	// whose files arrive by a deploy is not going to be told how to upload a
+	// zip, and it is not misconfigured for refusing to.
+	if ( Updates\deployed_from_source() ) {
+		$data   = Updates\manifest();
+		$newest = is_array( $data ) ? (string) ( $data['version'] ?? '' ) : '';
+		return array(
+			'id'      => 'deployed',
+			'version' => $versions['theme'],
+			'newest'  => ( $newest !== '' && version_compare( $versions['theme'], $newest, '<' ) ) ? $newest : '',
+		);
+	}
+
 	if ( $mode === 'auto' && ! Updates\package_folder_matches() ) {
 		return array(
 			'id'       => 'wrong-folder',
@@ -346,7 +359,7 @@ function render(): void {
 		return;
 	}
 
-	$quiet = in_array( $state['id'], array( 'current', 'checks-off' ), true );
+	$quiet = in_array( $state['id'], array( 'current', 'checks-off', 'deployed' ), true );
 	if ( $quiet && ! on_a_home_screen() ) {
 		return;
 	}
@@ -405,6 +418,27 @@ function message( array $state ): ?array {
 					/* translators: %s: link to the settings screen. */
 					esc_html__( 'AWT is not checking for updates. You will not be told when a new version is out, including security and accessibility fixes. %s', 'awt' ),
 					'<a href="' . esc_url( $settings ) . '">' . esc_html__( 'Turn checks on', 'awt' ) . '</a>'
+				),
+			);
+
+		case 'deployed':
+			if ( $state['newest'] !== '' ) {
+				return array(
+					'level' => 'info',
+					'text'  => sprintf(
+						/* translators: 1: the version this site runs. 2: the newest published version. */
+						esc_html__( 'This site is on AWT %1$s and is updated by its own deployment, not by WordPress. %2$s has been released.', 'awt' ),
+						'<strong>' . esc_html( (string) $state['version'] ) . '</strong>',
+						'<strong>' . esc_html( (string) $state['newest'] ) . '</strong>'
+					),
+				);
+			}
+			return array(
+				'level' => 'info',
+				'text'  => sprintf(
+					/* translators: %s: the version this site runs. */
+					esc_html__( 'This site is on AWT %s and is updated by its own deployment, not by WordPress.', 'awt' ),
+					'<strong>' . esc_html( (string) $state['version'] ) . '</strong>'
 				),
 			);
 

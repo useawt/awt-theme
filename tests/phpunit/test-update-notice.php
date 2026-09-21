@@ -52,6 +52,7 @@ class Test_Update_Notice extends WP_UnitTestCase {
 		delete_site_transient( Updates\CACHE_KEY );
 		remove_all_filters( 'awt_update_environment' );
 		remove_all_filters( 'automatic_updater_disabled' );
+		remove_all_filters( 'awt_deployed_from_source' );
 		Settings\set( 'updates.mode', 'auto' );
 		parent::tear_down();
 	}
@@ -146,6 +147,50 @@ class Test_Update_Notice extends WP_UnitTestCase {
 		Settings\set( 'updates.mode', 'off' );
 
 		$this->assertSame( 'checks-off', UpdateNotice\state()['id'] );
+	}
+
+	/**
+	 * A site whose files arrive by a deploy is told that, and nothing else.
+	 *
+	 * All three AWT sites are deployed from source, and the first version of
+	 * this ordering checked the folder name first — so `accessibilitycloud.com`
+	 * was told to download a zip and upload it, on a site where nobody ever
+	 * does that and where the folder name is a deliberate line in its deploy
+	 * script. "Does this site install updates at all?" has to come before
+	 * "would an update land in the right place?".
+	 */
+	public function test_a_site_deployed_from_source_is_told_only_that(): void {
+		add_filter( 'awt_deployed_from_source', '__return_true' );
+
+		$state = UpdateNotice\state();
+
+		$this->assertSame( 'deployed', $state['id'] );
+		$this->assertStringContainsString( 'own deployment', UpdateNotice\message( $state )['text'] );
+	}
+
+	/** Even when the folder would not match, which is not its problem. */
+	public function test_a_deployed_site_is_not_nagged_about_its_folder(): void {
+		add_filter( 'awt_deployed_from_source', '__return_true' );
+		$this->announce( '2099.01.0' );
+		$data                  = get_site_transient( Updates\CACHE_KEY );
+		$data['theme']['slug'] = 'somewhere-else';
+		set_site_transient( Updates\CACHE_KEY, $data, HOUR_IN_SECONDS );
+
+		$state = UpdateNotice\state();
+
+		$this->assertSame( 'deployed', $state['id'] );
+		$this->assertNotSame( 'wrong-folder', $state['id'] );
+	}
+
+	/** But it is still told when a newer version exists, so somebody deploys it. */
+	public function test_a_deployed_site_hears_about_a_new_version(): void {
+		add_filter( 'awt_deployed_from_source', '__return_true' );
+		$this->announce( '2099.01.0' );
+
+		$state = UpdateNotice\state();
+
+		$this->assertSame( '2099.01.0', $state['newest'] );
+		$this->assertStringContainsString( '2099.01.0', UpdateNotice\message( $state )['text'] );
 	}
 
 	/**
