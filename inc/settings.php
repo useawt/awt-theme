@@ -28,6 +28,8 @@ declare( strict_types = 1 );
 
 namespace AWT\Theme\Settings;
 
+use AWT\Theme\Upgrade;
+
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
@@ -312,7 +314,14 @@ function all(): array {
 	if ( $cache !== null ) {
 		return $cache;
 	}
-	$raw = get_option( OPTION_KEY, array() );
+	$raw = get_option( OPTION_KEY, false );
+	if ( false === $raw ) {
+		// Nothing under the current name. On a site that has not had an admin
+		// page load since it updated — which is every site that updated itself
+		// — the settings are still under the old one, and reading defaults here
+		// would serve visitors a site its owner never configured.
+		$raw = Upgrade\legacy_option( OPTION_KEY );
+	}
 	if ( is_string( $raw ) ) {
 		// Stored as a JSON string (the persisted form). Decode.
 		$decoded = json_decode( $raw, true );

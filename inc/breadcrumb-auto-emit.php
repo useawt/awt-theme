@@ -21,6 +21,8 @@ declare( strict_types = 1 );
 
 namespace AWT\Theme\Breadcrumb;
 
+use AWT\Theme\Upgrade;
+
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
@@ -95,7 +97,11 @@ function is_enabled(): bool {
 	// `awt_theme_hide_breadcrumb` meta). This wins over the site-wide setting.
 	if ( is_singular() ) {
 		$post = get_queried_object();
-		if ( $post instanceof \WP_Post && get_post_meta( $post->ID, META_HIDE, true ) ) {
+		// The legacy read matters on a site that updated itself: the meta
+		// rename waits for admin_init, and hiding a breadcrumb is visible.
+		if ( $post instanceof \WP_Post
+			&& ( get_post_meta( $post->ID, META_HIDE, true )
+				|| Upgrade\legacy_post_meta( $post->ID, META_HIDE ) ) ) {
 			return false;
 		}
 	}

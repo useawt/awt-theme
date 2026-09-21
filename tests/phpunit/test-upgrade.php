@@ -185,4 +185,81 @@ class Test_Upgrade extends WP_UnitTestCase {
 		$this->assertSame( 'auto', Settings\get( 'identity.brandMode' ), 'the v1 -> v2 migration still applies on read' );
 		$this->assertSame( 2, Settings\get( 'schemaVersion' ) );
 	}
+
+	/* ------------------------------------ before the rename has had a chance */
+
+	/**
+	 * The gap these cover.
+	 *
+	 * `run()` is on `admin_init`. An automatic update lands with nobody logged
+	 * in, so until somebody opens wp-admin the rename has not happened — and
+	 * every assertion below describes what a *visitor* is served in that
+	 * window. Before 2026-09-21 each one returned the default instead.
+	 */
+
+	/** Settings are read from the old option name until the rename runs. */
+	public function test_settings_are_served_from_the_legacy_option_before_the_rename(): void {
+		update_option(
+			'awt_settings',
+			wp_json_encode(
+				array(
+					'schemaVersion' => 2,
+					'identity'      => array( 'logoUrl' => 'https://example.com/logo.png' ),
+				)
+			)
+		);
+		delete_option( Settings\OPTION_KEY );
+		Settings\flush_cache();
+
+		$this->assertSame( 'https://example.com/logo.png', Settings\get( 'identity.logoUrl' ) );
+	}
+
+	/** A saved row under the current name always wins over a stale legacy one. */
+	public function test_the_current_option_wins_over_a_stale_legacy_row(): void {
+		update_option( 'awt_settings', wp_json_encode( array( 'identity' => array( 'logoUrl' => 'https://example.com/old.png' ) ) ) );
+		update_option( Settings\OPTION_KEY, wp_json_encode( array( 'identity' => array( 'logoUrl' => 'https://example.com/new.png' ) ) ) );
+		Settings\flush_cache();
+
+		$this->assertSame( 'https://example.com/new.png', Settings\get( 'identity.logoUrl' ) );
+	}
+
+	/** A page's language choice survives the window. */
+	public function test_legacy_post_meta_is_read_before_the_rename(): void {
+		$post = self::factory()->post->create();
+		update_post_meta( $post, 'awt_page_lang', 'fr' );
+
+		$this->assertSame( 'fr', Upgrade\legacy_post_meta( $post, 'awt_theme_page_lang' ) );
+		$this->assertSame( 'fr', Upgrade\legacy_post_meta( $post, AWT\Theme\PageLanguage\META_KEY ) );
+	}
+
+	/** So does a hidden breadcrumb. */
+	public function test_legacy_hide_breadcrumb_meta_is_read_before_the_rename(): void {
+		$post = self::factory()->post->create();
+		update_post_meta( $post, 'awt_hide_breadcrumb', '1' );
+
+		$this->assertSame( '1', Upgrade\legacy_post_meta( $post, AWT\Theme\Breadcrumb\META_HIDE ) );
+	}
+
+	/** A key with no legacy name answers empty rather than guessing one. */
+	public function test_a_key_with_no_legacy_name_reads_as_empty(): void {
+		$post = self::factory()->post->create();
+
+		$this->assertSame( '', Upgrade\legacy_post_meta( $post, 'awt_theme_invented_key' ) );
+		$this->assertFalse( Upgrade\legacy_option( 'awt_theme_invented_option' ) );
+	}
+
+	/** And once the rename has run, the fallback finds nothing to do. */
+	public function test_the_fallback_is_inert_after_the_rename(): void {
+		$post = self::factory()->post->create();
+		update_post_meta( $post, 'awt_page_lang', 'fr' );
+		update_option( 'awt_settings', wp_json_encode( array( 'identity' => array( 'logoUrl' => 'https://example.com/logo.png' ) ) ) );
+		delete_option( Settings\OPTION_KEY );
+
+		Upgrade\run();
+		Settings\flush_cache();
+
+		$this->assertFalse( Upgrade\legacy_option( Settings\OPTION_KEY ) );
+		$this->assertSame( '', Upgrade\legacy_post_meta( $post, AWT\Theme\PageLanguage\META_KEY ) );
+		$this->assertSame( 'https://example.com/logo.png', Settings\get( 'identity.logoUrl' ), 'still readable, now from the new name' );
+	}
 }

@@ -11,6 +11,17 @@
  * Nothing here adds a database option: the marker that says "done" is the
  * schema version inside the settings payload, which already exists.
  *
+ * **The rename alone is not enough, and `legacy_option()` /
+ * `legacy_post_meta()` below are why.** `run()` is on `admin_init`, so
+ * between an update landing and the next wp-admin page load a site serves
+ * *defaults* to its visitors rather than the settings its owner saved. For a
+ * hand re-upload that window is effectively zero, because the upload happens
+ * in wp-admin and the very next screen closes it. For an automatic update it
+ * is the normal case: nobody is logged in, by definition, so the wrong
+ * skip-link text and the wrong header could be served for hours. The front
+ * end therefore reads through those two helpers, which answer from the old
+ * name when the new one holds nothing.
+ *
  * @package AWT
  */
 
@@ -37,9 +48,45 @@ const LEGACY_USER_META = array(
 	'awt_whats_new_seen' => 'awt_theme_whats_new_seen',
 );
 
-// admin_init, not init: this reads and writes, and there is no reason to make
-// every visitor pay for it. An author reaches the admin long before the
-// difference could matter.
+/**
+ * The value a site may still hold under an option's old name.
+ *
+ * Costs nothing on a site that has been renamed, because the caller only
+ * reaches this when the current name returned nothing — which, one admin page
+ * load after an update, is never again.
+ *
+ * @param string $current The current option name.
+ * @return mixed The legacy value, or false when there is no legacy row.
+ */
+function legacy_option( string $current ) {
+	$old = array_search( $current, LEGACY_OPTIONS, true );
+	if ( false === $old ) {
+		return false;
+	}
+	return get_option( $old, false );
+}
+
+/**
+ * The value a site may still hold under a post meta key's old name.
+ *
+ * Free in practice: WordPress primes the whole meta cache for the queried
+ * post in one query, so reading a second key off it adds none.
+ *
+ * @param int    $post_id Post to read.
+ * @param string $current The current meta key.
+ * @return mixed The legacy value, or an empty string when there is none.
+ */
+function legacy_post_meta( int $post_id, string $current ) {
+	$old = array_search( $current, LEGACY_POST_META, true );
+	if ( false === $old ) {
+		return '';
+	}
+	return get_post_meta( $post_id, $old, true );
+}
+
+// admin_init, not init: the rename reads and writes, and there is no reason to
+// make every visitor pay for it. The front end does not wait for it — it reads
+// through the two helpers above.
 add_action( 'admin_init', __NAMESPACE__ . '\\run' );
 
 /**

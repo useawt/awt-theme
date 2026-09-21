@@ -15,6 +15,8 @@ declare( strict_types = 1 );
 
 namespace AWT\Theme\PageLanguage;
 
+use AWT\Theme\Upgrade;
+
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
@@ -66,6 +68,11 @@ add_filter(
 		}
 		$lang = get_post_meta( $id, META_KEY, true );
 		$lang = is_string( $lang ) ? trim( $lang ) : '';
+		if ( $lang === '' ) {
+			// A site that updated itself has not run the meta rename yet.
+			$legacy = Upgrade\legacy_post_meta( $id, META_KEY );
+			$lang   = is_string( $legacy ) ? trim( $legacy ) : '';
+		}
 		if ( $lang === '' ) {
 			return $output;
 		}
