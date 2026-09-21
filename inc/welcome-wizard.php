@@ -435,6 +435,18 @@ function render_step_5(): void {
 			<td><?php echo $header_preset ? '<code>' . esc_html( $header_preset ) . '</code>' : '<em>' . esc_html__( 'Default (Marketing)', 'awt' ) . '</em>'; ?></td>
 		</tr>
 		<tr>
+			<?php
+			// AWT puts code on this site without asking each time, so the
+			// person setting it up is told once, here, in the recap they
+			// actually read. A whole wizard step would be more weight than it
+			// needs; the readme, the FAQ and the Tools tab carry the detail.
+			?>
+			<th scope="row"><?php esc_html_e( 'Updates', 'awt' ); ?></th>
+			<td>
+				<?php esc_html_e( 'AWT keeps itself up to date. New versions install three days after release; one that comes with changes that could affect your site waits for you instead.', 'awt' ); ?>
+			</td>
+		</tr>
+		<tr>
 			<th scope="row"><?php esc_html_e( 'Logo', 'awt' ); ?></th>
 			<td><?php echo $logo_url ? esc_html__( 'Configured', 'awt' ) : '<em>' . esc_html__( 'Site title only', 'awt' ) . '</em>'; ?></td>
 		</tr>
