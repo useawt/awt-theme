@@ -264,6 +264,9 @@ Reports about real barriers are treated as bugs, not feature requests.
 == Changelog ==
 
 <!-- CHANGELOG_START -->
+= 2026.09.31 — 2026-09-21 =
+* [Improvement] If AWT is installed in a folder with a different name than the one updates install into, it no longer tries to update itself, and tells you how to update by hand instead.
+
 = 2026.09.30 — 2026-09-21 =
 * [New] AWT now keeps itself up to date. New versions install three days after they are released, and the theme and the plugin always move together. A version that comes with changes that could affect your site is never installed for you — AWT tells you instead.
 * [New] Settings, Tools: choose how updates work. Keep AWT up to date automatically, be notified about new versions, or disable updates.
@@ -302,9 +305,6 @@ Reports about real barriers are treated as bugs, not feature requests.
 
 = 2026.09.22 — 2026-09-19 =
 * [A11y] The editor shows the colour scheme you chose on the site. If you had set the site to light while your computer was set to dark, you authored in dark against a light site — two settings, and the editor followed the one that was not about the site.
-
-= 2026.09.21 — 2026-09-19 =
-* [New] A warning when the AWT Blocks plugin is missing or turned off. Without it the theme's blocks do not appear on your pages or in the editor, and nothing said so. The warning offers a button to turn the plugin on, or the file to download when it is not installed.
 <!-- CHANGELOG_END -->
 
 == Upgrade Notice ==
