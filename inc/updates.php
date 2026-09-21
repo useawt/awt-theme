@@ -624,11 +624,14 @@ function fix_themes_screen_notice( $prepared ) {
  * would otherwise end at WordPress's own "Update package not available." —
  * true, and no help at all. This replaces it with the next step.
  *
- * A licensed AWT Premium site never reaches here: it has a package, so
- * WordPress downloads it and this filter passes the request straight through.
+ * **Nearly unreachable since 2026-09-21**, because every site now gets a
+ * package. What is left is the case where the manifest names a version with
+ * no zip attached to its release — which the publisher refuses to do, so it
+ * would take a half-published release to get here. The message has to be
+ * true in that case rather than describing the old free tier.
  *
  * @param mixed  $reply      False to carry on downloading.
- * @param string $package    The package URL, empty on the free tier.
+ * @param string $package    The package URL, empty when there is none to get.
  * @param object $upgrader   The upgrader running.
  * @param array  $hook_extra What is being updated.
  * @return mixed False, or a WP_Error explaining the manual step.
@@ -642,7 +645,7 @@ function explain_manual_update( $reply, $package, $upgrader, $hook_extra = array
 		'awt_manual_update',
 		sprintf(
 			/* translators: %s: URL of the update instructions. */
-			__( 'AWT does not install its own updates. Download the new version and upload it in Appearance, Themes, Add New Theme, Upload Theme, choosing "Replace current with uploaded". Step-by-step instructions: %s', 'awt' ),
+			__( 'This version of AWT cannot be downloaded automatically. Get it from the AWT website and upload it in Appearance, Themes, Add New Theme, Upload Theme, choosing "Replace current with uploaded". Your settings, pages and content are kept. %s', 'awt' ),
 			'https://useawt.com/faq/#updating'
 		)
 	);
