@@ -264,6 +264,18 @@ Reports about real barriers are treated as bugs, not feature requests.
 == Changelog ==
 
 <!-- CHANGELOG_START -->
+= 2026.09.30 — 2026-09-21 =
+* [New] AWT now keeps itself up to date. New versions install three days after they are released, and the theme and the plugin always move together. A version that comes with changes that could affect your site is never installed for you — AWT tells you instead.
+* [New] Settings, Tools: choose how updates work. Keep AWT up to date automatically, be notified about new versions, or disable updates.
+* [New] Settings, Tools: A new 'Check for updates' button.
+* [New] A box on your dashboard showing which version you are on and what changed in the last two releases.
+* [New] A line at the top of the admin saying where your site stands: up to date, an update waiting for you, the theme and plugin on different versions, or updates turned off.
+* [New] The AWT menu in the toolbar now says whether an update is coming on its own or needs you to install it.
+* [Improvement] After an update, your site keeps its own skip link text and per-page language straight away, instead of showing the defaults until someone next visits the admin pages.
+* [Improvement] If an automatic update fails, the email explains what happened.
+* [Improvement] What's new now shows the parts of your site you have edited, and says that AWT's changes to those parts do not reach them. Applies to header and footer.
+* [Improvement] Accessibility fixes stay pinned in What's new until you dismiss them, the same as security fixes.
+
 = 2026.09.29 — 2026-09-20 =
 * [A11y] A button in the header shows its focus ring again. In 2026.09.28 the ring was drawn in the same colour as the button underneath it, so keyboard users could not see where they were.
 * [A11y] The design systems that are not available yet are no longer dimmed, so every line on their cards is readable.
@@ -293,9 +305,6 @@ Reports about real barriers are treated as bugs, not feature requests.
 
 = 2026.09.21 — 2026-09-19 =
 * [New] A warning when the AWT Blocks plugin is missing or turned off. Without it the theme's blocks do not appear on your pages or in the editor, and nothing said so. The warning offers a button to turn the plugin on, or the file to download when it is not installed.
-
-= 2026.09.20 — 2026-09-19 =
-* [Improvement] The header stays under the WordPress admin bar on a phone. Below 600px the admin bar scrolls away with the page, and the header was left floating below the top of the screen with content showing through the gap. Only logged-in viewers ever saw this.
 <!-- CHANGELOG_END -->
 
 == Upgrade Notice ==
