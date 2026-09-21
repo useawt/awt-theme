@@ -351,6 +351,9 @@ function enqueue_assets( string $hook_suffix ): void {
 		   apply on self-form tabs like the welcome wizard. */
 		.awt-settings-page .form-table th { width: 240px; }
 		.awt-settings-page .awt-field-help { color: #646970; font-size: 13px; max-width: 50em; }
+		/* Sits under its radio label rather than beside it, indented past the control. */
+		.awt-settings-page .awt-updates-mode-help { display: block; margin-block-start: .25em; margin-inline-start: 1.9em; }
+		.awt-settings-page fieldset p { margin-block: 0 1em; }
 		.awt-logo-preview { display: block; block-size: 48px; inline-size: auto; max-inline-size: 280px; margin-block-start: 0.5em; padding: 8px; border: 1px solid #dcdcde; border-radius: 4px; background: #f6f7f7; box-sizing: content-box; }
 		.awt-logo-preview--dark { background: #161616; border-color: #393939; }
 		.awt-site-icon-preview { inline-size: 48px; block-size: 48px; object-fit: contain; }
@@ -2185,26 +2188,22 @@ function render_updates_section(): void {
 	<?php endif; ?>
 
 	<p class="awt-field-help">
-		<?php esc_html_e( 'WordPress tells you when a new AWT version is out, on Dashboard, Updates. AWT does not install it for you: download the new files and upload them. Your settings, pages and content are kept.', 'awt' ); ?>
+		<?php esc_html_e( 'AWT keeps itself up to date. A new version installs three days after it is released, so there is time to catch a bad one, and the theme and the plugin always move together.', 'awt' ); ?>
 	</p>
 
-	<ol class="awt-field-help">
-		<li>
-			<?php
-			printf(
-				/* translators: 1: opening link tag to the download page. 2: closing link tag. */
-				esc_html__( 'Download the latest theme and plugin files from %1$sthe AWT website%2$s.', 'awt' ),
-				'<a href="' . esc_url( DOWNLOAD_URL ) . '" target="_blank" rel="noopener">',
-				'<span class="screen-reader-text">' . esc_html__( '(opens in a new tab)', 'awt' ) . '</span></a>'
-			);
-			?>
-		</li>
-		<li><?php esc_html_e( 'Go to Plugins, Add Plugin, Upload Plugin. Choose the plugin file, then choose "Replace current with uploaded".', 'awt' ); ?></li>
-		<li><?php esc_html_e( 'Go to Appearance, Themes, Add New Theme, Upload Theme. Choose the theme file, then choose "Replace current with uploaded".', 'awt' ); ?></li>
-	</ol>
+	<p class="awt-field-help">
+		<?php esc_html_e( 'A version that changes something you may need to look at is the exception. AWT never installs one of those on its own — it tells you, and you install it with one button. You can change any of this below.', 'awt' ); ?>
+	</p>
 
 	<p class="awt-field-help">
-		<?php esc_html_e( 'Update both to the same version. Back up your site first, the way you would for any update.', 'awt' ); ?>
+		<?php
+		printf(
+			/* translators: 1: opening link tag to the download page. 2: closing link tag. */
+			esc_html__( 'Every version is also published on %1$sthe AWT website%2$s if you would rather install it by hand. Your settings, pages and content are kept either way.', 'awt' ),
+			'<a href="' . esc_url( DOWNLOAD_URL ) . '" target="_blank" rel="noopener">',
+			'<span class="screen-reader-text">' . esc_html__( '(opens in a new tab)', 'awt' ) . '</span></a>'
+		);
+		?>
 	</p>
 
 	<form method="post" action="<?php echo esc_url( admin_url( 'themes.php?page=' . MENU_SLUG . '&tab=tools' ) ); ?>">
@@ -2213,14 +2212,39 @@ function render_updates_section(): void {
 		<input type="hidden" name="awt_updates_submitted" value="1" />
 		<table class="form-table" role="presentation">
 			<tr>
-				<th scope="row"><label for="awt-updates-check"><?php esc_html_e( 'Check for updates', 'awt' ); ?></label></th>
+				<th scope="row"><?php esc_html_e( 'Keeping AWT up to date', 'awt' ); ?></th>
 				<td>
-					<label>
-						<input type="checkbox" id="awt-updates-check" name="updates[check]" value="1" <?php checked( (bool) Settings\get( 'updates.check' ) ); ?> />
-						<?php esc_html_e( 'Let this site ask useawt.com whether a newer AWT is out.', 'awt' ); ?>
-					</label>
+					<?php
+					$current_mode = (string) Settings\get( 'updates.mode' );
+					$modes        = array(
+						'auto'   => array(
+							__( 'Keep AWT up to date automatically', 'awt' ),
+							__( 'New versions install themselves three days after release. A version that changes something you may need to look at never installs on its own — AWT tells you instead, and you install it with one button.', 'awt' ),
+						),
+						'notify' => array(
+							__( 'Tell me, and I will update myself', 'awt' ),
+							__( 'You get the ordinary WordPress notice. Nothing installs until you say so.', 'awt' ),
+						),
+						'off'    => array(
+							__( 'Do not check for updates', 'awt' ),
+							__( 'This site makes no request to useawt.com on its own, so you will not be told when a new version is out — including security and accessibility fixes. You can still check by hand with the button below.', 'awt' ),
+						),
+					);
+					?>
+					<fieldset>
+						<legend class="screen-reader-text"><?php esc_html_e( 'Keeping AWT up to date', 'awt' ); ?></legend>
+						<?php foreach ( $modes as $value => $mode_copy ) : ?>
+							<p>
+								<label>
+									<input type="radio" name="updates[mode]" value="<?php echo esc_attr( $value ); ?>" <?php checked( $current_mode, $value ); ?> />
+									<strong><?php echo esc_html( $mode_copy[0] ); ?></strong>
+								</label>
+								<span class="awt-field-help awt-updates-mode-help"><?php echo esc_html( $mode_copy[1] ); ?></span>
+							</p>
+						<?php endforeach; ?>
+					</fieldset>
 					<p class="awt-field-help">
-						<?php esc_html_e( 'The new version check sends nothing about your site: no address, no version, no visitor data. It reads one file to determine the latest version.', 'awt' ); ?>
+						<?php esc_html_e( 'Asking useawt.com sends nothing about your site: no address, no version, no visitor data. It reads one file that is the same for everyone. The update itself is downloaded from GitHub, where AWT is published.', 'awt' ); ?>
 					</p>
 					<?php submit_button( __( 'Save', 'awt' ), 'secondary', 'submit', false ); ?>
 				</td>
@@ -2448,8 +2472,9 @@ function save_tab_tools(): void {
 	if ( empty( $_POST['awt_updates_submitted'] ) ) {
 		return;
 	}
-	// phpcs:ignore WordPress.Security.NonceVerification.Missing, WordPress.Security.ValidatedSanitizedInput.MissingUnslash, WordPress.Security.ValidatedSanitizedInput.InputNotSanitized -- nonce verified in handle_form_submission(); value only tested for truthiness.
-	Settings\set( 'updates.check', ! empty( $_POST['updates']['check'] ) );
+	// phpcs:ignore WordPress.Security.NonceVerification.Missing, WordPress.Security.ValidatedSanitizedInput.MissingUnslash, WordPress.Security.ValidatedSanitizedInput.InputNotSanitized -- nonce verified in handle_form_submission(); value sanitized on the next line.
+	$mode = isset( $_POST['updates']['mode'] ) ? sanitize_key( wp_unslash( $_POST['updates']['mode'] ) ) : '';
+	Settings\set( 'updates.mode', in_array( $mode, array( 'auto', 'notify', 'off' ), true ) ? $mode : 'auto' );
 	// The cached answer was fetched under the old setting. Drop it so turning
 	// the check back on takes effect now rather than in up to twelve hours.
 	delete_site_transient( \AWT\Theme\Updates\CACHE_KEY );
