@@ -34,6 +34,9 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 const MENU_SLUG = 'awt-settings';
 
+/** Holds what a hand-run update check just found, long enough to print it. */
+const CHECK_RESULT_KEY = 'awt_update_check_result';
+
 /**
  * The parent menu, and the screen hook WordPress derives from it.
  *
@@ -2249,6 +2252,35 @@ function render_updates_section(): void {
 					<?php submit_button( __( 'Save', 'awt' ), 'secondary', 'submit', false ); ?>
 				</td>
 			</tr>
+			<tr>
+				<th scope="row"><?php esc_html_e( 'Check now', 'awt' ); ?></th>
+				<td>
+					<?php submit_button( __( 'Check for updates', 'awt' ), 'secondary', 'awt_check_updates_now', false ); ?>
+					<p class="awt-field-help">
+						<?php esc_html_e( 'Asks right now instead of waiting for the next check. This works even when checking is turned off, so "do not check" means AWT never asks on its own — not that you cannot.', 'awt' ); ?>
+					</p>
+					<?php
+					$checked_result = get_transient( CHECK_RESULT_KEY );
+					if ( $checked_result ) {
+						delete_transient( CHECK_RESULT_KEY );
+						echo '<p class="awt-field-help"><strong>';
+						if ( $checked_result === 'failed' ) {
+							esc_html_e( 'Could not reach useawt.com. Nothing has changed on your site.', 'awt' );
+						} elseif ( version_compare( \AWT\Theme\AWT_THEME_VERSION, (string) $checked_result, '<' ) ) {
+							printf(
+								/* translators: %s: the version that is available. */
+								esc_html__( 'AWT %s is available.', 'awt' ),
+								esc_html( (string) $checked_result )
+							);
+							echo ' <a href="' . esc_url( admin_url( 'update-core.php' ) ) . '">' . esc_html__( 'Update now', 'awt' ) . '</a>';
+						} else {
+							esc_html_e( 'You have the newest version.', 'awt' );
+						}
+						echo '</strong></p>';
+					}
+					?>
+				</td>
+			</tr>
 		</table>
 	</form>
 
@@ -2472,6 +2504,30 @@ function save_tab_tools(): void {
 	if ( empty( $_POST['awt_updates_submitted'] ) ) {
 		return;
 	}
+
+	/*
+	 * "Check now" asks this minute instead of waiting up to twelve hours, and
+	 * it works whichever mode the site is in — including "do not check". That
+	 * is deliberate: it makes "off" mean *never on its own* rather than
+	 * *never*, which is a cleaner promise and leaves a locked-down site a way
+	 * to ask when it chooses to. The privacy copy says so in those words.
+	 */
+	// phpcs:ignore WordPress.Security.NonceVerification.Missing -- nonce verified in handle_form_submission().
+	if ( isset( $_POST['awt_check_updates_now'] ) ) {
+		delete_site_transient( \AWT\Theme\Updates\CACHE_KEY );
+		add_filter( 'awt_update_check_enabled', '__return_true' );
+		$found = \AWT\Theme\Updates\manifest();
+		remove_filter( 'awt_update_check_enabled', '__return_true' );
+
+		// Make WordPress re-ask both halves, so the Updates screen and the
+		// toolbar agree with what was just found rather than lagging behind.
+		delete_site_transient( 'update_themes' );
+		delete_site_transient( 'update_plugins' );
+
+		set_transient( CHECK_RESULT_KEY, is_array( $found ) ? (string) $found['version'] : 'failed', MINUTE_IN_SECONDS );
+		return;
+	}
+
 	// phpcs:ignore WordPress.Security.NonceVerification.Missing, WordPress.Security.ValidatedSanitizedInput.MissingUnslash, WordPress.Security.ValidatedSanitizedInput.InputNotSanitized -- nonce verified in handle_form_submission(); value sanitized on the next line.
 	$mode = isset( $_POST['updates']['mode'] ) ? sanitize_key( wp_unslash( $_POST['updates']['mode'] ) ) : '';
 	Settings\set( 'updates.mode', in_array( $mode, array( 'auto', 'notify', 'off' ), true ) ? $mode : 'auto' );
