@@ -46,6 +46,7 @@ require_once __DIR__ . '/inc/page-language.php';
 // What's new — release-notes panel + menu indicator (Stage 1 spec §6).
 require_once __DIR__ . '/inc/whats-new.php';
 require_once __DIR__ . '/inc/updates.php';
+require_once __DIR__ . '/inc/update-notice.php';
 require_once __DIR__ . '/inc/blocks-required.php';
 
 // Register Carbon early so the design system is resolvable by everything
