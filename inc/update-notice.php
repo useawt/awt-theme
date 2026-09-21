@@ -225,6 +225,14 @@ function state(): array {
 		return array( 'id' => 'checks-off' );
 	}
 
+	if ( $mode === 'auto' && ! Updates\package_folder_matches() ) {
+		return array(
+			'id'       => 'wrong-folder',
+			'folder'   => Updates\slug(),
+			'expected' => Updates\expected_folder(),
+		);
+	}
+
 	if ( $mode === 'auto' && ! host_allows_updates() ) {
 		return array( 'id' => 'host-blocked' );
 	}
@@ -397,6 +405,17 @@ function message( array $state ): ?array {
 					/* translators: %s: link to the settings screen. */
 					esc_html__( 'AWT is not checking for updates. You will not be told when a new version is out, including security and accessibility fixes. %s', 'awt' ),
 					'<a href="' . esc_url( $settings ) . '">' . esc_html__( 'Turn checks on', 'awt' ) . '</a>'
+				),
+			);
+
+		case 'wrong-folder':
+			return array(
+				'level' => 'warning',
+				'text'  => sprintf(
+					/* translators: 1: the folder the theme is installed in, e.g. awt-theme. 2: the folder AWT updates install into, always "awt". */
+					esc_html__( 'AWT is installed in a folder called %1$s, but its updates install into %2$s. AWT will tell you when a new version is out, and you install it yourself — choose "Replace current with uploaded" and it will go to the right place. Renaming the folder would lose any header, footer or template you have edited, so do not.', 'awt' ),
+					'<code>' . esc_html( (string) $state['folder'] ) . '</code>',
+					'<code>' . esc_html( (string) ( $state['expected'] ?? '' ) ) . '</code>'
 				),
 			);
 

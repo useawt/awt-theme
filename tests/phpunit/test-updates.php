@@ -451,6 +451,55 @@ class Test_Updates extends WP_UnitTestCase {
 		$this->assertNull( Updates\auto_install_target( array( 'releases' => 'nonsense' ), '2000.01.0' ) );
 	}
 
+	/* ----------------------------------------- installed under another name */
+
+	/**
+	 * A site whose theme folder is not what the zip unpacks to.
+	 *
+	 * `awt.zip` extracts to `awt/`. A site that installed from a renamed zip
+	 * or a clone can have the theme in `awt-theme/` — accessibilitycloud.com
+	 * did, found on 2026-09-21 — and WordPress is happy with that until the
+	 * day it updates. Then the package lands beside the theme instead of over
+	 * it: a second copy, the old one still running, and a notice that never
+	 * clears. Worse, every template part and template the owner has edited is
+	 * filed against the old folder name and would not follow.
+	 */
+	public function test_a_mismatched_folder_withholds_the_package(): void {
+		remove_all_filters( 'wp_doing_cron' );
+		set_current_screen( 'themes' );
+		$this->cache( '2099.01.0' );
+		$this->assertTrue( Updates\package_folder_matches(), 'the fixture matches by default' );
+
+		// Say the package unpacks somewhere this theme does not live.
+		$data                  = get_site_transient( Updates\CACHE_KEY );
+		$data['theme']['slug'] = 'somewhere-else';
+		set_site_transient( Updates\CACHE_KEY, $data, HOUR_IN_SECONDS );
+
+		$this->assertFalse( Updates\package_folder_matches() );
+
+		$result = Updates\offer_update( $this->transient() );
+
+		$this->assertArrayHasKey( 'awt', $result->response, 'the update is still announced' );
+		$this->assertSame( '', $result->response['awt']['package'], 'but not installable' );
+	}
+
+	/** And such a site never installs anything by itself. */
+	public function test_a_mismatched_folder_never_installs_by_itself(): void {
+		add_filter( 'awt_update_environment', static fn () => 'production' );
+		$this->cache( '2099.01.0' );
+		$data                  = get_site_transient( Updates\CACHE_KEY );
+		$data['theme']['slug'] = 'somewhere-else';
+		set_site_transient( Updates\CACHE_KEY, $data, HOUR_IN_SECONDS );
+
+		$this->assertFalse( Updates\automatic_allowed() );
+	}
+
+	/** A manifest that does not say where it unpacks is not treated as wrong. */
+	public function test_a_manifest_without_a_slug_is_given_the_benefit_of_the_doubt(): void {
+		$this->assertTrue( Updates\package_folder_matches( array() ) );
+		$this->assertTrue( Updates\package_folder_matches( array( 'theme' => array( 'slug' => '' ) ) ) );
+	}
+
 	/* -------------------------------------------------- the unattended path */
 
 	/** Unattended, the site is offered exactly what it may install. */
@@ -590,7 +639,7 @@ class Test_Updates extends WP_UnitTestCase {
 				'requiresPhp'   => '8.1',
 				'testedWp'      => '7.1',
 				'theme'         => array(
-					'slug'       => 'awt',
+					'slug'       => Updates\slug(),
 					'releaseUrl' => 'https://example.com/theme',
 					'package'    => 'https://example.com/awt-' . $version . '.zip',
 				),

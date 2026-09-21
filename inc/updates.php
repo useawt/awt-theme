@@ -144,7 +144,54 @@ function automatic_allowed(): bool {
 	if ( environment() !== 'production' ) {
 		return false;
 	}
-	return true;
+	return package_folder_matches();
+}
+
+/**
+ * Whether an update would land in the folder this theme actually lives in.
+ *
+ * A release zip extracts to a folder of its own name — `awt/`. A site is free
+ * to have the theme somewhere else: unpacking a renamed zip, or a clone,
+ * leaves it in `awt-theme/` or anything at all, and WordPress is happy with
+ * that until the day it updates. Then the package unpacks *beside* the theme
+ * rather than over it, and the site carries on running the copy it already
+ * had while the update notice never goes away.
+ *
+ * **The folder name is not cosmetic.** Every template part, template and set
+ * of global styles the owner has edited is filed against it — that is how
+ * WordPress knows whose header it is. A theme arriving under a different
+ * name has none of them.
+ *
+ * So when the names disagree AWT withholds the package and asks for a person.
+ * Installing by hand goes through WordPress's "Replace current with
+ * uploaded", which puts the files where the theme already is.
+ *
+ * The expected name comes from the manifest, not a constant here: it is the
+ * publisher that knows what its own zip unpacks to.
+ *
+ * @param array|null $data Decoded manifest, or null to read the cached one.
+ * @return bool True when an update would replace this theme rather than sit
+ *              beside it.
+ */
+function package_folder_matches( ?array $data = null ): bool {
+	$expected = expected_folder( $data );
+	return $expected === '' || $expected === slug();
+}
+
+/**
+ * The folder the published package unpacks to, as the manifest states it.
+ *
+ * Empty when the manifest does not say, which is read as "no reason to
+ * doubt it" rather than as a mismatch.
+ *
+ * @param array|null $data Decoded manifest, or null to read the cached one.
+ * @return string A folder name, or ''.
+ */
+function expected_folder( ?array $data = null ): string {
+	if ( $data === null ) {
+		$data = manifest();
+	}
+	return is_array( $data ) ? (string) ( $data['theme']['slug'] ?? '' ) : '';
 }
 
 /**
@@ -327,6 +374,12 @@ function offer_update( $transient ) {
 
 	$offer   = $latest;
 	$package = (string) ( $data['theme']['package'] ?? '' );
+
+	// An update that would unpack beside this theme instead of over it is
+	// worse than none: it leaves a second copy and changes nothing.
+	if ( ! package_folder_matches( $data ) ) {
+		$package = '';
+	}
 
 	if ( wp_doing_cron() ) {
 		/*

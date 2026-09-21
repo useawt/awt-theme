@@ -68,7 +68,10 @@ class Test_Update_Notice extends WP_UnitTestCase {
 			array(
 				'schemaVersion' => 1,
 				'version'       => $version,
-				'theme'         => array( 'package' => 'https://example.com/t.zip' ),
+				'theme'         => array(
+					'slug'    => Updates\slug(),
+					'package' => 'https://example.com/t.zip',
+				),
 				'plugin'        => array( 'package' => 'https://example.com/p.zip' ),
 				'releases'      => array(
 					array(
@@ -143,6 +146,30 @@ class Test_Update_Notice extends WP_UnitTestCase {
 		Settings\set( 'updates.mode', 'off' );
 
 		$this->assertSame( 'checks-off', UpdateNotice\state()['id'] );
+	}
+
+	/**
+	 * A theme installed under a different folder name is told why, and told
+	 * not to "fix" it by renaming.
+	 *
+	 * Renaming would be the obvious move and the wrong one: every edited
+	 * header, footer and template is filed against the old name.
+	 */
+	public function test_a_mismatched_folder_is_explained(): void {
+		$this->announce( '2099.01.0' );
+		$data                  = get_site_transient( Updates\CACHE_KEY );
+		$data['theme']['slug'] = 'somewhere-else';
+		set_site_transient( Updates\CACHE_KEY, $data, HOUR_IN_SECONDS );
+
+		$state = UpdateNotice\state();
+
+		$this->assertSame( 'wrong-folder', $state['id'] );
+		$this->assertSame( Updates\slug(), $state['folder'] );
+
+		$text = UpdateNotice\message( $state )['text'];
+		$this->assertStringContainsString( Updates\slug(), $text );
+		$this->assertStringContainsString( 'Replace current with uploaded', $text );
+		$this->assertStringContainsString( 'do not', $text, 'it must warn against renaming' );
 	}
 
 	/** A host that forbids file changes is named, rather than silently winning. */
