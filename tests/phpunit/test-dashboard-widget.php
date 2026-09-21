@@ -67,7 +67,16 @@ class Test_Dashboard_Widget extends WP_UnitTestCase {
 		$this->assertArrayNotHasKey( 'awt_dashboard', $boxes['side']['core'] ?? array() );
 	}
 
-	/** The box says which version is installed, and links to the full notes. */
+	/**
+	 * The box names the installed version, whatever else it can show.
+	 *
+	 * The release notes come from `build/changelog.json`, which is written at
+	 * release time and is not in the repository — so it is there on a real
+	 * install and absent on CI. **This test used to assume it was there**,
+	 * passed locally and failed in CI, which is the same trap as the 2026-09-03
+	 * packaging defect: what the working tree has is not what ships. Both
+	 * branches are asserted here rather than one of them being assumed.
+	 */
 	public function test_it_names_the_version_and_links_on(): void {
 		wp_set_current_user( self::factory()->user->create( array( 'role' => 'administrator' ) ) );
 
@@ -76,7 +85,14 @@ class Test_Dashboard_Widget extends WP_UnitTestCase {
 		$html = (string) ob_get_clean();
 
 		$this->assertStringContainsString( \AWT\Theme\AWT_THEME_VERSION, $html );
-		$this->assertStringContainsString( 'tab=whats-new', $html );
+
+		$has_notes = (bool) \AWT\Theme\WhatsNew\changelog();
+		if ( $has_notes ) {
+			$this->assertStringContainsString( 'tab=whats-new', $html, 'notes are bundled, so the box should link to them' );
+			$this->assertStringContainsString( 'awt-whats-new-entries', $html );
+		} else {
+			$this->assertStringContainsString( 'No release notes are bundled', $html, 'no notes bundled, so the box should say so rather than link to an empty page' );
+		}
 	}
 
 	/**
