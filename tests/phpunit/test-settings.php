@@ -56,7 +56,7 @@ class Test_Settings extends WP_UnitTestCase {
 		);
 
 		$this->assertSame( 'auto', $out['identity']['brandMode'] );
-		$this->assertSame( 2, $out['schemaVersion'] );
+		$this->assertSame( 3, $out['schemaVersion'] );
 	}
 
 	/**
@@ -72,7 +72,7 @@ class Test_Settings extends WP_UnitTestCase {
 		);
 
 		$this->assertSame( 'logo-only', $out['identity']['brandMode'] );
-		$this->assertSame( 2, $out['schemaVersion'] );
+		$this->assertSame( 3, $out['schemaVersion'] );
 	}
 
 	/**
@@ -83,7 +83,7 @@ class Test_Settings extends WP_UnitTestCase {
 		$out = Settings\migrate( array( 'identity' => array( 'brandMode' => 'text-only' ) ) );
 
 		$this->assertSame( 'auto', $out['identity']['brandMode'] );
-		$this->assertSame( 2, $out['schemaVersion'] );
+		$this->assertSame( 3, $out['schemaVersion'] );
 	}
 
 	/**

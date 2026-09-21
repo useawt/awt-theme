@@ -183,7 +183,7 @@ class Test_Upgrade extends WP_UnitTestCase {
 		$this->assertSame( 'fr', get_post_meta( $post, 'awt_theme_page_lang', true ) );
 		$this->assertSame( 'https://example.com/logo.png', Settings\get( 'identity.logoUrl' ) );
 		$this->assertSame( 'auto', Settings\get( 'identity.brandMode' ), 'the v1 -> v2 migration still applies on read' );
-		$this->assertSame( 2, Settings\get( 'schemaVersion' ) );
+		$this->assertSame( 3, Settings\get( 'schemaVersion' ) );
 	}
 
 	/* ------------------------------------ before the rename has had a chance */

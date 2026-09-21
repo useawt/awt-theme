@@ -41,6 +41,8 @@ class Test_Updates extends WP_UnitTestCase {
 		delete_site_transient( Updates\CACHE_KEY );
 		remove_all_filters( 'awt_theme_update_package' );
 		remove_all_filters( 'awt_update_check_enabled' );
+		remove_all_filters( 'awt_update_environment' );
+		remove_all_filters( 'awt_deployed_from_source' );
 		parent::tear_down();
 	}
 
@@ -130,8 +132,13 @@ class Test_Updates extends WP_UnitTestCase {
 
 	/**
 	 * A newer version reaches WordPress's update list.
+	 *
+	 * On an admin page load, which is where a person reads it. The unattended
+	 * path is a different question and has its own tests below.
 	 */
 	public function test_a_newer_version_is_offered(): void {
+		remove_all_filters( 'wp_doing_cron' );
+		set_current_screen( 'themes' );
 		$this->cache( '2099.01.0' );
 
 		$result = Updates\offer_update( $this->transient() );
@@ -165,31 +172,41 @@ class Test_Updates extends WP_UnitTestCase {
 	}
 
 	/**
-	 * The free tier carries no package.
+	 * Every site carries the package.
 	 *
-	 * This is the whole free/Premium boundary in one field: an empty package is
-	 * what makes WordPress say "Automatic update is unavailable" rather than
-	 * offering a button. If a change ever fills it in by default, every free
-	 * site silently gains one-click updates.
+	 * **This test used to assert the opposite**, and said so: an empty package
+	 * was the whole free/Premium boundary, and the test existed to fail if a
+	 * change ever filled it in by default. On 2026-09-21 that became the
+	 * decision rather than the accident, so the guard is inverted rather than
+	 * deleted. An empty package here would now mean WordPress printing
+	 * "Automatic update is unavailable" to a site that was promised the
+	 * opposite, and a security fix that reaches nobody.
 	 */
-	public function test_free_offers_no_package(): void {
+	public function test_every_site_is_offered_the_package(): void {
+		remove_all_filters( 'wp_doing_cron' );
+		set_current_screen( 'themes' );
 		$this->cache( '2099.01.0' );
 
 		$result = Updates\offer_update( $this->transient() );
 
-		$this->assertSame( '', $result->response['awt']['package'] );
+		$this->assertSame(
+			'https://example.com/awt-2099.01.0.zip',
+			$result->response['awt']['package']
+		);
 	}
 
 	/**
-	 * A licence can fill the package in without touching this code.
+	 * The filter is still the seam, it just no longer decides the tier.
 	 */
-	public function test_a_licence_can_add_the_package(): void {
+	public function test_the_package_can_still_be_replaced_by_a_filter(): void {
+		remove_all_filters( 'wp_doing_cron' );
+		set_current_screen( 'themes' );
 		$this->cache( '2099.01.0' );
-		add_filter( 'awt_theme_update_package', static fn () => 'https://example.com/awt.zip' );
+		add_filter( 'awt_theme_update_package', static fn () => 'https://example.com/other.zip' );
 
 		$result = Updates\offer_update( $this->transient() );
 
-		$this->assertSame( 'https://example.com/awt.zip', $result->response['awt']['package'] );
+		$this->assertSame( 'https://example.com/other.zip', $result->response['awt']['package'] );
 	}
 
 	/**
@@ -204,23 +221,62 @@ class Test_Updates extends WP_UnitTestCase {
 	}
 
 	/**
-	 * The check is on unless someone turns it off.
+	 * A site keeps itself up to date unless someone says otherwise.
 	 */
-	public function test_the_check_is_on_by_default(): void {
-		$this->assertTrue( AWT\Theme\Settings\get( 'updates.check' ) );
+	public function test_the_default_is_to_keep_itself_up_to_date(): void {
+		$this->assertSame( 'auto', AWT\Theme\Settings\get( 'updates.mode' ) );
+		$this->assertSame( 'auto', Updates\mode() );
 		$this->assertTrue( Updates\enabled() );
+
+		add_filter( 'awt_update_environment', static fn () => 'production' );
+		$this->assertTrue( Updates\automatic_allowed() );
 	}
 
 	/**
-	 * An unchecked box is stored as off, and survives the round trip.
+	 * A staging copy does not update itself while somebody is working on it.
+	 *
+	 * Worth an explicit test because the test suite runs on a site that
+	 * reports itself as `local` — so the default here is already the
+	 * cautious answer, and a regression would look like nothing.
 	 */
-	public function test_turning_it_off_is_stored(): void {
-		AWT\Theme\Settings\set( 'updates.check', false );
+	public function test_only_production_installs_by_itself(): void {
+		foreach ( array( 'local', 'development', 'staging' ) as $env ) {
+			add_filter( 'awt_update_environment', static fn () => $env );
+			$this->assertFalse( Updates\automatic_allowed(), $env );
+			remove_all_filters( 'awt_update_environment' );
+		}
 
-		$this->assertFalse( AWT\Theme\Settings\get( 'updates.check' ) );
+		add_filter( 'awt_update_environment', static fn () => 'production' );
+		$this->assertTrue( Updates\automatic_allowed() );
+	}
+
+	/**
+	 * Each mode is stored and survives the round trip.
+	 */
+	public function test_each_mode_is_stored(): void {
+		add_filter( 'awt_update_environment', static fn () => 'production' );
+		AWT\Theme\Settings\set( 'updates.mode', 'notify' );
+		$this->assertSame( 'notify', Updates\mode() );
+		$this->assertTrue( Updates\enabled(), 'notify still asks useawt.com' );
+		$this->assertFalse( Updates\automatic_allowed() );
+
+		AWT\Theme\Settings\set( 'updates.mode', 'off' );
+		$this->assertSame( 'off', Updates\mode() );
 		$this->assertFalse( Updates\enabled() );
+		$this->assertFalse( Updates\automatic_allowed() );
 
-		AWT\Theme\Settings\set( 'updates.check', true );
+		AWT\Theme\Settings\set( 'updates.mode', 'auto' );
+	}
+
+	/**
+	 * Nonsense in the setting is not a way to stop a site getting fixes.
+	 */
+	public function test_an_unknown_mode_falls_back_to_auto(): void {
+		AWT\Theme\Settings\set( 'updates.mode', 'sometimes' );
+
+		$this->assertSame( 'auto', Updates\mode() );
+
+		AWT\Theme\Settings\set( 'updates.mode', 'auto' );
 	}
 
 	/**
@@ -273,14 +329,258 @@ class Test_Updates extends WP_UnitTestCase {
 		remove_all_filters( 'pre_http_request' );
 	}
 
+	/* ------------------------------------------- what may install itself */
+
+	/**
+	 * A release list, newest first, in the shape the manifest publishes.
+	 *
+	 * @param array $rows version => [ breaking, autoInstall ].
+	 * @return array Release entries.
+	 */
+	private function releases( array $rows ): array {
+		$out = array();
+		foreach ( $rows as $version => $flags ) {
+			$out[] = array(
+				'version'     => (string) $version,
+				'breaking'    => ! empty( $flags['breaking'] ),
+				'autoInstall' => ! empty( $flags['autoInstall'] ),
+				'theme'       => array( 'package' => 'https://example.com/awt-' . $version . '.zip' ),
+				'plugin'      => array( 'package' => 'https://example.com/blocks-' . $version . '.zip' ),
+			);
+		}
+		return $out;
+	}
+
+	/** With nothing in the way, a site climbs to the newest soaked release. */
+	public function test_the_walk_reaches_the_newest_soaked_release(): void {
+		$target = Updates\auto_install_target(
+			array(
+				'releases' => $this->releases(
+					array(
+						'2099.01.3' => array( 'autoInstall' => true ),
+						'2099.01.2' => array( 'autoInstall' => true ),
+						'2099.01.1' => array( 'autoInstall' => true ),
+					)
+				),
+			),
+			'2099.01.0'
+		);
+
+		$this->assertSame( '2099.01.3', $target['version'] );
+	}
+
+	/**
+	 * A breaking release is a wall: the site stops underneath it.
+	 *
+	 * And everything above the wall waits, including releases that are
+	 * themselves harmless — a version is cumulative, so there is no way to
+	 * take 2099.01.3 without also taking the 2099.01.2 in it.
+	 */
+	public function test_the_walk_stops_under_a_breaking_release(): void {
+		$target = Updates\auto_install_target(
+			array(
+				'releases' => $this->releases(
+					array(
+						'2099.01.3' => array( 'autoInstall' => true ),
+						'2099.01.2' => array( 'breaking' => true ),
+						'2099.01.1' => array( 'autoInstall' => true ),
+					)
+				),
+			),
+			'2099.01.0'
+		);
+
+		$this->assertSame( '2099.01.1', $target['version'] );
+	}
+
+	/** A site already above the wall is not held by it. */
+	public function test_a_site_past_the_wall_climbs_on(): void {
+		$target = Updates\auto_install_target(
+			array(
+				'releases' => $this->releases(
+					array(
+						'2099.01.3' => array( 'autoInstall' => true ),
+						'2099.01.2' => array( 'breaking' => true ),
+						'2099.01.1' => array( 'autoInstall' => true ),
+					)
+				),
+			),
+			'2099.01.2'
+		);
+
+		$this->assertSame( '2099.01.3', $target['version'] );
+	}
+
+	/** A release still soaking is not installed, and nor is anything above it. */
+	public function test_the_walk_stops_at_a_release_still_soaking(): void {
+		$target = Updates\auto_install_target(
+			array(
+				'releases' => $this->releases(
+					array(
+						'2099.01.3' => array( 'autoInstall' => true ),
+						'2099.01.2' => array( 'autoInstall' => false ),
+						'2099.01.1' => array( 'autoInstall' => true ),
+					)
+				),
+			),
+			'2099.01.0'
+		);
+
+		$this->assertSame( '2099.01.1', $target['version'] );
+	}
+
+	/** A current site has nothing to install. */
+	public function test_the_walk_finds_nothing_for_a_current_site(): void {
+		$this->assertNull(
+			Updates\auto_install_target(
+				array( 'releases' => $this->releases( array( '2099.01.1' => array( 'autoInstall' => true ) ) ) ),
+				'2099.01.1'
+			)
+		);
+	}
+
+	/**
+	 * A manifest with no release list installs nothing.
+	 *
+	 * The shape that was published before any of this existed. Failing safe
+	 * here is what stops an old manifest, or a half-written one, from
+	 * installing a version on somebody's site.
+	 */
+	public function test_a_manifest_without_releases_installs_nothing(): void {
+		$this->assertNull( Updates\auto_install_target( array(), '2000.01.0' ) );
+		$this->assertNull( Updates\auto_install_target( array( 'releases' => 'nonsense' ), '2000.01.0' ) );
+	}
+
+	/* -------------------------------------------------- the unattended path */
+
+	/** Unattended, the site is offered exactly what it may install. */
+	public function test_cron_is_offered_the_target_and_not_the_newest(): void {
+		add_filter( 'awt_update_environment', static fn () => 'production' );
+		$this->cache(
+			'2099.01.3',
+			$this->releases(
+				array(
+					'2099.01.3' => array( 'autoInstall' => true ),
+					'2099.01.2' => array( 'breaking' => true ),
+					'2099.01.1' => array( 'autoInstall' => true ),
+				)
+			)
+		);
+
+		$result = Updates\offer_update( $this->transient() );
+
+		$this->assertSame( '2099.01.1', $result->response['awt']['new_version'] );
+		$this->assertSame( 'https://example.com/awt-2099.01.1.zip', $result->response['awt']['package'] );
+	}
+
+	/**
+	 * With a wall immediately ahead, cron is offered nothing at all.
+	 *
+	 * The load-bearing one. Core installs whatever the entry names without
+	 * asking anybody, so "offer the newest and rely on a filter to refuse"
+	 * would put a breaking release on every site the day a filter elsewhere
+	 * returned true.
+	 */
+	public function test_cron_is_offered_nothing_when_the_wall_is_next(): void {
+		add_filter( 'awt_update_environment', static fn () => 'production' );
+		$this->cache(
+			'2099.01.2',
+			$this->releases( array( '2099.01.2' => array( 'breaking' => true ) ) )
+		);
+
+		$result = Updates\offer_update( $this->transient() );
+
+		$this->assertArrayNotHasKey( 'awt', $result->response );
+		$this->assertArrayHasKey( 'awt', $result->no_update );
+	}
+
+	/** A person still sees the newest version, wall or no wall. */
+	public function test_the_admin_still_sees_the_newest_version(): void {
+		remove_all_filters( 'wp_doing_cron' );
+		set_current_screen( 'themes' );
+		$this->cache(
+			'2099.01.2',
+			$this->releases( array( '2099.01.2' => array( 'breaking' => true ) ) )
+		);
+
+		$result = Updates\offer_update( $this->transient() );
+
+		$this->assertSame( '2099.01.2', $result->response['awt']['new_version'] );
+	}
+
+	/** Not production means nothing installs itself, whatever the manifest says. */
+	public function test_cron_installs_nothing_outside_production(): void {
+		add_filter( 'awt_update_environment', static fn () => 'staging' );
+		$this->cache(
+			'2099.01.1',
+			$this->releases( array( '2099.01.1' => array( 'autoInstall' => true ) ) )
+		);
+
+		$result = Updates\offer_update( $this->transient() );
+
+		$this->assertArrayNotHasKey( 'awt', $result->response );
+	}
+
+	/** A site deployed by something else never installs over that deploy. */
+	public function test_a_site_deployed_from_source_is_left_alone(): void {
+		add_filter( 'awt_update_environment', static fn () => 'production' );
+		$this->assertTrue( Updates\automatic_allowed() );
+
+		add_filter( 'awt_deployed_from_source', '__return_true' );
+
+		$this->assertFalse( Updates\automatic_allowed() );
+	}
+
+	/**
+	 * WordPress asks whether AWT should update itself, and always gets an
+	 * answer — never "no opinion", which would leave the Themes screen
+	 * offering a second switch that disagrees with AWT Settings.
+	 */
+	public function test_wordpress_is_given_a_definite_answer(): void {
+		add_filter( 'awt_update_environment', static fn () => 'production' );
+		$item = (object) array( 'theme' => 'awt' );
+
+		$this->assertTrue( Updates\should_auto_update( null, $item ) );
+
+		AWT\Theme\Settings\set( 'updates.mode', 'notify' );
+		$this->assertFalse( Updates\should_auto_update( null, $item ) );
+		AWT\Theme\Settings\set( 'updates.mode', 'auto' );
+
+		$this->assertNull(
+			Updates\should_auto_update( null, (object) array( 'theme' => 'twentytwentyfive' ) ),
+			'someone else\'s theme is not ours to answer for'
+		);
+	}
+
+	/**
+	 * The documented constant is honoured.
+	 *
+	 * **Deliberately the last test in this class**, because `define()` cannot
+	 * be undone: from here to the end of the process AWT considers itself
+	 * deployed from source. Nothing after this file asks. If a test is ever
+	 * added below this one and fails for no visible reason, this is why.
+	 */
+	public function test_zz_the_deploy_constant_is_honoured(): void {
+		add_filter( 'awt_update_environment', static fn () => 'production' );
+		$this->assertTrue( Updates\automatic_allowed() );
+
+		define( 'AWT_DEPLOYED_FROM_SOURCE', true );
+
+		$this->assertTrue( Updates\deployed_from_source() );
+		$this->assertFalse( Updates\automatic_allowed() );
+	}
+
 	// --- helpers ------------------------------------------------------------
 
 	/**
 	 * Put a manifest naming $version straight into the cache.
 	 *
-	 * @param string $version Version to announce.
+	 * @param string $version  Version to announce.
+	 * @param array  $releases Optional release list, newest first. A manifest
+	 *                         without one can never install itself, which is
+	 *                         the safe default and what most tests here want.
 	 */
-	private function cache( string $version ): void {
+	private function cache( string $version, array $releases = array() ): void {
 		set_site_transient(
 			Updates\CACHE_KEY,
 			array(
@@ -292,11 +592,14 @@ class Test_Updates extends WP_UnitTestCase {
 				'theme'         => array(
 					'slug'       => 'awt',
 					'releaseUrl' => 'https://example.com/theme',
+					'package'    => 'https://example.com/awt-' . $version . '.zip',
 				),
 				'plugin'        => array(
 					'slug'       => 'awt-blocks',
 					'releaseUrl' => 'https://example.com/plugin',
+					'package'    => 'https://example.com/awt-blocks-' . $version . '.zip',
 				),
+				'releases'      => $releases,
 			),
 			HOUR_IN_SECONDS
 		);

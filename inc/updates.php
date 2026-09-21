@@ -19,16 +19,30 @@
  * says "No telemetry" in its footer, and this is what makes that true rather
  * than nearly true.
  *
- * **The free tier is told, not served.** The response carries a version
- * number and a link; it carries no package URL. WordPress reads a missing
- * package as "automatic update is unavailable" and prints exactly that,
- * next to a link to the release. `awt_theme_update_package` is the one seam
- * an AWT Premium licence fills in, at which point one-click and background
- * auto-updates start working with no other change here.
+ * **Every site is served, free included** *(2026-09-21; this used to be the
+ * AWT Premium boundary)*. The response carries the package, so one-click and
+ * background updates work, and a site on the default setting keeps itself up
+ * to date without being asked. The single exception is a release the
+ * changelog marks `[Breaking]`: it never installs itself, and it holds every
+ * later release behind it until somebody presses Update now — one click,
+ * both halves, no download and no upload.
+ *
+ * **A release has to sit in the field before it may install itself.** Three
+ * days, worked out in the manifest rather than here, so no site's clock can
+ * bring one forward and a release going badly is stopped in one place. AWT
+ * collects nothing, so nobody can watch a rollout; the soak is what stands in
+ * for that.
+ *
+ * **Which release a site may reach depends on where it is**, because a wall
+ * sits between some sites and the newest version and not others. So the
+ * manifest lists releases and `auto_install_target()` below walks forward
+ * from the installed version. The walk is four lines on purpose: it runs
+ * unattended, on other people's sites.
  *
  * **One version for the pair.** The manifest names a single version for the
  * theme and the plugin together, and the plugin half reads the same file, so
- * the two can never point a site at different versions.
+ * the two can never point a site at different versions. The plugin carries
+ * the same walk, because it has to work when AWT is not the active theme.
  *
  * @package AWT\Theme
  */
@@ -77,6 +91,7 @@ const CACHE_TTL_FAILED = HOUR_IN_SECONDS;
 const TIMEOUT = 5;
 
 add_filter( 'site_transient_update_themes', __NAMESPACE__ . '\\offer_update' );
+add_filter( 'auto_update_theme', __NAMESPACE__ . '\\should_auto_update', 10, 2 );
 add_filter( 'themes_api', __NAMESPACE__ . '\\details', 10, 3 );
 add_action( 'in_theme_update_message-awt', __NAMESPACE__ . '\\pair_note', 10, 2 ); // phpcs:ignore WordPress.NamingConventions.ValidHookName.UseUnderscores -- core names this hook after the theme directory.
 add_filter( 'upgrader_pre_download', __NAMESPACE__ . '\\explain_manual_update', 10, 4 );
@@ -89,7 +104,111 @@ add_filter( 'wp_prepare_themes_for_js', __NAMESPACE__ . '\\fix_themes_screen_not
  * and AWT Settings → Tools carries the switch.
  */
 function enabled(): bool {
-	return (bool) apply_filters( 'awt_update_check_enabled', (bool) Settings\get( 'updates.check' ) );
+	return (bool) apply_filters( 'awt_update_check_enabled', mode() !== 'off' );
+}
+
+/**
+ * How this site handles a new AWT: 'auto', 'notify' or 'off'.
+ *
+ * @return string One of: auto | notify | off.
+ */
+function mode(): string {
+	$mode = (string) Settings\get( 'updates.mode' );
+	return in_array( $mode, array( 'auto', 'notify', 'off' ), true ) ? $mode : 'auto';
+}
+
+/**
+ * Whether this site may install an update without being asked.
+ *
+ * Three things can say no, and each is a different kind of no:
+ *
+ * - The owner chose to be told rather than served.
+ * - The site is not production. A staging copy that updates itself while
+ *   somebody is working on it is how people learn to turn the feature off.
+ * - The site is deployed by something else. `useawt.com` and `clsdir.com`
+ *   receive AWT by rsync from a checkout, so installing a release there
+ *   writes the same directory the deploy writes, from a different set of
+ *   files, and whichever ran last wins with nothing to say so. WordPress
+ *   will not catch this on its own: it refuses to auto-update a directory
+ *   under version control, and a deploy of that kind copies no `.git`.
+ *
+ * @return bool True when AWT may install its own updates here.
+ */
+function automatic_allowed(): bool {
+	if ( deployed_from_source() ) {
+		return false;
+	}
+	if ( mode() !== 'auto' ) {
+		return false;
+	}
+	if ( environment() !== 'production' ) {
+		return false;
+	}
+	return true;
+}
+
+/**
+ * Whether something other than WordPress puts AWT's files on this site.
+ *
+ * `AWT_DEPLOYED_FROM_SOURCE` in `wp-config.php` is the documented way to say
+ * so, and a constant rather than a setting on purpose: it belongs to whoever
+ * set the deployment up, not to whoever is editing pages. The filter is the
+ * same answer for a host or an mu-plugin that knows without being told.
+ *
+ * @return bool True when AWT must not write over its own directory here.
+ */
+function deployed_from_source(): bool {
+	$deployed = defined( 'AWT_DEPLOYED_FROM_SOURCE' ) && AWT_DEPLOYED_FROM_SOURCE;
+	return (bool) apply_filters( 'awt_deployed_from_source', $deployed );
+}
+
+/**
+ * What kind of site this is: production, staging, development or local.
+ *
+ * Wrapped because WordPress offers no filter of its own and caches its answer
+ * for the request, which leaves a site whose host reports the wrong thing —
+ * and a test — with no way to say otherwise.
+ *
+ * @return string An environment type.
+ */
+function environment(): string {
+	$type = function_exists( 'wp_get_environment_type' ) ? wp_get_environment_type() : 'production';
+	return (string) apply_filters( 'awt_update_environment', $type );
+}
+
+/**
+ * The newest release this site may install by itself right now, or null.
+ *
+ * Walks forward from the installed version through the manifest's release
+ * list, and stops at the first of two things: a release marked breaking, or
+ * one that has not soaked. Neither can be stepped over — a version is
+ * cumulative, so reaching a later release means installing everything in
+ * between, including whatever the wall was put there for.
+ *
+ * @param array  $data      Decoded manifest.
+ * @param string $installed The version running here.
+ * @return array|null The release entry to install, or null for none.
+ */
+function auto_install_target( array $data, string $installed ): ?array {
+	$releases = $data['releases'] ?? null;
+	if ( ! is_array( $releases ) ) {
+		return null;
+	}
+
+	// The manifest is newest first; walk it oldest first from just above here.
+	$ordered = array_reverse( $releases );
+	$target  = null;
+	foreach ( $ordered as $release ) {
+		$version = (string) ( $release['version'] ?? '' );
+		if ( $version === '' || version_compare( $version, $installed, '<=' ) ) {
+			continue;
+		}
+		if ( ! empty( $release['breaking'] ) || empty( $release['autoInstall'] ) ) {
+			break;
+		}
+		$target = $release;
+	}
+	return $target;
 }
 
 /**
@@ -206,32 +325,100 @@ function offer_update( $transient ) {
 	$installed = \AWT\Theme\AWT_THEME_VERSION;
 	$latest    = (string) $data['version'];
 
+	$offer   = $latest;
+	$package = (string) ( $data['theme']['package'] ?? '' );
+
+	if ( wp_doing_cron() ) {
+		/*
+		 * The unattended path, and the only place the breaking hold can be
+		 * enforced. Core installs whatever this entry names, without asking
+		 * anybody, so during cron it must name only what this site is
+		 * allowed to install by itself — or nothing at all. Offering the
+		 * newest version here and relying on the `auto_update_theme` filter
+		 * to say no would work until one filter somewhere returned true.
+		 *
+		 * Every other context (the Themes screen, Dashboard -> Updates, the
+		 * toolbar) still sees the newest version below, because this filter
+		 * runs on each read rather than on the stored value.
+		 */
+		$target = automatic_allowed() ? auto_install_target( $data, $installed ) : null;
+		if ( null === $target ) {
+			$transient->no_update[ $slug ] = current_entry( $slug, $installed, $data );
+			unset( $transient->response[ $slug ] );
+			return $transient;
+		}
+		$offer   = (string) $target['version'];
+		$package = (string) ( $target['theme']['package'] ?? '' );
+	}
+
 	$entry = array(
 		'theme'        => $slug,
-		'new_version'  => $latest,
+		'new_version'  => $offer,
 		'url'          => (string) ( $data['theme']['releaseUrl'] ?? '' ),
-		// Empty on the free tier, which is what makes WordPress say
-		// "Automatic update is unavailable for this theme" instead of
-		// offering a button that could not work. An AWT Premium licence
-		// fills this in and one-click starts working.
-		'package'      => (string) apply_filters( 'awt_theme_update_package', '', $data ),
+
+		/*
+		 * Served to everybody since 2026-09-21. It used to be empty on the
+		 * free tier, which made WordPress print "Automatic update is
+		 * unavailable for this theme"; the filter stays as the seam an AWT
+		 * Premium build can still reach, but it no longer decides whether a
+		 * free site can update itself.
+		 */
+		'package'      => (string) apply_filters( 'awt_theme_update_package', $package, $data ),
 		'requires'     => (string) ( $data['requiresWp'] ?? '' ),
 		'requires_php' => (string) ( $data['requiresPhp'] ?? '' ),
 	);
 
-	if ( version_compare( $installed, $latest, '<' ) ) {
+	if ( version_compare( $installed, $offer, '<' ) ) {
 		$transient->response[ $slug ] = $entry;
 		unset( $transient->no_update[ $slug ] );
 	} else {
-		// Core's auto-update UI reads no_update to know a theme is checked
-		// and current. Without this the Themes screen has nothing to say
-		// about AWT at all.
-		$entry['new_version']          = $installed;
-		$transient->no_update[ $slug ] = $entry;
+		$transient->no_update[ $slug ] = current_entry( $slug, $installed, $data );
 		unset( $transient->response[ $slug ] );
 	}
 
 	return $transient;
+}
+
+/**
+ * The "checked, and up to date" entry.
+ *
+ * Core's auto-update UI reads `no_update` to know a theme is looked after at
+ * all. Without it the Themes screen has nothing to say about AWT.
+ *
+ * @param string $slug      Theme directory.
+ * @param string $installed Version running here.
+ * @param array  $data      Decoded manifest.
+ * @return array Entry for the no_update list.
+ */
+function current_entry( string $slug, string $installed, array $data ): array {
+	return array(
+		'theme'        => $slug,
+		'new_version'  => $installed,
+		'url'          => (string) ( $data['theme']['releaseUrl'] ?? '' ),
+		'package'      => '',
+		'requires'     => (string) ( $data['requiresWp'] ?? '' ),
+		'requires_php' => (string) ( $data['requiresPhp'] ?? '' ),
+	);
+}
+
+/**
+ * Answer WordPress's "should this update itself?" question for AWT.
+ *
+ * Always a boolean rather than null, which takes the per-theme toggle off the
+ * Themes screen and replaces it with plain text. That is deliberate: AWT
+ * Settings is then the only place the answer can be changed, instead of two
+ * controls that can disagree about the same site.
+ *
+ * @param bool|null $update Core's answer so far.
+ * @param mixed     $item   The update offer.
+ * @return bool|null Ours for AWT, core's for everything else.
+ */
+function should_auto_update( $update, $item ) {
+	$theme = is_object( $item ) ? ( $item->theme ?? '' ) : ( is_array( $item ) ? ( $item['theme'] ?? '' ) : '' );
+	if ( $theme !== slug() ) {
+		return $update;
+	}
+	return automatic_allowed();
 }
 
 /**

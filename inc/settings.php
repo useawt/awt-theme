@@ -35,7 +35,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 const OPTION_KEY     = 'awt_theme_settings';
-const SCHEMA_VERSION = 2;
+const SCHEMA_VERSION = 3;
 
 /**
  * The link-underline switches, in the order the settings page shows them.
@@ -114,6 +114,20 @@ function migrate( array $stored ): array {
 			$stored['identity']['brandMode'] = 'auto';
 		}
 		$stored['schemaVersion'] = 2;
+	}
+
+	if ( $version < 3 ) {
+		// `updates.check` was a yes/no: ask useawt.com, or do not. It becomes
+		// one of three modes. A site that was asking lands on the new default
+		// and starts keeping itself up to date; a site that had turned the
+		// check off never wanted the request, so it stays off. Nobody who
+		// made a choice has it reversed — there was no third answer to make.
+		if ( ! isset( $stored['updates']['mode'] ) ) {
+			$checking                  = ! isset( $stored['updates']['check'] ) || ! empty( $stored['updates']['check'] );
+			$stored['updates']['mode'] = $checking ? 'auto' : 'off';
+		}
+		unset( $stored['updates']['check'] );
+		$stored['schemaVersion'] = 3;
 	}
 
 	return $stored;
@@ -272,15 +286,26 @@ function defaults(): array {
 			// pass. See "Differences from Carbon" (D8).
 			'formTextBodySize' => true,
 		),
-		// Checking useawt.com for a newer AWT. On by default: a site that is
-		// never told about a fix does not get the fix. Off is a real answer
-		// for a site that is required to make no outbound requests — the
-		// check sends nothing about the site either way, but "it makes no
-		// requests at all" is sometimes the sentence that has to be true.
-		// Read by inc/updates.php, and by the AWT Blocks plugin, which reads
-		// this option directly so the switch covers both halves.
+
+		/*
+		 * How this site handles a new AWT. One of:
+		 *
+		 * auto   - keep AWT up to date on its own, stopping at a release
+		 *          marked breaking, which waits for a person. The default,
+		 *          because a site that never gets a fix does not have it.
+		 * notify - say a version is out, and install nothing.
+		 * off    - make no outbound request at all. A real answer for a site
+		 *          required to make none; the check sends nothing about the
+		 *          site either way, but "it makes no requests" is sometimes
+		 *          the sentence that has to be true. The Check for updates
+		 *          button still works on demand, so off means "never on its
+		 *          own", not "never".
+		 *
+		 * Read by inc/updates.php, and by the AWT Blocks plugin, which reads
+		 * this option directly so one setting covers both halves.
+		 */
 		'updates'       => array(
-			'check' => true,
+			'mode' => 'auto',
 		),
 		// Kept, and read by nothing in this theme: the Custom code screen is
 		// an AWT Premium capability. Holding the keys here means a site that
@@ -503,11 +528,12 @@ function sanitize( array $settings ): array {
 		'prefix'      => isset( $identity['prefix'] ) ? sanitize_text_field( (string) $identity['prefix'] ) : '',
 	);
 
-	// Update checks. Absent means "never saved", which is the default (on) —
-	// not "unchecked". Only an explicit false turns it off.
+	// Updates. Anything unrecognised snaps back to the default rather than
+	// silently disabling the channel: a typo here must not be the reason a
+	// site stops receiving fixes.
 	$updates        = $settings['updates'] ?? array();
 	$out['updates'] = array(
-		'check' => ! isset( $updates['check'] ) || ! empty( $updates['check'] ),
+		'mode' => in_array( $updates['mode'] ?? '', array( 'auto', 'notify', 'off' ), true ) ? $updates['mode'] : 'auto',
 	);
 
 	// Navigation.

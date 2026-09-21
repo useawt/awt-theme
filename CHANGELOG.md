@@ -10,6 +10,14 @@
      markdownlint enforces the structure in CI. Newest release first.
      The Unreleased section accumulates entries between releases. -->
 
+## Unreleased
+
+### [Improvement]
+
+- After an update, your site keeps its own skip link text and per-page
+  language straight away, instead of showing the defaults until someone next
+  opens the admin.
+
 ## 2026.09.29 — 2026-09-20
 
 ### [A11y]

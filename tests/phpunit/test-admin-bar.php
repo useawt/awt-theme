@@ -89,7 +89,7 @@ class Test_Admin_Bar extends WP_UnitTestCase {
 	 */
 	public function test_checks_off_is_unknown(): void {
 		$this->cache_manifest( '2999.01.0' );
-		Settings\set( 'updates.check', false );
+		Settings\set( 'updates.mode', 'off' );
 
 		$this->assertSame( 'unknown', AdminBar\update_state() );
 	}
