@@ -36,7 +36,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 const CAPABILITY = 'edit_theme_options';
 
 /**
- * How the installed version stands: 'current', 'update' or 'unknown'.
+ * How the installed version stands.
  *
  * Read straight from the manifest the update check has already cached, and
  * compared against the versions this site is running. Two other routes were
@@ -58,11 +58,28 @@ const CAPABILITY = 'edit_theme_options';
  * Both halves are compared because they are released together: a site can be
  * running the current theme and a plugin one release behind.
  *
- * @return string One of: current | update | unknown.
+ * Since AWT installs its own updates, "an update exists" stopped being one
+ * state and became two. A site where the new version is going to arrive on
+ * its own needs no prompting; a site where it is not needs a person, and the
+ * menu is often the only place that difference is visible.
+ *
+ * @return string One of: current | auto | update | mismatch | unknown.
  */
 function update_state(): string {
 	if ( function_exists( '\\AWT\\Theme\\Updates\\enabled' ) && ! Updates\enabled() ) {
 		return 'unknown';
+	}
+
+	$installed = array( \AWT\Theme\AWT_THEME_VERSION );
+	if ( defined( 'AWT\\Blocks\\AWT_BLOCKS_VERSION' ) ) {
+		$installed[] = (string) constant( 'AWT\\Blocks\\AWT_BLOCKS_VERSION' );
+	}
+
+	// The two halves release together, so a site running different versions
+	// of them is in a state worth naming before anything about the newest
+	// release — it is the one a person has to fix by hand.
+	if ( count( array_unique( $installed ) ) > 1 ) {
+		return 'mismatch';
 	}
 
 	$cached = get_site_transient( Updates\CACHE_KEY );
@@ -71,18 +88,25 @@ function update_state(): string {
 	}
 	$latest = (string) $cached['version'];
 
-	$installed = array( \AWT\Theme\AWT_THEME_VERSION );
-	if ( defined( 'AWT\\Blocks\\AWT_BLOCKS_VERSION' ) ) {
-		$installed[] = (string) constant( 'AWT\\Blocks\\AWT_BLOCKS_VERSION' );
-	}
-
+	$behind = false;
 	foreach ( $installed as $version ) {
 		if ( version_compare( $version, $latest, '<' ) ) {
-			return 'update';
+			$behind = true;
+		}
+	}
+	if ( ! $behind ) {
+		return 'current';
+	}
+
+	// Is it coming on its own? Only then is there nothing for anybody to do.
+	if ( function_exists( '\\AWT\\Theme\\Updates\\automatic_allowed' ) && Updates\automatic_allowed() ) {
+		$target = Updates\auto_install_target( $cached, (string) $installed[0] );
+		if ( is_array( $target ) && (string) $target['version'] === $latest ) {
+			return 'auto';
 		}
 	}
 
-	return 'current';
+	return 'update';
 }
 
 /**
@@ -94,8 +118,12 @@ function update_state(): string {
  */
 function state_label( string $state ): string {
 	switch ( $state ) {
+		case 'auto':
+			return __( 'Updating automatically', 'awt' );
 		case 'update':
-			return __( 'Update available', 'awt' );
+			return __( 'Update needs installing', 'awt' );
+		case 'mismatch':
+			return __( "Versions don't match", 'awt' );
 		case 'unknown':
 			return __( 'Update checks are off', 'awt' );
 		default:
@@ -113,7 +141,7 @@ function state_label( string $state ): string {
  * @return string URL, or an empty string for no link.
  */
 function state_href( string $state ): string {
-	if ( $state === 'update' ) {
+	if ( $state === 'update' || $state === 'mismatch' ) {
 		return admin_url( 'update-core.php' );
 	}
 	if ( $state === 'unknown' ) {
@@ -249,9 +277,11 @@ function styles(): string {
 	   no bright fill can reach 3:1. Invisible on the dark schemes. */
 	box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.55);
 }
-#wpadminbar .awt-toolbar__dot--current { background-color: #6fcf5f; }
-#wpadminbar .awt-toolbar__dot--update  { background-color: #ff6b63; }
-#wpadminbar .awt-toolbar__dot--unknown { background-color: #a7aaad; }
+#wpadminbar .awt-toolbar__dot--current  { background-color: #6fcf5f; }
+#wpadminbar .awt-toolbar__dot--auto     { background-color: #72aee6; }
+#wpadminbar .awt-toolbar__dot--update   { background-color: #ff6b63; }
+#wpadminbar .awt-toolbar__dot--mismatch { background-color: #f0b849; }
+#wpadminbar .awt-toolbar__dot--unknown  { background-color: #a7aaad; }
 #wpadminbar .awt-toolbar__sr {
 	position: absolute;
 	inline-size: 1px;

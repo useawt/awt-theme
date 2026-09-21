@@ -40,6 +40,8 @@ class Test_Admin_Bar extends WP_UnitTestCase {
 	public function tear_down(): void {
 		delete_option( Settings\OPTION_KEY );
 		delete_site_transient( Updates\CACHE_KEY );
+		remove_all_filters( 'awt_update_environment' );
+		remove_all_filters( 'automatic_updater_disabled' );
 		Settings\flush_cache();
 		parent::tear_down();
 	}
@@ -105,6 +107,34 @@ class Test_Admin_Bar extends WP_UnitTestCase {
 	}
 
 	/**
+	 * Cache a manifest that also carries a release list.
+	 *
+	 * @param string $version  Version to announce.
+	 * @param bool   $breaking Whether a wall stands in the way.
+	 */
+	private function cache_manifest_with_releases( string $version, bool $breaking ): void {
+		set_site_transient(
+			Updates\CACHE_KEY,
+			array(
+				'schemaVersion' => 1,
+				'version'       => $version,
+				'theme'         => array( 'package' => 'https://example.com/t.zip' ),
+				'plugin'        => array( 'package' => 'https://example.com/p.zip' ),
+				'releases'      => array(
+					array(
+						'version'     => $version,
+						'breaking'    => $breaking,
+						'autoInstall' => ! $breaking,
+						'theme'       => array( 'package' => 'https://example.com/t.zip' ),
+						'plugin'      => array( 'package' => 'https://example.com/p.zip' ),
+					),
+				),
+			),
+			HOUR_IN_SECONDS
+		);
+	}
+
+	/**
 	 * And a newer one out there is an update.
 	 */
 	public function test_newer_version_is_an_update(): void {
@@ -159,10 +189,38 @@ class Test_Admin_Bar extends WP_UnitTestCase {
 		// The visible wordmark stays part of the name (WCAG 2.5.3) and the
 		// state reads on from it, rather than the two being announced twice.
 		$this->assertStringContainsString(
-			'>AWT: Update available<',
+			'>AWT: Update needs installing<',
 			$bar->get_node( 'awt' )->title
 		);
-		$this->assertStringContainsString( 'Update available', $bar->get_node( 'awt-status' )->title );
+		$this->assertStringContainsString( 'Update needs installing', $bar->get_node( 'awt-status' )->title );
+	}
+
+	/**
+	 * An update that is coming on its own reads differently from one that
+	 * needs a person.
+	 *
+	 * The distinction the menu exists to carry since AWT started installing
+	 * its own updates: "Updating automatically" asks for nothing, and is the
+	 * state most sites will be in most of the time.
+	 */
+	public function test_an_update_arriving_on_its_own_says_so(): void {
+		add_filter( 'awt_update_environment', static fn () => 'production' );
+		add_filter( 'automatic_updater_disabled', '__return_false', 99 );
+		$this->cache_manifest_with_releases( '2999.01.0', false );
+
+		$this->assertSame( 'auto', AdminBar\update_state() );
+		$this->assertSame( 'Updating automatically', AdminBar\state_label( 'auto' ) );
+		$this->assertSame( '', AdminBar\state_href( 'auto' ), 'nothing to go and do' );
+	}
+
+	/** One behind a wall still needs a person, and points at the screen. */
+	public function test_an_update_behind_a_wall_still_needs_a_person(): void {
+		add_filter( 'awt_update_environment', static fn () => 'production' );
+		add_filter( 'automatic_updater_disabled', '__return_false', 99 );
+		$this->cache_manifest_with_releases( '2999.01.0', true );
+
+		$this->assertSame( 'update', AdminBar\update_state() );
+		$this->assertStringContainsString( 'update-core.php', AdminBar\state_href( 'update' ) );
 	}
 
 	/**

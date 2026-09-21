@@ -340,7 +340,7 @@ function message( array $state ): ?array {
 				'<strong>' . esc_html( $state['version'] ) . '</strong>'
 			);
 			if ( ! empty( $state['breaking'] ) ) {
-				$text .= ' ' . esc_html__( 'It changes something that could affect your site, so AWT will not install this one for you.', 'awt' );
+				$text .= ' ' . esc_html__( 'It comes with changes that could affect your site, so AWT did not automatically update itself.', 'awt' );
 			}
 			if ( ! empty( $state['waiting'] ) ) {
 				$text .= ' ' . sprintf(
