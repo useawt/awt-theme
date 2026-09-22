@@ -264,6 +264,12 @@ Reports about real barriers are treated as bugs, not feature requests.
 == Changelog ==
 
 <!-- CHANGELOG_START -->
+= 2026.09.32 — 2026-09-22 =
+* [Improvement] AWT no longer installs updates by itself on a site that is many releases behind. Those sites need to be updated manually.
+* [Improvement] The AWT menu in the toolbar is now more consistent in states of automatic updates.
+* [Improvement] Automatic updates now handle sites that installed AWT in a non-standard folder structure.
+* [Improvement] AWT only installs update packages published on AWT's own GitHub releases.
+
 = 2026.09.31 — 2026-09-21 =
 * [Improvement] If AWT is installed in a folder with a different name than the one updates install into, it no longer tries to update itself, and tells you how to update by hand instead.
 
@@ -302,9 +308,6 @@ Reports about real barriers are treated as bugs, not feature requests.
 
 = 2026.09.23 — 2026-09-20 =
 * [Improvement] The automatic breadcrumb lines up with the page on templates whose main area has no side padding of its own, including the theme's own "Page without title". The trail sat against the edge of the screen on any window narrower than the content width.
-
-= 2026.09.22 — 2026-09-19 =
-* [A11y] The editor shows the colour scheme you chose on the site. If you had set the site to light while your computer was set to dark, you authored in dark against a light site — two settings, and the editor followed the one that was not about the site.
 <!-- CHANGELOG_END -->
 
 == Upgrade Notice ==
