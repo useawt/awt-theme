@@ -71,16 +71,27 @@ class Test_Update_Notice extends WP_UnitTestCase {
 				'version'       => $version,
 				'theme'         => array(
 					'slug'    => Updates\slug(),
-					'package' => 'https://example.com/t.zip',
+					'package' => 'https://github.com/useawt/awt-theme/releases/download/v1/awt.zip',
 				),
-				'plugin'        => array( 'package' => 'https://example.com/p.zip' ),
+				'plugin'        => array( 'package' => 'https://github.com/useawt/awt-blocks/releases/download/v1/awt-blocks.zip' ),
+				// Newest first, and reaching back to the release this site is
+				// running: the published list always contains it, and a list
+				// that stops above it means the site has fallen below the
+				// window, where nothing installs itself.
 				'releases'      => array(
 					array(
 						'version'     => $version,
 						'breaking'    => $breaking,
 						'autoInstall' => ! $breaking,
-						'theme'       => array( 'package' => 'https://example.com/t.zip' ),
-						'plugin'      => array( 'package' => 'https://example.com/p.zip' ),
+						'theme'       => array( 'package' => 'https://github.com/useawt/awt-theme/releases/download/v1/awt.zip' ),
+						'plugin'      => array( 'package' => 'https://github.com/useawt/awt-blocks/releases/download/v1/awt-blocks.zip' ),
+					),
+					array(
+						'version'     => \AWT\Theme\AWT_THEME_VERSION,
+						'breaking'    => false,
+						'autoInstall' => true,
+						'theme'       => array( 'package' => 'https://github.com/useawt/awt-theme/releases/download/v1/awt.zip' ),
+						'plugin'      => array( 'package' => 'https://github.com/useawt/awt-blocks/releases/download/v1/awt-blocks.zip' ),
 					),
 				),
 			),
@@ -215,6 +226,31 @@ class Test_Update_Notice extends WP_UnitTestCase {
 		$this->assertStringContainsString( Updates\slug(), $text );
 		$this->assertStringContainsString( 'Replace current with uploaded', $text );
 		$this->assertStringContainsString( 'do not', $text, 'it must warn against renaming' );
+	}
+
+	/**
+	 * And told the same thing when it is only set to check for updates.
+	 *
+	 * This used to be said only to a site that installs its own updates. A
+	 * site set to be told about them was told — "AWT 2099.01.0 is ready to
+	 * install. Update now" — and sent to a screen with no AWT on it, because
+	 * the package is withheld whatever the setting says. Measured 2026-09-22.
+	 */
+	public function test_a_mismatched_folder_is_explained_in_notify_mode_too(): void {
+		Settings\set( 'updates.mode', 'notify' );
+		$this->announce( '2099.01.0' );
+		$data                  = get_site_transient( Updates\CACHE_KEY );
+		$data['theme']['slug'] = 'somewhere-else';
+		set_site_transient( Updates\CACHE_KEY, $data, HOUR_IN_SECONDS );
+
+		$state = UpdateNotice\state();
+
+		$this->assertSame( 'wrong-folder', $state['id'] );
+
+		// And it names the release that is waiting, rather than promising to
+		// mention it later and then standing in the way of the state that does.
+		$this->assertSame( '2099.01.0', $state['version'] );
+		$this->assertStringContainsString( '2099.01.0', UpdateNotice\message( $state )['text'] );
 	}
 
 	/** A host that forbids file changes is named, rather than silently winning. */

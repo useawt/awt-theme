@@ -90,6 +90,24 @@ const CACHE_TTL_FAILED = HOUR_IN_SECONDS;
 /** Seconds to wait for the manifest before giving up. */
 const TIMEOUT = 5;
 
+/**
+ * Where a package may come from.
+ *
+ * Everything a site installs by itself is named by one JSON file on one
+ * server, and nothing signs it. That is the whole trust in this channel, so
+ * the one thing worth pinning down is the destination: a package URL that is
+ * not an AWT release on GitHub is refused, whatever the manifest says. It
+ * does not make a tampered manifest harmless — it does stop the simplest
+ * version of it, which is pointing a site somewhere else entirely.
+ *
+ * Checked before the `awt_theme_update_package` filter, not after: a filter
+ * is code already running on the site and has nothing to gain by lying.
+ */
+const PACKAGE_HOST = 'github.com';
+
+/** And under whose releases. GitHub hands out paths of this shape. */
+const PACKAGE_PATH = '/useawt/';
+
 add_filter( 'site_transient_update_themes', __NAMESPACE__ . '\\offer_update' );
 add_filter( 'auto_update_theme', __NAMESPACE__ . '\\should_auto_update', 10, 2 );
 add_filter( 'themes_api', __NAMESPACE__ . '\\details', 10, 3 );
@@ -189,9 +207,26 @@ function package_folder_matches( ?array $data = null ): bool {
  */
 function expected_folder( ?array $data = null ): string {
 	if ( $data === null ) {
-		$data = manifest();
+		$data = manifest() ?? cached();
 	}
 	return is_array( $data ) ? (string) ( $data['theme']['slug'] ?? '' ) : '';
+}
+
+/**
+ * The last manifest this site read, without going and reading one.
+ *
+ * `manifest()` answers null on the front end by design — a visitor's page
+ * load is no place for a network request. But the toolbar renders on the
+ * front end and has to say the same thing there as it does in wp-admin, and
+ * for a while it did not: the folder check quietly passed on every front-end
+ * page, so a site that cannot update itself was told it was updating
+ * automatically. Measured, not guessed.
+ *
+ * @return array|null The cached manifest, or null before the first check.
+ */
+function cached(): ?array {
+	$cached = get_site_transient( CACHE_KEY );
+	return is_array( $cached ) ? $cached : null;
 }
 
 /**
@@ -238,7 +273,24 @@ function environment(): string {
  */
 function auto_install_target( array $data, string $installed ): ?array {
 	$releases = $data['releases'] ?? null;
-	if ( ! is_array( $releases ) ) {
+	if ( ! is_array( $releases ) || ! $releases ) {
+		return null;
+	}
+
+	/*
+	 * The list is capped, so a site can be behind the whole of it. Then the
+	 * walk starts at the oldest entry and cannot see whatever was tagged
+	 * breaking in the range that fell off the end — it would step over walls
+	 * it never knew about. A site this far back installs by hand.
+	 */
+	$oldest = '';
+	foreach ( $releases as $release ) {
+		$version = (string) ( $release['version'] ?? '' );
+		if ( $version !== '' && ( $oldest === '' || version_compare( $version, $oldest, '<' ) ) ) {
+			$oldest = $version;
+		}
+	}
+	if ( $oldest === '' || version_compare( $installed, $oldest, '<' ) ) {
 		return null;
 	}
 
@@ -353,6 +405,34 @@ function slug(): string {
 }
 
 /**
+ * The package URL, or '' when it is not one of ours.
+ *
+ * See PACKAGE_HOST for what this is and is not worth.
+ *
+ * @param string $url Whatever the manifest named.
+ * @return string The same URL, or '' to install nothing.
+ */
+function trusted_package( string $url ): string {
+	if ( $url === '' ) {
+		return '';
+	}
+	$parts = wp_parse_url( $url );
+	if ( ! is_array( $parts ) ) {
+		return '';
+	}
+	if ( ( $parts['scheme'] ?? '' ) !== 'https' ) {
+		return '';
+	}
+	if ( strtolower( (string) ( $parts['host'] ?? '' ) ) !== PACKAGE_HOST ) {
+		return '';
+	}
+	if ( strpos( (string) ( $parts['path'] ?? '' ), PACKAGE_PATH ) !== 0 ) {
+		return '';
+	}
+	return $url;
+}
+
+/**
  * Add AWT to WordPress's list of themes with an update available.
  *
  * @param mixed $transient The update_themes site transient.
@@ -373,7 +453,7 @@ function offer_update( $transient ) {
 	$latest    = (string) $data['version'];
 
 	$offer   = $latest;
-	$package = (string) ( $data['theme']['package'] ?? '' );
+	$package = trusted_package( (string) ( $data['theme']['package'] ?? '' ) );
 
 	// An update that would unpack beside this theme instead of over it is
 	// worse than none: it leaves a second copy and changes nothing.
@@ -394,14 +474,14 @@ function offer_update( $transient ) {
 		 * toolbar) still sees the newest version below, because this filter
 		 * runs on each read rather than on the stored value.
 		 */
-		$target = automatic_allowed() ? auto_install_target( $data, $installed ) : null;
-		if ( null === $target ) {
+		$target  = automatic_allowed() ? auto_install_target( $data, $installed ) : null;
+		$package = null === $target ? '' : trusted_package( (string) ( $target['theme']['package'] ?? '' ) );
+		if ( null === $target || '' === $package ) {
 			$transient->no_update[ $slug ] = current_entry( $slug, $installed, $data );
 			unset( $transient->response[ $slug ] );
 			return $transient;
 		}
-		$offer   = (string) $target['version'];
-		$package = (string) ( $target['theme']['package'] ?? '' );
+		$offer = (string) $target['version'];
 	}
 
 	$entry = array(

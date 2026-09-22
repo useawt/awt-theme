@@ -190,7 +190,7 @@ class Test_Updates extends WP_UnitTestCase {
 		$result = Updates\offer_update( $this->transient() );
 
 		$this->assertSame(
-			'https://example.com/awt-2099.01.0.zip',
+			'https://github.com/useawt/awt-theme/releases/download/v2099.01.0.zip',
 			$result->response['awt']['package']
 		);
 	}
@@ -334,18 +334,27 @@ class Test_Updates extends WP_UnitTestCase {
 	/**
 	 * A release list, newest first, in the shape the manifest publishes.
 	 *
-	 * @param array $rows version => [ breaking, autoInstall ].
+	 * The running version is added at the bottom unless a test says not to.
+	 * The published list always contains it — it was a release — and a list
+	 * that does not reach back that far means something else entirely: the
+	 * site has fallen below the window, and then nothing may install itself.
+	 *
+	 * @param array $rows    version => [ breaking, autoInstall ].
+	 * @param bool  $running Whether to append the version this site runs.
 	 * @return array Release entries.
 	 */
-	private function releases( array $rows ): array {
+	private function releases( array $rows, bool $running = true ): array {
+		if ( $running ) {
+			$rows[ \AWT\Theme\AWT_THEME_VERSION ] = array( 'autoInstall' => true );
+		}
 		$out = array();
 		foreach ( $rows as $version => $flags ) {
 			$out[] = array(
 				'version'     => (string) $version,
 				'breaking'    => ! empty( $flags['breaking'] ),
 				'autoInstall' => ! empty( $flags['autoInstall'] ),
-				'theme'       => array( 'package' => 'https://example.com/awt-' . $version . '.zip' ),
-				'plugin'      => array( 'package' => 'https://example.com/blocks-' . $version . '.zip' ),
+				'theme'       => array( 'package' => 'https://github.com/useawt/awt-theme/releases/download/v' . $version . '.zip' ),
+				'plugin'      => array( 'package' => 'https://github.com/useawt/awt-blocks/releases/download/v' . $version . '.zip' ),
 			);
 		}
 		return $out;
@@ -519,7 +528,7 @@ class Test_Updates extends WP_UnitTestCase {
 		$result = Updates\offer_update( $this->transient() );
 
 		$this->assertSame( '2099.01.1', $result->response['awt']['new_version'] );
-		$this->assertSame( 'https://example.com/awt-2099.01.1.zip', $result->response['awt']['package'] );
+		$this->assertSame( 'https://github.com/useawt/awt-theme/releases/download/v2099.01.1.zip', $result->response['awt']['package'] );
 	}
 
 	/**
@@ -619,6 +628,138 @@ class Test_Updates extends WP_UnitTestCase {
 		$this->assertFalse( Updates\automatic_allowed() );
 	}
 
+	/**
+	 * A site behind the whole list installs nothing by itself.
+	 *
+	 * The list is capped, so a site far enough behind sits below all of it.
+	 * The walk would then start at the oldest entry and climb, stepping over
+	 * whatever was tagged breaking in the range that fell off the end — walls
+	 * it has no way to know existed. Measured on 2026-09-22: it reached the
+	 * newest release from two months below the list.
+	 */
+	public function test_the_walk_refuses_a_site_below_the_whole_list(): void {
+		$this->assertNull(
+			Updates\auto_install_target(
+				array(
+					'releases' => $this->releases(
+						array(
+							'2099.01.3' => array( 'autoInstall' => true ),
+							'2099.01.2' => array( 'autoInstall' => true ),
+							'2099.01.1' => array( 'autoInstall' => true ),
+						),
+						false
+					),
+				),
+				'2098.12.9'
+			)
+		);
+	}
+
+	/** A site on the oldest release listed is inside the list, and climbs. */
+	public function test_a_site_on_the_oldest_listed_release_still_climbs(): void {
+		$target = Updates\auto_install_target(
+			array(
+				'releases' => $this->releases(
+					array(
+						'2099.01.3' => array( 'autoInstall' => true ),
+						'2099.01.1' => array( 'autoInstall' => true ),
+					),
+					false
+				),
+			),
+			'2099.01.1'
+		);
+
+		$this->assertSame( '2099.01.3', $target['version'] );
+	}
+
+	/** An empty list is not a list to walk. */
+	public function test_an_empty_release_list_installs_nothing(): void {
+		$this->assertNull( Updates\auto_install_target( array( 'releases' => array() ), '2099.01.0' ) );
+	}
+
+	/* ------------------------------------------------ where a package is from */
+
+	/** Only an AWT release on GitHub, over https. */
+	public function test_a_package_from_anywhere_else_is_refused(): void {
+		$ours = 'https://github.com/useawt/awt-theme/releases/download/v2099.01.0/awt.zip';
+
+		$this->assertSame( $ours, Updates\trusted_package( $ours ) );
+		$this->assertSame( '', Updates\trusted_package( '' ) );
+		$this->assertSame( '', Updates\trusted_package( 'http://github.com/useawt/awt-theme/x.zip' ), 'plain http' );
+		$this->assertSame( '', Updates\trusted_package( 'https://example.com/useawt/awt.zip' ), 'another host' );
+		$this->assertSame( '', Updates\trusted_package( 'https://github.com/someoneelse/awt.zip' ), 'another account' );
+		$this->assertSame( '', Updates\trusted_package( 'https://github.com.example.com/useawt/awt.zip' ), 'a lookalike host' );
+	}
+
+	/**
+	 * Unattended, a package from anywhere else means nothing is offered.
+	 *
+	 * Offering the entry with an empty package instead would have WordPress
+	 * try, fail, and email the owner that AWT could not update itself.
+	 */
+	public function test_cron_installs_nothing_when_the_package_is_not_ours(): void {
+		add_filter( 'awt_update_environment', static fn () => 'production' );
+		$releases                        = $this->releases( array( '2099.01.1' => array( 'autoInstall' => true ) ) );
+		$releases[0]['theme']['package'] = 'https://example.com/not-ours.zip';
+		$this->cache( '2099.01.1', $releases );
+
+		$result = Updates\offer_update( $this->transient() );
+
+		$this->assertArrayNotHasKey( 'awt', $result->response );
+		$this->assertArrayHasKey( 'awt', $result->no_update );
+	}
+
+	/** And on a human-facing screen it is simply not installable. */
+	public function test_a_package_from_anywhere_else_is_not_offered_to_a_person(): void {
+		// An admin screen: it checks, but it is not the unattended path.
+		remove_all_filters( 'wp_doing_cron' );
+		add_filter( 'wp_doing_cron', '__return_false' );
+		set_current_screen( 'themes.php' );
+		$this->cache( '2099.01.1' );
+		set_site_transient(
+			Updates\CACHE_KEY,
+			array_replace_recursive(
+				(array) get_site_transient( Updates\CACHE_KEY ),
+				array( 'theme' => array( 'package' => 'https://example.com/not-ours.zip' ) )
+			),
+			HOUR_IN_SECONDS
+		);
+
+		$result = Updates\offer_update( $this->transient() );
+
+		$this->assertSame( '2099.01.1', $result->response['awt']['new_version'], 'still told about it' );
+		$this->assertSame( '', $result->response['awt']['package'], 'but not from there' );
+
+		set_current_screen( 'front' );
+	}
+
+	/**
+	 * The folder check answers the same off the admin as on it.
+	 *
+	 * `manifest()` returns null on a front-end page load by design, and the
+	 * check used to read it through that door and quietly pass — so the
+	 * toolbar told a site that cannot update itself that it was updating
+	 * automatically, while wp-admin said the opposite. Measured 2026-09-22.
+	 */
+	public function test_the_folder_check_answers_without_reading_a_manifest(): void {
+		remove_all_filters( 'wp_doing_cron' );
+		add_filter( 'wp_doing_cron', '__return_false' );
+		$this->cache( '2099.01.1' );
+		set_site_transient(
+			Updates\CACHE_KEY,
+			array_replace_recursive(
+				(array) get_site_transient( Updates\CACHE_KEY ),
+				array( 'theme' => array( 'slug' => 'awt-somewhere-else' ) )
+			),
+			HOUR_IN_SECONDS
+		);
+
+		$this->assertNull( Updates\manifest(), 'the fixture is a front-end request' );
+		$this->assertSame( 'awt-somewhere-else', Updates\expected_folder() );
+		$this->assertFalse( Updates\package_folder_matches() );
+	}
+
 	// --- helpers ------------------------------------------------------------
 
 	/**
@@ -641,12 +782,12 @@ class Test_Updates extends WP_UnitTestCase {
 				'theme'         => array(
 					'slug'       => Updates\slug(),
 					'releaseUrl' => 'https://example.com/theme',
-					'package'    => 'https://example.com/awt-' . $version . '.zip',
+					'package'    => 'https://github.com/useawt/awt-theme/releases/download/v' . $version . '.zip',
 				),
 				'plugin'        => array(
 					'slug'       => 'awt-blocks',
 					'releaseUrl' => 'https://example.com/plugin',
-					'package'    => 'https://example.com/awt-blocks-' . $version . '.zip',
+					'package'    => 'https://github.com/useawt/awt-blocks/releases/download/v' . $version . '.zip',
 				),
 				'releases'      => $releases,
 			),

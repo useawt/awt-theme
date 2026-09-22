@@ -118,15 +118,24 @@ class Test_Admin_Bar extends WP_UnitTestCase {
 			array(
 				'schemaVersion' => 1,
 				'version'       => $version,
-				'theme'         => array( 'package' => 'https://example.com/t.zip' ),
-				'plugin'        => array( 'package' => 'https://example.com/p.zip' ),
+				'theme'         => array( 'package' => 'https://github.com/useawt/awt-theme/releases/download/v1/awt.zip' ),
+				'plugin'        => array( 'package' => 'https://github.com/useawt/awt-blocks/releases/download/v1/awt-blocks.zip' ),
+				// Reaching back to the version this site runs — see the note
+				// on the same fixture in test-update-notice.php.
 				'releases'      => array(
 					array(
 						'version'     => $version,
 						'breaking'    => $breaking,
 						'autoInstall' => ! $breaking,
-						'theme'       => array( 'package' => 'https://example.com/t.zip' ),
-						'plugin'      => array( 'package' => 'https://example.com/p.zip' ),
+						'theme'       => array( 'package' => 'https://github.com/useawt/awt-theme/releases/download/v1/awt.zip' ),
+						'plugin'      => array( 'package' => 'https://github.com/useawt/awt-blocks/releases/download/v1/awt-blocks.zip' ),
+					),
+					array(
+						'version'     => \AWT\Theme\AWT_THEME_VERSION,
+						'breaking'    => false,
+						'autoInstall' => true,
+						'theme'       => array( 'package' => 'https://github.com/useawt/awt-theme/releases/download/v1/awt.zip' ),
+						'plugin'      => array( 'package' => 'https://github.com/useawt/awt-blocks/releases/download/v1/awt-blocks.zip' ),
 					),
 				),
 			),

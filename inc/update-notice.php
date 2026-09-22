@@ -225,34 +225,36 @@ function state(): array {
 		return array( 'id' => 'checks-off' );
 	}
 
+	$data   = Updates\manifest();
+	$latest = is_array( $data ) ? (string) ( $data['version'] ?? '' ) : '';
+	$newer  = $latest !== '' && version_compare( $versions['theme'], $latest, '<' );
+
 	// Before anything about installing: does this site install at all? A site
 	// whose files arrive by a deploy is not going to be told how to upload a
 	// zip, and it is not misconfigured for refusing to.
 	if ( Updates\deployed_from_source() ) {
-		$data   = Updates\manifest();
-		$newest = is_array( $data ) ? (string) ( $data['version'] ?? '' ) : '';
 		return array(
 			'id'      => 'deployed',
 			'version' => $versions['theme'],
-			'newest'  => ( $newest !== '' && version_compare( $versions['theme'], $newest, '<' ) ) ? $newest : '',
+			'newest'  => $newer ? $latest : '',
 		);
 	}
 
-	if ( $mode === 'auto' && ! Updates\package_folder_matches() ) {
+	// Not only when the site installs its own updates. A site set to be told
+	// about them is told, and then sent to a screen with nothing on it —
+	// the package is withheld here whatever the setting says.
+	if ( ! Updates\package_folder_matches() ) {
 		return array(
 			'id'       => 'wrong-folder',
 			'folder'   => Updates\slug(),
 			'expected' => Updates\expected_folder(),
+			'version'  => $newer ? $latest : '',
 		);
 	}
 
 	if ( $mode === 'auto' && ! host_allows_updates() ) {
 		return array( 'id' => 'host-blocked' );
 	}
-
-	$data   = Updates\manifest();
-	$latest = is_array( $data ) ? (string) ( $data['version'] ?? '' ) : '';
-	$newer  = $latest !== '' && version_compare( $versions['theme'], $latest, '<' );
 
 	if ( $newer ) {
 		// Will it arrive on its own? Then say nothing now and report after.
@@ -443,14 +445,25 @@ function message( array $state ): ?array {
 			);
 
 		case 'wrong-folder':
+			$text = sprintf(
+				/* translators: 1: the folder the theme is installed in, e.g. awt-theme. 2: the folder AWT updates install into, always "awt". */
+				esc_html__( 'AWT is installed in a folder called %1$s, but its updates install into %2$s, so AWT cannot install them for you. Renaming the folder would lose any header, footer or template you have edited, so do not.', 'awt' ),
+				'<code>' . esc_html( (string) $state['folder'] ) . '</code>',
+				'<code>' . esc_html( (string) ( $state['expected'] ?? '' ) ) . '</code>'
+			);
+			$text .= ' ';
+			if ( ! empty( $state['version'] ) ) {
+				$text .= sprintf(
+					/* translators: %s: the new version number. */
+					esc_html__( 'AWT %s is out — install it yourself, choosing "Replace current with uploaded", and it will go to the right place.', 'awt' ),
+					'<strong>' . esc_html( (string) $state['version'] ) . '</strong>'
+				);
+			} else {
+				$text .= esc_html__( 'When a new version is out, install it yourself, choosing "Replace current with uploaded", and it will go to the right place.', 'awt' );
+			}
 			return array(
 				'level' => 'warning',
-				'text'  => sprintf(
-					/* translators: 1: the folder the theme is installed in, e.g. awt-theme. 2: the folder AWT updates install into, always "awt". */
-					esc_html__( 'AWT is installed in a folder called %1$s, but its updates install into %2$s. AWT will tell you when a new version is out, and you install it yourself — choose "Replace current with uploaded" and it will go to the right place. Renaming the folder would lose any header, footer or template you have edited, so do not.', 'awt' ),
-					'<code>' . esc_html( (string) $state['folder'] ) . '</code>',
-					'<code>' . esc_html( (string) ( $state['expected'] ?? '' ) ) . '</code>'
-				),
+				'text'  => $text,
 			);
 
 		case 'host-blocked':
