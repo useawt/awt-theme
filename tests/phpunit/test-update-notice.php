@@ -41,6 +41,21 @@ class Test_Update_Notice extends WP_UnitTestCase {
 		// on an admin screen, in cron or in WP-CLI. Without a screen these
 		// tests would ask about a manifest that is never fetched.
 		set_current_screen( 'dashboard' );
+		// And with a screen and a cold cache it fetches the real one, from
+		// the real useawt.com — so a test asking "is this site current?" was
+		// really asking "is this checkout the newest published release?", and
+		// CI went red on every commit that was not. Measured 2026-09-22, on
+		// the commit underneath 2026.09.32. Nothing here may leave the box.
+		add_filter( 'pre_http_request', array( $this, 'no_network' ), 10, 3 );
+	}
+
+	/**
+	 * Refuse every outbound request, so a cold cache reads as "cannot say".
+	 *
+	 * @return \WP_Error Always.
+	 */
+	public function no_network() {
+		return new \WP_Error( 'awt_test_no_network', 'Tests do not reach the network.' );
 	}
 
 	/**
@@ -50,6 +65,7 @@ class Test_Update_Notice extends WP_UnitTestCase {
 		delete_option( UpdateNotice\LAST_RUN );
 		delete_option( UpdateNotice\WAITING_SINCE );
 		delete_site_transient( Updates\CACHE_KEY );
+		remove_all_filters( 'pre_http_request' );
 		remove_all_filters( 'awt_update_environment' );
 		remove_all_filters( 'automatic_updater_disabled' );
 		remove_all_filters( 'awt_deployed_from_source' );
