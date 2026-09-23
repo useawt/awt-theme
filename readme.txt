@@ -264,6 +264,13 @@ Reports about real barriers are treated as bugs, not feature requests.
 == Changelog ==
 
 <!-- CHANGELOG_START -->
+= 2026.09.33 — 2026-09-23 =
+* [Improvement] AWT's stylesheets and scripts are now compressed, so every page loads less code.
+* [Improvement] AWT no longer loads WordPress's emoji script on the front end.
+* [Improvement] The page head no longer carries the WordPress version number or the pointer to `xmlrpc.php`.
+* [Improvement] Pasting a link to one of your pages into another WordPress site no longer turns it into a preview card. Add the `awt_oembed_discovery` filter to put it back.
+* [Improvement] A site with comments switched off no longer advertises a comments feed.
+
 = 2026.09.32 — 2026-09-22 =
 * [Improvement] AWT no longer installs updates by itself on a site that is many releases behind. Those sites need to be updated manually.
 * [Improvement] The AWT menu in the toolbar is now more consistent in states of automatic updates.
@@ -305,9 +312,6 @@ Reports about real barriers are treated as bugs, not feature requests.
 
 = 2026.09.24 — 2026-09-20 =
 * [Improvement] The footer credit reads "Built with AWT, an accessible WordPress theme."
-
-= 2026.09.23 — 2026-09-20 =
-* [Improvement] The automatic breadcrumb lines up with the page on templates whose main area has no side padding of its own, including the theme's own "Page without title". The trail sat against the edge of the screen on any window narrower than the content width.
 <!-- CHANGELOG_END -->
 
 == Upgrade Notice ==
