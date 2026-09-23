@@ -10,6 +10,14 @@
      markdownlint enforces the structure in CI. Newest release first.
      The Unreleased section accumulates entries between releases. -->
 
+## Unreleased
+
+### [Improvement]
+
+- AWT's stylesheets and scripts are now compressed, so every page loads less
+  code.
+- AWT no longer loads WordPress's emoji script on the front end.
+
 ## 2026.09.32 — 2026-09-22
 
 ### [Improvement]

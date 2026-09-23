@@ -577,14 +577,15 @@ add_action(
 
 /**
  * Enqueue the editor sidebar control (Document → Breadcrumb panel). Hand-written
- * JS — the theme has no build step — so it depends on the wp.* script handles
- * directly. `wp-editor` carries PluginDocumentSettingPanel on WP 6.6+;
- * `wp-edit-post` is listed too so the pre-6.6 fallback path is loadable.
+ * JS in `src/`, compressed into `assets/` by `npm run build:assets`, so it
+ * depends on the wp.* script handles directly rather than on a bundler.
+ * `wp-editor` carries PluginDocumentSettingPanel on WP 6.6+; `wp-edit-post` is
+ * listed too so the pre-6.6 fallback path is loadable.
  */
 add_action(
 	'enqueue_block_editor_assets',
 	static function (): void {
-		$rel  = '/assets/js/breadcrumb-editor.js';
+		$rel  = '/assets/js/breadcrumb-editor.min.js';
 		$path = get_template_directory() . $rel;
 		if ( ! file_exists( $path ) ) {
 			return;

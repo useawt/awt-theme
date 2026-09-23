@@ -63,7 +63,9 @@ jobs:
         run: npm run check:foundation
       - name: Stylesheets parse (no silently dropped rules)
         run: npm run check:css
-      - name: Foundation CSS is freshly built
+      - name: Served files are freshly built from src/
         run: |
-          npm run build:css
-          git diff --exit-code assets/css/foundation.min.css
+          npm run build:assets
+          git diff --exit-code assets
+      - name: Served files carry no comments
+        run: npm run check:assets

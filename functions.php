@@ -433,7 +433,7 @@ add_action(
 		add_editor_style(
 			array(
 				'assets/css/foundation.min.css',
-				'assets/css/theme.css',
+				'assets/css/theme.min.css',
 				// Baseline only. Mirrors Carbon's `.cds--white` declarations
 				// onto `body.editor-styles-wrapper` so Carbon variables
 				// resolve in the editor iframe without depending on a runtime
@@ -441,7 +441,7 @@ add_action(
 				// mount). The site's ACTUAL scope is layered over this by
 				// `editor_scope_css()` further down; this file is what remains
 				// if that cannot read the scope block.
-				'assets/css/editor-scope.css',
+				'assets/css/editor-scope.min.css',
 			)
 		);
 	}
@@ -717,14 +717,32 @@ function header_contain_css(): string {
 	return '.cds--header{padding-inline:max(0px,(100% - var(--wp--style--global--content-size,66rem))/2) !important}';
 }
 
+/*
+ * WordPress's emoji fallback, off on the front end.
+ *
+ * Core ships a script that tests what the browser can draw and, on the ones
+ * that fall short, swaps every emoji in the page for an image from a CDN. It
+ * costs 3.3 KB of JavaScript and a small stylesheet on every view, and the
+ * browsers it rescues have not been in use for years — the font handles emoji
+ * on every platform AWT supports.
+ *
+ * The admin keeps it. That is WordPress's own screen, not ours to thin out,
+ * and the same rule that keeps Carbon's CSS off wp-admin applies here.
+ */
+remove_action( 'wp_head', 'print_emoji_detection_script', 7 );
+remove_action( 'wp_enqueue_scripts', 'wp_enqueue_emoji_styles' );
+remove_action( 'wp_print_styles', 'print_emoji_styles' );
+remove_action( 'embed_head', 'print_emoji_detection_script' );
+remove_action( 'enqueue_embed_scripts', 'wp_enqueue_emoji_styles' );
+
 add_action(
 	'wp_enqueue_scripts',
 	static function (): void {
 		$carbon_path = get_template_directory() . '/assets/css/foundation.min.css';
-		$theme_path  = get_template_directory() . '/assets/css/theme.css';
+		$theme_path  = get_template_directory() . '/assets/css/theme.min.css';
 
 		wp_enqueue_style( 'awt-theme-carbon', get_template_directory_uri() . '/assets/css/foundation.min.css', array(), (string) filemtime( $carbon_path ) );
-		wp_enqueue_style( 'awt-theme', get_template_directory_uri() . '/assets/css/theme.css', array( 'awt-theme-carbon' ), (string) filemtime( $theme_path ) );
+		wp_enqueue_style( 'awt-theme', get_template_directory_uri() . '/assets/css/theme.min.css', array( 'awt-theme-carbon' ), (string) filemtime( $theme_path ) );
 
 		$scale_css = type_scale_css();
 		if ( $scale_css !== '' ) {

@@ -63,9 +63,14 @@ const INCLUDE = [
 	'license.txt',
 	'LICENSE-Apache-2.0.txt',
 	'LICENSE-OFL-1.1.txt',
-	// The Sass the minified stylesheet is compiled from. The Theme Directory
-	// asks for the original of anything minified that ships.
+	// The originals every served file is compiled from. The Theme Directory
+	// asks for the source of anything minified that ships, and these are also
+	// where the reasoning lives — `assets/` carries none of it (see
+	// scripts/build-assets.js).
 	'src/foundation.scss',
+	'src/theme.css',
+	'src/editor-scope.css',
+	'src/breadcrumb-editor.js',
 	// The release changelog, written by scripts/release.js. Without it the
 	// "View version details" window on the Themes screen has nothing to show,
 	// because it reads this file rather than making a network call.
@@ -86,17 +91,23 @@ const REQUIRED = [
 	'readme.txt',
 	'screenshot.png',
 	'assets/css/foundation.min.css',
-	'assets/css/theme.css',
-	// The source the minified stylesheet is built from. The Theme Directory
-	// asks for the original of anything minified, and it is 2 KB.
+	'assets/css/theme.min.css',
+	// The sources the minified stylesheets are built from.
 	'src/foundation.scss',
+	'src/theme.css',
 ];
 
 /**
  * The one exception to FORBIDDEN below, listed on its own so the exclusion of
  * `src/` and `.scss` stays otherwise absolute.
  */
-const ALLOWED_SOURCES = ['src/', 'src/foundation.scss'];
+const ALLOWED_SOURCES = [
+	'src/',
+	'src/foundation.scss',
+	'src/theme.css',
+	'src/editor-scope.css',
+	'src/breadcrumb-editor.js',
+];
 
 /**
  * Nothing matching these may appear in the zip. Redundant with the include

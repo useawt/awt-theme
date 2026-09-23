@@ -100,7 +100,7 @@ function parse(css) {
 }
 
 const themeRules = parse(
-	fs.readFileSync(path.join(THEME, 'assets/css/theme.css'), 'utf8')
+	fs.readFileSync(path.join(THEME, 'src/theme.css'), 'utf8')
 );
 const carbon = new Map(); // `${ctx}|${sel}` -> {decls, sources}
 function addCarbon(file, label) {

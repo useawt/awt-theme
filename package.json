@@ -8,10 +8,9 @@
 	"scripts": {
 		"check:premium": "bash scripts/check-no-premium.sh",
 		"prepare": "husky",
-		"lint:js": "eslint assets/js scripts",
+		"lint:js": "eslint src scripts",
 		"lint:md": "markdownlint-cli2",
 		"lint:php": "vendor/bin/phpcs",
-		"build:css": "sass --style=compressed --no-source-map --load-path=node_modules src/foundation.scss assets/css/foundation.min.css",
 		"build:zip": "node scripts/build-zip.js",
 		"check:foundation": "node scripts/check-foundation.js",
 		"i18n:pot": "wp i18n make-pot . languages/awt.pot --exclude=build,tests,scripts,node_modules,vendor --domain=awt",
@@ -22,7 +21,9 @@
 		"env:start": "wp-env start",
 		"env:stop": "wp-env stop",
 		"test:php": "wp-env run tests-cli --env-cwd=wp-content/themes/awt vendor/bin/phpunit",
-		"test:php:update": "wp-env run tests-cli --env-cwd=wp-content/themes/awt -- bash -c 'UPDATE_SNAPSHOTS=1 vendor/bin/phpunit'"
+		"test:php:update": "wp-env run tests-cli --env-cwd=wp-content/themes/awt -- bash -c 'UPDATE_SNAPSHOTS=1 vendor/bin/phpunit'",
+		"build:assets": "node scripts/build-assets.js",
+		"check:assets": "node scripts/check-assets-clean.js"
 	},
 	"dependencies": {
 		"@carbon/icons": "^11.81.0",
@@ -31,16 +32,18 @@
 		"@ibm/plex-sans": "^1.1.0"
 	},
 	"devDependencies": {
+		"@wordpress/env": "^10.0.0",
 		"@wordpress/eslint-plugin": "^25.7.0",
 		"eslint": "^9.39.5",
 		"husky": "^9.1.7",
 		"lint-staged": "^17.0.8",
 		"markdownlint-cli2": "^0.23.0",
 		"sass": "^1.101.0",
-		"@wordpress/env": "^10.0.0"
+		"terser": "^5.51.2"
 	},
 	"lint-staged": {
-		"assets/js/**/*.js": "eslint",
+		"src/**/*.js": "eslint",
+		"scripts/**/*.js": "eslint",
 		"*.php": "vendor/bin/phpcs",
 		"*.md": "markdownlint-cli2"
 	}

@@ -28,7 +28,7 @@ const fs = require('fs');
 const path = require('path');
 
 const ROOT = path.join(__dirname, '..');
-const FILES = ['assets/css/theme.css', 'assets/css/editor-scope.css'];
+const FILES = ['src/theme.css', 'src/editor-scope.css'];
 
 let failures = 0;
 
