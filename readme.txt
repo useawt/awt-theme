@@ -264,6 +264,12 @@ Reports about real barriers are treated as bugs, not feature requests.
 == Changelog ==
 
 <!-- CHANGELOG_START -->
+= 2026.09.34 — 2026-09-23 =
+* [Improvement] Blog posts now use the same content width as other pages.
+* [Improvement] Featured images keep their own shape. They are no longer cropped to fit a fixed box.
+* [Improvement] The pagination under a list of posts is now centred.
+* [Improvement] A post's categories now show as tags.
+
 = 2026.09.33 — 2026-09-23 =
 * [Improvement] AWT's stylesheets and scripts are now compressed, so every page loads less code.
 * [Improvement] AWT no longer loads WordPress's emoji script on the front end.
@@ -309,9 +315,6 @@ Reports about real barriers are treated as bugs, not feature requests.
 
 = 2026.09.25 — 2026-09-20 =
 * [Improvement] No changes in the theme itself. It carries the same version number as AWT Blocks, which has changes in this release.
-
-= 2026.09.24 — 2026-09-20 =
-* [Improvement] The footer credit reads "Built with AWT, an accessible WordPress theme."
 <!-- CHANGELOG_END -->
 
 == Upgrade Notice ==
