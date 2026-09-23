@@ -3211,7 +3211,8 @@ a.cds--btn--ghost:visited:active {
  * NOT from padding-block. A padding-block here squeezes the text vertically
  * and clips descenders ("g", "p", "y") on small font-sizes. Use min-block-size
  * to set the row height; let align-items center the content within it. */
-.cds--tag {
+.cds--tag,
+.wp-block-post-terms a {
 	display: inline-flex;
 	align-items: center;
 	gap: 0.25rem;
@@ -3234,6 +3235,41 @@ a.cds--btn--ghost:visited:active {
 	cursor: pointer;
 }
 .cds--tag.awt-tag--link:hover {
+	text-decoration: underline;
+}
+
+/* A post's categories read as tags.
+
+   Core's Post Terms block emits bare links with a comma between them. They
+   join the tag rule above rather than getting a copy of it, because they are
+   the same object on the page and two lists of the same declarations drift.
+
+   Kept in CSS rather than done by adding the tag classes in PHP, which was
+   tried first: the editor renders a query loop's post terms itself, without
+   going through `render_block`, so the filter reached the published page and
+   not the canvas. A stylesheet reaches both.
+
+   The links stay plain `<a>`, which is also why nothing here touches focus.
+   The `a:not([class*="cds--"]):focus-visible` rule further down already gives
+   them the 2px ring; adding a design-system class would have taken it away.
+
+   The comma is hidden: chips that sit apart have nothing for it to separate,
+   and a screen reader announces each link on its own either way. */
+.wp-block-post-terms {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 0.5rem;
+}
+
+.wp-block-post-terms__separator {
+	display: none;
+}
+
+.wp-block-post-terms a {
+	text-decoration: none;
+}
+
+.wp-block-post-terms a:hover {
 	text-decoration: underline;
 }
 
