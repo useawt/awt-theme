@@ -3755,7 +3755,18 @@ body.editor-styles-wrapper .wp-block-awt-icon   + .wp-block-awt-icon {
  * what a field with "Carbon default" on renders. AWT's default overrides it
  * from the `.awt-field--framed` rules in the form-field section above — if you
  * change the border here, change it there too. */
-.cds--select { display: block; }
+
+/* The font size is stated here because the block puts `cds--form-item` and
+ * `cds--select` on the SAME element, where Carbon puts them on a parent and a
+ * child. Carbon's `.cds--select { font-size: 100% }` therefore resolves against
+ * the page, not against the 0.875rem `.cds--form-item` sets — and the two rules
+ * carry the same specificity, so which one wins comes down to which Carbon
+ * component's CSS the page happened to load last. It read correctly only
+ * because several blocks each shipped their own copy of the form styles and one
+ * of them landed after the select's. Found on 2026-09-23, when that duplication
+ * was removed and the select alone jumped from 0.875rem to the body size while
+ * every other field stayed put. */
+.cds--select { display: block; font-size: var(--cds-body-compact-01-font-size, 0.875rem); }
 .cds--select-input {
 	appearance: none;
 	-webkit-appearance: none;

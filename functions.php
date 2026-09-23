@@ -718,6 +718,39 @@ function header_contain_css(): string {
 }
 
 /*
+ * Four lines core prints in every page's head that say nothing to a reader.
+ *
+ * The version number is the one with a cost: it tells anyone scanning which
+ * WordPress a site is on, which is the first thing a scan for known holes looks
+ * for. It is not a secret and not a defence — but there is no reason to publish
+ * it, and none of these four is anything a visitor or a search engine uses.
+ *
+ * The other three are the "Really Simple Discovery" pointer to `xmlrpc.php`
+ * (the remote-publishing interface, which few sites now use), and the two
+ * oEmbed links, which let another WordPress site turn a pasted link to this one
+ * into a preview card. That last one is a real if narrow feature, so it is on
+ * its own filter: `add_filter( 'awt_oembed_discovery', '__return_true' )` in a
+ * child theme or a one-line plugin brings the cards back.
+ *
+ * A site with comments switched off also stops advertising a comments feed —
+ * `feed_links_extra()` prints one whatever the setting says, and a feed of
+ * comments nobody can leave is a dead link in every reader.
+ */
+remove_action( 'wp_head', 'wp_generator' );
+remove_action( 'wp_head', 'rsd_link' );
+
+if ( ! apply_filters( 'awt_oembed_discovery', false ) ) {
+	remove_action( 'wp_head', 'wp_oembed_add_discovery_links' );
+}
+
+add_filter(
+	'feed_links_show_comments_feed',
+	static function ( bool $show ): bool {
+		return $show && 'open' === get_default_comment_status();
+	}
+);
+
+/*
  * WordPress's emoji fallback, off on the front end.
  *
  * Core ships a script that tests what the browser can draw and, on the ones
