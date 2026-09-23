@@ -3713,6 +3713,14 @@ body.editor-styles-wrapper .wp-block-awt-icon   + .wp-block-awt-icon {
  * `--cds-layout-size-height-local`, which resolves to 3rem on this component
  * anyway. It is a hardcoded copy of Carbon's value, not a different one. */
 .cds--pagination-nav { display: inline-flex; }
+
+/* Centred under the list it belongs to. The nav is an inline flex box, so it
+ * is only as wide as its own numbers and sits wherever the text flow puts it —
+ * the left edge, since the query wrapper sets no text alignment. Making it a
+ * block-level flex box is what lets `justify-content` place it. Keyed on the
+ * block's own class rather than Carbon's, because the design-system class is
+ * chosen at render time and would not survive a different system. */
+.wp-block-awt-pagination { display: flex; justify-content: center; }
 .cds--pagination-nav__list { display: flex; gap: 0; list-style: none; margin: 0; padding: 0; }
 .cds--pagination-nav__page {
 	display: inline-flex;
