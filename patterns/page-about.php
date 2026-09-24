@@ -3,7 +3,7 @@
  * Title: AWT — Page: About
  * Slug: awt/page-about
  * Design system: carbon
- * Description: Starter About page. Heading + intro paragraph + Team grid section.
+ * Description: A starter About page with an intro and a Team grid.
  * Categories: awt-theme-section
  * Keywords: page, about, team, story
  * Block Types: core/post-content

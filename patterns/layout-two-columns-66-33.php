@@ -3,7 +3,7 @@
  * Title: AWT — Layout: two columns (66/33)
  * Slug: awt/layout-two-columns-66-33
  * Design system: carbon
- * Description: Two columns at 2/3 + 1/3 width. Main content + sidebar.
+ * Description: Main content (2/3) beside a sidebar (1/3).
  * Categories: awt-theme-section
  * Keywords: layout, two columns, 66/33, main + sidebar, asymmetric
  * Block Types: core/post-content

@@ -1,9 +1,9 @@
 <?php
 /**
- * Title: AWT — CTA section
+ * Title: AWT: Call-to-action section
  * Slug: awt/cta-section
  * Design system: carbon
- * Description: Centered headline + supporting text + primary action. Section break between content and conversion.
+ * Description: A centered headline, short text and a primary button.
  * Categories: awt-theme-section
  * Keywords: cta, call to action, conversion
  * Block Types: core/post-content

@@ -3,7 +3,7 @@
  * Title: AWT — Stats bar
  * Slug: awt/stats-bar
  * Design system: carbon
- * Description: 4-column statistic row with large numbers + descriptive labels. Modelled on Carbon's c4d-cta-block-item statistic styling.
+ * Description: Four statistics with large numbers and short labels.
  * Categories: awt-theme-section
  * Keywords: stats, statistics, metrics, kpi, numbers
  * Block Types: core/post-content

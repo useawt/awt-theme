@@ -3,7 +3,7 @@
  * Title: AWT — Card
  * Slug: awt/carbon-card
  * Design system: carbon
- * Description: Carbon's content-tile pattern. Heading + body + optional footer action. Built from awt/tile.
+ * Description: A tile with a heading, text and an optional action.
  * Categories: awt-theme-section
  * Keywords: card, tile, content tile
  * Block Types: core/post-content

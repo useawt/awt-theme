@@ -3,7 +3,7 @@
  * Title: AWT — Layout: one column (contained)
  * Slug: awt/layout-one-column-contained
  * Design system: carbon
- * Description: Single column constrained to default content width. The standard reading container.
+ * Description: One column at the standard content width, for most pages.
  * Categories: awt-theme-section
  * Keywords: layout, one column, single, contained
  * Block Types: core/post-content

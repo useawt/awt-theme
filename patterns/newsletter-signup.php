@@ -3,7 +3,7 @@
  * Title: AWT — Newsletter signup
  * Slug: awt/newsletter-signup
  * Design system: carbon
- * Description: Heading + supporting text + email input + submit. Subscribe section for marketing pages.
+ * Description: An email sign-up with a heading, short text and a Subscribe button.
  * Categories: awt-theme-section
  * Keywords: newsletter, email, signup, subscribe
  * Block Types: core/post-content

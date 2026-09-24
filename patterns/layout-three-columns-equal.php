@@ -3,7 +3,7 @@
  * Title: AWT — Layout: three columns (equal)
  * Slug: awt/layout-three-columns-equal
  * Design system: carbon
- * Description: Three equal columns. Standard feature-grid base.
+ * Description: Three equal columns, for feature grids or cards.
  * Categories: awt-theme-section
  * Keywords: layout, three columns, equal, feature grid
  * Block Types: core/post-content

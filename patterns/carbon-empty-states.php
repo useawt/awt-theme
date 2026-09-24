@@ -3,7 +3,7 @@
  * Title: AWT — Empty state
  * Slug: awt/carbon-empty-states
  * Design system: carbon
- * Description: Centered "no results" / "no data" composition. Heading + supporting paragraph + optional action.
+ * Description: A centered "no results" message with text and an optional action.
  * Categories: awt-theme-section
  * Keywords: empty state, no results, no data, first run, zero state
  * Block Types: core/post-content

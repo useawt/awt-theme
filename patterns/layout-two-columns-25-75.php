@@ -3,7 +3,7 @@
  * Title: AWT — Layout: two columns (25/75)
  * Slug: awt/layout-two-columns-25-75
  * Design system: carbon
- * Description: Two columns at 1/4 + 3/4 width. Narrow nav-like aside + main content.
+ * Description: A narrow sidebar (1/4) beside main content (3/4).
  * Categories: awt-theme-section
  * Keywords: layout, two columns, 25/75, narrow sidebar
  * Block Types: core/post-content

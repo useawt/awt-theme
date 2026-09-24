@@ -3,7 +3,7 @@
  * Title: AWT — Page: Documentation index
  * Slug: awt/page-docs-index
  * Design system: carbon
- * Description: Starter docs landing page. Heading + intro + 3-column card grid linking to top-level docs sections.
+ * Description: A starter documentation home page with cards linking to each section.
  * Categories: awt-theme-section
  * Keywords: page, docs, documentation, knowledge base
  * Block Types: core/post-content

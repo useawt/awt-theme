@@ -3,7 +3,7 @@
  * Title: AWT — Page: Documentation article
  * Slug: awt/page-docs-article
  * Design system: carbon
- * Description: Starter docs article. Heading + intro + body content scaffold.
+ * Description: A starter documentation article with an intro and body sections.
  * Categories: awt-theme-section
  * Keywords: page, docs, article, documentation
  * Block Types: core/post-content

@@ -3,7 +3,7 @@
  * Title: AWT — Layout: one column (full width)
  * Slug: awt/layout-one-column-full
  * Design system: carbon
- * Description: Single column at full content area width (no max-width cap). For hero-style or image-led sections.
+ * Description: One column that fills the content area, for hero or image-led sections.
  * Categories: awt-theme-section
  * Keywords: layout, one column, full width, hero, bleed
  * Block Types: core/post-content

@@ -3,7 +3,7 @@
  * Title: AWT — Header preset: Public sector
  * Slug: awt/header-preset-public-sector
  * Design system: carbon
- * Description: A large organization name, menu links, and a language switcher. Good for government and public-service sites.
+ * Description: A large organization name, menu links, and a language switcher. For government and public-service sites.
  * Categories: awt-theme-section, header
  * Keywords: header, preset, public sector, government, agency, accessibility
  * Block Types: core/template-part/header

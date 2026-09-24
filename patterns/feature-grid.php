@@ -1,6 +1,6 @@
 <?php
 /**
- * Title: AWT — Feature grid (3-up)
+ * Title: AWT: Feature grid
  * Slug: awt/feature-grid
  * Design system: carbon
  * Description: Three-column feature grid with icon + heading + description per cell.

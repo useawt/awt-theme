@@ -1,9 +1,9 @@
 <?php
 /**
- * Title: AWT — Page: Legal page shell
+ * Title: AWT page: Legal
  * Slug: awt/page-legal
  * Design system: carbon
- * Description: Scaffold for ToS / Privacy / Accessibility statement / similar pages. Heading + last-updated date + sectioned long-form prose.
+ * Description: A starter for terms, privacy or accessibility statement pages, with a last-updated date.
  * Categories: awt-theme-section
  * Keywords: page, legal, terms of service, privacy, accessibility statement
  * Block Types: core/post-content

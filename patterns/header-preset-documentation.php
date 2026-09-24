@@ -3,7 +3,7 @@
  * Title: AWT — Header preset: Documentation
  * Slug: awt/header-preset-documentation
  * Design system: carbon
- * Description: Your logo, section links, search, and a side navigation menu down the left on wide screens. Good for knowledge bases and reference sites.
+ * Description: Your logo, section links, search, and a side navigation on wide screens. For knowledge bases and docs.
  * Categories: awt-theme-section, header
  * Keywords: header, preset, docs, knowledge base, reference
  * Block Types: core/template-part/header

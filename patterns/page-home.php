@@ -1,6 +1,6 @@
 <?php
 /**
- * Title: AWT — Page: Home (Hero + Feature grid + FAQ)
+ * Title: AWT page: Home (Hero + Feature grid + FAQ)
  * Slug: awt/page-home
  * Design system: carbon
  * Description: Full home-page starter: hero with CTAs, three-column feature grid, and FAQ accordion. Pair it with the "Page without title" template so the hero is the page's main heading.

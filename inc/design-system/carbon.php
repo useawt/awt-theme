@@ -47,7 +47,7 @@ class Carbon implements DesignSystemInterface {
 
 	/** One-line description for the Design system selector card. */
 	public function description(): string {
-		return __( "IBM's open-source design system for products and digital experiences.", 'awt' );
+		return __( "IBM's open-source design system.", 'awt' );
 	}
 
 	/** Whether this system is selectable. Always true — Carbon ships with AWT Free. */
@@ -116,13 +116,13 @@ class Carbon implements DesignSystemInterface {
 		return array(
 			'white-plus-g100' => array(
 				'label'       => __( 'White + g100', 'awt' ),
-				'description' => __( 'Pure white light theme paired with deepest dark. Maximum contrast.', 'awt' ),
+				'description' => __( 'White light theme, darkest dark theme. Highest contrast.', 'awt' ),
 				'light_color' => '#ffffff',
 				'dark_color'  => '#161616',
 			),
 			'white-plus-g90'  => array(
 				'label'       => __( 'White + g90', 'awt' ),
-				'description' => __( 'Pure white light paired with a slightly softer dark. Easier on the eyes for long reading.', 'awt' ),
+				'description' => __( 'White light theme, softer dark theme. Easier for long reading.', 'awt' ),
 				'light_color' => '#ffffff',
 				'dark_color'  => '#262626',
 			),
@@ -134,7 +134,7 @@ class Carbon implements DesignSystemInterface {
 			),
 			'g10-plus-g90'    => array(
 				'label'       => __( 'g10 + g90', 'awt' ),
-				'description' => __( 'Soft gray light + softer dark. The most neutral, least-fatiguing combination.', 'awt' ),
+				'description' => __( 'Light gray light theme, softer dark theme. Gentlest on the eyes.', 'awt' ),
 				'light_color' => '#f4f4f4',
 				'dark_color'  => '#262626',
 			),
@@ -168,19 +168,19 @@ class Carbon implements DesignSystemInterface {
 			// cannot call this method. Change both places together.
 			'marketing'     => array(
 				'label'       => __( 'Marketing', 'awt' ),
-				'description' => __( 'Your logo, a row of menu links, and one or two icon buttons. No side navigation. Good for landing pages and product sites.', 'awt' ),
+				'description' => __( 'Your logo, menu links, and one or two icon buttons. For landing pages and product sites.', 'awt' ),
 			),
 			'documentation' => array(
 				'label'       => __( 'Documentation', 'awt' ),
-				'description' => __( 'Your logo, section links, search, and a side navigation menu down the left on wide screens. Good for knowledge bases and reference sites.', 'awt' ),
+				'description' => __( 'Your logo, section links, search, and a side navigation on wide screens. For knowledge bases and docs.', 'awt' ),
 			),
 			'application'   => array(
 				'label'       => __( 'Application', 'awt' ),
-				'description' => __( 'Your logo and the icon buttons (search, notifications, user menu), with an optional side navigation menu. Good for dashboards and admin tools.', 'awt' ),
+				'description' => __( 'Your logo, icon buttons (search, notifications, user menu), and an optional side navigation. For dashboards and admin tools.', 'awt' ),
 			),
 			'public-sector' => array(
 				'label'       => __( 'Public sector', 'awt' ),
-				'description' => __( 'A large organization name, menu links, and a language switcher. Good for government and public-service sites.', 'awt' ),
+				'description' => __( 'A large organization name, menu links, and a language switcher. For government and public-service sites.', 'awt' ),
 			),
 		);
 
@@ -461,7 +461,7 @@ SVG;
 			'color-toggle'  => array(
 				'block'  => '/<!-- wp:awt\/color-scheme-toggle( \{[^}]*\})? \/-->/',
 				'markup' => '<!-- wp:awt/color-scheme-toggle {"kind":"icon-only"} /-->',
-				'label'  => __( 'Color-scheme toggle', 'awt' ),
+				'label'  => __( 'Color scheme toggle', 'awt' ),
 			),
 		);
 	}
@@ -679,13 +679,13 @@ SVG;
 						'against'   => 'field-01',
 						'threshold' => 'text',
 						'label'     => __( 'in field input', 'awt' ),
-						'notes'     => __( 'Carbon Design System default — we suggest updating text-placeholder to a higher-contrast value (e.g., #767676 reaches 4.54:1 against field-01).', 'awt' ),
+						'notes'     => __( 'Carbon\'s default. We suggest a higher-contrast text-placeholder, e.g. #767676 (4.54:1 on field-01).', 'awt' ),
 					),
 					array(
 						'against'   => 'field-02',
 						'threshold' => 'text',
 						'label'     => __( 'in field input (alt)', 'awt' ),
-						'notes'     => __( 'Carbon Design System default — same value as the field-01 pairing above; we suggest updating to meet the 4.5:1 body-text threshold.', 'awt' ),
+						'notes'     => __( 'Carbon\'s default, same as the field-01 row above. We suggest raising it to 4.5:1.', 'awt' ),
 					),
 				),
 			),
@@ -726,13 +726,13 @@ SVG;
 						'against'   => 'support-error',
 						'threshold' => 'text',
 						'label'     => __( 'on Support error', 'awt' ),
-						'notes'     => __( 'Carbon Design System default — in dark scope (g90/g100), Support error brightens (#fa4d56) and white text drops to ~3.35:1, below the 4.5:1 body threshold. We suggest reserving banner body text for ≥18pt sizes, or pairing the banner with an icon shape that carries the meaning.', 'awt' ),
+						'notes'     => __( 'Carbon\'s default. In dark themes (g90/g100), Support error brightens and white text drops to about 3.35:1. Use it only for large text (18pt+), or add an icon that carries the meaning.', 'awt' ),
 					),
 					array(
 						'against'   => 'support-info',
 						'threshold' => 'text',
 						'label'     => __( 'on Support info', 'awt' ),
-						'notes'     => __( 'Carbon Design System default — same tradeoff as Support error in dark scope. White text on dark-mode #4589ff falls below the 4.5:1 body threshold.', 'awt' ),
+						'notes'     => __( 'Carbon\'s default. Same as Support error: in dark themes, white text on #4589ff is below 4.5:1.', 'awt' ),
 					),
 				),
 			),
@@ -745,7 +745,7 @@ SVG;
 						'label'     => __( 'on inverse surface', 'awt' ),
 					),
 				),
-				'notes'    => __( 'Used on inverted UI like tooltips. Inverse surfaces are usually the opposite-scope background token.', 'awt' ),
+				'notes'    => __( 'For inverted UI like tooltips, which usually use the opposite theme\'s background.', 'awt' ),
 			),
 
 			// ----- LINKS (4.5:1) -----
@@ -805,7 +805,7 @@ SVG;
 						'label'     => __( 'button edge on background', 'awt' ),
 					),
 				),
-				'notes'    => __( 'Button-primary IS a surface; the text on top is checked via "Text — on accent surfaces" above.', 'awt' ),
+				'notes'    => __( 'Button-primary IS a surface; the text on top is checked via the "on accent surfaces" text row above.', 'awt' ),
 			),
 			'button-secondary'      => array(
 				'role'     => __( 'Button — secondary surface', 'awt' ),
@@ -877,16 +877,16 @@ SVG;
 						'against'   => 'background',
 						'threshold' => 'ui',
 						'label'     => __( 'icon on background', 'awt' ),
-						'notes'     => __( 'Carbon Design System default — warning yellow #f1c21b fails the 3:1 UI threshold on light surfaces. We suggest always pairing it with an icon SHAPE so meaning isn\'t conveyed by color alone, or substituting a higher-contrast amber if you use it for non-text UI.', 'awt' ),
+						'notes'     => __( 'Carbon Design System default: warning yellow #f1c21b fails the 3:1 UI threshold on light surfaces. We suggest always pairing it with an icon shape so meaning isn\'t conveyed by color alone, or substituting a higher-contrast amber if you use it for non-text UI.', 'awt' ),
 					),
 					array(
 						'against'   => 'layer-01',
 						'threshold' => 'ui',
 						'label'     => __( 'icon on layer-01', 'awt' ),
-						'notes'     => __( 'Same — Carbon\'s default warning yellow fails on every light surface; pair with icon shape or substitute.', 'awt' ),
+						'notes'     => __( 'Same: Carbon\'s default warning yellow fails on every light surface; pair with icon shape or substitute.', 'awt' ),
 					),
 				),
-				'notes'    => __( 'Warning yellow is famously low-contrast — Carbon\'s guidance is to always pair it with an icon shape, never use it for text.', 'awt' ),
+				'notes'    => __( 'Warning yellow is famously low-contrast. Carbon\'s guidance is to always pair it with an icon shape, never use it for text.', 'awt' ),
 			),
 			'support-info'          => array(
 				'role'     => __( 'Status — info icon / accent', 'awt' ),
@@ -942,7 +942,7 @@ SVG;
 						'against'   => 'button-primary',
 						'threshold' => 'ui',
 						'label'     => __( 'on primary button', 'awt' ),
-						'notes'     => __( 'Carbon Design System default — focus and button-primary share the same blue (#0f62fe). Carbon\'s CSS mitigates with an inner-shadow + focus-inset (white) double-ring technique on Button. If you change either token, port that technique so the focus ring stays visible on the primary button.', 'awt' ),
+						'notes'     => __( 'Carbon Design System default: focus and button-primary share the same blue (#0f62fe). Carbon\'s CSS mitigates with an inner-shadow + focus-inset (white) double-ring technique on Button. If you change either token, port that technique so the focus ring stays visible on the primary button.', 'awt' ),
 					),
 				),
 			),

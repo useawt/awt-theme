@@ -204,7 +204,7 @@ function bootstrap(): void {
 		new LockedPremiumSystem(
 			'more',
 			__( 'More', 'awt' ),
-			__( 'More accessible design systems are coming soon.', 'awt' ),
+			__( 'Other accessible design systems are coming soon.', 'awt' ),
 			null,
 			'',
 			'https://useawt.com/contact/'

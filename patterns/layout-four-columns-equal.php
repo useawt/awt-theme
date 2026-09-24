@@ -3,7 +3,7 @@
  * Title: AWT — Layout: four columns (equal)
  * Slug: awt/layout-four-columns-equal
  * Design system: carbon
- * Description: Four equal columns. Stats bar / logo cloud / dense feature grid base.
+ * Description: Four equal columns, for stats, logos or dense feature grids.
  * Categories: awt-theme-section
  * Keywords: layout, four columns, equal, stats, grid
  * Block Types: core/post-content

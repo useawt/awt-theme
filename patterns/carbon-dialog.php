@@ -3,7 +3,7 @@
  * Title: AWT — Dialog
  * Slug: awt/carbon-dialog
  * Design system: carbon
- * Description: Modal dialog with header + body + footer action row. Triggered by a button.
+ * Description: A button that opens a modal with a heading, text and actions.
  * Categories: awt-theme-section
  * Keywords: dialog, modal, confirm, prompt
  * Block Types: core/post-content

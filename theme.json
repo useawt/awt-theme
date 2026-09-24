@@ -95,17 +95,17 @@
 				{ "slug": "helper-01",   "name": "Helper 01",   "size": "0.75rem"  },
 				{ "slug": "body-01",     "name": "Body 01",     "size": "0.875rem" },
 				{ "slug": "body-02",     "name": "Body 02",     "size": "1rem"     },
-				{ "slug": "heading-01",  "name": "Heading 01",  "size": "0.875rem" },
+				{ "slug": "heading-01",  "name": "Heading 01 (smallest)",  "size": "0.875rem" },
 				{ "slug": "heading-02",  "name": "Heading 02",  "size": "1rem"     },
 				{ "slug": "heading-03",  "name": "Heading 03",  "size": "1.25rem"  },
 				{ "slug": "heading-04",  "name": "Heading 04",  "size": "1.75rem"  },
 				{ "slug": "heading-05",  "name": "Heading 05",  "size": "2rem"     },
 				{ "slug": "heading-06",  "name": "Heading 06",  "size": "2.625rem" },
-				{ "slug": "heading-07",  "name": "Heading 07",  "size": "3.375rem" },
-				{ "slug": "display-01",  "name": "Display 01",  "size": "2.625rem" },
+				{ "slug": "heading-07",  "name": "Heading 07 (largest)",  "size": "3.375rem" },
+				{ "slug": "display-01",  "name": "Display 01 (smallest)",  "size": "2.625rem" },
 				{ "slug": "display-02",  "name": "Display 02",  "size": "3.375rem" },
 				{ "slug": "display-03",  "name": "Display 03",  "size": "3.75rem"  },
-				{ "slug": "display-04",  "name": "Display 04",  "size": "5.25rem"  }
+				{ "slug": "display-04",  "name": "Display 04 (largest)",  "size": "5.25rem"  }
 			]
 		},
 		"spacing": {

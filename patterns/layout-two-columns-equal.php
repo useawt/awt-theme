@@ -1,6 +1,6 @@
 <?php
 /**
- * Title: AWT — Layout: two columns (50/50)
+ * Title: AWT layout: two columns (equal)
  * Slug: awt/layout-two-columns-equal
  * Design system: carbon
  * Description: Two equal columns. The most common multi-column layout.

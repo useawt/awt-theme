@@ -3,7 +3,7 @@
  * Title: AWT — Pricing table
  * Slug: awt/pricing-table
  * Design system: carbon
- * Description: 3-tier pricing tile row + feature-comparison matrix below. Modelled on IBM's Edition options and features pattern.
+ * Description: Three pricing tiles above a table comparing their features.
  * Categories: awt-theme-section
  * Keywords: pricing, plans, tiers, comparison, editions
  * Block Types: core/post-content

@@ -3,7 +3,7 @@
  * Title: AWT — Page: Pricing
  * Slug: awt/page-pricing
  * Design system: carbon
- * Description: Starter Pricing page. Heading + intro + pricing table + FAQ accordion + CTA.
+ * Description: A starter Pricing page with a pricing table, an FAQ accordion and a call to action.
  * Categories: awt-theme-section
  * Keywords: page, pricing, plans, tiers
  * Block Types: core/post-content

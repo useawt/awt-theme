@@ -3,7 +3,7 @@
  * Title: AWT — Layout: three columns (25/50/25)
  * Slug: awt/layout-three-columns-25-50-25
  * Design system: carbon
- * Description: Three columns with center-weighted middle. Sidebar + main + sidebar.
+ * Description: A wide main column between two sidebars.
  * Categories: awt-theme-section
  * Keywords: layout, three columns, asymmetric, sidebar, center-weighted
  * Block Types: core/post-content

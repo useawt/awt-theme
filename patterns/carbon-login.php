@@ -3,7 +3,7 @@
  * Title: AWT — Login
  * Slug: awt/carbon-login
  * Design system: carbon
- * Description: Centered login form with username + password + submit + recovery link.
+ * Description: A centered login form with a forgotten-password link.
  * Categories: awt-theme-section
  * Keywords: login, signin, authentication, account
  * Block Types: core/post-content
