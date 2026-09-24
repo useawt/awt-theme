@@ -161,19 +161,16 @@
 		let note;
 		if (!CFG.globalEnabled) {
 			note = __(
-				'Breadcrumbs are turned off site-wide (AWT Settings → Navigation), so none will appear here.',
+				'Breadcrumbs are off for the whole site. Turn them on in AWT Settings → Navigation.',
 				'awt'
 			);
 		} else if (hidden) {
 			note = __(
-				'Hidden on this page. With the toggle off it would render:',
+				'Hidden on this page. If shown, it would look like this:',
 				'awt'
 			);
 		} else {
-			note = __(
-				'Preview of the breadcrumb that appears at the top of this page:',
-				'awt'
-			);
+			note = __('Breadcrumb at the top of this page:', 'awt');
 		}
 
 		children.push(

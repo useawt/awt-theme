@@ -198,10 +198,10 @@ class Test_Admin_Bar extends WP_UnitTestCase {
 		// The visible wordmark stays part of the name (WCAG 2.5.3) and the
 		// state reads on from it, rather than the two being announced twice.
 		$this->assertStringContainsString(
-			'>AWT: Update needs installing<',
+			'>AWT: Update ready to install<',
 			$bar->get_node( 'awt' )->title
 		);
-		$this->assertStringContainsString( 'Update needs installing', $bar->get_node( 'awt-status' )->title );
+		$this->assertStringContainsString( 'Update ready to install', $bar->get_node( 'awt-status' )->title );
 	}
 
 	/**

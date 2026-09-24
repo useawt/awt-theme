@@ -600,11 +600,11 @@ function details( $result, $action, $args ) {
 function changelog_html(): string {
 	$file = get_template_directory() . '/build/changelog.json';
 	if ( ! is_readable( $file ) ) {
-		return '<p>' . esc_html__( 'No changelog is bundled with this copy of AWT.', 'awt' ) . '</p>';
+		return '<p>' . esc_html__( 'This copy of AWT has no release notes.', 'awt' ) . '</p>';
 	}
 	$data = json_decode( (string) file_get_contents( $file ), true ); // phpcs:ignore WordPress.WP.AlternativeFunctions.file_get_contents_file_get_contents -- local theme file.
 	if ( ! is_array( $data ) || empty( $data['releases'] ) ) {
-		return '<p>' . esc_html__( 'No changelog is bundled with this copy of AWT.', 'awt' ) . '</p>';
+		return '<p>' . esc_html__( 'This copy of AWT has no release notes.', 'awt' ) . '</p>';
 	}
 
 	$html = '';
@@ -638,7 +638,7 @@ function changelog_html(): string {
  * updates one and not the other is running a combination nobody tested.
  */
 function pair_message(): string {
-	return __( 'Update the AWT theme and the AWT Blocks plugin together — they are built as a pair.', 'awt' );
+	return __( 'Update the AWT theme and AWT Blocks together. They work as a pair.', 'awt' );
 }
 
 /**
@@ -778,7 +778,7 @@ function explain_manual_update( $reply, $package, $upgrader, $hook_extra = array
 		'awt_manual_update',
 		sprintf(
 			/* translators: %s: URL of the update instructions. */
-			__( 'This version of AWT cannot be downloaded automatically. Get it from the AWT website and upload it in Appearance, Themes, Add New Theme, Upload Theme, choosing "Replace current with uploaded". Your settings, pages and content are kept. %s', 'awt' ),
+			__( 'This version can\'t be downloaded automatically. Download it from the AWT website, then go to Appearance → Themes → Add New Theme → Upload Theme and choose "Replace current with uploaded". Your settings and content are kept. %s', 'awt' ),
 			'https://useawt.com/faq/#updating'
 		)
 	);

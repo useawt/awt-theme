@@ -85,7 +85,7 @@ function render(): void {
 
 	$releases = is_array( $data ) ? array_slice( (array) ( $data['releases'] ?? array() ), 0, SHOW_RELEASES ) : array();
 	if ( ! $releases ) {
-		echo '<p>' . esc_html__( 'No release notes are bundled with this copy of AWT.', 'awt' ) . '</p>';
+		echo '<p>' . esc_html__( 'This copy of AWT has no release notes.', 'awt' ) . '</p>';
 		return;
 	}
 

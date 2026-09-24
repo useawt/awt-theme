@@ -241,7 +241,7 @@ class Test_Update_Notice extends WP_UnitTestCase {
 		$text = UpdateNotice\message( $state )['text'];
 		$this->assertStringContainsString( Updates\slug(), $text );
 		$this->assertStringContainsString( 'Replace current with uploaded', $text );
-		$this->assertStringContainsString( 'do not', $text, 'it must warn against renaming' );
+		$this->assertStringContainsString( 'rename the folder', $text, 'it must warn against renaming' );
 	}
 
 	/**
@@ -356,7 +356,7 @@ class Test_Update_Notice extends WP_UnitTestCase {
 
 		$this->assertSame( 17, $state['waiting'] );
 		$this->assertStringContainsString( '17 days', UpdateNotice\message( $state )['text'] );
-		$this->assertStringContainsString( 'waiting behind it', UpdateNotice\message( $state )['text'] );
+		$this->assertStringContainsString( 'will wait until you install it', UpdateNotice\message( $state )['text'] );
 	}
 
 	/** The clock restarts when a different version starts waiting. */
@@ -461,7 +461,7 @@ class Test_Update_Notice extends WP_UnitTestCase {
 
 		$this->assertStringContainsString( 'AWT could not update itself', $email['subject'] );
 		$this->assertStringNotContainsString( 'fatal error', $email['body'] );
-		$this->assertStringContainsString( 'working normally', $email['body'] );
+		$this->assertStringContainsString( 'works normally', $email['body'] );
 		$this->assertStringContainsString( '2099.01.0', $email['body'] );
 	}
 
@@ -484,7 +484,7 @@ class Test_Update_Notice extends WP_UnitTestCase {
 
 		$this->assertSame( 'Some plugins and themes have failed to update', $email['subject'] );
 		$this->assertStringContainsString( 'CORE TEXT', $email['body'] );
-		$this->assertStringContainsString( 'AWT tried to install', $email['body'] );
+		$this->assertStringContainsString( 'AWT could not install', $email['body'] );
 	}
 
 	/** A run that did not involve AWT is left entirely alone. */

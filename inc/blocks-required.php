@@ -95,7 +95,7 @@ function notice_html( bool $installed, bool $active ): string {
 	if ( $installed ) {
 		$out .= sprintf(
 			'<p>%s</p>',
-			esc_html__( 'The AWT theme needs the AWT Blocks plugin, which is installed but turned off. Until you turn it on, AWT blocks will not appear on your pages or in the editor.', 'awt' )
+			esc_html__( 'Turn on the AWT Blocks plugin. Until you do, AWT blocks won\'t show on your pages or in the editor.', 'awt' )
 		);
 		$out .= sprintf(
 			'<p><a class="button button-primary" href="%1$s">%2$s</a></p>',
@@ -105,7 +105,7 @@ function notice_html( bool $installed, bool $active ): string {
 	} else {
 		$out .= sprintf(
 			'<p>%s</p>',
-			esc_html__( 'The AWT theme needs the AWT Blocks plugin, and it is not installed. Until you add it, AWT blocks will not appear on your pages or in the editor.', 'awt' )
+			esc_html__( 'Install the AWT Blocks plugin. Until you do, AWT blocks won\'t show on your pages or in the editor.', 'awt' )
 		);
 		$out .= sprintf(
 			'<p><a class="button button-primary" href="%1$s" target="_blank" rel="noopener">%2$s</a> <a class="button" href="%3$s">%4$s</a></p>',

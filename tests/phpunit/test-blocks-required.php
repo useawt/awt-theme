@@ -43,7 +43,7 @@ class Test_Blocks_Required extends WP_UnitTestCase {
 		$out = BlocksRequired\notice_html( true, false );
 
 		$this->assertStringContainsString( 'notice-error', $out );
-		$this->assertStringContainsString( 'turned off', $out );
+		$this->assertStringContainsString( 'Turn on the AWT Blocks plugin', $out );
 		$this->assertStringContainsString( 'Turn on AWT Blocks', $out );
 		// The link really activates, and carries the nonce WordPress checks.
 		$this->assertStringContainsString( 'action=activate', $out );
@@ -61,7 +61,7 @@ class Test_Blocks_Required extends WP_UnitTestCase {
 		$out = BlocksRequired\notice_html( false, false );
 
 		$this->assertStringContainsString( 'notice-error', $out );
-		$this->assertStringContainsString( 'not installed', $out );
+		$this->assertStringContainsString( 'Install the AWT Blocks plugin', $out );
 		$this->assertStringContainsString( BlocksRequired\RELEASES_URL, $out );
 		$this->assertStringContainsString( 'plugin-install.php?tab=upload', $out );
 		// Nothing to turn on, so nothing may offer to.

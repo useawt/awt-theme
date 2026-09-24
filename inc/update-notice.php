@@ -131,14 +131,14 @@ function rewrite_failure_email( $email, $type, $ok, $failed ) {
 
 	$ours_said = sprintf(
 		/* translators: 1: version AWT tried to install. 2: version still running. */
-		__( 'AWT tried to install version %1$s and could not. Your site is still on %2$s and is working normally — nothing was changed and nothing was lost.', 'awt' ),
+		__( 'AWT could not install version %1$s. Your site is still on %2$s and works normally. Nothing was changed or lost.', 'awt' ),
 		$version,
 		$installed
 	) . "\n\n" . sprintf(
 		/* translators: %s: URL of the Updates screen. */
 		__( 'You can install it yourself here: %s', 'awt' ),
 		$updates
-	) . "\n\n" . __( 'If it keeps failing, your host may not allow WordPress to install files. Your hosting control panel is the place to check.', 'awt' );
+	) . "\n\n" . __( 'If it keeps failing, check your hosting control panel. Your host may block WordPress from installing files.', 'awt' );
 
 	// Something else failed too, so core still has accurate things to say.
 	if ( count( $failed ) > count( $ours ) ) {
@@ -418,8 +418,8 @@ function message( array $state ): ?array {
 				'level' => 'info',
 				'text'  => sprintf(
 					/* translators: %s: link to the settings screen. */
-					esc_html__( 'AWT is not checking for updates. You will not be told when a new version is out, including security and accessibility fixes. %s', 'awt' ),
-					'<a href="' . esc_url( $settings ) . '">' . esc_html__( 'Turn checks on', 'awt' ) . '</a>'
+					esc_html__( 'AWT is not checking for updates, so you won\'t hear about new versions or security and accessibility fixes. %s', 'awt' ),
+					'<a href="' . esc_url( $settings ) . '">' . esc_html__( 'Turn on update checks', 'awt' ) . '</a>'
 				),
 			);
 
@@ -447,7 +447,7 @@ function message( array $state ): ?array {
 		case 'wrong-folder':
 			$text = sprintf(
 				/* translators: 1: the folder the theme is installed in, e.g. awt-theme. 2: the folder AWT updates install into, always "awt". */
-				esc_html__( 'AWT is installed in a folder called %1$s, but its updates install into %2$s, so AWT cannot install them for you. Renaming the folder would lose any header, footer or template you have edited, so do not.', 'awt' ),
+				esc_html__( 'AWT is in the folder %1$s, but updates install into %2$s, so AWT can\'t update itself. Don\'t rename the folder: you would lose any header, footer or template you edited.', 'awt' ),
 				'<code>' . esc_html( (string) $state['folder'] ) . '</code>',
 				'<code>' . esc_html( (string) ( $state['expected'] ?? '' ) ) . '</code>'
 			);
@@ -455,11 +455,11 @@ function message( array $state ): ?array {
 			if ( ! empty( $state['version'] ) ) {
 				$text .= sprintf(
 					/* translators: %s: the new version number. */
-					esc_html__( 'AWT %s is out — install it yourself, choosing "Replace current with uploaded", and it will go to the right place.', 'awt' ),
+					esc_html__( 'AWT %s is out. Upload it yourself and choose "Replace current with uploaded". It will install in the right folder.', 'awt' ),
 					'<strong>' . esc_html( (string) $state['version'] ) . '</strong>'
 				);
 			} else {
-				$text .= esc_html__( 'When a new version is out, install it yourself, choosing "Replace current with uploaded", and it will go to the right place.', 'awt' );
+				$text .= esc_html__( 'When a new version is out, upload it yourself and choose "Replace current with uploaded". It will install in the right folder.', 'awt' );
 			}
 			return array(
 				'level' => 'warning',
@@ -479,7 +479,7 @@ function message( array $state ): ?array {
 				'<strong>' . esc_html( $state['version'] ) . '</strong>'
 			);
 			if ( ! empty( $state['breaking'] ) ) {
-				$text .= ' ' . esc_html__( 'It comes with changes that could affect your site, so AWT did not automatically update itself.', 'awt' );
+				$text .= ' ' . esc_html__( 'It has changes that could affect your site, so AWT did not install it automatically.', 'awt' );
 			}
 			if ( ! empty( $state['waiting'] ) ) {
 				$text .= ' ' . sprintf(
@@ -488,7 +488,7 @@ function message( array $state ): ?array {
 					(int) $state['waiting']
 				);
 				if ( ! empty( $state['breaking'] ) ) {
-					$text .= ' ' . esc_html__( 'Every version since is waiting behind it, fixes included.', 'awt' );
+					$text .= ' ' . esc_html__( 'Newer versions, fixes included, will wait until you install it.', 'awt' );
 				}
 			}
 			$text .= ' <a href="' . esc_url( $updates ) . '">' . esc_html__( 'Update now', 'awt' ) . '</a>';
@@ -504,7 +504,7 @@ function message( array $state ): ?array {
 					/* translators: 1: version now installed. 2: link to the What's new panel. */
 					esc_html__( 'AWT updated itself to %1$s. %2$s', 'awt' ),
 					'<strong>' . esc_html( $state['version'] ) . '</strong>',
-					'<a href="' . esc_url( admin_url( 'themes.php?page=' . \AWT\Theme\AdminPage\MENU_SLUG . '&tab=whats-new' ) ) . '">' . esc_html__( 'See what changed', 'awt' ) . '</a>'
+					'<a href="' . esc_url( admin_url( 'themes.php?page=' . \AWT\Theme\AdminPage\MENU_SLUG . '&tab=whats-new' ) ) . '">' . esc_html__( 'See what\'s new', 'awt' ) . '</a>'
 				),
 			);
 
@@ -513,7 +513,7 @@ function message( array $state ): ?array {
 				'level' => 'info',
 				'text'  => sprintf(
 					/* translators: 1: installed version. 2: link to the What's new panel. */
-					esc_html__( 'AWT is up to date, on %1$s. %2$s', 'awt' ),
+					esc_html__( 'AWT %1$s is up to date. %2$s', 'awt' ),
 					'<strong>' . esc_html( $state['version'] ) . '</strong>',
 					'<a href="' . esc_url( admin_url( 'themes.php?page=' . \AWT\Theme\AdminPage\MENU_SLUG . '&tab=whats-new' ) ) . '">' . esc_html__( "See what's new", 'awt' ) . '</a>'
 				),

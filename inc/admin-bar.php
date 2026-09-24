@@ -121,7 +121,7 @@ function state_label( string $state ): string {
 		case 'auto':
 			return __( 'Updating automatically', 'awt' );
 		case 'update':
-			return __( 'Update needs installing', 'awt' );
+			return __( 'Update ready to install', 'awt' );
 		case 'mismatch':
 			return __( "Versions don't match", 'awt' );
 		case 'unknown':

@@ -196,7 +196,7 @@ class Test_Whats_New extends WP_UnitTestCase {
 		$html = (string) ob_get_clean();
 
 		$this->assertStringContainsString( 'header', $html );
-		$this->assertStringContainsString( 'do not reach them', $html );
+		$this->assertStringContainsString( 'affect your edited copies', $html );
 	}
 
 	/** Another theme's parts are not this theme's problem. */

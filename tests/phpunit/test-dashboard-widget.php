@@ -91,7 +91,7 @@ class Test_Dashboard_Widget extends WP_UnitTestCase {
 			$this->assertStringContainsString( 'tab=whats-new', $html, 'notes are bundled, so the box should link to them' );
 			$this->assertStringContainsString( 'awt-whats-new-entries', $html );
 		} else {
-			$this->assertStringContainsString( 'No release notes are bundled', $html, 'no notes bundled, so the box should say so rather than link to an empty page' );
+			$this->assertStringContainsString( 'This copy of AWT has no release notes', $html, 'no notes bundled, so the box should say so rather than link to an empty page' );
 		}
 	}
 

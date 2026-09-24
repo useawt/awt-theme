@@ -356,7 +356,7 @@ function render_customized_parts_note(): void {
 	echo '<div class="notice notice-info inline"><p>';
 	printf(
 		/* translators: %s: comma-separated list of edited parts, e.g. "Header, Footer". */
-		esc_html__( 'You have edited these parts of your site: %s. Your edits are kept through every update — and for the same reason, changes AWT makes to those parts do not reach them. If a fix below is about one of them, you may need to make the same change yourself.', 'awt' ),
+		esc_html__( 'You have edited: %s. Updates protect your edits, so AWT\'s changes to original versions of these parts don\'t affect your edited copies. If you want to receive the same fix, you can reset the template part to go back to its original state and do your customization again.', 'awt' ),
 		'<strong>' . esc_html( implode( ', ', $parts ) ) . '</strong>'
 	);
 	echo '</p></div>';
@@ -423,7 +423,7 @@ function render_tab(): void {
 	if ( $pinned ) {
 		echo '<div class="awt-whats-new-pinned" role="region" aria-label="' . esc_attr__( 'Important release notes', 'awt' ) . '">';
 		echo '<h3>' . esc_html__( 'Needs your attention', 'awt' ) . '</h3>';
-		echo '<p>' . esc_html__( 'These releases contain security fixes or changes that may need action on your site.', 'awt' ) . '</p>';
+		echo '<p>' . esc_html__( 'These releases include security fixes or changes you may need to act on.', 'awt' ) . '</p>';
 		foreach ( $pinned as $release ) {
 			printf(
 				'<h4>%s — %s</h4>',
@@ -434,7 +434,7 @@ function render_tab(): void {
 		}
 		echo '<form method="post">';
 		wp_nonce_field( 'awt_theme_whats_new_ack', '_awt_whats_new_nonce' );
-		echo '<button type="submit" name="awt_theme_whats_new_ack" value="1" class="button button-secondary">' . esc_html__( 'Got it — dismiss these notes', 'awt' ) . '</button>';
+		echo '<button type="submit" name="awt_theme_whats_new_ack" value="1" class="button button-secondary">' . esc_html__( 'Dismiss these notes', 'awt' ) . '</button>';
 		echo '</form>';
 		echo '</div>';
 	}
@@ -454,5 +454,5 @@ function render_tab(): void {
 		echo '</details>';
 	}
 
-	echo '<p class="awt-field-help">' . esc_html__( 'Release notes ship with the theme and the AWT Blocks plugin, and are listed here together. Nothing is fetched from the internet.', 'awt' ) . '</p>';
+	echo '<p class="awt-field-help">' . esc_html__( 'Notes for the AWT theme and AWT Blocks, listed together.', 'awt' ) . '</p>';
 }
