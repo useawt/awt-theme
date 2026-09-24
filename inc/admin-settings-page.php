@@ -215,7 +215,7 @@ function render_page(): void {
 		( function () {
 			var page = document.querySelector( '.awt-settings-page' );
 			if ( ! page ) { return; }
-			var unsavedMsg = <?php echo wp_json_encode( __( 'You have unsaved changes on this tab. Leave without saving? Your changes will be lost.', 'awt' ) ); ?>;
+			var unsavedMsg = <?php echo wp_json_encode( __( 'Leave without saving? Your changes on this tab will be lost.', 'awt' ) ); ?>;
 			var dirty = false, leaving = false;
 
 			page.querySelectorAll( 'form' ).forEach( function ( form ) {
@@ -491,7 +491,7 @@ function premium_badge( ?string $label = null ): string {
  */
 function render_tab_design_system(): void {
 	if ( ! class_exists( '\\AWT\\Theme\\DesignSystem\\Registry' ) ) {
-		echo '<p>' . esc_html__( 'Design system registry unavailable.', 'awt' ) . '</p>';
+		echo '<p>' . esc_html__( 'Design systems could not be loaded.', 'awt' ) . '</p>';
 		return;
 	}
 	$systems     = \AWT\Theme\DesignSystem\Registry::all();
@@ -499,7 +499,7 @@ function render_tab_design_system(): void {
 	$premium_url = '';
 	?>
 	<p class="awt-field-help" style="margin-block: 1em 1.5em; max-inline-size: 50em;">
-		<?php esc_html_e( 'A design system sets the look of every AWT block: colors, fonts, spacing, and component style. AWT Free includes Carbon. More design systems are coming to AWT Premium.', 'awt' ); ?>
+		<?php esc_html_e( 'The design system sets how every AWT block looks. AWT Free includes Carbon. More are coming to AWT Premium.', 'awt' ); ?>
 	</p>
 	<div style="display:grid; grid-template-columns:repeat(auto-fill,minmax(300px,1fr)); gap:1em; max-inline-size:76em;">
 		<?php
@@ -603,10 +603,10 @@ function render_tab_identity(): void {
 
 	?>
 	<p class="awt-field-help">
-		<?php esc_html_e( 'These apply to every Header brand block. A setting on one block overrides them.', 'awt' ); ?>
+		<?php esc_html_e( 'Defaults for every Header brand block. A block\'s own setting overrides these.', 'awt' ); ?>
 	</p>
 	<p class="awt-field-help">
-		<?php esc_html_e( 'Your logo appears beside your site title as soon as you set one. To show it alone or hide it, change "Default brand mode" under Appearance → Header.', 'awt' ); ?>
+		<?php esc_html_e( 'Your logo shows beside your site title. To change this, use "Default brand mode" under Appearance → Header.', 'awt' ); ?>
 	</p>
 	<table class="form-table" role="presentation">
 		<tr>
@@ -623,7 +623,7 @@ function render_tab_identity(): void {
 				<?php if ( $logo_url ) : ?>
 					<img class="awt-logo-preview" src="<?php echo esc_url( (string) $logo_url ); ?>" alt="" />
 				<?php endif; ?>
-				<p class="awt-field-help"><?php esc_html_e( 'Upload or choose an image, or paste a URL. SVG, PNG or WebP work best. Shown on light backgrounds, and in dark mode too unless you set a dark-mode logo below.', 'awt' ); ?></p>
+				<p class="awt-field-help"><?php esc_html_e( 'Upload, choose or paste an image URL. SVG, PNG or WebP work best. Also used in dark mode unless you add a dark logo.', 'awt' ); ?></p>
 				<p class="awt-field-help" style="font-style: italic;">
 					<?php
 					// Point users to THIS site's plugin-install search page when
@@ -673,7 +673,7 @@ function render_tab_identity(): void {
 					<img class="awt-logo-preview awt-logo-preview--dark" src="<?php echo esc_url( (string) $logo_url_dark ); ?>" alt="" />
 				<?php endif; ?>
 				<p class="awt-field-help">
-					<?php esc_html_e( 'Optional. A light or inverted version of your logo, for dark backgrounds. Leave empty to use your light-mode logo everywhere.', 'awt' ); ?>
+					<?php esc_html_e( 'Optional. A light version of your logo for dark backgrounds. If empty, your light-mode logo is used.', 'awt' ); ?>
 				</p>
 			</td>
 		</tr>
@@ -810,7 +810,7 @@ function render_tab_appearance(): void {
 	<?php
 	if ( 'appearance' === $active_section ) {
 		$site_scheme   = (string) ( \AWT\Theme\Settings\get( 'site.colorScheme' ) ?? 'default' );
-		$variation_msg = __( 'This replaces any color, typography or layout changes you made in Appearance → Editor → Styles. Continue?', 'awt' );
+		$variation_msg = __( 'This replaces color, text and layout changes you made in Appearance → Editor → Styles. Continue?', 'awt' );
 		?>
 		<form method="post" action="<?php echo esc_url( $page_url ); ?>"
 				data-awt-confirm-field="styleVariation"
@@ -822,7 +822,7 @@ function render_tab_appearance(): void {
 
 			<h2 style="margin-block-start: 0;"><?php esc_html_e( 'Style variation', 'awt' ); ?></h2>
 			<p class="awt-field-help">
-				<?php esc_html_e( 'Each variation pairs a light theme with a dark theme. Applying one replaces style changes you made under Appearance → Editor → Styles.', 'awt' ); ?>
+				<?php esc_html_e( 'Each variation pairs a light and a dark theme. Applying one replaces your changes in Appearance → Editor → Styles.', 'awt' ); ?>
 			</p>
 			<div style="margin-block: 1em 2.5em;">
 				<?php \AWT\Theme\StyleVariations\picker_ui( $active_variation ); ?>
@@ -830,7 +830,7 @@ function render_tab_appearance(): void {
 
 			<h2><?php esc_html_e( 'Site appearance', 'awt' ); ?></h2>
 			<p class="awt-field-help">
-				<?php esc_html_e( '"Default" follows each visitor\'s device setting, and the light/dark toggle if you show one. "Always light" and "Always dark" lock it for everyone.', 'awt' ); ?>
+				<?php esc_html_e( '"Default" follows each visitor\'s device and the light/dark toggle, if shown. "Always light" and "Always dark" apply to everyone.', 'awt' ); ?>
 			</p>
 			<fieldset style="margin-block: 1em;">
 				<legend class="screen-reader-text"><?php esc_html_e( 'Site appearance', 'awt' ); ?></legend>
@@ -858,14 +858,14 @@ function render_tab_appearance(): void {
 		$brand_mode                           = (string) \AWT\Theme\Settings\get( 'identity.brandMode' );
 		$brand_prefix                         = (string) \AWT\Theme\Settings\get( 'identity.prefix' );
 		$brand_modes                          = array(
-			'auto'                      => __( 'Automatic — use the logo and prefix you have set', 'awt' ),
+			'auto'                      => __( 'Automatic (uses your logo and prefix)', 'awt' ),
 			'text-only'                 => __( 'Site Title only', 'awt' ),
 			'logo-with-text'            => __( 'Logo + Site Title', 'awt' ),
 			'logo-only'                 => __( 'Logo only', 'awt' ),
 			'text-with-prefix'          => __( 'Site Title + prefix', 'awt' ),
 			'logo-with-text-and-prefix' => __( 'Logo + Site Title + prefix', 'awt' ),
 		);
-		$preset_msg                           = __( 'Applying a different header preset replaces any changes you have made to your header. Continue?', 'awt' );
+		$preset_msg                           = __( 'A new header preset replaces any changes you made to your header. Continue?', 'awt' );
 		?>
 		<style><?php echo \AWT\Theme\HeaderPresets\picker_styles(); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- static admin CSS authored in code, no dynamic input. ?></style>
 		<form method="post" action="<?php echo esc_url( $page_url ); ?>"
@@ -878,7 +878,7 @@ function render_tab_appearance(): void {
 
 			<h2 style="margin-block-start: 0;"><?php esc_html_e( 'Header appearance', 'awt' ); ?></h2>
 			<p class="awt-field-help">
-				<?php esc_html_e( '"Default" follows the site appearance set under Light & dark, or a look you gave the header in the Site Editor. "Always light" and "Always dark" fix the header and replace anything set there.', 'awt' ); ?>
+				<?php esc_html_e( '"Default" matches the site appearance, or the header\'s own look in the Site Editor. "Always light" and "Always dark" override both.', 'awt' ); ?>
 			</p>
 			<fieldset style="margin-block: 1em 2.5em;">
 				<legend class="screen-reader-text"><?php esc_html_e( 'Header appearance', 'awt' ); ?></legend>
@@ -892,23 +892,23 @@ function render_tab_appearance(): void {
 
 			<h2><?php esc_html_e( 'Header width', 'awt' ); ?></h2>
 			<p class="awt-field-help">
-				<?php esc_html_e( 'The header spans the whole screen. Contain it and the logo, menu and icons line up with your page content instead. The bar itself still spans the screen.', 'awt' ); ?>
+				<?php esc_html_e( 'By default the header\'s content spans the whole screen. Contain it to line up the logo, menu and icons with your page content.', 'awt' ); ?>
 			</p>
 			<fieldset style="margin-block: 1em 2.5em;">
 				<legend class="screen-reader-text"><?php esc_html_e( 'Header width', 'awt' ); ?></legend>
 				<label for="awt-header-contain" style="display:flex; align-items:center; gap:0.5em;">
 					<input type="checkbox" id="awt-header-contain" name="headerContainWidth" value="1" <?php checked( $header_contain ); ?> />
-					<?php esc_html_e( 'Contain the header to your content width', 'awt' ); ?>
+					<?php esc_html_e( 'Match content width', 'awt' ); ?>
 				</label>
 				<p class="awt-field-help" style="margin:0.4em 0 0 1.85em; max-inline-size:42em;">
-					<?php esc_html_e( 'Your content width is set in the Site Editor, under Styles → Layout. On screens narrower than it, nothing changes.', 'awt' ); ?>
+					<?php esc_html_e( 'Set content width in Site Editor → Styles → Layout. No effect on narrower screens.', 'awt' ); ?>
 				</p>
 			</fieldset>
 
 			<h2><?php esc_html_e( 'Header preset', 'awt' ); ?></h2>
 			<p class="awt-field-help">
 				<?php esc_html_e( 'Replaces your current header with one of four ready-made layouts.', 'awt' ); ?>
-				<?php esc_html_e( 'Documentation adds a side navigation menu on wide screens; on small screens its links move into the header menu. Edit it by opening the header in the Site Editor and selecting "Side nav".', 'awt' ); ?>
+				<?php esc_html_e( 'Documentation adds a side nav on wide screens. To edit it, open the header in the Site Editor and select "Side nav".', 'awt' ); ?>
 			</p>
 			<div style="margin-block: 1em 2.5em;">
 				<?php \AWT\Theme\HeaderPresets\picker_ui( $active_preset ); ?>
@@ -1928,7 +1928,7 @@ function render_tab_navigation(): void {
 			<th scope="row"><label for="awt-nav-skipLinkText"><?php esc_html_e( 'Skip link text', 'awt' ); ?></label></th>
 			<td>
 				<input type="text" id="awt-nav-skipLinkText" name="navigation[skipLinkText]" value="<?php echo esc_attr( (string) $skip_link_text ); ?>" class="regular-text" placeholder="<?php esc_attr_e( 'Skip to main content', 'awt' ); ?>" />
-				<p class="awt-field-help"><?php esc_html_e( 'Default text for every Skip link. A setting on one block wins. Leave empty for "Skip to main content".', 'awt' ); ?></p>
+				<p class="awt-field-help"><?php esc_html_e( 'Default text for every Skip link. A block\'s own setting overrides this. If empty: "Skip to main content".', 'awt' ); ?></p>
 			</td>
 		</tr>
 	</table>
