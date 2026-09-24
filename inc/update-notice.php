@@ -469,7 +469,7 @@ function message( array $state ): ?array {
 		case 'host-blocked':
 			return array(
 				'level' => 'info',
-				'text'  => esc_html__( 'Your host or your settings there does not allow WordPress to install updates. AWT will tell you when a new version is out, but you or your host will need to install it. Alternatively you can turn on automatic updates from your hosting control panel.', 'awt' ),
+				'text'  => esc_html__( 'Your host does not let WordPress install updates. AWT will tell you when a new version is out, but you or your host must install it. You may be able to turn on automatic updates in your hosting control panel.', 'awt' ),
 			);
 
 		case 'needs-you':

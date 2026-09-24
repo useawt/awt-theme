@@ -3,7 +3,7 @@
  * Title: AWT — Page: FAQ
  * Slug: awt/page-faq
  * Design system: carbon
- * Description: Starter FAQ page. Heading + intro + FAQ accordion + CTA. Emits FAQPage JSON-LD via awt/faq-item.
+ * Description: Starter FAQ page: a heading, an intro, a question-and-answer accordion and a call to action.
  * Categories: awt-theme-section
  * Keywords: page, faq, frequently asked questions
  * Block Types: core/post-content

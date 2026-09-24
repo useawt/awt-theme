@@ -3,7 +3,7 @@
  * Title: AWT — FAQ accordion
  * Slug: awt/faq-accordion
  * Design system: carbon
- * Description: Heading + collapsible question-and-answer accordion. Emits FAQPage JSON-LD via awt/faq-item for Google rich-result SEO.
+ * Description: A heading and a question-and-answer accordion.
  * Categories: awt-theme-section, text
  * Keywords: faq, accordion, questions, schema
  * Block Types: core/post-content

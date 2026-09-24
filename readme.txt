@@ -18,7 +18,7 @@ AWT is a block theme where accessibility is the starting point, not a checkbox. 
 * **AWT Settings**: one admin page for your site's identity, design system, navigation, and tools — written in plain language.
 * **Fast**: the always-loaded stylesheet is about 15 KB compressed; each block's styles load only on pages that use the block.
 
-Install it together with the AWT Blocks plugin, which adds 58 matching accessible blocks and an accessibility checker inside the editor. The two are one product: the header, the footer and all 42 patterns are built from those blocks, so install both. Download them from useawt.com.
+Install it together with the AWT Blocks plugin, which adds matching accessible blocks and an accessibility checker inside the editor. The two are one product: the header, the footer and all 42 patterns are built from those blocks, so install both. Download them from useawt.com.
 
 == Frequently Asked Questions ==
 
