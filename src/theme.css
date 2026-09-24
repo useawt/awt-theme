@@ -2893,8 +2893,9 @@ html.awt-header-collapsed .admin-bar .awt-header-nav__overlay.awt-nav-open {
 }
 
 .awt-data-table__not-included {
+	display: inline-block;
+	vertical-align: middle;
 	color: var(--cds-text-secondary, #525252);
-	font-size: var(--cds-body-02-font-size, 1rem);
 }
 
 /* --------------------------------------------------------------------------

@@ -1,6 +1,6 @@
 <?php
 /**
- * Title: AWT — Header preset: Marketing
+ * Title: AWT header preset: Marketing
  * Slug: awt/header-preset-marketing
  * Design system: carbon
  * Description: Your logo, menu links, and one or two icon buttons. For landing pages and product sites.

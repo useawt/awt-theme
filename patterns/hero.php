@@ -1,6 +1,6 @@
 <?php
 /**
- * Title: AWT — Hero
+ * Title: AWT: Hero
  * Slug: awt/hero
  * Design system: carbon
  * Description: A centered hero with an eyebrow, headline, short text and a primary button.

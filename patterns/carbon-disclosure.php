@@ -1,6 +1,6 @@
 <?php
 /**
- * Title: AWT — Disclosure
+ * Title: AWT: Disclosure
  * Slug: awt/carbon-disclosure
  * Design system: carbon
  * Description: Click-to-open pop-ups: a toggletip beside a label, and a menu button with a set of actions.

@@ -1,6 +1,6 @@
 <?php
 /**
- * Title: AWT — Layout: two columns (33/66)
+ * Title: AWT layout: two columns (33/66)
  * Slug: awt/layout-two-columns-33-66
  * Design system: carbon
  * Description: A sidebar (1/3) beside main content (2/3).

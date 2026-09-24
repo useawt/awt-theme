@@ -1,6 +1,6 @@
 <?php
 /**
- * Title: AWT — Contact form
+ * Title: AWT: Contact form
  * Slug: awt/contact-form
  * Design system: carbon
  * Description: A contact form with name, email and message. Set its Action URL in the Form block settings.

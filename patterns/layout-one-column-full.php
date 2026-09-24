@@ -1,6 +1,6 @@
 <?php
 /**
- * Title: AWT — Layout: one column (full width)
+ * Title: AWT layout: one column (full width)
  * Slug: awt/layout-one-column-full
  * Design system: carbon
  * Description: One column that fills the content area, for hero or image-led sections.

@@ -1,6 +1,6 @@
 <?php
 /**
- * Title: AWT — Testimonial
+ * Title: AWT: Testimonial
  * Slug: awt/testimonial
  * Design system: carbon
  * Description: A customer quote with attribution.

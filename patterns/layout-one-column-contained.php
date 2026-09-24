@@ -1,6 +1,6 @@
 <?php
 /**
- * Title: AWT — Layout: one column (contained)
+ * Title: AWT layout: one column (contained)
  * Slug: awt/layout-one-column-contained
  * Design system: carbon
  * Description: One column at the standard content width, for most pages.

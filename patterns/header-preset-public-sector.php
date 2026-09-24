@@ -1,6 +1,6 @@
 <?php
 /**
- * Title: AWT — Header preset: Public sector
+ * Title: AWT header preset: Public sector
  * Slug: awt/header-preset-public-sector
  * Design system: carbon
  * Description: A large organization name, menu links, and a language switcher. For government and public-service sites.

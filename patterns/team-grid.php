@@ -1,6 +1,6 @@
 <?php
 /**
- * Title: AWT — Team grid
+ * Title: AWT: Team grid
  * Slug: awt/team-grid
  * Design system: carbon
  * Description: Team members in three columns, each with photo, name and role.

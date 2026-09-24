@@ -1,6 +1,6 @@
 <?php
 /**
- * Title: AWT — Stats bar
+ * Title: AWT: Stats bar
  * Slug: awt/stats-bar
  * Design system: carbon
  * Description: Four statistics with large numbers and short labels.

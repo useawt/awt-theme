@@ -1,6 +1,6 @@
 <?php
 /**
- * Title: AWT — Login
+ * Title: AWT: Login
  * Slug: awt/carbon-login
  * Design system: carbon
  * Description: A centered login form with a forgotten-password link.

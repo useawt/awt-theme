@@ -1,6 +1,6 @@
 <?php
 /**
- * Title: AWT — FAQ accordion
+ * Title: AWT: FAQ accordion
  * Slug: awt/faq-accordion
  * Design system: carbon
  * Description: A heading and a question-and-answer accordion.

@@ -116,8 +116,8 @@ function maybe_show_welcome_notice(): void {
 	?>
 	<div class="notice notice-info is-dismissible">
 		<p>
-			<strong><?php esc_html_e( 'Welcome to AWT', 'awt' ); ?></strong>
-			— <?php esc_html_e( 'Finish setting up your site in a few quick steps.', 'awt' ); ?>
+			<strong><?php esc_html_e( 'Welcome to AWT', 'awt' ); ?>.</strong>
+			<?php esc_html_e( 'Finish setting up your site in a few quick steps.', 'awt' ); ?>
 			<a href="<?php echo esc_url( $wizard_url ); ?>" class="button button-primary" style="margin-inline-start: 1em;">
 				<?php esc_html_e( 'Start setup', 'awt' ); ?>
 			</a>
@@ -415,7 +415,7 @@ function render_step_5(): void {
 	<?php // phpcs:ignore WordPress.Security.NonceVerification.Recommended -- read-only display of the setup-complete notice flag. ?>
 	<?php if ( isset( $_GET['awt_done'] ) || $completed ) : ?>
 		<div class="notice notice-success inline" style="margin: 0 0 1.5em; padding: 0.75em 1.25em;">
-			<p style="margin: 0;"><?php esc_html_e( 'Setup complete — your choices are saved.', 'awt' ); ?></p>
+			<p style="margin: 0;"><?php esc_html_e( 'Setup complete. Your choices are saved.', 'awt' ); ?></p>
 		</div>
 	<?php endif; ?>
 	<h2><?php esc_html_e( "You're all set", 'awt' ); ?></h2>

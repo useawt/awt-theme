@@ -1,6 +1,6 @@
 <?php
 /**
- * Title: AWT — Header preset: Application
+ * Title: AWT header preset: Application
  * Slug: awt/header-preset-application
  * Design system: carbon
  * Description: Your logo, icon buttons (search, notifications, user menu), and an optional side navigation. For dashboards and admin tools.

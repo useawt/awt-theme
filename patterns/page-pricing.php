@@ -1,6 +1,6 @@
 <?php
 /**
- * Title: AWT — Page: Pricing
+ * Title: AWT page: Pricing
  * Slug: awt/page-pricing
  * Design system: carbon
  * Description: A starter Pricing page with a pricing table, an FAQ accordion and a call to action.

@@ -426,7 +426,7 @@ function render_tab(): void {
 		echo '<p>' . esc_html__( 'These releases include security fixes or changes you may need to act on.', 'awt' ) . '</p>';
 		foreach ( $pinned as $release ) {
 			printf(
-				'<h4>%s — %s</h4>',
+				'<h4>%s, %s</h4>',
 				esc_html( (string) $release['version'] ),
 				esc_html( (string) $release['date'] )
 			);
@@ -445,7 +445,7 @@ function render_tab(): void {
 		$is_unread = in_array( $release['version'], $unread_versions, true );
 		printf( '<details class="awt-whats-new-release"%s>', 0 === $i ? ' open' : '' );
 		printf(
-			'<summary><strong>%s</strong> — %s%s</summary>',
+			'<summary><strong>%s</strong>, %s%s</summary>',
 			esc_html( (string) $release['version'] ),
 			esc_html( (string) $release['date'] ),
 			$is_unread ? ' <em class="awt-whats-new-unread">' . esc_html__( '(new)', 'awt' ) . '</em>' : ''

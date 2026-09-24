@@ -1,6 +1,6 @@
 <?php
 /**
- * Title: AWT — Page: Documentation article
+ * Title: AWT page: Documentation article
  * Slug: awt/page-docs-article
  * Design system: carbon
  * Description: A starter documentation article with an intro and body sections.

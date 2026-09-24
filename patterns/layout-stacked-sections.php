@@ -1,6 +1,6 @@
 <?php
 /**
- * Title: AWT — Layout: stacked sections
+ * Title: AWT layout: stacked sections
  * Slug: awt/layout-stacked-sections
  * Design system: carbon
  * Description: Three sections stacked one above the other, for building longer pages.

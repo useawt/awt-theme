@@ -1,6 +1,6 @@
 <?php
 /**
- * Title: AWT — Page: Documentation index
+ * Title: AWT page: Documentation index
  * Slug: awt/page-docs-index
  * Design system: carbon
  * Description: A starter documentation home page with cards linking to each section.

@@ -192,7 +192,7 @@ function bootstrap(): void {
 		new LockedPremiumSystem(
 			'ecl',
 			__( 'ECL', 'awt' ),
-			__( "Europa Component Library — the European Commission's design system.", 'awt' ),
+			__( "Europa Component Library, the European Commission's design system.", 'awt' ),
 			$premium_url
 		)
 	);

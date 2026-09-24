@@ -1,6 +1,6 @@
 <?php
 /**
- * Title: AWT — Page: About
+ * Title: AWT page: About
  * Slug: awt/page-about
  * Design system: carbon
  * Description: A starter About page with an intro and a Team grid.

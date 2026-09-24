@@ -1,6 +1,6 @@
 <?php
 /**
- * Title: AWT — Page: Contact
+ * Title: AWT page: Contact
  * Slug: awt/page-contact
  * Design system: carbon
  * Description: A starter Contact page with an intro and a contact form.

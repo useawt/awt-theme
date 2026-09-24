@@ -1,6 +1,6 @@
 <?php
 /**
- * Title: AWT — Card
+ * Title: AWT: Card
  * Slug: awt/carbon-card
  * Design system: carbon
  * Description: A tile with a heading, text and an optional action.

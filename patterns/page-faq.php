@@ -1,6 +1,6 @@
 <?php
 /**
- * Title: AWT — Page: FAQ
+ * Title: AWT page: FAQ
  * Slug: awt/page-faq
  * Design system: carbon
  * Description: Starter FAQ page: a heading, an intro, a question-and-answer accordion and a call to action.

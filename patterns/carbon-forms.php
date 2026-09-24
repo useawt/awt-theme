@@ -1,6 +1,6 @@
 <?php
 /**
- * Title: AWT — Form
+ * Title: AWT: Form
  * Slug: awt/carbon-forms
  * Design system: carbon
  * Description: A starter form with labelled fields, a checkbox and a submit button.

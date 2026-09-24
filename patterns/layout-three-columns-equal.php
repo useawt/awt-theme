@@ -1,6 +1,6 @@
 <?php
 /**
- * Title: AWT — Layout: three columns (equal)
+ * Title: AWT layout: three columns (equal)
  * Slug: awt/layout-three-columns-equal
  * Design system: carbon
  * Description: Three equal columns, for feature grids or cards.

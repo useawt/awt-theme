@@ -623,7 +623,7 @@ SVG;
 		return array(
 			// ----- TEXT (4.5:1 minimum) -----
 			'text-primary'          => array(
-				'role'     => __( 'Text — primary body', 'awt' ),
+				'role'     => __( 'Text: primary body', 'awt' ),
 				'pairings' => array(
 					array(
 						'against'   => 'background',
@@ -643,7 +643,7 @@ SVG;
 				),
 			),
 			'text-secondary'        => array(
-				'role'     => __( 'Text — secondary', 'awt' ),
+				'role'     => __( 'Text: secondary', 'awt' ),
 				'pairings' => array(
 					array(
 						'against'   => 'background',
@@ -658,7 +658,7 @@ SVG;
 				),
 			),
 			'text-helper'           => array(
-				'role'     => __( 'Text — helper / caption', 'awt' ),
+				'role'     => __( 'Text: helper / caption', 'awt' ),
 				'pairings' => array(
 					array(
 						'against'   => 'background',
@@ -673,7 +673,7 @@ SVG;
 				),
 			),
 			'text-placeholder'      => array(
-				'role'     => __( 'Text — placeholder', 'awt' ),
+				'role'     => __( 'Text: placeholder', 'awt' ),
 				'pairings' => array(
 					array(
 						'against'   => 'field-01',
@@ -690,7 +690,7 @@ SVG;
 				),
 			),
 			'text-error'            => array(
-				'role'     => __( 'Text — error message', 'awt' ),
+				'role'     => __( 'Text: error message', 'awt' ),
 				'pairings' => array(
 					array(
 						'against'   => 'background',
@@ -705,7 +705,7 @@ SVG;
 				),
 			),
 			'text-on-color'         => array(
-				'role'     => __( 'Text — on accent surfaces', 'awt' ),
+				'role'     => __( 'Text: on accent surfaces', 'awt' ),
 				'pairings' => array(
 					array(
 						'against'   => 'button-primary',
@@ -737,7 +737,7 @@ SVG;
 				),
 			),
 			'text-inverse'          => array(
-				'role'     => __( 'Text — inverse (light on dark)', 'awt' ),
+				'role'     => __( 'Text: inverse (light on dark)', 'awt' ),
 				'pairings' => array(
 					array(
 						'against'   => 'border-inverse',
@@ -750,7 +750,7 @@ SVG;
 
 			// ----- LINKS (4.5:1) -----
 			'link-primary'          => array(
-				'role'     => __( 'Link — primary', 'awt' ),
+				'role'     => __( 'Link: primary', 'awt' ),
 				'pairings' => array(
 					array(
 						'against'   => 'background',
@@ -765,7 +765,7 @@ SVG;
 				),
 			),
 			'link-secondary'        => array(
-				'role'     => __( 'Link — hover', 'awt' ),
+				'role'     => __( 'Link: hover', 'awt' ),
 				'pairings' => array(
 					array(
 						'against'   => 'background',
@@ -780,7 +780,7 @@ SVG;
 				),
 			),
 			'link-visited'          => array(
-				'role'     => __( 'Link — visited', 'awt' ),
+				'role'     => __( 'Link: visited', 'awt' ),
 				'pairings' => array(
 					array(
 						'against'   => 'background',
@@ -797,7 +797,7 @@ SVG;
 
 			// ----- BUTTON SURFACES (UI 3:1 — edge of button vs page surface) -----
 			'button-primary'        => array(
-				'role'     => __( 'Button — primary surface', 'awt' ),
+				'role'     => __( 'Button: primary surface', 'awt' ),
 				'pairings' => array(
 					array(
 						'against'   => 'background',
@@ -808,7 +808,7 @@ SVG;
 				'notes'    => __( 'Button-primary IS a surface; the text on top is checked via the "on accent surfaces" text row above.', 'awt' ),
 			),
 			'button-secondary'      => array(
-				'role'     => __( 'Button — secondary surface', 'awt' ),
+				'role'     => __( 'Button: secondary surface', 'awt' ),
 				'pairings' => array(
 					array(
 						'against'   => 'background',
@@ -818,7 +818,7 @@ SVG;
 				),
 			),
 			'button-tertiary'       => array(
-				'role'     => __( 'Button — tertiary (outline)', 'awt' ),
+				'role'     => __( 'Button: tertiary (outline)', 'awt' ),
 				'pairings' => array(
 					array(
 						'against'   => 'background',
@@ -826,10 +826,10 @@ SVG;
 						'label'     => __( 'outline/text on background', 'awt' ),
 					),
 				),
-				'notes'    => __( 'Tertiary buttons are outline-only — the same token serves as border AND text. Needs full text contrast.', 'awt' ),
+				'notes'    => __( 'Tertiary buttons are outline-only: the same token serves as border and text. Needs full text contrast.', 'awt' ),
 			),
 			'button-danger-primary' => array(
-				'role'     => __( 'Button — danger surface', 'awt' ),
+				'role'     => __( 'Button: danger surface', 'awt' ),
 				'pairings' => array(
 					array(
 						'against'   => 'background',
@@ -841,7 +841,7 @@ SVG;
 
 			// ----- STATUS / SUPPORT (UI 3:1 for status icons; text 4.5:1 if pure text) -----
 			'support-error'         => array(
-				'role'     => __( 'Status — error icon / accent', 'awt' ),
+				'role'     => __( 'Status: error icon / accent', 'awt' ),
 				'pairings' => array(
 					array(
 						'against'   => 'background',
@@ -856,7 +856,7 @@ SVG;
 				),
 			),
 			'support-success'       => array(
-				'role'     => __( 'Status — success icon / accent', 'awt' ),
+				'role'     => __( 'Status: success icon / accent', 'awt' ),
 				'pairings' => array(
 					array(
 						'against'   => 'background',
@@ -871,7 +871,7 @@ SVG;
 				),
 			),
 			'support-warning'       => array(
-				'role'     => __( 'Status — warning icon / accent', 'awt' ),
+				'role'     => __( 'Status: warning icon / accent', 'awt' ),
 				'pairings' => array(
 					array(
 						'against'   => 'background',
@@ -889,7 +889,7 @@ SVG;
 				'notes'    => __( 'Warning yellow is famously low-contrast. Carbon\'s guidance is to always pair it with an icon shape, never use it for text.', 'awt' ),
 			),
 			'support-info'          => array(
-				'role'     => __( 'Status — info icon / accent', 'awt' ),
+				'role'     => __( 'Status: info icon / accent', 'awt' ),
 				'pairings' => array(
 					array(
 						'against'   => 'background',
@@ -906,7 +906,7 @@ SVG;
 
 			// ----- BORDERS / FOCUS (UI 3:1) -----
 			'border-strong'         => array(
-				'role'     => __( 'Border — strong (field borders, dividers)', 'awt' ),
+				'role'     => __( 'Border: strong (field borders, dividers)', 'awt' ),
 				'pairings' => array(
 					array(
 						'against'   => 'background',
@@ -921,7 +921,7 @@ SVG;
 				),
 			),
 			'border-interactive'    => array(
-				'role'     => __( 'Border — interactive (focused field)', 'awt' ),
+				'role'     => __( 'Border: interactive (focused field)', 'awt' ),
 				'pairings' => array(
 					array(
 						'against'   => 'background',
@@ -947,7 +947,7 @@ SVG;
 				),
 			),
 			'interactive'           => array(
-				'role'     => __( 'Interactive — accent for active states', 'awt' ),
+				'role'     => __( 'Interactive: accent for active states', 'awt' ),
 				'pairings' => array(
 					array(
 						'against'   => 'background',

@@ -611,7 +611,7 @@ function changelog_html(): string {
 	foreach ( array_slice( (array) $data['releases'], 0, 10 ) as $release ) {
 		$html .= '<h4>' . esc_html( (string) ( $release['version'] ?? '' ) );
 		if ( ! empty( $release['date'] ) ) {
-			$html .= ' — ' . esc_html( (string) $release['date'] );
+			$html .= ', ' . esc_html( (string) $release['date'] );
 		}
 		$html .= '</h4><ul>';
 		foreach ( (array) ( $release['entries'] ?? array() ) as $entry ) {

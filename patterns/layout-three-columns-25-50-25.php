@@ -1,6 +1,6 @@
 <?php
 /**
- * Title: AWT — Layout: three columns (25/50/25)
+ * Title: AWT layout: three columns (25/50/25)
  * Slug: awt/layout-three-columns-25-50-25
  * Design system: carbon
  * Description: A wide main column between two sidebars.

@@ -471,7 +471,7 @@ function premium_badge( ?string $label = null ): string {
 	$label = $label ?? __( 'Premium', 'awt' );
 	$url   = 'https://useawt.com/premium';
 	/* translators: %s: tier name, e.g. "Premium". */
-	$aria = sprintf( __( '%s — learn more (opens in a new tab)', 'awt' ), $label );
+	$aria = sprintf( __( '%s: learn more (opens in a new tab)', 'awt' ), $label );
 	return '<a class="awt-premium-badge" href="' . esc_url( $url ) . '" target="_blank" rel="noopener noreferrer" aria-label="' . esc_attr( $aria ) . '">'
 		. '<span aria-hidden="true">🔒</span> ' . esc_html( $label )
 		. '</a>';
@@ -1242,8 +1242,7 @@ function render_tab_links(): void {
 
 	<div style="margin: 0.5em 0 1.5em; padding: 0.75em 1em; background: #f0f6fc; border-inline-start: 4px solid #0073aa; max-inline-size: 60em;">
 		<p style="margin: 0;">
-			<strong>♿ <?php esc_html_e( 'Accessibility benefit', 'awt' ); ?></strong>
-			—
+			<strong>♿ <?php esc_html_e( 'Accessibility benefit', 'awt' ); ?>:</strong>
 			<?php
 			printf(
 				/* translators: 1: opening <a> tag to WCAG 1.4.1; 2: closing </a> tag */
@@ -1342,8 +1341,7 @@ function render_tab_focus(): void {
 
 	<div style="margin: 0.5em 0 1.5em; padding: 0.75em 1em; background: #f0f6fc; border-inline-start: 4px solid #0073aa; max-inline-size: 60em;">
 		<p style="margin: 0;">
-			<strong>♿ <?php esc_html_e( 'Accessibility benefit', 'awt' ); ?></strong>
-			—
+			<strong>♿ <?php esc_html_e( 'Accessibility benefit', 'awt' ); ?>:</strong>
 			<?php
 			printf(
 				/* translators: 1: opening <a> tag to WCAG 2.4.7; 2: closing </a> tag; 3: opening <a> tag to WCAG 2.4.13; 4: closing </a> tag */
@@ -1440,7 +1438,7 @@ function render_tab_typography(): void {
 						<p>
 							<label for="<?php echo esc_attr( $id ); ?>">
 								<input type="radio" id="<?php echo esc_attr( $id ); ?>" name="typography[sizeScale]" value="<?php echo esc_attr( $value ); ?>" <?php checked( $scale, $float_value ); ?> />
-								<strong><?php echo esc_html( $opt['label'] ); ?></strong> — <?php echo esc_html( $opt['description'] ); ?>
+								<strong><?php echo esc_html( $opt['label'] ); ?>:</strong> <?php echo esc_html( $opt['description'] ); ?>
 							</label>
 						</p>
 					<?php endforeach; ?>
@@ -1461,9 +1459,9 @@ function render_tab_typography(): void {
 	<h2><?php esc_html_e( 'Preview', 'awt' ); ?></h2>
 	<p class="awt-field-help"><?php esc_html_e( 'Updates live as you change the size scale. Save changes to apply across the site.', 'awt' ); ?></p>
 	<div id="awt-type-preview" style="border: 1px solid #c3c4c7; padding: 1.5em 2em; background: #ffffff; max-inline-size: 60em; font-family: 'IBM Plex Sans', system-ui, sans-serif;">
-		<div data-awt-preview-base="2.625" style="font-size: 2.625rem; font-weight: 300; line-height: 1.199; margin-block: 0 0.5em;"><?php esc_html_e( 'Heading 1 — Productive heading 06', 'awt' ); ?></div>
-		<div data-awt-preview-base="1.75" style="font-size: 1.75rem; font-weight: 400; line-height: 1.25; margin-block: 1em 0.5em;"><?php esc_html_e( 'Heading 2 — Productive heading 04', 'awt' ); ?></div>
-		<div data-awt-preview-base="1.25" style="font-size: 1.25rem; font-weight: 400; line-height: 1.4; margin-block: 1em 0.5em;"><?php esc_html_e( 'Heading 3 — Productive heading 03', 'awt' ); ?></div>
+		<div data-awt-preview-base="2.625" style="font-size: 2.625rem; font-weight: 300; line-height: 1.199; margin-block: 0 0.5em;"><?php esc_html_e( 'Heading 1: Productive heading 06', 'awt' ); ?></div>
+		<div data-awt-preview-base="1.75" style="font-size: 1.75rem; font-weight: 400; line-height: 1.25; margin-block: 1em 0.5em;"><?php esc_html_e( 'Heading 2: Productive heading 04', 'awt' ); ?></div>
+		<div data-awt-preview-base="1.25" style="font-size: 1.25rem; font-weight: 400; line-height: 1.4; margin-block: 1em 0.5em;"><?php esc_html_e( 'Heading 3: Productive heading 03', 'awt' ); ?></div>
 		<p data-awt-preview-base="0.875" style="font-size: 0.875rem; line-height: 1.4286; margin-block: 1em 0;">
 			<?php esc_html_e( 'Body text. The quick brown fox jumps over the lazy dog. 1234567890. Compact fits more on screen; Comfortable gives larger, easier-to-read type.', 'awt' ); ?>
 		</p>
@@ -1503,8 +1501,7 @@ function render_tab_typography(): void {
 
 	<div style="margin: 0.5em 0 1.5em; padding: 0.75em 1em; background: #f0f6fc; border-inline-start: 4px solid #0073aa; max-inline-size: 60em;">
 		<p style="margin: 0;">
-			<strong>♿ <?php esc_html_e( 'Accessibility benefit', 'awt' ); ?></strong>
-			—
+			<strong>♿ <?php esc_html_e( 'Accessibility benefit', 'awt' ); ?>:</strong>
 			<?php esc_html_e( 'These three strings are what a person has to read to fill your form in, and at Carbon\'s size they are the smallest text on the page. No rule sets a minimum text size, so both settings pass.', 'awt' ); ?>
 		</p>
 	</div>
@@ -1705,7 +1702,7 @@ function render_tab_colors(): void {
 		}
 		?>
 
-		<h2><?php echo esc_html( $scope_label ); ?> — <code><?php echo esc_html( $scope_slug ); ?></code></h2>
+		<h2><?php echo esc_html( $scope_label ); ?>: <code><?php echo esc_html( $scope_slug ); ?></code></h2>
 		<p class="awt-roles-summary-stats">
 			<?php
 			printf(
@@ -1770,8 +1767,6 @@ function render_tab_colors(): void {
 							<td class="awt-roles-notes-cell">
 								<?php if ( ! empty( $pair['notes'] ) ) : ?>
 									<?php echo esc_html( $pair['notes'] ); ?>
-								<?php else : ?>
-									<span style="color: #c3c4c7;">—</span>
 								<?php endif; ?>
 							</td>
 						</tr>
@@ -1796,7 +1791,7 @@ function render_tab_colors(): void {
 					?>
 					<li>
 						<span class="awt-contrast-swatch" style="background: <?php echo esc_attr( $surface_hex ); ?>;" aria-hidden="true"></span>
-						<small><strong><?php echo esc_html( $by_slug[ $surface_slug ]['name'] ?? $surface_slug ); ?></strong> — <code><?php echo esc_html( $surface_hex ); ?></code></small>
+						<small><strong><?php echo esc_html( $by_slug[ $surface_slug ]['name'] ?? $surface_slug ); ?>:</strong> <code><?php echo esc_html( $surface_hex ); ?></code></small>
 					</li>
 				<?php endforeach; ?>
 			</ul>
@@ -1816,7 +1811,7 @@ function render_tab_colors(): void {
 					?>
 					<li>
 						<span class="awt-contrast-swatch" style="background: <?php echo esc_attr( $ex_hex ); ?>;" aria-hidden="true"></span>
-						<small><strong><?php echo esc_html( $by_slug[ $ex_slug ]['name'] ?? $ex_slug ); ?></strong> — <code><?php echo esc_html( $ex_hex ); ?></code></small>
+						<small><strong><?php echo esc_html( $by_slug[ $ex_slug ]['name'] ?? $ex_slug ); ?>:</strong> <code><?php echo esc_html( $ex_hex ); ?></code></small>
 					</li>
 				<?php endforeach; ?>
 			</ul>
@@ -1941,8 +1936,7 @@ function render_tab_navigation(): void {
 	<h2><?php esc_html_e( 'Breadcrumbs', 'awt' ); ?></h2>
 	<div style="margin: 0.5em 0 1em; padding: 0.75em 1em; background: #f0f6fc; border-inline-start: 4px solid #0073aa; max-inline-size: 60em;">
 		<p style="margin: 0;">
-			<strong>♿ <?php esc_html_e( 'Accessibility benefit', 'awt' ); ?></strong>
-			— 
+			<strong>♿ <?php esc_html_e( 'Accessibility benefit', 'awt' ); ?>:</strong>
 			<?php
 			printf(
 				/* translators: 1: opening <a> tag to WCAG 2.4.5; 2: closing </a> tag */
@@ -2090,7 +2084,7 @@ CSS;
 		<summary><?php esc_html_e( '⚠ Read before using this field', 'awt' ); ?></summary>
 		<p><?php esc_html_e( 'Custom CSS can:', 'awt' ); ?></p>
 		<ul style="list-style: disc; padding-inline-start: 1.5em;">
-			<li><strong><?php esc_html_e( 'Hide focus outlines', 'awt' ); ?></strong> — <?php esc_html_e( 'removing them is the most common accessibility mistake on the web', 'awt' ); ?></li>
+			<li><strong><?php esc_html_e( 'Hide focus outlines', 'awt' ); ?>:</strong> <?php esc_html_e( 'removing them is the most common accessibility mistake on the web', 'awt' ); ?></li>
 			<li><?php esc_html_e( 'Lower color contrast below the WCAG AA minimum', 'awt' ); ?></li>
 			<li><?php esc_html_e( 'Hide elements that screen readers depend on', 'awt' ); ?></li>
 			<li><?php esc_html_e( 'Override the prefers-reduced-motion rules built into AWT', 'awt' ); ?></li>

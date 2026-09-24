@@ -459,7 +459,7 @@ add_action(
 		}
 		register_block_pattern_category(
 			'awt-theme-section',
-			array( 'label' => __( 'AWT — Sections', 'awt' ) )
+			array( 'label' => __( 'AWT: Sections', 'awt' ) )
 		);
 	}
 );

@@ -1,6 +1,6 @@
 <?php
 /**
- * Title: AWT — Newsletter signup
+ * Title: AWT: Newsletter signup
  * Slug: awt/newsletter-signup
  * Design system: carbon
  * Description: An email sign-up with a heading, short text and a Subscribe button.

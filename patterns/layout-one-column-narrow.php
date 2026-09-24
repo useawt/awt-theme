@@ -1,6 +1,6 @@
 <?php
 /**
- * Title: AWT — Layout: one column (narrow)
+ * Title: AWT layout: one column (narrow)
  * Slug: awt/layout-one-column-narrow
  * Design system: carbon
  * Description: One narrow column that keeps lines short, for long articles.

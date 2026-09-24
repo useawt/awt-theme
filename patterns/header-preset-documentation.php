@@ -1,6 +1,6 @@
 <?php
 /**
- * Title: AWT — Header preset: Documentation
+ * Title: AWT header preset: Documentation
  * Slug: awt/header-preset-documentation
  * Design system: carbon
  * Description: Your logo, section links, search, and a side navigation on wide screens. For knowledge bases and docs.

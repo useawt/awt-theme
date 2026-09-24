@@ -1,6 +1,6 @@
 <?php
 /**
- * Title: AWT — Dialog
+ * Title: AWT: Dialog
  * Slug: awt/carbon-dialog
  * Design system: carbon
  * Description: A button that opens a modal with a heading, text and actions.

@@ -1,6 +1,6 @@
 <?php
 /**
- * Title: AWT — Pricing table
+ * Title: AWT: Pricing table
  * Slug: awt/pricing-table
  * Design system: carbon
  * Description: Three pricing tiles above a table comparing their features.

@@ -1,6 +1,6 @@
 <?php
 /**
- * Title: AWT — Logo cloud
+ * Title: AWT: Logo cloud
  * Slug: awt/logo-cloud
  * Design system: carbon
  * Description: A row of customer or partner logos, with an optional heading.

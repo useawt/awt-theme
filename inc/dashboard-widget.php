@@ -95,7 +95,7 @@ function render(): void {
 			esc_html(
 				sprintf(
 					/* translators: 1: version number. 2: release date. */
-					__( '%1$s — %2$s', 'awt' ),
+					__( '%1$s, %2$s', 'awt' ),
 					(string) ( $release['version'] ?? '' ),
 					(string) ( $release['date'] ?? '' )
 				)

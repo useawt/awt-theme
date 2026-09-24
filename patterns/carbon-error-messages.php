@@ -1,6 +1,6 @@
 <?php
 /**
- * Title: AWT — Error messages
+ * Title: AWT: Error messages
  * Slug: awt/carbon-error-messages
  * Design system: carbon
  * Description: Inline and page-level error notifications you can adapt.

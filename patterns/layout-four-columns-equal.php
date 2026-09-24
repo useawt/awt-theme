@@ -1,6 +1,6 @@
 <?php
 /**
- * Title: AWT — Layout: four columns (equal)
+ * Title: AWT layout: four columns (equal)
  * Slug: awt/layout-four-columns-equal
  * Design system: carbon
  * Description: Four equal columns, for stats, logos or dense feature grids.

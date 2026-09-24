@@ -1,6 +1,6 @@
 <?php
 /**
- * Title: AWT — Empty state
+ * Title: AWT: Empty state
  * Slug: awt/carbon-empty-states
  * Design system: carbon
  * Description: A centered "no results" message with text and an optional action.
