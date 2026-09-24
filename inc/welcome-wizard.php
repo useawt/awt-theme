@@ -193,7 +193,7 @@ function render_wizard_page(): void {
 	$current = max( 0, min( LAST_STEP, $current ) );
 	?>
 	<div class="awt-wizard" style="padding-block-start: 1.5em;">
-		<ol class="awt-wizard-steps" style="display: flex; flex-wrap: wrap; gap: 1em; padding: 0; margin: 0 0 2em; list-style: none;" aria-label="<?php esc_attr_e( 'Wizard progress', 'awt' ); ?>">
+		<ol class="awt-wizard-steps" style="display: flex; flex-wrap: wrap; gap: 1em; padding: 0; margin: 0 0 2em; list-style: none;" aria-label="<?php esc_attr_e( 'Setup steps', 'awt' ); ?>">
 			<?php
 			$labels = array(
 				__( 'Welcome', 'awt' ),
@@ -283,7 +283,7 @@ function render_step_0(): void {
 	?>
 	<h2><?php esc_html_e( 'Welcome to AWT', 'awt' ); ?></h2>
 	<p><?php esc_html_e( 'Set up how your site looks. You can skip any step and change everything later in AWT Settings.', 'awt' ); ?></p>
-	<p><?php esc_html_e( 'AWT is built on IBM\'s Carbon Design System. Every block meets WCAG 2.2 AA, works with a keyboard and a screen reader, and has matching light and dark themes.', 'awt' ); ?></p>
+	<p><?php esc_html_e( 'AWT uses IBM\'s Carbon Design System. Every block meets WCAG 2.2 AA, works with keyboard and screen reader, and has light and dark themes.', 'awt' ); ?></p>
 
 	<div class="notice notice-info inline" style="margin: 1.5em 0; padding: 1em 1.25em; max-inline-size: 50em;">
 		<p style="margin-block-start: 0;"><strong><?php esc_html_e( 'Want more? AWT Premium adds:', 'awt' ); ?></strong></p>
@@ -291,7 +291,7 @@ function render_step_0(): void {
 			<li><?php esc_html_e( 'More section layouts and page patterns', 'awt' ); ?></li>
 			<li><?php esc_html_e( 'A contrast-safe color editor that matches your brand without breaking readability', 'awt' ); ?></li>
 			<li><?php esc_html_e( 'Styled WooCommerce shop, product, cart, and checkout pages', 'awt' ); ?></li>
-			<li><?php esc_html_e( 'Professionally translated European languages, and email support', 'awt' ); ?></li>
+			<li><?php esc_html_e( 'Professional translations for European languages, plus email support', 'awt' ); ?></li>
 		</ul>
 		<p style="margin-block-end: 0;">
 			<a class="button button-secondary" href="<?php echo esc_url( PREMIUM_URL ); ?>" target="_blank" rel="noopener noreferrer">
@@ -326,7 +326,7 @@ function render_step_1(): void {
 		</div>
 
 		<h3><?php esc_html_e( 'Site appearance', 'awt' ); ?></h3>
-		<p class="awt-field-help"><?php esc_html_e( '"Default" follows each visitor\'s device setting, and the light/dark toggle if you show one.', 'awt' ); ?></p>
+		<p class="awt-field-help"><?php esc_html_e( '"Default" follows each visitor\'s device, or the light/dark toggle if your header has one.', 'awt' ); ?></p>
 		<fieldset style="margin-block: 1em;">
 			<legend class="screen-reader-text"><?php esc_html_e( 'Site appearance', 'awt' ); ?></legend>
 			<?php foreach ( $appearance_options as $value => $label ) : ?>
@@ -336,7 +336,7 @@ function render_step_1(): void {
 				</label>
 			<?php endforeach; ?>
 		</fieldset>
-		<p class="awt-field-help"><?php esc_html_e( 'Applying a style variation replaces any style changes you have made under Appearance → Editor → Styles.', 'awt' ); ?></p>
+		<p class="awt-field-help"><?php esc_html_e( 'Choosing a style variation replaces your changes in Appearance → Editor → Styles.', 'awt' ); ?></p>
 	<?php
 	step_nav_buttons( 1 );
 }
@@ -362,7 +362,7 @@ function render_step_3(): void {
 	step_form_open( 3 );
 	?>
 		<h3><?php esc_html_e( 'Header preset', 'awt' ); ?></h3>
-		<p class="awt-field-help"><?php esc_html_e( 'Pick a ready-made header layout. You can rearrange the individual blocks later.', 'awt' ); ?></p>
+		<p class="awt-field-help"><?php esc_html_e( 'Pick a ready-made header. You can rearrange it later.', 'awt' ); ?></p>
 		<div style="margin-block: 1em 2em;">
 			<?php HeaderPresets\picker_ui( $preset ); ?>
 		</div>
@@ -443,7 +443,7 @@ function render_step_5(): void {
 			?>
 			<th scope="row"><?php esc_html_e( 'Updates', 'awt' ); ?></th>
 			<td>
-				<?php esc_html_e( 'AWT keeps itself up to date. New versions install three days after release; one that comes with changes that could affect your site waits for you instead.', 'awt' ); ?>
+				<?php esc_html_e( 'AWT updates itself three days after each release. Updates that could affect your site wait for you to approve them.', 'awt' ); ?>
 			</td>
 		</tr>
 		<tr>
