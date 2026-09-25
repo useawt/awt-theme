@@ -2162,7 +2162,7 @@ function render_updates_section(): void {
 		if ( $blocks_version === '' ) {
 			printf(
 				/* translators: %s: version number of the AWT theme. */
-				esc_html__( 'You have the AWT theme %s. The AWT Blocks plugin is not installed, and the theme needs it.', 'awt' ),
+				esc_html__( 'You have the AWT theme %s. It needs the AWT Blocks plugin, which is not installed.', 'awt' ),
 				esc_html( $theme_version )
 			);
 		} else {
@@ -2179,24 +2179,24 @@ function render_updates_section(): void {
 	<?php if ( $blocks_version !== '' && $blocks_version !== $theme_version ) : ?>
 		<div class="notice notice-warning inline">
 			<p>
-				<?php esc_html_e( 'The theme and the plugin are different versions. Update whichever one is behind.', 'awt' ); ?>
+				<?php esc_html_e( 'The theme and plugin versions differ. Update the older one.', 'awt' ); ?>
 			</p>
 		</div>
 	<?php endif; ?>
 
 	<p class="awt-field-help">
-		<?php esc_html_e( 'AWT keeps itself up to date. A new version installs three days after it is released, so there is time to catch a bad one, and the theme and the plugin always move together.', 'awt' ); ?>
+		<?php esc_html_e( 'AWT updates itself. New versions install three days after release, and the theme and plugin always update together.', 'awt' ); ?>
 	</p>
 
 	<p class="awt-field-help">
-		<?php esc_html_e( 'The exception is a version that comes with changes that could affect your site. AWT does not automatically update itself to one of those — it tells you, and you install it with one button. You can change any of this below.', 'awt' ); ?>
+		<?php esc_html_e( 'Versions with changes that could affect your site don\'t install on their own; AWT tells you and you install with one click. You can change this below.', 'awt' ); ?>
 	</p>
 
 	<p class="awt-field-help">
 		<?php
 		printf(
 			/* translators: 1: opening link tag to the download page. 2: closing link tag. */
-			esc_html__( 'Every version is also published on %1$sthe AWT website%2$s if you would rather install it by hand. Your settings, pages and content are kept either way.', 'awt' ),
+			esc_html__( 'You can also install any version by hand from %1$sthe AWT website%2$s. Your settings and content are kept either way.', 'awt' ),
 			'<a href="' . esc_url( DOWNLOAD_URL ) . '" target="_blank" rel="noopener">',
 			'<span class="screen-reader-text">' . esc_html__( '(opens in a new tab)', 'awt' ) . '</span></a>'
 		);
@@ -2209,27 +2209,27 @@ function render_updates_section(): void {
 		<input type="hidden" name="awt_updates_submitted" value="1" />
 		<table class="form-table" role="presentation">
 			<tr>
-				<th scope="row"><?php esc_html_e( 'Keeping AWT up to date', 'awt' ); ?></th>
+				<th scope="row"><?php esc_html_e( 'Automatic updates', 'awt' ); ?></th>
 				<td>
 					<?php
 					$current_mode = (string) Settings\get( 'updates.mode' );
 					$modes        = array(
 						'auto'   => array(
-							__( 'Keep AWT up to date automatically', 'awt' ),
-							__( 'New versions install themselves three days after release. The exception is a version that comes with changes that could affect your site: AWT does not automatically update itself to one of those, it tells you instead, and you install it with one button.', 'awt' ),
+							__( 'Update automatically', 'awt' ),
+							__( 'New versions install three days after release. If a version could affect your site, AWT asks you first.', 'awt' ),
 						),
 						'notify' => array(
-							__( 'Tell me, and I will update myself', 'awt' ),
-							__( 'You get the ordinary WordPress notice. Nothing installs until you say so.', 'awt' ),
+							__( 'Notify me, I\'ll update myself', 'awt' ),
+							__( 'You get the normal WordPress update notice. You control whether to update or not.', 'awt' ),
 						),
 						'off'    => array(
 							__( 'Do not check for updates', 'awt' ),
-							__( 'This site makes no request to useawt.com on its own, so you will not be told when a new version is out — including security and accessibility fixes. You can still check by hand with the button below.', 'awt' ),
+							__( 'You won\'t hear about new versions, including security and accessibility fixes. You can still check manually whenever you want below.', 'awt' ),
 						),
 					);
 					?>
 					<fieldset>
-						<legend class="screen-reader-text"><?php esc_html_e( 'Keeping AWT up to date', 'awt' ); ?></legend>
+						<legend class="screen-reader-text"><?php esc_html_e( 'Automatic updates', 'awt' ); ?></legend>
 						<?php foreach ( $modes as $value => $mode_copy ) : ?>
 							<p>
 								<label>
@@ -2241,9 +2241,9 @@ function render_updates_section(): void {
 						<?php endforeach; ?>
 					</fieldset>
 					<p class="awt-field-help">
-						<?php esc_html_e( 'Asking useawt.com sends nothing about your site: no address, no version, no visitor data. It reads one file that is the same for everyone. The update itself is downloaded from GitHub, where AWT is published.', 'awt' ); ?>
+						<?php esc_html_e( 'Checking sends no data about your site. Updates download from GitHub.', 'awt' ); ?>
 					</p>
-					<?php submit_button( __( 'Save', 'awt' ), 'secondary', 'submit', false ); ?>
+					<?php submit_button( __( 'Save changes', 'awt' ), 'secondary', 'submit', false ); ?>
 				</td>
 			</tr>
 			<tr>
@@ -2251,7 +2251,7 @@ function render_updates_section(): void {
 				<td>
 					<?php submit_button( __( 'Check for updates', 'awt' ), 'secondary', 'awt_check_updates_now', false ); ?>
 					<p class="awt-field-help">
-						<?php esc_html_e( 'Asks right now instead of waiting for the next check. This works even when checking is turned off, so "do not check" means AWT never asks on its own — not that you cannot.', 'awt' ); ?>
+						<?php esc_html_e( 'Check for a new version now.', 'awt' ); ?>
 					</p>
 					<?php
 					$checked_result = get_transient( CHECK_RESULT_KEY );
