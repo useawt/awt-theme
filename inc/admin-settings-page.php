@@ -1336,7 +1336,7 @@ function render_tab_focus(): void {
 	$outline_on = (bool) Settings\get( 'focus.buttonOutline' );
 	?>
 	<p class="awt-field-help" style="max-inline-size: 50em;">
-		<?php esc_html_e( 'How a button is marked when someone reaches it with the Tab key.', 'awt' ); ?>
+		<?php esc_html_e( 'How a button looks when someone reaches it with the Tab key.', 'awt' ); ?>
 	</p>
 
 	<div style="margin: 0.5em 0 1.5em; padding: 0.75em 1em; background: #f0f6fc; border-inline-start: 4px solid #0073aa; max-inline-size: 60em;">
@@ -1345,7 +1345,7 @@ function render_tab_focus(): void {
 			<?php
 			printf(
 				/* translators: 1: opening <a> tag to WCAG 2.4.7; 2: closing </a> tag; 3: opening <a> tag to WCAG 2.4.13; 4: closing </a> tag */
-				esc_html__( 'A focused control has to be visible — %1$sWCAG "Focus Visible" (2.4.7, Level AA)%2$s — and %3$s"Focus Appearance" (2.4.13, Level AAA)%4$s sets how big the mark must be. AWT meets both whichever way you set this. One outline is simply easier to measure than Carbon\'s three overlapping layers.', 'awt' ),
+				esc_html__( 'Focused controls must be visible (%1$sWCAG 2.4.7, Level AA%2$s) and large enough (%3$sWCAG 2.4.13, Level AAA%4$s). AWT meets both either way. One outline is easier to check than Carbon\'s three overlapping layers.', 'awt' ),
 				'<a href="https://www.w3.org/WAI/WCAG21/Understanding/focus-visible.html" target="_blank" rel="noopener">',
 				'</a>',
 				'<a href="https://www.w3.org/WAI/WCAG22/Understanding/focus-appearance.html" target="_blank" rel="noopener">',
@@ -1379,7 +1379,7 @@ function render_tab_focus(): void {
 	<?php endif; ?>
 
 	<p class="awt-field-help" style="max-inline-size: 50em;">
-		<?php esc_html_e( 'Buttons only. Links, form fields, menus and tabs keep the outline they already have.', 'awt' ); ?>
+		<?php esc_html_e( 'Applies to buttons only. Other controls keep their own outline.', 'awt' ); ?>
 	</p>
 	<?php
 }
@@ -1402,23 +1402,23 @@ function render_tab_typography(): void {
 	$options = array(
 		'0.875' => array(
 			'label'       => __( 'Compact (0.875×)', 'awt' ),
-			'description' => __( 'Slightly smaller than the browser default. Best when fitting more on screen matters more than easy reading.', 'awt' ),
+			'description' => __( 'Slightly smaller. Fits more on screen but is harder to read.', 'awt' ),
 		),
 		'1'     => array(
 			'label'       => __( 'Default (1.0×)', 'awt' ),
-			'description' => __( 'The standard type scale. Recommended for most sites.', 'awt' ),
+			'description' => __( 'The standard size. Best for most sites.', 'awt' ),
 		),
 		'1.125' => array(
 			'label'       => __( 'Comfortable (1.125×)', 'awt' ),
-			'description' => __( 'Slightly larger. Recommended for sites with older audiences or low-vision readers.', 'awt' ),
+			'description' => __( 'Slightly larger. Good for older readers or people with low vision.', 'awt' ),
 		),
 	);
 	?>
 	<p class="awt-field-help">
-		<?php esc_html_e( 'Resize every font on your site by the same amount. Proportions and line spacing stay balanced.', 'awt' ); ?>
+		<?php esc_html_e( 'Makes all text on your site larger or smaller by the same amount.', 'awt' ); ?>
 	</p>
 	<p class="awt-field-help">
-		<?php esc_html_e( 'AWT uses IBM Plex Sans for text and IBM Plex Mono for code. You cannot swap fonts yet.', 'awt' ); ?>
+		<?php esc_html_e( 'Fonts: IBM Plex Sans for text, IBM Plex Mono for code. You can\'t change them yet.', 'awt' ); ?>
 	</p>
 	<table class="form-table" role="presentation">
 		<tr>
@@ -1457,13 +1457,13 @@ function render_tab_typography(): void {
 	// admin page itself doesn't include the Carbon stylesheet.
 	?>
 	<h2><?php esc_html_e( 'Preview', 'awt' ); ?></h2>
-	<p class="awt-field-help"><?php esc_html_e( 'Updates live as you change the size scale. Save changes to apply across the site.', 'awt' ); ?></p>
+	<p class="awt-field-help"><?php esc_html_e( 'Updates as you choose a size. Save to apply it to your site.', 'awt' ); ?></p>
 	<div id="awt-type-preview" style="border: 1px solid #c3c4c7; padding: 1.5em 2em; background: #ffffff; max-inline-size: 60em; font-family: 'IBM Plex Sans', system-ui, sans-serif;">
 		<div data-awt-preview-base="2.625" style="font-size: 2.625rem; font-weight: 300; line-height: 1.199; margin-block: 0 0.5em;"><?php esc_html_e( 'Heading 1: Productive heading 06', 'awt' ); ?></div>
 		<div data-awt-preview-base="1.75" style="font-size: 1.75rem; font-weight: 400; line-height: 1.25; margin-block: 1em 0.5em;"><?php esc_html_e( 'Heading 2: Productive heading 04', 'awt' ); ?></div>
 		<div data-awt-preview-base="1.25" style="font-size: 1.25rem; font-weight: 400; line-height: 1.4; margin-block: 1em 0.5em;"><?php esc_html_e( 'Heading 3: Productive heading 03', 'awt' ); ?></div>
 		<p data-awt-preview-base="0.875" style="font-size: 0.875rem; line-height: 1.4286; margin-block: 1em 0;">
-			<?php esc_html_e( 'Body text. The quick brown fox jumps over the lazy dog. 1234567890. Compact fits more on screen; Comfortable gives larger, easier-to-read type.', 'awt' ); ?>
+			<?php esc_html_e( 'Body text. The quick brown fox jumps over the lazy dog. 1234567890.', 'awt' ); ?>
 		</p>
 	</div>
 
@@ -1496,13 +1496,13 @@ function render_tab_typography(): void {
 	?>
 	<h2><?php esc_html_e( 'Text around form fields', 'awt' ); ?></h2>
 	<p class="awt-field-help" style="max-inline-size: 50em;">
-		<?php esc_html_e( 'Carbon sets form labels, hints and error messages smaller than your body text. This puts them at the same size.', 'awt' ); ?>
+		<?php esc_html_e( 'Carbon makes form labels, hints and errors smaller than body text. This makes them the same size.', 'awt' ); ?>
 	</p>
 
 	<div style="margin: 0.5em 0 1.5em; padding: 0.75em 1em; background: #f0f6fc; border-inline-start: 4px solid #0073aa; max-inline-size: 60em;">
 		<p style="margin: 0;">
 			<strong>♿ <?php esc_html_e( 'Accessibility benefit', 'awt' ); ?>:</strong>
-			<?php esc_html_e( 'These three strings are what a person has to read to fill your form in, and at Carbon\'s size they are the smallest text on the page. No rule sets a minimum text size, so both settings pass.', 'awt' ); ?>
+			<?php esc_html_e( 'Form labels, hints and errors are what people read to fill in a form, but Carbon makes them the smallest text on the page. Both settings meet WCAG.', 'awt' ); ?>
 		</p>
 	</div>
 
@@ -1519,10 +1519,10 @@ function render_tab_typography(): void {
 				<input type="hidden" name="typography[formTextPresent]" value="1" />
 				<label>
 					<input type="checkbox" id="awt-form-text-body-size" name="typography[formTextBodySize]" value="1" <?php checked( $form_text_on ); ?> />
-					<?php esc_html_e( 'Show labels, hints and error messages at body text size.', 'awt' ); ?>
+					<?php esc_html_e( 'Show form labels, hints and errors at body text size.', 'awt' ); ?>
 				</label>
 				<p class="awt-field-help">
-					<?php esc_html_e( 'Turn this off to use Carbon\'s sizes instead, where this text is a step smaller than your body text.', 'awt' ); ?>
+					<?php esc_html_e( 'Turn off to use Carbon\'s smaller form text.', 'awt' ); ?>
 				</p>
 			</td>
 		</tr>
@@ -1531,13 +1531,13 @@ function render_tab_typography(): void {
 	<?php if ( ! $form_text_on ) : ?>
 		<div role="status" style="margin: 0 0 1.5em; padding: 0.75em 1em; background: #f0f6fc; border-inline-start: 4px solid #0073aa; max-inline-size: 60em;">
 			<p style="margin: 0;">
-				<?php esc_html_e( 'Form labels, hints and error messages are using Carbon\'s smaller size. This still meets the guidelines.', 'awt' ); ?>
+				<?php esc_html_e( 'Form text uses Carbon\'s smaller size. This still meets the guidelines.', 'awt' ); ?>
 			</p>
 		</div>
 	<?php endif; ?>
 
 	<p class="awt-field-help" style="max-inline-size: 50em;">
-		<?php esc_html_e( 'Fields that float the label inside the box are left out: a bigger label would crowd what the visitor types.', 'awt' ); ?>
+		<?php esc_html_e( 'Not applied to fields with the label inside the box, where a bigger label would crowd the input.', 'awt' ); ?>
 	</p>
 	<?php
 }
