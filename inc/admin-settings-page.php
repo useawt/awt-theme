@@ -914,9 +914,9 @@ function render_tab_appearance(): void {
 				<?php \AWT\Theme\HeaderPresets\picker_ui( $active_preset ); ?>
 			</div>
 
-			<h2><?php esc_html_e( 'Header settings', 'awt' ); ?></h2>
+			<h2><?php esc_html_e( 'Header icons', 'awt' ); ?></h2>
 			<p class="awt-field-help">
-				<?php esc_html_e( 'The icon buttons at the top-right of your header. Each switch changes only that button.', 'awt' ); ?>
+				<?php esc_html_e( 'The icon buttons at the top right of your header.', 'awt' ); ?>
 			</p>
 			<?php
 			// AWT Premium turns these icons into rich widgets (a search field in
@@ -930,7 +930,7 @@ function render_tab_appearance(): void {
 			$header_widgets = array(
 				'search'        => array(
 					'label'       => __( 'Search', 'awt' ),
-					'description' => __( 'Replaces search icon with a search field within the header.', 'awt' ),
+					'description' => __( 'Shows a search field in the header instead of an icon.', 'awt' ),
 				),
 				'notifications' => array(
 					'label'       => __( 'Notifications', 'awt' ),
@@ -970,7 +970,7 @@ function render_tab_appearance(): void {
 						<fieldset>
 							<legend class="screen-reader-text"><?php esc_html_e( 'Header icon widgets (AWT Premium)', 'awt' ); ?></legend>
 							<p class="awt-field-help" style="margin-block:0 0.75em; max-inline-size:42em;">
-								<?php esc_html_e( 'AWT Premium upgrades these icons into rich widgets instead of plain buttons.', 'awt' ); ?>
+								<?php esc_html_e( 'AWT Premium turns these icons into interactive widgets.', 'awt' ); ?>
 							</p>
 							<?php
 							foreach ( $header_widgets as $key => $widget ) :
@@ -1003,14 +1003,14 @@ function render_tab_appearance(): void {
 								<option value="<?php echo esc_attr( $value ); ?>" <?php selected( $brand_mode, $value ); ?>><?php echo esc_html( $label ); ?></option>
 							<?php endforeach; ?>
 						</select>
-						<p class="awt-field-help"><?php esc_html_e( 'Automatic follows the Identity tab: your logo and prefix appear as soon as you set them. Any other option always shows the same thing.', 'awt' ); ?></p>
+						<p class="awt-field-help"><?php esc_html_e( 'Automatic shows your logo and prefix once you set them.', 'awt' ); ?></p>
 					</td>
 				</tr>
 				<tr>
 					<th scope="row"><label for="awt-brand-prefix"><?php esc_html_e( 'Default prefix', 'awt' ); ?></label></th>
 					<td>
 						<input type="text" id="awt-brand-prefix" name="identity[prefix]" value="<?php echo esc_attr( $brand_prefix ); ?>" class="regular-text" />
-						<p class="awt-field-help"><?php esc_html_e( 'A short parent-brand name shown before the site title — like "IBM" in "IBM Cloud". Only appears when brand mode includes a prefix.', 'awt' ); ?></p>
+						<p class="awt-field-help"><?php esc_html_e( 'A short parent brand shown before the site title, like "IBM" in "IBM Cloud". Shows only in modes with a prefix.', 'awt' ); ?></p>
 					</td>
 				</tr>
 			</table>
@@ -1025,13 +1025,13 @@ function render_tab_appearance(): void {
 			<?php
 			printf(
 				/* translators: %s: link to the Site Editor. */
-				esc_html__( 'AWT Settings covers the common cases. To add custom buttons, reorder icons or restore the original header, edit it in the %s, under Patterns → Template Parts → Header.', 'awt' ),
+				esc_html__( 'To add buttons, reorder icons or restore the original header, edit it in the %s under Patterns → Template Parts → Header.', 'awt' ),
 				'<strong><a href="' . esc_url( admin_url( 'site-editor.php' ) ) . '">' . esc_html__( 'Site Editor', 'awt' ) . '</a></strong>'
 			);
 			?>
 		</p>
 		<p class="awt-field-help">
-			<?php esc_html_e( 'To restore the header AWT ships with: open the three-dot (⋯) menu on the Header template part and choose "Clear customizations".', 'awt' ); ?>
+			<?php esc_html_e( 'To restore the original header, open its ⋯ menu and choose "Clear customizations".', 'awt' ); ?>
 		</p>
 		<?php
 	} elseif ( 'typography' === $active_section ) {
@@ -1224,7 +1224,7 @@ function render_tab_links(): void {
 		),
 		'sideNav'     => array(
 			'label' => __( 'Side navigation', 'awt' ),
-			'help'  => __( 'Links in the side navigation. On a narrow screen it moves into the header menu, and this switch still covers it.', 'awt' ),
+			'help'  => __( 'Links in the side navigation.', 'awt' ),
 		),
 		'breadcrumbs' => array(
 			'label' => __( 'Breadcrumbs', 'awt' ),
@@ -1237,7 +1237,7 @@ function render_tab_links(): void {
 	);
 	?>
 	<p class="awt-field-help" style="max-inline-size: 50em;">
-		<?php esc_html_e( 'AWT underlines links, so colour is never the only thing marking one. Carbon underlines only on hover.', 'awt' ); ?>
+		<?php esc_html_e( 'AWT underlines links, so color is not the only thing that distinguishes them. Carbon underlines only on hover.', 'awt' ); ?>
 	</p>
 
 	<div style="margin: 0.5em 0 1.5em; padding: 0.75em 1em; background: #f0f6fc; border-inline-start: 4px solid #0073aa; max-inline-size: 60em;">
@@ -1246,7 +1246,7 @@ function render_tab_links(): void {
 			<?php
 			printf(
 				/* translators: 1: opening <a> tag to WCAG 1.4.1; 2: closing </a> tag */
-				esc_html__( 'Colour alone may mark a link only when it contrasts at least 3:1 with the text around it — %1$sWCAG "Use of Color" (1.4.1, Level A)%2$s. Carbon\'s blue reaches 3.62:1 in light mode but 2.14:1 in dark, so colour alone is not enough there. An underline settles it.', 'awt' ),
+				esc_html__( 'Color alone can mark a link only if it has 3:1 contrast with nearby text (%1$sWCAG 1.4.1, Level A%2$s). Carbon\'s blue passes in light mode but not in dark, so an underline is safer.', 'awt' ),
 				'<a href="https://www.w3.org/WAI/WCAG21/Understanding/use-of-color.html" target="_blank" rel="noopener">',
 				'</a>'
 			);
@@ -1263,7 +1263,7 @@ function render_tab_links(): void {
 					<?php esc_html_e( 'Underline links across the whole site.', 'awt' ); ?>
 				</label>
 				<p class="awt-field-help">
-					<?php esc_html_e( 'Turn this off for Carbon\'s style: colour only, underline on hover. The choices below stay saved.', 'awt' ); ?>
+					<?php esc_html_e( 'Turn off to get Carbon\'s style: color only, underlined on hover.', 'awt' ); ?>
 				</p>
 			</td>
 		</tr>
@@ -1272,7 +1272,7 @@ function render_tab_links(): void {
 	<?php if ( ! $all_on ) : ?>
 		<div role="status" style="margin: 0 0 1.5em; padding: 0.75em 1em; background: #fcf9e8; border-inline-start: 4px solid #dba617; max-inline-size: 60em;">
 			<p style="margin: 0;">
-				<?php esc_html_e( 'Nothing is underlined right now. The choices below are saved and apply when you turn the switch back on.', 'awt' ); ?>
+				<?php esc_html_e( 'Links are not underlined. Your choices below will apply when you enable this option.', 'awt' ); ?>
 			</p>
 		</div>
 	<?php endif; ?>
@@ -1282,7 +1282,7 @@ function render_tab_links(): void {
 			<?php esc_html_e( 'Where to underline', 'awt' ); ?>
 		</legend>
 		<p class="awt-field-help" style="max-inline-size: 50em; margin-block-start: 0;">
-			<?php esc_html_e( 'One switch per place a link appears.', 'awt' ); ?>
+			<?php esc_html_e( 'Choose where links are underlined.', 'awt' ); ?>
 		</p>
 		<table class="form-table" role="presentation">
 			<?php foreach ( $regions as $key => $region ) : ?>
@@ -1307,7 +1307,7 @@ function render_tab_links(): void {
 	</fieldset>
 
 	<p class="awt-field-help" style="max-inline-size: 50em;">
-		<?php esc_html_e( 'Never underlined, whatever you choose: buttons, pagination numbers, tags and cards — each is already marked out by its shape. Links you type into your text keep the underline your browser gives them.', 'awt' ); ?>
+		<?php esc_html_e( 'Buttons, pagination, tags and cards are never underlined; their shape distinguishes them.', 'awt' ); ?>
 	</p>
 	<?php
 }
