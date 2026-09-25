@@ -1780,7 +1780,7 @@ function render_tab_colors(): void {
 		<details class="awt-roles-section">
 			<summary><?php esc_html_e( 'Surfaces (no ratio check)', 'awt' ); ?></summary>
 			<p class="awt-roles-row-notes" style="margin-block-start: 0.5em;">
-				<?php esc_html_e( 'Surface colors are backgrounds — the colors that text and icons sit on top of. They aren\'t foreground colors, so there\'s no contrast ratio to check.', 'awt' ); ?>
+				<?php esc_html_e( 'Surface colors are backgrounds: the colors that text and icons sit on top of. They aren\'t foreground colors, so there\'s no contrast ratio to check.', 'awt' ); ?>
 			</p>
 			<ul style="list-style: none; padding: 0; margin-block-start: 0.5em; display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 4px;">
 				<?php
@@ -1821,8 +1821,8 @@ function render_tab_colors(): void {
 
 	<p class="awt-field-help" style="margin-block-start: 2em;">
 		<strong><?php esc_html_e( 'How to read this audit', 'awt' ); ?></strong><br />
-		<?php esc_html_e( 'Each row shows a color, the backgrounds it\'s designed for, and the contrast level its role needs. Colors are checked only where they\'re actually used: a text color is tested against the backgrounds it appears on; a button color is tested for its edge contrast, while text-on-button readability is checked separately under "Text — on accent surfaces".', 'awt' ); ?><br /><br />
-		<?php esc_html_e( 'If a built-in color fails, it\'s worth investigating. If a color you added yourself fails, reconsider it — or use it only where there\'s no text.', 'awt' ); ?>
+		<?php esc_html_e( 'Each row shows a color, the backgrounds it\'s designed for, and the contrast level its role needs. Colors are checked only where they\'re actually used: a text color is tested against the backgrounds it appears on; a button color is tested for its edge contrast, while text-on-button readability is checked separately under "Text: on accent surfaces".', 'awt' ); ?><br /><br />
+		<?php esc_html_e( 'If a built-in color fails, it\'s worth investigating. If a color you added yourself fails, reconsider it, or use it only where there\'s no text.', 'awt' ); ?>
 	</p>
 	<?php
 }
@@ -1896,7 +1896,7 @@ function render_tab_navigation(): void {
 		<tr>
 			<th scope="row"><?php esc_html_e( 'Header menu', 'awt' ); ?></th>
 			<td>
-				<p style="margin-block-start: 0;"><?php esc_html_e( 'Your header menu is part of the header. Open it in the Site Editor to add, remove, reorder or rename links.', 'awt' ); ?></p>
+				<p style="margin-block-start: 0;"><?php esc_html_e( 'Add, remove, reorder or rename header menu links in the Site Editor.', 'awt' ); ?></p>
 				<p>
 					<a href="<?php echo esc_url( $header_edit_url ); ?>" class="button button-secondary"><?php esc_html_e( 'Edit the header', 'awt' ); ?></a>
 				</p>
@@ -1905,7 +1905,7 @@ function render_tab_navigation(): void {
 		<tr>
 			<th scope="row"><?php esc_html_e( 'Footer', 'awt' ); ?></th>
 			<td>
-				<p style="margin-block-start: 0;"><?php esc_html_e( 'The links and text at the bottom of every page live in the footer, which you also edit in the Site Editor.', 'awt' ); ?></p>
+				<p style="margin-block-start: 0;"><?php esc_html_e( 'Edit the links and text at the bottom of every page in the Site Editor.', 'awt' ); ?></p>
 				<p>
 					<a href="<?php echo esc_url( $footer_edit_url ); ?>" class="button button-secondary"><?php esc_html_e( 'Edit the footer', 'awt' ); ?></a>
 				</p>
@@ -1914,7 +1914,7 @@ function render_tab_navigation(): void {
 		<tr>
 			<th scope="row"><?php esc_html_e( 'Side navigation', 'awt' ); ?></th>
 			<td>
-				<p style="margin-block-start: 0;"><?php esc_html_e( 'The menu down the left on wide screens, if your header preset includes one. This opens the header in the Site Editor; select "Side nav" there. On narrow screens the same links appear in the header menu.', 'awt' ); ?></p>
+				<p style="margin-block-start: 0;"><?php esc_html_e( 'The menu on the left on wide screens, if your header has one. In the Site Editor, select "Side nav" to edit it.', 'awt' ); ?></p>
 				<p>
 					<a href="<?php echo esc_url( $sidebar_edit_url ); ?>" class="button button-secondary"><?php esc_html_e( 'Edit the side navigation', 'awt' ); ?></a>
 				</p>
@@ -1940,7 +1940,7 @@ function render_tab_navigation(): void {
 			<?php
 			printf(
 				/* translators: 1: opening <a> tag to WCAG 2.4.5; 2: closing </a> tag */
-				esc_html__( 'Breadcrumbs help meet the %1$sWCAG "Multiple Ways" guideline (2.4.5, Level AA)%2$s, which asks for more than one way to find a page. That matters most if your site has no search.', 'awt' ),
+				esc_html__( 'Breadcrumbs give people another way to find a page (%1$sWCAG 2.4.5, Level AA%2$s). This matters most if your site has no search.', 'awt' ),
 				'<a href="https://www.w3.org/WAI/WCAG21/Understanding/multiple-ways.html" target="_blank" rel="noopener">',
 				'</a>'
 			);
@@ -1953,7 +1953,7 @@ function render_tab_navigation(): void {
 			<td>
 				<label>
 					<input type="checkbox" id="awt-nav-bc-enabled" name="navigation[breadcrumbAutoEmit][enabled]" value="1" <?php checked( ! empty( $breadcrumb['enabled'] ) ); ?> />
-					<?php esc_html_e( 'Show a breadcrumb trail above the main content on every page except the front page.', 'awt' ); ?>
+					<?php esc_html_e( 'Show breadcrumbs above the content on every page except the home page.', 'awt' ); ?>
 				</label>
 				<p class="awt-field-help"><?php esc_html_e( 'Turn this off if you build breadcrumbs by hand with the Breadcrumb block. If a page has both, the automatic one hides itself.', 'awt' ); ?></p>
 			</td>
@@ -1963,22 +1963,22 @@ function render_tab_navigation(): void {
 			<td>
 				<label>
 					<input type="checkbox" id="awt-nav-bc-mobile" name="navigation[breadcrumbAutoEmit][mobile]" value="1" <?php checked( ! empty( $breadcrumb['mobile'] ) ); ?> />
-					<?php esc_html_e( 'Show breadcrumbs on narrow screens (under 672px). This is separate from the main toggle above.', 'awt' ); ?>
+					<?php esc_html_e( 'Also show breadcrumbs on narrow screens (under 672px).', 'awt' ); ?>
 				</label>
 			</td>
 		</tr>
 		<tr>
-			<th scope="row"><label for="awt-nav-homeItemText"><?php esc_html_e( 'Home item text', 'awt' ); ?></label></th>
+			<th scope="row"><label for="awt-nav-homeItemText"><?php esc_html_e( 'Home link text', 'awt' ); ?></label></th>
 			<td>
 				<input type="text" id="awt-nav-homeItemText" name="navigation[homeItemText]" value="<?php echo esc_attr( (string) $home_text ); ?>" class="regular-text" placeholder="<?php esc_attr_e( 'Home', 'awt' ); ?>" />
 				<p class="awt-field-help"><?php esc_html_e( 'The label for the first item in every auto-emitted breadcrumb trail.', 'awt' ); ?></p>
 			</td>
 		</tr>
 		<tr>
-			<th scope="row"><label for="awt-nav-notFoundText"><?php esc_html_e( '404 item text', 'awt' ); ?></label></th>
+			<th scope="row"><label for="awt-nav-notFoundText"><?php esc_html_e( '404: Page not found text', 'awt' ); ?></label></th>
 			<td>
 				<input type="text" id="awt-nav-notFoundText" name="navigation[pageNotFoundItemText]" value="<?php echo esc_attr( (string) $not_found_text ); ?>" class="regular-text" placeholder="<?php esc_attr_e( 'Page not found', 'awt' ); ?>" />
-				<p class="awt-field-help"><?php esc_html_e( 'The breadcrumb label for the current page when a visitor hits a "page not found" (404) error.', 'awt' ); ?></p>
+				<p class="awt-field-help"><?php esc_html_e( 'Shown as the last breadcrumb when a page is not found (404).', 'awt' ); ?></p>
 			</td>
 		</tr>
 	</table>
@@ -2081,11 +2081,11 @@ function render_tab_custom_css(): void {
 CSS;
 	?>
 	<details open>
-		<summary><?php esc_html_e( '⚠ Read before using this field', 'awt' ); ?></summary>
+		<summary><?php esc_html_e( '⚠ Read before using', 'awt' ); ?></summary>
 		<p><?php esc_html_e( 'Custom CSS can:', 'awt' ); ?></p>
 		<ul style="list-style: disc; padding-inline-start: 1.5em;">
-			<li><strong><?php esc_html_e( 'Hide focus outlines', 'awt' ); ?>:</strong> <?php esc_html_e( 'removing them is the most common accessibility mistake on the web', 'awt' ); ?></li>
-			<li><?php esc_html_e( 'Lower color contrast below the WCAG AA minimum', 'awt' ); ?></li>
+			<li><strong><?php esc_html_e( 'Hide focus outlines', 'awt' ); ?>:</strong> <?php esc_html_e( 'the most common accessibility mistake on the web', 'awt' ); ?></li>
+			<li><?php esc_html_e( 'Lower color contrast below WCAG AA', 'awt' ); ?></li>
 			<li><?php esc_html_e( 'Hide elements that screen readers depend on', 'awt' ); ?></li>
 			<li><?php esc_html_e( 'Override the prefers-reduced-motion rules built into AWT', 'awt' ); ?></li>
 			<li><?php esc_html_e( "Clash with AWT's built-in styles in unexpected ways", 'awt' ); ?></li>
