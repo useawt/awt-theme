@@ -332,6 +332,50 @@ class Test_Updates extends WP_UnitTestCase {
 	/* ------------------------------------------- what may install itself */
 
 	/**
+	 * "Tested up to 7.1" covers 7.1.2, so WordPress does not call the theme
+	 * untested on a point release. A newer major version still gets the warning.
+	 */
+	public function test_tested_up_to_covers_point_releases(): void {
+		global $wp_version;
+		$saved = $wp_version;
+
+		$wp_version = '7.1.2'; // phpcs:ignore WordPress.WP.GlobalVariablesOverride.Prohibited -- restored below.
+		$on_point   = Updates\tested_up_to( array( 'testedWp' => '7.1' ) );
+		$wp_version = '7.2'; // phpcs:ignore WordPress.WP.GlobalVariablesOverride.Prohibited -- restored below.
+		$on_next    = Updates\tested_up_to( array( 'testedWp' => '7.1' ) );
+		$none       = Updates\tested_up_to( array() );
+		$wp_version = $saved; // phpcs:ignore WordPress.WP.GlobalVariablesOverride.Prohibited -- restoring.
+
+		$this->assertSame( '7.1.2', $on_point );
+		$this->assertSame( '7.1', $on_next );
+		$this->assertSame( '', $none );
+	}
+
+	/**
+	 * The author link on the Themes screen opens clsdir.com in a new tab and
+	 * says so to a screen reader. Other themes are left alone.
+	 */
+	public function test_the_author_link_opens_in_a_new_tab(): void {
+		$link     = '<a href="https://www.clsdir.com/">CLSDIR</a>';
+		$prepared = array(
+			'awt'   => array(
+				'id'           => Updates\slug(),
+				'authorAndUri' => $link,
+			),
+			'other' => array(
+				'id'           => 'other',
+				'authorAndUri' => $link,
+			),
+		);
+
+		$result = Updates\author_opens_new_tab( $prepared );
+
+		$this->assertStringContainsString( 'target="_blank" rel="noopener"', $result['awt']['authorAndUri'] );
+		$this->assertStringContainsString( '<span class="screen-reader-text"> (opens in a new tab)</span>', $result['awt']['authorAndUri'] );
+		$this->assertSame( $link, $result['other']['authorAndUri'] );
+	}
+
+	/**
 	 * A release list, newest first, in the shape the manifest publishes.
 	 *
 	 * The running version is added at the bottom unless a test says not to.

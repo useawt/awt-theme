@@ -114,6 +114,7 @@ add_filter( 'themes_api', __NAMESPACE__ . '\\details', 10, 3 );
 add_action( 'in_theme_update_message-awt', __NAMESPACE__ . '\\pair_note', 10, 2 ); // phpcs:ignore WordPress.NamingConventions.ValidHookName.UseUnderscores -- core names this hook after the theme directory.
 add_filter( 'upgrader_pre_download', __NAMESPACE__ . '\\explain_manual_update', 10, 4 );
 add_filter( 'wp_prepare_themes_for_js', __NAMESPACE__ . '\\fix_themes_screen_notice' );
+add_filter( 'wp_prepare_themes_for_js', __NAMESPACE__ . '\\author_opens_new_tab' );
 
 /**
  * Whether this site checks for updates at all.
@@ -405,6 +406,28 @@ function slug(): string {
 }
 
 /**
+ * "Tested up to", widened to the point release this site runs.
+ *
+ * The manifest names a major version ("7.1"), the way a readme does.
+ * WordPress.org widens that to the newest point release before core sees it,
+ * and core warns "This %s has not been tested with your current version of
+ * WordPress" whenever the site runs anything higher. Left as it is, "7.1" read
+ * as untested on 7.1.2. A point release is maintenance, so "7.1" covers every
+ * 7.1.x; a newer major version still gets the warning, as it should.
+ *
+ * @param array $data Decoded manifest.
+ * @return string The version to report, or '' when the manifest names none.
+ */
+function tested_up_to( array $data ): string {
+	$tested = (string) ( $data['testedWp'] ?? '' );
+	$wp     = (string) get_bloginfo( 'version' );
+	if ( '' !== $tested && implode( '.', array_slice( explode( '.', $wp ), 0, 2 ) ) === $tested ) {
+		return $wp;
+	}
+	return $tested;
+}
+
+/**
  * The package URL, or '' when it is not one of ours.
  *
  * See PACKAGE_HOST for what this is and is not worth.
@@ -579,10 +602,10 @@ function details( $result, $action, $args ) {
 		'name'          => 'AWT',
 		'slug'          => slug(),
 		'version'       => (string) ( $data['version'] ?? \AWT\Theme\AWT_THEME_VERSION ),
-		'author'        => '<a href="https://useawt.com">AWT</a>',
+		'author'        => author_link(),
 		'requires'      => (string) ( $data['requiresWp'] ?? '' ),
 		'requires_php'  => (string) ( $data['requiresPhp'] ?? '' ),
-		'tested'        => (string) ( $data['testedWp'] ?? '' ),
+		'tested'        => tested_up_to( $data ),
 		'homepage'      => 'https://useawt.com',
 		'download_link' => '',
 		'sections'      => array(
@@ -664,6 +687,41 @@ function pair_note( $theme = null, $response = array() ): void {
 			esc_html__( '(opens in a new tab)', 'awt' )
 		);
 	}
+}
+
+/**
+ * The author's name, linked to clsdir.com in a new tab.
+ *
+ * Used wherever WordPress shows AWT's author: the details window, and the
+ * screen that lists it. The hidden words tell a screen reader the link opens
+ * a new tab.
+ */
+function author_link(): string {
+	return sprintf(
+		'<a href="https://www.clsdir.com/" target="_blank" rel="noopener">CLSDIR<span class="screen-reader-text"> %s</span></a>',
+		esc_html__( '(opens in a new tab)', 'awt' )
+	);
+}
+
+/**
+ * Open the author link on the Themes screen in a new tab.
+ *
+ * Core builds "By CLSDIR" from the theme header, which can only give an
+ * address, so the linked form is swapped for author_link() here.
+ *
+ * @param mixed $prepared Theme data on its way to the browser.
+ * @return mixed The same, with AWT's author link replaced.
+ */
+function author_opens_new_tab( $prepared ) {
+	if ( ! is_array( $prepared ) ) {
+		return $prepared;
+	}
+	foreach ( $prepared as $key => $theme ) {
+		if ( ( $theme['id'] ?? '' ) === slug() && isset( $theme['authorAndUri'] ) ) {
+			$prepared[ $key ]['authorAndUri'] = author_link();
+		}
+	}
+	return $prepared;
 }
 
 /**
