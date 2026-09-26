@@ -10,14 +10,13 @@
      markdownlint enforces the structure in CI. Newest release first.
      The Unreleased section accumulates entries between releases. -->
 
-## Unreleased
+## 2026.09.37 (2026-09-26)
 
 ### [Improvement]
 
-- The blog and archive pages say "No posts yet." when there are no posts.
-- The theme's author is now CLSDIR, linked to clsdir.com in a new tab.
-- WordPress no longer says the AWT theme is untested on a point release of a
-  tested version, such as 7.1.2.
+- An empty blog or archive page now says "No posts yet."
+- WordPress no longer wrongly says the theme is untested on minor WordPress
+  updates, such as 7.1.2.
 
 ## 2026.09.36 (2026-09-26)
 

@@ -264,6 +264,10 @@ Reports about real barriers are treated as bugs, not feature requests.
 == Changelog ==
 
 <!-- CHANGELOG_START -->
+= 2026.09.37 (2026-09-26) =
+* [Improvement] An empty blog or archive page now says "No posts yet."
+* [Improvement] WordPress no longer wrongly says the theme is untested on minor WordPress updates, such as 7.1.2.
+
 = 2026.09.36 (2026-09-26) =
 * [Improvement] Text improvements to admin pages.
 * [Improvement] Other small improvements.
@@ -313,9 +317,6 @@ Reports about real barriers are treated as bugs, not feature requests.
 = 2026.09.28 — 2026-09-20 =
 * [Improvement] Sub-lists are indented by the same amount as the design system they follow. They were indented half as far again, and a list marked as a sub-list on its own was barely indented at all.
 * [Improvement] Header buttons mark focus in the same colour as every other control on the site.
-
-= 2026.09.27 — 2026-09-20 =
-* [Improvement] No changes in the theme itself. It carries the same version number as AWT Blocks, which has changes in this release.
 <!-- CHANGELOG_END -->
 
 == Upgrade Notice ==
