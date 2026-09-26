@@ -15,7 +15,7 @@
 ### [Improvement]
 
 - The blog and archive pages say "No posts yet." when there are no posts.
-- The theme's author is now CLSDIR.
+- The theme's author is now CLSDIR, linked to clsdir.com.
 
 ## 2026.09.36 (2026-09-26)
 
