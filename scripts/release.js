@@ -56,11 +56,11 @@ function parseChangelog(md) {
 		const release = line.match(/^## (.+)$/);
 		if (release) {
 			const m = release[1].match(
-				/^(?<version>[^ ]+)(?: — (?<date>\d{4}-\d{2}-\d{2}))?$/
+				/^(?<version>[^ ]+)(?: — (?<date>\d{4}-\d{2}-\d{2})| \((?<date2>\d{4}-\d{2}-\d{2})\))?$/
 			);
 			current = {
 				version: m.groups.version,
-				date: m.groups.date || '',
+				date: m.groups.date || m.groups.date2 || '',
 				entries: [],
 			};
 			releases.push(current);
@@ -134,7 +134,7 @@ function main() {
 		}
 		changelog = changelog.replace(
 			/^## Unreleased$/m,
-			`## ${version} — ${today}`
+			`## ${version} (${today})`
 		);
 		if (!dryRun) {
 			fs.writeFileSync(changelogPath, changelog);
@@ -179,7 +179,7 @@ function main() {
 					(e) =>
 						`* [${e.severity}] ${e.summary}${e.details ? ' ' + e.details : ''}`
 				);
-				return `= ${r.version} — ${r.date} =\n${lines.join('\n')}`;
+				return `= ${r.version} (${r.date}) =\n${lines.join('\n')}`;
 			})
 			.join('\n\n');
 		const withChangelog = replaceBetween(readme, 'CHANGELOG', changelogTxt);
@@ -240,7 +240,7 @@ function main() {
 	);
 
 	// --- RELEASE_NOTES.md --------------------------------------------------
-	const notes = [`## ${version} — ${release.date}`, ''];
+	const notes = [`## ${version} (${release.date})`, ''];
 	// Sections keep the order the author wrote them in, so the GitHub
 	// Release reads the same way as the readme.txt changelog.
 	const order = [...new Set(release.entries.map((e) => e.severity))];

@@ -10,7 +10,7 @@
  */
 
 const RELEASE_RE =
-	/^(Unreleased|\d{4}\.\d{2}\.\d+(-[a-z0-9.]+)? — \d{4}-\d{2}-\d{2})$/;
+	/^(Unreleased|\d{4}\.\d{2}\.\d+(-[a-z0-9.]+)?( — \d{4}-\d{2}-\d{2}| \(\d{4}-\d{2}-\d{2}\)))$/;
 const SEVERITY_RE = /^\[(Security|A11y|Breaking|New|Improvement)\]$/;
 
 module.exports = {
@@ -33,7 +33,7 @@ module.exports = {
 			if (t.tag === 'h2' && !RELEASE_RE.test(text)) {
 				onError({
 					lineNumber: t.lineNumber,
-					detail: `"## ${text}" — expected "## Unreleased" or "## <YYYY.MM.PATCH> — <YYYY-MM-DD>".`,
+					detail: `"## ${text}" — expected "## Unreleased" or "## <YYYY.MM.PATCH> (<YYYY-MM-DD>)".`,
 				});
 			}
 			if (t.tag === 'h3' && !SEVERITY_RE.test(text)) {

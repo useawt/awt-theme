@@ -10,6 +10,13 @@
      markdownlint enforces the structure in CI. Newest release first.
      The Unreleased section accumulates entries between releases. -->
 
+## Unreleased
+
+### [Improvement]
+
+- Text improvements to admin pages.
+- Other small improvements.
+
 ## 2026.09.35 — 2026-09-23
 
 ### [Improvement]
