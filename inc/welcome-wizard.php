@@ -45,7 +45,7 @@ add_action( 'admin_init', __NAMESPACE__ . '\\handle_notice_dismissal' );
 
 /**
  * Handle ?awt_wizard_rerun=1 — resets the wizard's completed flag + step
- * counter so the "Re-run welcome wizard" button in Tools restarts the
+ * counter so the "Run welcome wizard again" button in Tools restarts the
  * flow from step 0 without losing the user's previous choices.
  */
 function handle_rerun_request(): void {

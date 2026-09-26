@@ -2303,17 +2303,17 @@ function render_tab_tools(): void {
 	?>
 	<h2><?php esc_html_e( 'Welcome wizard', 'awt' ); ?></h2>
 	<p class="awt-field-help">
-		<?php esc_html_e( 'Runs the six-step setup wizard again. Your current settings are kept as the starting point.', 'awt' ); ?>
+		<?php esc_html_e( 'Run the setup wizard again. Your current settings are kept as the starting point.', 'awt' ); ?>
 	</p>
 	<p>
 		<a href="<?php echo esc_url( $rerun_url ); ?>" class="button button-secondary">
-			<?php esc_html_e( 'Re-run welcome wizard', 'awt' ); ?>
+			<?php esc_html_e( 'Run welcome wizard again', 'awt' ); ?>
 		</a>
 	</p>
 
-	<h2><?php esc_html_e( 'Export configuration', 'awt' ); ?></h2>
+	<h2><?php esc_html_e( 'Export settings', 'awt' ); ?></h2>
 	<p class="awt-field-help">
-		<?php esc_html_e( 'Download this site\'s AWT settings as a file, to copy to another site or attach to a support request.', 'awt' ); ?>
+		<?php esc_html_e( 'Download your AWT settings as a file to copy to another site or send to support.', 'awt' ); ?>
 	</p>
 
 	<?php
@@ -2331,25 +2331,25 @@ function render_tab_tools(): void {
 	?>
 	<p>
 		<a href="<?php echo esc_url( $export_url ); ?>" class="button button-secondary">
-			<?php esc_html_e( 'Export configuration', 'awt' ); ?>
+			<?php esc_html_e( 'Export settings', 'awt' ); ?>
 		</a>
 	</p>
 
-	<h2><?php esc_html_e( 'Import configuration', 'awt' ); ?></h2>
+	<h2><?php esc_html_e( 'Import settings', 'awt' ); ?></h2>
 	<p class="awt-field-help">
-		<?php esc_html_e( 'Upload a settings file to replace this site\'s current AWT settings.', 'awt' ); ?>
+		<?php esc_html_e( 'Upload a settings file. It replaces this site\'s current AWT settings.', 'awt' ); ?>
 	</p>
 
 	<form method="post"
 			action="<?php echo esc_url( admin_url( 'themes.php?page=' . MENU_SLUG . '&tab=tools' ) ); ?>"
 			enctype="multipart/form-data"
-			onsubmit="return confirm(<?php echo esc_attr( wp_json_encode( __( 'Importing will replace this site\'s current AWT settings with the uploaded file. Continue?', 'awt' ) ) ); ?>);">
+			onsubmit="return confirm(<?php echo esc_attr( wp_json_encode( __( 'This replaces your current AWT settings with the uploaded file. Continue?', 'awt' ) ) ); ?>);">
 		<?php wp_nonce_field( 'awt_import', 'awt_import_nonce' ); ?>
 		<p>
-			<label for="awt-import-file" class="screen-reader-text"><?php esc_html_e( 'AWT settings JSON file', 'awt' ); ?></label>
+			<label for="awt-import-file" class="screen-reader-text"><?php esc_html_e( 'AWT settings file (.json)', 'awt' ); ?></label>
 			<input type="file" id="awt-import-file" name="awt_import_file" accept="application/json,.json" required />
 		</p>
-		<?php submit_button( __( 'Import configuration', 'awt' ), 'secondary', 'submit', false ); ?>
+		<?php submit_button( __( 'Import settings', 'awt' ), 'secondary', 'submit', false ); ?>
 	</form>
 	<?php
 }
@@ -2385,7 +2385,7 @@ function handle_export(): void {
 				array(
 					'page'      => MENU_SLUG,
 					'tab'       => 'tools',
-					'awt_error' => rawurlencode( __( 'Could not serialize settings for export.', 'awt' ) ),
+					'awt_error' => rawurlencode( __( 'Could not export your settings.', 'awt' ) ),
 				),
 				admin_url( 'themes.php' )
 			)
@@ -2456,7 +2456,7 @@ function handle_import(): void {
 
 	$decoded = json_decode( $raw, true );
 	if ( ! is_array( $decoded ) ) {
-		$fail( __( 'The uploaded file is not valid JSON.', 'awt' ) );
+		$fail( __( 'This file isn\'t a valid settings file.', 'awt' ) );
 	}
 
 	// Sanity: must look like an AWT settings document.
@@ -2475,7 +2475,7 @@ function handle_import(): void {
 	Settings\flush_cache();
 	$stored = Settings\all();
 	if ( ! isset( $stored['schemaVersion'] ) ) {
-		$fail( __( 'Importing the settings failed. Please check the file and try again.', 'awt' ) );
+		$fail( __( 'Could not import the settings. Check the file and try again.', 'awt' ) );
 	}
 
 	wp_safe_redirect( add_query_arg( 'awt_saved', '1', $redirect ) );
