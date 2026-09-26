@@ -10,6 +10,12 @@
      markdownlint enforces the structure in CI. Newest release first.
      The Unreleased section accumulates entries between releases. -->
 
+## Unreleased
+
+### [Improvement]
+
+- The blog and archive pages say "No posts yet." when there are no posts.
+
 ## 2026.09.36 (2026-09-26)
 
 ### [Improvement]
