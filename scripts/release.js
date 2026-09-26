@@ -61,6 +61,8 @@ function parseChangelog(md) {
 			current = {
 				version: m.groups.version,
 				date: m.groups.date || m.groups.date2 || '',
+				// Older headings used an em dash; they keep it where they are reprinted.
+				dash: Boolean(m.groups.date),
 				entries: [],
 			};
 			releases.push(current);
@@ -179,7 +181,10 @@ function main() {
 					(e) =>
 						`* [${e.severity}] ${e.summary}${e.details ? ' ' + e.details : ''}`
 				);
-				return `= ${r.version} (${r.date}) =\n${lines.join('\n')}`;
+				const heading = r.dash
+					? `${r.version} — ${r.date}`
+					: `${r.version} (${r.date})`;
+				return `= ${heading} =\n${lines.join('\n')}`;
 			})
 			.join('\n\n');
 		const withChangelog = replaceBetween(readme, 'CHANGELOG', changelogTxt);
