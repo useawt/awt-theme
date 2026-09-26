@@ -1081,8 +1081,10 @@ add_filter(
  * front-end stay in sync.
  *
  * The script does a first pass for any iframe already present, then watches
- * for iframes added later (the editor mounts them asynchronously). The empty
- * catch guards against a cross-origin frame, which is never ours.
+ * for iframes added later (the editor mounts them asynchronously). It prints
+ * in the head, before <body> exists, so it waits for the document before it
+ * starts watching. The empty catch guards against a cross-origin frame, which
+ * is never ours.
  */
 add_action(
 	'enqueue_block_editor_assets',
@@ -1109,22 +1111,29 @@ add_action(
 			}
 		} catch (e) {}
 	}
-	document.querySelectorAll('iframe[name="editor-canvas"]').forEach(applyToIframe);
-	var obs = new MutationObserver(function(records) {
-		records.forEach(function(r) {
-			r.addedNodes && r.addedNodes.forEach(function(node) {
-				if (node.nodeType === 1) {
-					if (node.tagName === 'IFRAME' && node.name === 'editor-canvas') {
-						applyToIframe(node);
+	function start() {
+		document.querySelectorAll('iframe[name="editor-canvas"]').forEach(applyToIframe);
+		var obs = new MutationObserver(function(records) {
+			records.forEach(function(r) {
+				r.addedNodes && r.addedNodes.forEach(function(node) {
+					if (node.nodeType === 1) {
+						if (node.tagName === 'IFRAME' && node.name === 'editor-canvas') {
+							applyToIframe(node);
+						}
+						if (node.querySelectorAll) {
+							node.querySelectorAll('iframe[name="editor-canvas"]').forEach(applyToIframe);
+						}
 					}
-					if (node.querySelectorAll) {
-						node.querySelectorAll('iframe[name="editor-canvas"]').forEach(applyToIframe);
-					}
-				}
+				});
 			});
 		});
-	});
-	obs.observe(document.body, { childList: true, subtree: true });
+		obs.observe(document.body, { childList: true, subtree: true });
+	}
+	if (document.body) {
+		start();
+	} else {
+		document.addEventListener('DOMContentLoaded', start);
+	}
 })();
 JS;
 		wp_add_inline_script(
