@@ -3,7 +3,7 @@
 <!-- Authoring format (parsed by scripts/release.js at release time — see the
      Stage 1 spec, "Changelog communication"):
 
-     ## <version> — <YYYY-MM-DD>
+     ## <version> (<YYYY-MM-DD>)   older headings use an em dash; both parse
      ### [Severity]        one of: [Security] [A11y] [Breaking] [New] [Improvement]
      - One entry per bullet.
 
