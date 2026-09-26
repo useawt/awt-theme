@@ -354,6 +354,23 @@ function on_a_home_screen(): bool {
 	return $screen->id === 'dashboard' || strpos( (string) $screen->id, \AWT\Theme\AdminPage\MENU_SLUG ) !== false;
 }
 
+/**
+ * A link to Dashboard → Updates, or nothing when that is the screen showing.
+ *
+ * There the link points at the page it sits on and does nothing, while the
+ * sentence around it still says something the update list does not.
+ *
+ * @param string $label Link text, already translated.
+ * @return string Link markup, or an empty string.
+ */
+function updates_link( string $label ): string {
+	$screen = function_exists( 'get_current_screen' ) ? get_current_screen() : null;
+	if ( $screen && $screen->id === 'update-core' ) {
+		return '';
+	}
+	return '<a href="' . esc_url( admin_url( 'update-core.php' ) ) . '">' . esc_html( $label ) . '</a>';
+}
+
 /** Print the bar. */
 function render(): void {
 	$state = state();
@@ -374,7 +391,7 @@ function render(): void {
 	printf(
 		'<div class="notice notice-%s"><p>%s</p></div>',
 		esc_attr( $notice['level'] ),
-		wp_kses_post( $notice['text'] )
+		wp_kses_post( trim( $notice['text'] ) )
 	);
 }
 
@@ -386,7 +403,6 @@ function render(): void {
  */
 function message( array $state ): ?array {
 	$settings = admin_url( 'themes.php?page=' . \AWT\Theme\AdminPage\MENU_SLUG . '&tab=tools' );
-	$updates  = admin_url( 'update-core.php' );
 
 	switch ( $state['id'] ) {
 		case 'failed':
@@ -397,7 +413,7 @@ function message( array $state ): ?array {
 					esc_html__( 'AWT could not install %1$s automatically. Your site is still on %2$s and working normally. %3$s', 'awt' ),
 					'<strong>' . esc_html( $state['version'] ) . '</strong>',
 					esc_html( $state['installed'] ),
-					'<a href="' . esc_url( $updates ) . '">' . esc_html__( 'Install it now', 'awt' ) . '</a>'
+					updates_link( __( 'Install it now', 'awt' ) )
 				),
 			);
 
@@ -409,7 +425,7 @@ function message( array $state ): ?array {
 					esc_html__( 'The AWT theme and AWT Blocks are on different versions. They are built as a pair and should match: the theme is on %1$s and the plugin is on %2$s. %3$s', 'awt' ),
 					'<strong>' . esc_html( $state['theme'] ) . '</strong>',
 					'<strong>' . esc_html( $state['plugin'] ) . '</strong>',
-					'<a href="' . esc_url( $updates ) . '">' . esc_html__( 'Update whichever is behind', 'awt' ) . '</a>'
+					updates_link( __( 'Update whichever is behind', 'awt' ) )
 				),
 			);
 
@@ -491,7 +507,7 @@ function message( array $state ): ?array {
 					$text .= ' ' . esc_html__( 'Newer versions, fixes included, will wait until you install it.', 'awt' );
 				}
 			}
-			$text .= ' <a href="' . esc_url( $updates ) . '">' . esc_html__( 'Update now', 'awt' ) . '</a>';
+			$text .= ' ' . updates_link( __( 'Update now', 'awt' ) );
 			return array(
 				'level' => 'info',
 				'text'  => $text,

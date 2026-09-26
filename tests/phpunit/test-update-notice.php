@@ -25,6 +25,29 @@ use AWT\Theme\Updates;
 class Test_Update_Notice extends WP_UnitTestCase {
 
 	/**
+	 * On Dashboard → Updates the link would point at the page it is on and do
+	 * nothing, so it is left out there; the sentence stays.
+	 */
+	public function test_the_updates_screen_gets_no_link_to_itself(): void {
+		$state = array(
+			'id'      => 'needs-you',
+			'version' => '2099.01.0',
+		);
+
+		set_current_screen( 'dashboard' );
+		$elsewhere = UpdateNotice\message( $state )['text'];
+		$this->assertStringContainsString( 'update-core.php', $elsewhere );
+		$this->assertStringContainsString( 'Update now', $elsewhere );
+
+		set_current_screen( 'update-core' );
+		$there = UpdateNotice\message( $state )['text'];
+		$this->assertStringNotContainsString( '<a ', $there );
+		$this->assertStringContainsString( '2099.01.0', $there, 'the sentence stays' );
+
+		set_current_screen( 'front' );
+	}
+
+	/**
 	 * Somebody who could act on what the bar says.
 	 */
 	public function set_up(): void {
