@@ -264,6 +264,10 @@ Reports about real barriers are treated as bugs, not feature requests.
 == Changelog ==
 
 <!-- CHANGELOG_START -->
+= 2026.09.36 (2026-09-26) =
+* [Improvement] Text improvements to admin pages.
+* [Improvement] Other small improvements.
+
 = 2026.09.35 — 2026-09-23 =
 * [Improvement] No changes in the theme itself. It carries the same version number as the AWT Blocks plugin, which has changes in this release.
 
@@ -312,9 +316,6 @@ Reports about real barriers are treated as bugs, not feature requests.
 
 = 2026.09.27 — 2026-09-20 =
 * [Improvement] No changes in the theme itself. It carries the same version number as AWT Blocks, which has changes in this release.
-
-= 2026.09.26 — 2026-09-20 =
-* [New] Settings → Design system lists the design systems AWT will support. Carbon is the one you can pick today; the rest are marked as coming to AWT Premium.
 <!-- CHANGELOG_END -->
 
 == Upgrade Notice ==

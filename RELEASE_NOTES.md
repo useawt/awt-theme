@@ -1,5 +1,6 @@
-## 2026.09.35 — 2026-09-23
+## 2026.09.36 (2026-09-26)
 
 ### [Improvement]
 
-- No changes in the theme itself. It carries the same version number as the AWT Blocks plugin, which has changes in this release.
+- Text improvements to admin pages.
+- Other small improvements.
