@@ -254,6 +254,9 @@ add_action( 'admin_bar_menu', __NAMESPACE__ . '\\add_menu', 80 );
  * @return string CSS.
  */
 function styles(): string {
+	// The dot's 1px dark ring keeps it defined on the light, ocean, blue and
+	// sunrise admin color schemes, where no bright fill reaches 3:1. It is
+	// invisible on the dark schemes.
 	return <<<'CSS'
 #wpadminbar #wp-admin-bar-awt > .ab-item,
 #wpadminbar #wp-admin-bar-awt-status > .ab-item,
@@ -273,8 +276,6 @@ function styles(): string {
 	block-size: 10px;
 	flex: 0 0 auto;
 	border-radius: 50%;
-	/* Keeps the dot defined on the light, ocean, blue and sunrise bars, where
-	   no bright fill can reach 3:1. Invisible on the dark schemes. */
 	box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.55);
 }
 #wpadminbar .awt-toolbar__dot--current  { background-color: #6fcf5f; }

@@ -1079,6 +1079,10 @@ add_filter(
  * adds the scope class to its body. The class derives from the same
  * theme_scopes() helper the front-end body_class filter uses, so editor and
  * front-end stay in sync.
+ *
+ * The script does a first pass for any iframe already present, then watches
+ * for iframes added later (the editor mounts them asynchronously). The empty
+ * catch guards against a cross-origin frame, which is never ours.
  */
 add_action(
 	'enqueue_block_editor_assets',
@@ -1103,11 +1107,9 @@ add_action(
 			if (!apply()) {
 				iframe.addEventListener('load', apply, { once: true });
 			}
-		} catch (e) { /* cross-origin guard — never our iframe but be safe */ }
+		} catch (e) {}
 	}
-	// Initial pass for any iframe already present
 	document.querySelectorAll('iframe[name="editor-canvas"]').forEach(applyToIframe);
-	// Watch for iframes added later (block editor mounts them async)
 	var obs = new MutationObserver(function(records) {
 		records.forEach(function(r) {
 			r.addedNodes && r.addedNodes.forEach(function(node) {

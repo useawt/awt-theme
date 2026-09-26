@@ -210,6 +210,11 @@ function render_page(): void {
 			</form>
 			<?php
 		}
+		// Unsaved-changes guard. A submit asks for confirmation only when a
+		// destructive choice (style variation or header preset) differs from
+		// what is applied now. A submit counts as leaving, so the tab prompt
+		// stays quiet while the page saves. Clicking another tab, top-level or
+		// a Carbon sub-tab, with unsaved edits asks before leaving.
 		?>
 		<script>
 		( function () {
@@ -222,8 +227,6 @@ function render_page(): void {
 				form.addEventListener( 'input', function () { dirty = true; } );
 				form.addEventListener( 'change', function () { dirty = true; } );
 				form.addEventListener( 'submit', function ( e ) {
-					// Confirm only when a "destructive" choice (style variation /
-					// header preset) actually changed from what is applied now.
 					var field = form.getAttribute( 'data-awt-confirm-field' );
 					if ( field ) {
 						var orig = form.getAttribute( 'data-awt-confirm-original' ) || '';
@@ -235,12 +238,10 @@ function render_page(): void {
 							return;
 						}
 					}
-					leaving = true; // saving navigates away — don't also prompt
+					leaving = true;
 				} );
 			} );
 
-			// Prompt on tab change (top-level tabs AND the Carbon sub-tabs)
-			// whenever there are unsaved edits on the current tab.
 			page.querySelectorAll( 'a.nav-tab' ).forEach( function ( link ) {
 				link.addEventListener( 'click', function ( e ) {
 					if ( link.classList.contains( 'nav-tab-active' ) ) { return; }
@@ -329,14 +330,23 @@ function enqueue_assets( string $hook_suffix ): void {
 	if ( $hook_suffix !== PAGE_HOOK ) {
 		return;
 	}
+	// Notes on the rules below, kept here because the CSS reaches the browser:
+	// - Release-notes panel: severity is never color-only. Every entry keeps
+	// its visible [Severity] text badge; colors only reinforce it.
+	// - .form-table and .awt-field-help are scoped to the whole page, not just
+	// .awt-settings-form, so they also apply on self-form tabs like the wizard.
+	// - .awt-updates-mode-help sits under its radio label, indented past the
+	// control, rather than beside it.
+	// - Premium upsell badge: a small link to the AWT Premium page with the same
+	// pill look everywhere (header-widget rows, the color editor). #50575e on
+	// #fff is about 7:1, so the 11px text passes WCAG 1.4.3. Hover and focus
+	// deepen the color and add a surface; focus reuses the WP admin ring.
 	wp_register_style( 'awt-theme-settings-admin', false, array(), wp_get_theme()->get( 'Version' ) );
 	wp_enqueue_style( 'awt-theme-settings-admin' );
 	wp_add_inline_style(
 		'awt-theme-settings-admin',
 		'
 		.awt-settings-page { max-width: 1200px; }
-		/* Release-notes panel. Severity is never color-only: every entry keeps
-		   its visible [Severity] text badge; colors just reinforce it. */
 		.awt-settings-page .awt-whats-new-release { margin: 12px 0; padding: 12px 16px; background: #fff; border: 1px solid #c3c4c7; border-radius: 4px; }
 		.awt-settings-page .awt-whats-new-release summary { cursor: pointer; font-size: 14px; }
 		.awt-settings-page .awt-whats-new-release summary:focus-visible { outline: 2px solid #2271b1; outline-offset: 2px; }
@@ -350,21 +360,13 @@ function enqueue_assets( string $hook_suffix ): void {
 		.awt-settings-page .awt-whats-new-pinned { margin: 16px 0; padding: 16px; border: 1px solid #b32d2e; border-left-width: 4px; background: #fff; border-radius: 4px; }
 		.awt-settings-page .awt-whats-new-pinned h3 { margin-top: 0; }
 		.awt-settings-page .awt-whats-new-pinned form { margin-top: 12px; }
-		/* Scoped to the whole page (not just .awt-settings-form) so these also
-		   apply on self-form tabs like the welcome wizard. */
 		.awt-settings-page .form-table th { width: 240px; }
 		.awt-settings-page .awt-field-help { color: #646970; font-size: 13px; max-width: 50em; }
-		/* Sits under its radio label rather than beside it, indented past the control. */
 		.awt-settings-page .awt-updates-mode-help { display: block; margin-block-start: .25em; margin-inline-start: 1.9em; }
 		.awt-settings-page fieldset p { margin-block: 0 1em; }
 		.awt-logo-preview { display: block; block-size: 48px; inline-size: auto; max-inline-size: 280px; margin-block-start: 0.5em; padding: 8px; border: 1px solid #dcdcde; border-radius: 4px; background: #f6f7f7; box-sizing: content-box; }
 		.awt-logo-preview--dark { background: #161616; border-color: #393939; }
 		.awt-site-icon-preview { inline-size: 48px; block-size: 48px; object-fit: contain; }
-		/* Premium upsell badge — a small link to the AWT Premium page. Same pill
-		   look everywhere it appears (header-widget rows, the color editor).
-		   #50575e on #fff is ~7:1 so the 11px text passes
-		   WCAG 1.4.3. Hover/focus deepen the color + add a surface; focus reuses
-		   the WP admin focus ring. */
 		.awt-settings-page .awt-premium-badge { display: inline-flex; align-items: center; gap: .3em; white-space: nowrap; font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: .04em; color: #50575e; text-decoration: none; border: 1px solid #c3c4c7; border-radius: 10px; padding: .15em .6em; line-height: 1.6; }
 		.awt-settings-page .awt-premium-badge:hover,
 		.awt-settings-page .awt-premium-badge:focus-visible { color: #1d2327; border-color: #8c8f94; background: #f6f7f7; text-decoration: underline; }
@@ -389,14 +391,16 @@ function enqueue_assets( string $hook_suffix ): void {
 	// data-awt-media-title        media-frame title
 	// data-awt-media-type         restrict the library (e.g. 'image')
 	// A separate `data-awt-media-remove` button clears its paired field +
-	// preview. Used on both the Identity tab and the wizard.
+	// preview and hides itself; choosing an image shows it again. Alt text is
+	// filled in from the attachment only when the field is empty, so a
+	// customization the user typed is never overwritten. Used on both the
+	// Identity tab and the wizard.
 	wp_register_script( 'awt-theme-settings-admin', false, array( 'jquery', 'media-editor' ), wp_get_theme()->get( 'Version' ), true );
 	wp_enqueue_script( 'awt-theme-settings-admin' );
 	wp_add_inline_script(
 		'awt-theme-settings-admin',
 		"(function(){
 		document.addEventListener('click', function(e){
-			// Remove button: clear the paired hidden input + preview, hide self.
 			var remove = e.target.closest('[data-awt-media-remove]');
 			if (remove) {
 				e.preventDefault();
@@ -432,8 +436,6 @@ function enqueue_assets( string $hook_suffix ): void {
 				}
 				if (altId) {
 					var altInput = document.getElementById(altId);
-					// Only auto-fill alt if the field is currently empty —
-					// otherwise we'd clobber a customization the user typed.
 					if (altInput && !altInput.value && att.alt) { altInput.value = att.alt; }
 				}
 				if (previewId) {
@@ -444,7 +446,6 @@ function enqueue_assets( string $hook_suffix ): void {
 						pv.src = src; pv.style.display = '';
 					}
 				}
-				// Reveal the paired Remove button, if any.
 				if (idTarget) {
 					var rm = document.querySelector('[data-awt-media-remove=\"' + idTarget + '\"]');
 					if (rm) { rm.style.display = ''; }
@@ -1467,6 +1468,10 @@ function render_tab_typography(): void {
 		</p>
 	</div>
 
+	<?php
+	// Size preview: applies the saved scale on load, then updates live as a
+	// radio changes, with no save needed.
+	?>
 	<script>
 	(function(){
 		var preview = document.getElementById('awt-type-preview');
@@ -1478,10 +1483,8 @@ function render_tab_typography(): void {
 				el.style.fontSize = (base * scale).toFixed(4) + 'rem';
 			});
 		}
-		// Apply the currently-selected (saved) scale on load.
 		var current = document.querySelector('input[name="typography[sizeScale]"]:checked');
 		if (current) applyScale(current.value);
-		// Live update on radio change — instant feedback, no save needed.
 		document.querySelectorAll('input[name="typography[sizeScale]"]').forEach(function(r){
 			r.addEventListener('change', function(){ applyScale(r.value); });
 		});
@@ -1614,6 +1617,12 @@ function render_tab_colors(): void {
 		<?php esc_html_e( 'This check tests each color only against the backgrounds it\'s meant to appear on, using the WCAG contrast level its role requires: 4.5:1 for body and link text, 3:1 for interface parts like button edges, icons, focus rings, and borders. Color pairings a color isn\'t meant for aren\'t shown.', 'awt' ); ?>
 	</p>
 
+	<?php
+	// Exempt pills are anchors when an `exempt_url` is set: they open the
+	// relevant WCAG Understanding section in a new tab. The pill styling is
+	// shared with the static Exempt span; a.awt-contrast-link only adds
+	// underline on hover and a small gap before the external icon.
+	?>
 	<style>
 		.awt-roles-table { border-collapse: collapse; margin-block: 0.5em 1.5em; inline-size: 100%; max-inline-size: 92em; }
 		.awt-roles-table th, .awt-roles-table td { padding: 8px 10px; border: 1px solid #c3c4c7; vertical-align: top; text-align: start; font-size: 13px; }
@@ -1629,10 +1638,6 @@ function render_tab_colors(): void {
 		.awt-contrast-fail    { background: #f8d7da; color: #721c24; }
 		.awt-contrast-exempt  { background: #e7f1ff; color: #003a8c; }
 		.awt-contrast-required{ background: #f0f0f1; color: #1d2327; }
-		/* Exempt pills are anchors when an `exempt_url` is set — they open
-		 * the relevant WCAG Understanding section in a new tab. The pill
-		 * styling is shared with the static Exempt span; we just add
-		 * underline-on-hover + a subtle inline gap before the external icon. */
 		a.awt-contrast-link { text-decoration: none; display: inline-flex; align-items: center; gap: 0.35em; }
 		a.awt-contrast-link:hover, a.awt-contrast-link:focus { text-decoration: underline; }
 		a.awt-contrast-link:focus-visible { outline: 2px solid #2271b1; outline-offset: 2px; }
@@ -2103,6 +2108,10 @@ CSS;
 			</td>
 		</tr>
 	</table>
+	<?php
+	// The input event marks the form dirty, so the unsaved-changes guard
+	// knows the example was inserted.
+	?>
 	<script>
 	( function () {
 		var btn = document.getElementById( 'awt-insert-color-example' );
@@ -2111,7 +2120,7 @@ CSS;
 		var example = <?php echo wp_json_encode( $color_example ); ?>;
 		btn.addEventListener( 'click', function () {
 			ta.value += ( ta.value.trim() ? '\n\n' : '' ) + example;
-			ta.dispatchEvent( new Event( 'input', { bubbles: true } ) ); // mark the form dirty
+			ta.dispatchEvent( new Event( 'input', { bubbles: true } ) );
 			ta.focus();
 			ta.selectionStart = ta.selectionEnd = ta.value.length;
 			ta.scrollTop = ta.scrollHeight;
