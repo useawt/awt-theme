@@ -14,6 +14,10 @@
  * site's light backgrounds under dark-mode text — near-white on near-white,
  * found while authoring at night on a live site (2026-09-18).
  *
+ * The original selectors are appended after the re-rooted copy, for sections
+ * that carry their own scope class; without them a g100 section previewed in
+ * Carbon's stock colours (2026-09-27).
+ *
  * @package AWT\Theme
  */
 
@@ -70,6 +74,28 @@ class Test_Editor_Custom_Css extends WP_UnitTestCase {
 		$this->assertStringContainsString( '@media (prefers-color-scheme: dark){', $out );
 		$dark = substr( $out, (int) strpos( $out, '@media (prefers-color-scheme: dark){' ) );
 		$this->assertStringContainsString( 'body.editor-styles-wrapper { --cds-background: #11161f; }', $dark );
+	}
+
+	/**
+	 * A section with its own theme still gets the site's colours for it.
+	 */
+	public function test_a_section_with_its_own_theme_keeps_the_site_colours(): void {
+		foreach ( array( 'light', 'dark', 'default' ) as $scheme ) {
+			$out = \AWT\Theme\editor_custom_css( self::CSS, $scheme );
+
+			// The original rules follow the re-rooted copy, so a nested
+			// `cds--g100` or `cds--white` section matches them.
+			$this->assertStringEndsWith( self::CSS, $out, $scheme );
+			$this->assertStringContainsString( 'body.editor-styles-wrapper', $out, $scheme );
+		}
+	}
+
+	/**
+	 * Custom CSS with no scope classes is handed over once, unchanged.
+	 */
+	public function test_css_without_scope_classes_is_not_repeated(): void {
+		$css = 'h1 { letter-spacing: -0.02em; }';
+		$this->assertSame( $css, \AWT\Theme\editor_custom_css( $css, 'dark' ) );
 	}
 
 	/**

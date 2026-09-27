@@ -261,6 +261,15 @@ function reroot_scope( string $css, array $family ): string {
  * and the canvas showed near-white text on a near-white page (found on a live
  * site, 2026-09-18).
  *
+ * **The original selectors are kept too, after the re-rooted copy.** A section
+ * with its own theme (awt/section `themeScope`) carries a scope class in the
+ * canvas, and re-rooting alone removed every rule that could match it: on a
+ * dark site whose Custom CSS recolours `.cds--g100`, a g100 section previewed
+ * in Carbon's stock blue while the rest of the canvas and the whole front end
+ * used the site's green (clsdir.com, 2026-09-27). The editor prefixes the kept
+ * rules with `.editor-styles-wrapper`, so they reach nested sections only and
+ * never the canvas root.
+ *
  * @param string $css      The Custom CSS.
  * @param string $site_cs  'light', 'dark', or 'default' for "follow the
  *                         desktop" — what `editor_scheme()` resolved.
@@ -270,18 +279,20 @@ function editor_custom_css( string $css, string $site_cs ): string {
 	$dark  = array( '.cds--g90', '.cds--g100' );
 
 	if ( $site_cs === 'dark' ) {
-		return reroot_scope( $css, $dark );
-	}
-	if ( $site_cs === 'light' ) {
-		return reroot_scope( $css, $light );
+		$rerooted = reroot_scope( $css, $dark );
+	} elseif ( $site_cs === 'light' ) {
+		$rerooted = reroot_scope( $css, $light );
+	} else {
+		$dark_css = reroot_scope( $css, $dark );
+		$rerooted = $dark_css === ''
+			? reroot_scope( $css, $light )
+			: reroot_scope( $css, $light ) . '@media (prefers-color-scheme: dark){' . $dark_css . '}';
 	}
 
-	$dark_css = reroot_scope( $css, $dark );
-	if ( $dark_css === '' ) {
-		return reroot_scope( $css, $light );
+	if ( $rerooted === $css ) {
+		return $css;
 	}
-	return reroot_scope( $css, $light )
-		. '@media (prefers-color-scheme: dark){' . $dark_css . '}';
+	return $rerooted . "\n" . $css;
 }
 
 /**

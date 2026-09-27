@@ -10,6 +10,12 @@
      markdownlint enforces the structure in CI. Newest release first.
      The Unreleased section accumulates entries between releases. -->
 
+## Unreleased
+
+### [Improvement]
+
+- In the editor, a section with its own theme now uses the colours from your Custom CSS, as it does on the published page.
+
 ## 2026.09.37 (2026-09-26)
 
 ### [Improvement]
