@@ -15,6 +15,8 @@
 ### [Improvement]
 
 - In the editor, a section with its own theme now uses the colours from your Custom CSS, as it does on the published page.
+- On light pages, the theme no longer replaces the font you set in Custom CSS or in Styles.
+- The Site Logo block now switches between the light-mode and dark-mode logos set in AWT Settings.
 
 ## 2026.09.37 (2026-09-26)
 

@@ -627,6 +627,63 @@ add_filter(
 );
 
 /**
+ * The Site Logo block with the light-mode and dark-mode logos from AWT
+ * Settings → Identity.
+ *
+ * Only `awt/header-brand` used those two logos, so a Site Logo in a hero or a
+ * footer showed the one WordPress logo in both modes, and a logo drawn for a
+ * dark background lost its letters on a light page (clsdir.com, 2026-09-27).
+ * With both logos set and different, the block's image is printed twice, once
+ * per logo, and theme.css shows the one that suits the nearest scope. Its link,
+ * alt text and width stay as the block has them. The logo files carry no
+ * srcset of their own, so the attachment's srcset, sizes and height go.
+ *
+ * Nothing changes when either logo is empty, when they are the same, or when
+ * the block has no image. The editor draws this block itself and keeps showing
+ * the WordPress logo.
+ *
+ * @param string $html The Site Logo block's markup.
+ * @param string $light Light-mode logo URL.
+ * @param string $dark  Dark-mode logo URL.
+ */
+function site_logo_dual( string $html, string $light, string $dark ): string {
+	if ( $light === '' || $dark === '' || $light === $dark || ! preg_match( '/<img\b[^>]*>/i', $html, $m ) ) {
+		return $html;
+	}
+
+	$variant = static function ( string $img, string $src, string $modifier ): string {
+		$tags = new \WP_HTML_Tag_Processor( $img );
+		if ( ! $tags->next_tag( 'img' ) ) {
+			return $img;
+		}
+		$tags->set_attribute( 'src', $src );
+		$tags->remove_attribute( 'srcset' );
+		$tags->remove_attribute( 'sizes' );
+		$tags->remove_attribute( 'height' );
+		$tags->add_class( 'awt-logo--' . $modifier );
+		return $tags->get_updated_html();
+	};
+
+	$pair = $variant( $m[0], $light, 'light' ) . $variant( $m[0], $dark, 'dark' );
+	$pos  = strpos( $html, $m[0] );
+	return substr_replace( $html, $pair, (int) $pos, strlen( $m[0] ) );
+}
+
+add_filter(
+	'render_block_core/site-logo',
+	static function ( string $html ): string {
+		if ( ! function_exists( '\\AWT\\Theme\\Settings\\get' ) ) {
+			return $html;
+		}
+		return site_logo_dual(
+			$html,
+			(string) \AWT\Theme\Settings\get( 'identity.logoUrl' ),
+			(string) \AWT\Theme\Settings\get( 'identity.logoUrlDark' )
+		);
+	}
+);
+
+/**
  * Stylesheet enqueue for front-end + block-editor iframe.
  *
  * Stage 1 still ships the pre-built Carbon CSS in full. CSS tree-shaking

@@ -709,12 +709,15 @@ html {
 	scroll-behavior: smooth;
 }
 
+/* No font-family here. This rule matches light pages only, and at (0,1,1) a
+   font set here beat the site's own: a `body` font in Custom CSS, or one chosen
+   in Styles, held in dark mode and was replaced by IBM Plex Sans in light mode
+   (clsdir.com, 2026-09-27). The body font comes from theme.json. */
 body.cds--white {
 	margin: 0;
 	min-height: 100vh;
 	display: flex;
 	flex-direction: column;
-	font-family: 'IBM Plex Sans', system-ui, -apple-system, sans-serif;
 	color: var(--cds-text-primary, #161616);
 	background-color: var(--cds-background, #ffffff);
 }
@@ -1684,6 +1687,28 @@ ol.wp-block-list {
 .cds--header.cds--g10   .cds--header__logo--dark  { display: none; }
 .cds--header.cds--white .cds--header__logo--light,
 .cds--header.cds--g10   .cds--header__logo--light { display: block; }
+
+/* Site Logo light/dark swap.
+ *
+ * When AWT Settings has both a light-mode and a dark-mode logo, the Site Logo
+ * block prints both images (`site_logo_dual()` in functions.php). Which one
+ * shows follows the nearest Carbon scope, not the page's scheme, so a logo in a
+ * section with its own theme gets the version made for that section's
+ * background. The scope classes set a custom property and it inherits, which is
+ * what makes "nearest" work: a descendant selector per scope would hide both
+ * images inside a dark section on a light page. */
+.cds--white,
+.cds--g10 {
+	--awt-logo-light: inline;
+	--awt-logo-dark: none;
+}
+.cds--g90,
+.cds--g100 {
+	--awt-logo-light: none;
+	--awt-logo-dark: inline;
+}
+.wp-block-site-logo .awt-logo--light { display: var(--awt-logo-light, inline); }
+.wp-block-site-logo .awt-logo--dark { display: var(--awt-logo-dark, none); }
 
 /* (Two departures from Carbon's own rule beyond the centering explained
  * above: 1rem of inline padding, because this button may carry a label next
