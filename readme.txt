@@ -264,6 +264,11 @@ Reports about real barriers are treated as bugs, not feature requests.
 == Changelog ==
 
 <!-- CHANGELOG_START -->
+= 2026.09.38 (2026-09-27) =
+* [Improvement] In the editor, a section with its own theme now shows your Custom CSS colours, as the published page does.
+* [Improvement] Light pages now keep the font you set in Custom CSS or in Styles.
+* [Improvement] The Site Logo block now shows your light-mode or dark-mode logo from AWT Settings, to match the page.
+
 = 2026.09.37 (2026-09-26) =
 * [Improvement] An empty blog or archive page now says "No posts yet."
 * [Improvement] WordPress no longer wrongly says the theme is untested on minor WordPress updates, such as 7.1.2.
@@ -313,10 +318,6 @@ Reports about real barriers are treated as bugs, not feature requests.
 * [A11y] A button in the header shows its focus ring again. In 2026.09.28 the ring was drawn in the same colour as the button underneath it, so keyboard users could not see where they were.
 * [A11y] The design systems that are not available yet are no longer dimmed, so every line on their cards is readable.
 * [Improvement] Settings → Design system: asking for a design system that is not listed is now a link to the contact page instead of an email address to copy out.
-
-= 2026.09.28 — 2026-09-20 =
-* [Improvement] Sub-lists are indented by the same amount as the design system they follow. They were indented half as far again, and a list marked as a sub-list on its own was barely indented at all.
-* [Improvement] Header buttons mark focus in the same colour as every other control on the site.
 <!-- CHANGELOG_END -->
 
 == Upgrade Notice ==
