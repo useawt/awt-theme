@@ -10,6 +10,13 @@
      markdownlint enforces the structure in CI. Newest release first.
      The Unreleased section accumulates entries between releases. -->
 
+## Unreleased
+
+### [Improvement]
+
+- Posts no longer add their own 32px padding under the content, so a section with No gap below now sits flush
+  against the footer.
+
 ## 2026.09.39 (2026-09-28)
 
 ### [Improvement]
