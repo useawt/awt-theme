@@ -1,7 +1,5 @@
-## 2026.09.38 (2026-09-27)
+## 2026.09.39 (2026-09-28)
 
 ### [Improvement]
 
-- In the editor, a section with its own theme now shows your Custom CSS colours, as the published page does.
-- Light pages now keep the font you set in Custom CSS or in Styles.
-- The Site Logo block now shows your light-mode or dark-mode logo from AWT Settings, to match the page.
+- No changes in the theme itself. It carries the same version number as the AWT Blocks plugin, which has changes in this release.

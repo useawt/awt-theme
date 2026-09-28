@@ -264,6 +264,9 @@ Reports about real barriers are treated as bugs, not feature requests.
 == Changelog ==
 
 <!-- CHANGELOG_START -->
+= 2026.09.39 (2026-09-28) =
+* [Improvement] No changes in the theme itself. It carries the same version number as the AWT Blocks plugin, which has changes in this release.
+
 = 2026.09.38 (2026-09-27) =
 * [Improvement] In the editor, a section with its own theme now shows your Custom CSS colours, as the published page does.
 * [Improvement] Light pages now keep the font you set in Custom CSS or in Styles.
@@ -313,11 +316,6 @@ Reports about real barriers are treated as bugs, not feature requests.
 * [Improvement] If an automatic update fails, the email explains what happened.
 * [Improvement] What's new now shows the parts of your site you have edited, and says that AWT's changes to those parts do not reach them. Applies to header and footer.
 * [Improvement] Accessibility fixes stay pinned in What's new until you dismiss them, the same as security fixes.
-
-= 2026.09.29 — 2026-09-20 =
-* [A11y] A button in the header shows its focus ring again. In 2026.09.28 the ring was drawn in the same colour as the button underneath it, so keyboard users could not see where they were.
-* [A11y] The design systems that are not available yet are no longer dimmed, so every line on their cards is readable.
-* [Improvement] Settings → Design system: asking for a design system that is not listed is now a link to the contact page instead of an email address to copy out.
 <!-- CHANGELOG_END -->
 
 == Upgrade Notice ==
