@@ -10,6 +10,13 @@
      markdownlint enforces the structure in CI. Newest release first.
      The Unreleased section accumulates entries between releases. -->
 
+## Unreleased
+
+### [Improvement]
+
+- No changes in the theme itself. It carries the same version number as the AWT Blocks plugin, which has
+  changes in this release.
+
 ## 2026.09.40 (2026-09-29)
 
 ### [Improvement]
