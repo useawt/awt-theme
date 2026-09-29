@@ -264,6 +264,9 @@ Reports about real barriers are treated as bugs, not feature requests.
 == Changelog ==
 
 <!-- CHANGELOG_START -->
+= 2026.09.41 (2026-09-29) =
+* [Improvement] No changes in the theme itself. It carries the same version number as the AWT Blocks plugin, which has changes in this release.
+
 = 2026.09.40 (2026-09-29) =
 * [Improvement] Posts no longer add their own 32px padding under the content, so a section with No gap below now sits flush against the footer.
 
@@ -304,9 +307,6 @@ Reports about real barriers are treated as bugs, not feature requests.
 * [Improvement] The AWT menu in the toolbar is now more consistent in states of automatic updates.
 * [Improvement] Automatic updates now handle sites that installed AWT in a non-standard folder structure.
 * [Improvement] AWT only installs update packages published on AWT's own GitHub releases.
-
-= 2026.09.31 — 2026-09-21 =
-* [Improvement] If AWT is installed in a folder with a different name than the one updates install into, it no longer tries to update itself, and tells you how to update by hand instead.
 <!-- CHANGELOG_END -->
 
 == Upgrade Notice ==
