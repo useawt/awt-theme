@@ -157,7 +157,7 @@ function classes_for( string $component, array $variants = array() ): string {
  * the inserter filter, etc.).
  */
 function bootstrap(): void {
-	$premium_url = 'https://useawt.com/premium';
+	$premium_url = 'https://awtpremium.com/';
 
 	// Carbon is the one real system AWT Free ships. The rest are locked
 	// placeholders so the selector can show the whole catalogue; AWT Premium

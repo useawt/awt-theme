@@ -87,7 +87,7 @@ class Test_Design_System_Selector extends WP_UnitTestCase {
 	 */
 	public function test_locked_tiles_link_to_the_current_domain(): void {
 		$url = Registry::all()['uswds']->premium_url();
-		$this->assertSame( 'https://useawt.com/premium', $url );
+		$this->assertSame( 'https://awtpremium.com/', $url );
 		$this->assertNull( Registry::all()['carbon']->premium_url(), 'Carbon is not a placeholder and needs no upgrade link' );
 	}
 

@@ -470,7 +470,7 @@ function enqueue_assets( string $hook_suffix ): void {
  */
 function premium_badge( ?string $label = null ): string {
 	$label = $label ?? __( 'Premium', 'awt' );
-	$url   = 'https://useawt.com/premium';
+	$url   = 'https://awtpremium.com/';
 	/* translators: %s: tier name, e.g. "Premium". */
 	$aria = sprintf( __( '%s: learn more (opens in a new tab)', 'awt' ), $label );
 	return '<a class="awt-premium-badge" href="' . esc_url( $url ) . '" target="_blank" rel="noopener noreferrer" aria-label="' . esc_attr( $aria ) . '">'
@@ -1078,7 +1078,7 @@ function render_tab_appearance(): void {
 		// reserved for AWT Premium — render_tab_colors() is kept (unused) below.
 		// Free shows a short chooser: recolor via Custom CSS (the supported free
 		// path) or the Premium color editor (disabled).
-		$premium_url    = 'https://useawt.com/premium';
+		$premium_url    = 'https://awtpremium.com/';
 		$custom_css_url = admin_url( 'themes.php?page=' . MENU_SLUG . '&tab=custom-css' );
 		?>
 		<p class="awt-field-help" style="max-inline-size: 50em;">
