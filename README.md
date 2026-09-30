@@ -23,8 +23,11 @@ git clone https://github.com/useawt/awt-theme.git
 git clone https://github.com/useawt/awt-blocks.git
 ```
 
-The wp-env site mounts this theme directly — edits to `theme.css`, templates,
-and `theme.json` apply on reload, no build step.
+The wp-env site mounts this theme directly. Edits to templates and
+`theme.json` apply on reload. Stylesheets and scripts are built from `src/`:
+run `npm run build:assets` after changing them.
+
+See [CONTRIBUTING.md](CONTRIBUTING.md) before you open a pull request.
 
 ## License
 
