@@ -35,7 +35,7 @@
 
 const fs = require('fs');
 const path = require('path');
-const { execSync } = require('child_process');
+const { execSync, execFileSync } = require('child_process');
 
 const ROOT = path.resolve(__dirname, '..');
 const VERSION_RE = /^\d{4}\.\d{2}\.\d+(-[a-z0-9.]+)?$/;
@@ -56,15 +56,16 @@ function sh(cmd) {
 }
 
 /**
- * Run a command for its effect, echoing it first.
+ * Run a command for its effect, echoing it first. No shell is involved, so
+ * a file name is passed as one argument, whatever it contains.
  *
- * @param {string}  cmd    Command line.
- * @param {boolean} dryRun Print only.
+ * @param {string[]} args   Program and its arguments.
+ * @param {boolean}  dryRun Print only.
  */
-function run(cmd, dryRun) {
-	console.log(`  $ ${cmd}`);
+function run(args, dryRun) {
+	console.log(`  $ ${args.join(' ')}`);
 	if (!dryRun) {
-		execSync(cmd, { cwd: ROOT, stdio: 'inherit' });
+		execFileSync(args[0], args.slice(1), { cwd: ROOT, stdio: 'inherit' });
 	}
 }
 
@@ -315,16 +316,21 @@ function main() {
 			dryRun ? ' (dry run — nothing will run)' : ''
 		}:`
 	);
+	run(['git', 'tag', '-a', tag, '-m', `${pkg.name} ${version}`], dryRun);
+	run(['git', 'push'], dryRun);
+	run(['git', 'push', 'origin', tag], dryRun);
 	run(
-		`git tag -a ${tag} -m ${JSON.stringify(`${pkg.name} ${version}`)}`,
-		dryRun
-	);
-	run('git push', dryRun);
-	run(`git push origin ${tag}`, dryRun);
-	run(
-		`gh release create ${tag} ${zip} --title ${JSON.stringify(
-			version
-		)} --notes-file RELEASE_NOTES.md`,
+		[
+			'gh',
+			'release',
+			'create',
+			tag,
+			zip,
+			'--title',
+			version,
+			'--notes-file',
+			'RELEASE_NOTES.md',
+		],
 		dryRun
 	);
 
