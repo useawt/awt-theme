@@ -264,6 +264,9 @@ Reports about real barriers are treated as bugs, not feature requests.
 == Changelog ==
 
 <!-- CHANGELOG_START -->
+= 2026.09.42 (2026-09-30) =
+* [Improvement] No changes in the theme itself. It carries the same version number as the AWT Blocks plugin, which has changes in this release.
+
 = 2026.09.41 (2026-09-29) =
 * [Improvement] No changes in the theme itself. It carries the same version number as the AWT Blocks plugin, which has changes in this release.
 
@@ -301,12 +304,6 @@ Reports about real barriers are treated as bugs, not feature requests.
 * [Improvement] The page head no longer carries the WordPress version number or the pointer to `xmlrpc.php`.
 * [Improvement] Pasting a link to one of your pages into another WordPress site no longer turns it into a preview card. Add the `awt_oembed_discovery` filter to put it back.
 * [Improvement] A site with comments switched off no longer advertises a comments feed.
-
-= 2026.09.32 — 2026-09-22 =
-* [Improvement] AWT no longer installs updates by itself on a site that is many releases behind. Those sites need to be updated manually.
-* [Improvement] The AWT menu in the toolbar is now more consistent in states of automatic updates.
-* [Improvement] Automatic updates now handle sites that installed AWT in a non-standard folder structure.
-* [Improvement] AWT only installs update packages published on AWT's own GitHub releases.
 <!-- CHANGELOG_END -->
 
 == Upgrade Notice ==
