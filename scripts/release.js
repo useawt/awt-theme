@@ -42,6 +42,18 @@ function fail(msg) {
 	process.exit(1);
 }
 
+// Remove HTML comments, repeating until none are left (so a nested or
+// broken comment cannot leave a stray `<!--` behind).
+function stripComments(text) {
+	let out = text;
+	let prev;
+	do {
+		prev = out;
+		out = out.replace(/<!--[\s\S]*?-->\n*/g, '');
+	} while (out !== prev);
+	return out.replace(/<!--/g, '');
+}
+
 /**
  * Parse CHANGELOG.md into an ordered list of releases.
  *
@@ -200,10 +212,10 @@ function main() {
 			'ACCESSIBILITY.md'
 		);
 		if (fs.existsSync(accessibilityPath)) {
-			const statement = fs
-				.readFileSync(accessibilityPath, 'utf8')
-				.replace(/<!--[\s\S]*?-->\n*/g, '') // authoring notes stay out of readme
-				.trim();
+			// authoring notes stay out of readme
+			const statement = stripComments(
+				fs.readFileSync(accessibilityPath, 'utf8')
+			).trim();
 			const withA11y = replaceBetween(readme, 'ACCESSIBILITY', statement);
 			if (withA11y) {
 				readme = withA11y;
