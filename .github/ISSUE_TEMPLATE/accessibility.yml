@@ -1,0 +1,64 @@
+name: Accessibility problem
+description: Something in the theme is hard or impossible to use with a keyboard, screen reader, zoom or other assistive technology.
+labels: [accessibility]
+body:
+  - type: textarea
+    id: barrier
+    attributes:
+      label: What is the problem?
+      description: Describe what you could not do, or what was hard to do.
+    validations:
+      required: true
+  - type: dropdown
+    id: how
+    attributes:
+      label: How were you using the site?
+      multiple: true
+      options:
+        - Screen reader
+        - Keyboard only
+        - Zoom or screen magnifier
+        - Voice control
+        - High contrast or forced colours
+        - Something else (please describe below)
+    validations:
+      required: true
+  - type: input
+    id: at
+    attributes:
+      label: Assistive technology and version
+      placeholder: "NVDA 2024.4, VoiceOver on macOS 15"
+  - type: textarea
+    id: steps
+    attributes:
+      label: Steps to reproduce
+      placeholder: |
+        1. Go to ...
+        2. Press Tab until ...
+        3. The screen reader says ...
+    validations:
+      required: true
+  - type: input
+    id: wcag
+    attributes:
+      label: WCAG success criterion
+      description: Only if you know it. Leave empty if not.
+      placeholder: "2.4.7 Focus Visible"
+  - type: input
+    id: url
+    attributes:
+      label: Page address
+      description: A public page where we can see the problem, if you have one.
+  - type: input
+    id: theme-version
+    attributes:
+      label: AWT theme version
+      description: Appearance > Themes > AWT shows it.
+      placeholder: "2026.09.41"
+    validations:
+      required: true
+  - type: input
+    id: browser
+    attributes:
+      label: Browser and operating system
+      placeholder: "Chrome 130 on Windows 11"
