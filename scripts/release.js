@@ -42,16 +42,32 @@ function fail(msg) {
 	process.exit(1);
 }
 
-// Remove HTML comments, repeating until none are left (so a nested or
-// broken comment cannot leave a stray `<!--` behind).
+// Remove HTML comments and the newlines after them. An unclosed comment
+// drops the rest of the text, and passes repeat until no `<!--` is left.
 function stripComments(text) {
 	let out = text;
-	let prev;
-	do {
-		prev = out;
-		out = out.replace(/<!--[\s\S]*?-->\n*/g, '');
-	} while (out !== prev);
-	return out.replace(/<!--/g, '');
+	while (out.includes('<!--')) {
+		let kept = '';
+		let i = 0;
+		while (i < out.length) {
+			const start = out.indexOf('<!--', i);
+			if (start === -1) {
+				kept += out.slice(i);
+				break;
+			}
+			kept += out.slice(i, start);
+			const end = out.indexOf('-->', start + 4);
+			if (end === -1) {
+				break;
+			}
+			i = end + 3;
+			while (out[i] === '\n') {
+				i++;
+			}
+		}
+		out = kept;
+	}
+	return out;
 }
 
 /**
