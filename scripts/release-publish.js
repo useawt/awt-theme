@@ -14,6 +14,11 @@
  *      has beyond origin is the release commit itself.
  *   3. Checks the built zip exists and is newer than the commit being
  *      tagged — a zip built before the last commit is not what shipped.
+ *   3b. Checks the fresh-install test passed for this exact zip: the
+ *      workspace's fresh-install/run.sh records the SHA-256 of every zip
+ *      it installed and found working. A zip not in that record is one
+ *      nobody installed. AWT_SKIP_FRESH_INSTALL=1 publishes anyway, for when
+ *      the test itself cannot run; it says so loudly.
  *   4. Tags v<version>, pushes the branch and the tag, and creates the
  *      GitHub Release with RELEASE_NOTES.md as the body and the zip
  *      attached.
@@ -33,6 +38,7 @@
  *     --dry-run   print every command; run none of them
  */
 
+const crypto = require('crypto');
 const fs = require('fs');
 const path = require('path');
 const { execSync, execFileSync } = require('child_process');
@@ -67,6 +73,58 @@ function run(args, dryRun) {
 	if (!dryRun) {
 		execFileSync(args[0], args.slice(1), { cwd: ROOT, stdio: 'inherit' });
 	}
+}
+
+/**
+ * Stop unless the fresh-install test passed for this exact zip.
+ *
+ * @param {string} zip     Zip file name in the repo root.
+ * @param {string} version Version being published.
+ */
+function assertFreshInstallPassed(zip, version) {
+	if (process.env.AWT_SKIP_FRESH_INSTALL === '1') {
+		console.warn(
+			'⚠ AWT_SKIP_FRESH_INSTALL=1: publishing without a fresh-install pass.'
+		);
+		return;
+	}
+	const record = path.resolve(
+		ROOT,
+		'..',
+		'..',
+		'fresh-install',
+		'passed.json'
+	);
+	if (!fs.existsSync(record)) {
+		fail(
+			'No fresh-install pass on record. Run fresh-install/run.sh in the workspace first.'
+		);
+	}
+	let passed;
+	try {
+		passed = JSON.parse(fs.readFileSync(record, 'utf8'));
+	} catch {
+		fail(`${record} is not valid JSON. Run fresh-install/run.sh again.`);
+	}
+	const hash = crypto
+		.createHash('sha256')
+		.update(fs.readFileSync(path.join(ROOT, zip)))
+		.digest('hex');
+	if (!passed.zips || passed.zips[zip] !== hash) {
+		fail(
+			`${zip} is not the zip the fresh-install test passed ` +
+				`(${passed.version || '?'}, ${passed.date || '?'}). ` +
+				'It was rebuilt or never tested. Run fresh-install/run.sh again.'
+		);
+	}
+	if (passed.version !== version) {
+		fail(
+			`The fresh-install pass is for ${passed.version}, not ${version}.`
+		);
+	}
+	console.log(
+		`→ Fresh-install test passed for this ${zip} (${passed.date}, PHP ${passed.php}).`
+	);
 }
 
 /**
@@ -294,6 +352,8 @@ function main() {
 				'the release will carry an artifact nobody shipped.'
 		);
 	}
+
+	assertFreshInstallPassed(zip, version);
 
 	const tag = `v${version}`;
 	if (sh(`git tag --list ${tag}`) !== '') {
