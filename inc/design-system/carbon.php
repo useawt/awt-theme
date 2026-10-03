@@ -436,8 +436,7 @@ SVG;
 				// built-in search (`/?s=`). The regex also matches a legacy
 				// awt/header-search block, so an older header still detects +
 				// toggles off correctly. The inline search FIELD is an AWT
-				// Premium widget — implemented in the awt-premium repo
-				// (premium-staging/header-search), not in this free plugin.
+				// Premium widget, not part of this theme.
 				'block'  => '/<!-- wp:awt\/header-search( \{[^}]*\})? \/-->|<!-- wp:awt\/header-action \{[^}]*"iconName":"search"[^}]*\} \/-->/',
 				'markup' => '<!-- wp:awt/header-action {"iconName":"search","label":"Search","href":"/?s="} /-->',
 				'label'  => __( 'Search', 'awt' ),

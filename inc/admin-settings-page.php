@@ -965,6 +965,13 @@ function render_tab_appearance(): void {
 						</fieldset>
 					</td>
 				</tr>
+				<?php
+				// Code that provides the widgets prints its own row here
+				// instead of the locked one.
+				if ( has_action( 'awt_settings_header_widgets' ) ) :
+					do_action( 'awt_settings_header_widgets' );
+				else :
+					?>
 				<tr>
 					<th scope="row"><?php esc_html_e( 'Header icon widgets', 'awt' ); ?></th>
 					<td>
@@ -991,6 +998,7 @@ function render_tab_appearance(): void {
 						</fieldset>
 					</td>
 				</tr>
+				<?php endif; ?>
 			</table>
 
 			<h2 style="margin-block-start: 2em;"><?php esc_html_e( 'Brand', 'awt' ); ?></h2>
@@ -1163,6 +1171,12 @@ function save_tab_appearance(): void {
 			foreach ( array_keys( \AWT\Theme\HeaderPresets\standard_icons() ) as $key ) {
 				\AWT\Theme\HeaderPresets\set_header_icon( $key, ! empty( $submitted[ $key ] ) );
 			}
+
+			/**
+			 * Fires after the header icon toggles are saved, for the code
+			 * that printed the `awt_settings_header_widgets` row.
+			 */
+			do_action( 'awt_settings_save_header_widgets' );
 		}
 
 		// phpcs:ignore WordPress.Security.NonceVerification.Missing -- nonce verified in handle_form_submission().
