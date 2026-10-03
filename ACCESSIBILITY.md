@@ -200,4 +200,4 @@ Reports about real barriers are treated as bugs, not feature requests.
 ## Dates
 
 - Statement prepared: 2026-07-17
-- Last reviewed: 2026-08-07
+- Last reviewed: 2026-10-03

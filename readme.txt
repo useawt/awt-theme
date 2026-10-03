@@ -258,12 +258,15 @@ Reports about real barriers are treated as bugs, not feature requests.
 ## Dates
 
 - Statement prepared: 2026-07-17
-- Last reviewed: 2026-08-07
+- Last reviewed: 2026-10-03
 <!-- ACCESSIBILITY_END -->
 
 == Changelog ==
 
 <!-- CHANGELOG_START -->
+= 2026.10.0 (2026-10-03) =
+* [Improvement] No changes in the theme itself. It carries the same version number as the AWT Blocks plugin, which has changes in this release.
+
 = 2026.09.42 (2026-09-30) =
 * [Improvement] No changes in the theme itself. It carries the same version number as the AWT Blocks plugin, which has changes in this release.
 
@@ -297,13 +300,6 @@ Reports about real barriers are treated as bugs, not feature requests.
 * [Improvement] Featured images keep their own shape. They are no longer cropped to fit a fixed box.
 * [Improvement] The pagination under a list of posts is now centred.
 * [Improvement] A post's categories now show as tags.
-
-= 2026.09.33 — 2026-09-23 =
-* [Improvement] AWT's stylesheets and scripts are now compressed, so every page loads less code.
-* [Improvement] AWT no longer loads WordPress's emoji script on the front end.
-* [Improvement] The page head no longer carries the WordPress version number or the pointer to `xmlrpc.php`.
-* [Improvement] Pasting a link to one of your pages into another WordPress site no longer turns it into a preview card. Add the `awt_oembed_discovery` filter to put it back.
-* [Improvement] A site with comments switched off no longer advertises a comments feed.
 <!-- CHANGELOG_END -->
 
 == Upgrade Notice ==
