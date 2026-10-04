@@ -2153,13 +2153,14 @@ function save_tab_custom_css(): void {
 }
 
 /**
- * Version of the installed AWT Blocks plugin, or an empty string when the
+ * Version of the installed blocks plugin this theme pairs with (AWT Blocks,
+ * or the plugin `awt_blocks_plugin` names), or an empty string when the
  * plugin isn't there. Read from the plugin's own file header rather than
  * from the active-plugins list, so a deactivated-but-installed copy still
  * reports honestly.
  */
 function blocks_version(): string {
-	$file = WP_PLUGIN_DIR . '/awt-blocks/awt-blocks.php';
+	$file = WP_PLUGIN_DIR . '/' . \AWT\Theme\BlocksRequired\plugin()['file'];
 	if ( ! is_readable( $file ) ) {
 		return '';
 	}
@@ -2310,7 +2311,13 @@ function render_updates_section(): void {
  * (nonced GET link), and import configuration (multipart POST form).
  */
 function render_tab_tools(): void {
-	render_updates_section();
+	// Code that updates this theme some other way prints its own section
+	// here instead.
+	if ( has_action( 'awt_settings_updates_section' ) ) {
+		do_action( 'awt_settings_updates_section' );
+	} else {
+		render_updates_section();
+	}
 
 	$rerun_url = wp_nonce_url(
 		add_query_arg(

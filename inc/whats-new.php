@@ -3,9 +3,10 @@
  * What's new — release notes inside AWT Settings (Stage 1 spec,
  * "Changelog communication").
  *
- * Reads the changelog JSON bundled with the awt-blocks plugin
+ * Reads the changelog JSON bundled with the theme and its blocks plugin
  * (build/changelog.json, written by the release script) — no network
- * calls, no telemetry. Shows the last 10 releases; tracks read state
+ * calls, no telemetry. A build of AWT that ships notes of its own adds its
+ * file through `awt_changelog_files`, and its entries join the same releases. Shows the last 10 releases; tracks read state
  * per user; carries a menu indicator:
  *
  *   - nothing        — everything read
@@ -94,14 +95,30 @@ function changelog(): ?array {
 	$checked = true;
 
 	$cache = merge_changelogs(
-		array_filter(
-			array(
-				read_changelog_file( get_template_directory() . '/build/changelog.json' ),
-				read_changelog_file( WP_PLUGIN_DIR . '/awt-blocks/build/changelog.json' ),
-			)
-		)
+		array_filter( array_map( __NAMESPACE__ . '\\read_changelog_file', changelog_files() ) )
 	);
 	return $cache;
+}
+
+/**
+ * The changelog files to read, in display priority: the theme's, then the
+ * blocks plugin's it pairs with (the plugin `awt_blocks_plugin` names).
+ *
+ * Filtered through `awt_changelog_files`, so a build of AWT that ships notes
+ * of its own can add its file. Within a release, entries keep the order of
+ * the files. A filter that returns something unusable leaves the two
+ * defaults in place.
+ *
+ * @return string[] Absolute paths.
+ */
+function changelog_files(): array {
+	$plugin_dir = dirname( \AWT\Theme\BlocksRequired\plugin()['file'] );
+	$files      = array(
+		get_template_directory() . '/build/changelog.json',
+		WP_PLUGIN_DIR . '/' . $plugin_dir . '/build/changelog.json',
+	);
+	$filtered   = apply_filters( 'awt_changelog_files', $files );
+	return is_array( $filtered ) ? array_values( array_filter( $filtered, 'is_string' ) ) : $files;
 }
 
 /**
@@ -416,7 +433,8 @@ function render_tab(): void {
 	// high-severity notes below keep their own explicit dismissal).
 	update_user_meta( get_current_user_id(), SEEN_META, (string) $data['currentVersion'] );
 
-	echo '<h2>' . esc_html__( 'What\'s new in AWT', 'awt' ) . '</h2>';
+	/* translators: %s: the theme's name, such as "AWT". */
+	echo '<h2>' . esc_html( sprintf( __( 'What\'s new in %s', 'awt' ), \AWT\Theme\product_name() ) ) . '</h2>';
 
 	render_customized_parts_note();
 
@@ -454,5 +472,12 @@ function render_tab(): void {
 		echo '</details>';
 	}
 
-	echo '<p class="awt-field-help">' . esc_html__( 'Notes for the AWT theme and AWT Blocks, listed together.', 'awt' ) . '</p>';
+	echo '<p class="awt-field-help">' . esc_html(
+		sprintf(
+			/* translators: 1: the theme's name, such as "AWT". 2: its blocks plugin's name, such as "AWT Blocks". */
+			__( 'Notes for the %1$s theme and %2$s, listed together.', 'awt' ),
+			\AWT\Theme\product_name(),
+			\AWT\Theme\BlocksRequired\plugin()['name']
+		)
+	) . '</p>';
 }

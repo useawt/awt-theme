@@ -22,6 +22,16 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 const AWT_THEME_VERSION = '2026.10.0';
 
+/**
+ * The name this theme goes by, from its own header: "AWT", or the name a build
+ * of AWT carries in its place. Read from the parent theme, so a child theme of
+ * AWT still says AWT.
+ */
+function product_name(): string {
+	$name = (string) wp_get_theme( get_template() )->get( 'Name' );
+	return '' !== $name ? $name : 'AWT';
+}
+
 require_once __DIR__ . '/inc/settings.php';
 require_once __DIR__ . '/inc/upgrade.php';
 // §A Design system layer — interface + registry + Carbon. Loaded before the

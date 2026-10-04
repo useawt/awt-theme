@@ -310,4 +310,9 @@ Release ${version} prepared${dryRun ? ' (dry run — nothing written)' : ''}. Ch
   5. Repeat in the sibling repos -- releases are lockstep (same version, same day).`);
 }
 
-main();
+// Run as a script; other build scripts load it for parseChangelog().
+if (require.main === module) {
+	main();
+}
+
+module.exports = { parseChangelog };

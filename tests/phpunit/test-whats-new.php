@@ -212,4 +212,45 @@ class Test_Whats_New extends WP_UnitTestCase {
 
 		$this->assertSame( array(), \AWT\Theme\WhatsNew\customized_parts() );
 	}
+
+	/**
+	 * The plugin's notes are read from the plugin the theme pairs with, so a
+	 * theme paired with another plugin through `awt_blocks_plugin` reads that
+	 * plugin's file.
+	 */
+	public function test_the_plugin_file_follows_the_paired_plugin(): void {
+		$this->assertSame(
+			array(
+				get_template_directory() . '/build/changelog.json',
+				WP_PLUGIN_DIR . '/awt-blocks/build/changelog.json',
+			),
+			\AWT\Theme\WhatsNew\changelog_files()
+		);
+
+		add_filter( 'awt_blocks_plugin', static fn() => array( 'file' => 'other-blocks/other-blocks.php' ) );
+		$this->assertSame(
+			WP_PLUGIN_DIR . '/other-blocks/build/changelog.json',
+			\AWT\Theme\WhatsNew\changelog_files()[1]
+		);
+	}
+
+	/**
+	 * `awt_changelog_files` adds a file of notes; a filter that returns
+	 * something unusable leaves the two defaults.
+	 */
+	public function test_changelog_files_can_be_added_to(): void {
+		add_filter( 'awt_changelog_files', static fn( array $files ) => array_merge( array( '/notes/extra.json' ), $files ) );
+		$files = \AWT\Theme\WhatsNew\changelog_files();
+		$this->assertCount( 3, $files );
+		$this->assertSame( '/notes/extra.json', $files[0] );
+		remove_all_filters( 'awt_changelog_files' );
+
+		add_filter( 'awt_changelog_files', '__return_false' );
+		$this->assertCount( 2, \AWT\Theme\WhatsNew\changelog_files() );
+	}
+
+	/** The name the panel and the dashboard box use is the theme's own. */
+	public function test_the_product_name_is_the_themes_name(): void {
+		$this->assertSame( 'AWT', \AWT\Theme\product_name() );
+	}
 }

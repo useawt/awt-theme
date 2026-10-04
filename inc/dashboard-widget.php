@@ -59,7 +59,7 @@ function register(): void {
 	// the same call the wrapper makes, with the column asked for up front.
 	add_meta_box(
 		'awt_dashboard',
-		__( 'AWT', 'awt' ),
+		\AWT\Theme\product_name(),
 		__NAMESPACE__ . '\\render',
 		'dashboard',
 		'side',
@@ -77,15 +77,17 @@ function render(): void {
 	printf(
 		'<p class="awt-dash__version">%s</p>',
 		sprintf(
-			/* translators: %s: the installed version, e.g. 2026.09.29. */
-			esc_html__( 'You are on AWT %s.', 'awt' ),
+			/* translators: 1: the theme's name, such as "AWT". 2: the installed version, e.g. 2026.09.29. */
+			esc_html__( 'You are on %1$s %2$s.', 'awt' ),
+			esc_html( \AWT\Theme\product_name() ),
 			'<strong>' . esc_html( $version ) . '</strong>'
 		)
 	);
 
 	$releases = is_array( $data ) ? array_slice( (array) ( $data['releases'] ?? array() ), 0, SHOW_RELEASES ) : array();
 	if ( ! $releases ) {
-		echo '<p>' . esc_html__( 'This copy of AWT has no release notes.', 'awt' ) . '</p>';
+		/* translators: %s: the theme's name, such as "AWT". */
+		echo '<p>' . esc_html( sprintf( __( 'This copy of %s has no release notes.', 'awt' ), \AWT\Theme\product_name() ) ) . '</p>';
 		return;
 	}
 
