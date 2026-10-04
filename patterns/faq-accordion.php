@@ -5,7 +5,7 @@
  * Design system: carbon
  * Description: A heading and a question-and-answer accordion.
  * Categories: awt-theme-section, text
- * Keywords: faq, accordion, questions, schema
+ * Keywords: faq, accordion, questions
  * Block Types: core/post-content
  * Inserter: yes
  */

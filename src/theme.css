@@ -2993,13 +2993,12 @@ a.cds--btn--ghost:visited:active {
 }
 
 /* --------------------------------------------------------------------------
-   FAQ item — wraps the accordion-item disclosure pattern in a real semantic
+   FAQ item: wraps the accordion-item disclosure pattern in a real semantic
    heading. The wrapper class .awt-faq-item is applied in addition to
    .cds--accordion__item so existing Carbon accordion CSS carries through.
    The heading-tag wrapper around the trigger button is what differentiates
-   the markup from a plain accordion-item — screen readers navigate by
-   heading, and schema.org FAQPage rich-result eligibility expects the
-   question to be in a heading.
+   the markup from a plain accordion-item, so screen readers can navigate
+   the questions by heading.
    -------------------------------------------------------------------------- */
 
 .awt-faq-item {
