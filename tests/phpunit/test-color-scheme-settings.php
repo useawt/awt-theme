@@ -4,8 +4,8 @@
  *
  * `color_scheme_settings()` feeds the pre-paint script, the server's guess at
  * the body's scope class and the colour-scheme toggle. The filter lets an
- * extension pin one request to light or dark — AWT Premium's "preview in
- * dark" link does — without touching the site's saved settings.
+ * extension pin one request to light or dark without touching the site's
+ * saved settings.
  *
  * @package AWT\Theme
  */
