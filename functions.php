@@ -201,6 +201,18 @@ function editor_scope_tokens( string $scope ): string {
 }
 
 /**
+ * The dark logo in the canvas, in place of the light one.
+ *
+ * On the front end the swap keys on `data-awt-color-scheme` on `<html>`, which
+ * the pre-paint script sets. The canvas `<html>` never carries it, so a header
+ * with a light and a dark logo previewed the light one on a dark site. This
+ * keys the same swap on the canvas root instead, and it travels with the dark
+ * scope tokens. A header pinned to its own colour (`.cds--header.cds--g100 …`)
+ * is more specific and still wins, as it does on the front end.
+ */
+const EDITOR_DARK_LOGO_CSS = 'body.editor-styles-wrapper .cds--header__logo--light{display:none}body.editor-styles-wrapper .cds--header__logo--dark{display:block}';
+
+/**
  * The scope CSS the editor canvas should carry, for this author.
  *
  * `editor_scheme()` answers which scheme that is — the site's pin, else the
@@ -209,15 +221,21 @@ function editor_scope_tokens( string $scope ): string {
  * one behind `prefers-color-scheme`, so the canvas moves with the desktop the
  * way the page would.
  *
+ * A caller can ask for one scheme instead, to preview it without changing the
+ * site: the canvas then carries exactly what it would on a site pinned to it.
+ *
+ * @param string $scheme 'light' or 'dark' to ask for that scheme; '' (the
+ *                       default) for the one `editor_scheme()` resolves.
  * @return string CSS, or '' when nothing could be resolved.
  */
-function editor_scope_css(): string {
+function editor_scope_css( string $scheme = '' ): string {
 	$scopes = theme_scopes();
 
-	$site_cs = editor_scheme();
+	$site_cs = $scheme !== '' ? $scheme : editor_scheme();
 
 	if ( $site_cs === 'dark' ) {
-		return editor_scope_tokens( $scopes['dark'] );
+		$dark = editor_scope_tokens( $scopes['dark'] );
+		return $dark === '' ? '' : $dark . EDITOR_DARK_LOGO_CSS;
 	}
 
 	$light = editor_scope_tokens( $scopes['light'] );
@@ -231,7 +249,7 @@ function editor_scope_css(): string {
 		return $light;
 	}
 
-	return $light . '@media (prefers-color-scheme: dark){' . $dark . '}';
+	return $light . '@media (prefers-color-scheme: dark){' . $dark . EDITOR_DARK_LOGO_CSS . '}';
 }
 
 /**
@@ -336,10 +354,30 @@ function color_scheme_settings(): array {
 		$allow   = false;
 	}
 
-	return array(
+	$resolved = array(
 		'default'               => $default,
 		'honorSystemPreference' => $honor,
 		'allowVisitorOverride'  => $allow,
+	);
+
+	/**
+	 * Filters how the page picks its colour scheme, for this request.
+	 *
+	 * Everything on the front end that decides light or dark reads this: the
+	 * pre-paint script, the server's guess at the body's scope class, and
+	 * whether the colour-scheme toggle shows.
+	 *
+	 * @param array{default: string, honorSystemPreference: bool, allowVisitorOverride: bool} $resolved
+	 */
+	$filtered = apply_filters( 'awt_color_scheme_settings', $resolved );
+	if ( ! is_array( $filtered ) ) {
+		return $resolved;
+	}
+
+	return array(
+		'default'               => ( $filtered['default'] ?? $default ) === 'dark' ? 'dark' : 'light',
+		'honorSystemPreference' => (bool) ( $filtered['honorSystemPreference'] ?? $honor ),
+		'allowVisitorOverride'  => (bool) ( $filtered['allowVisitorOverride'] ?? $allow ),
 	);
 }
 

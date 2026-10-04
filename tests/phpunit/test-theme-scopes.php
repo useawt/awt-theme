@@ -168,12 +168,15 @@ class Test_Theme_Scopes extends WP_UnitTestCase {
 
 	/* ------------------------------------------------------ editor_scope_css */
 
-	/** Pinned dark: the canvas gets the dark scope, with no media query. */
+	/**
+	 * Pinned dark: the canvas gets the dark scope and the dark logo, with no
+	 * media query.
+	 */
 	public function test_a_dark_site_gives_the_canvas_the_dark_scope(): void {
 		$this->configure( 'white-plus-g100', 'dark' );
 		$css = AWT\Theme\editor_scope_css();
 
-		$this->assertSame( AWT\Theme\editor_scope_tokens( 'g100' ), $css );
+		$this->assertSame( AWT\Theme\editor_scope_tokens( 'g100' ) . AWT\Theme\EDITOR_DARK_LOGO_CSS, $css );
 		$this->assertStringNotContainsString( 'prefers-color-scheme', $css );
 	}
 
@@ -197,7 +200,8 @@ class Test_Theme_Scopes extends WP_UnitTestCase {
 
 		$this->assertStringStartsWith( AWT\Theme\editor_scope_tokens( 'white' ), $css );
 		$this->assertStringContainsString( '@media (prefers-color-scheme: dark){', $css );
-		$this->assertStringContainsString( AWT\Theme\editor_scope_tokens( 'g100' ), $css );
+		$this->assertStringContainsString( AWT\Theme\editor_scope_tokens( 'g100' ) . AWT\Theme\EDITOR_DARK_LOGO_CSS . '}', $css );
+		$this->assertStringNotContainsString( 'cds--header__logo--light{display:none}', strstr( $css, '@media', true ) );
 	}
 
 	/**
@@ -208,6 +212,21 @@ class Test_Theme_Scopes extends WP_UnitTestCase {
 	public function test_the_canvas_follows_the_chosen_variation(): void {
 		$this->configure( 'g10-plus-g90', 'dark' );
 
-		$this->assertSame( AWT\Theme\editor_scope_tokens( 'g90' ), AWT\Theme\editor_scope_css() );
+		$this->assertSame( AWT\Theme\editor_scope_tokens( 'g90' ) . AWT\Theme\EDITOR_DARK_LOGO_CSS, AWT\Theme\editor_scope_css() );
+	}
+
+	/**
+	 * Asked for one scheme, the canvas gets what a site pinned to it would,
+	 * whatever this site is set to.
+	 */
+	public function test_one_scheme_can_be_asked_for(): void {
+		$this->configure( 'white-plus-g100', 'default' );
+
+		$this->assertSame( AWT\Theme\editor_scope_tokens( 'white' ), AWT\Theme\editor_scope_css( 'light' ) );
+		$this->assertSame( AWT\Theme\editor_scope_tokens( 'g100' ) . AWT\Theme\EDITOR_DARK_LOGO_CSS, AWT\Theme\editor_scope_css( 'dark' ) );
+
+		$this->configure( 'white-plus-g100', 'dark' );
+
+		$this->assertSame( AWT\Theme\editor_scope_tokens( 'white' ), AWT\Theme\editor_scope_css( 'light' ) );
 	}
 }

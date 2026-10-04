@@ -10,6 +10,13 @@
      markdownlint enforces the structure in CI. Newest release first.
      The Unreleased section accumulates entries between releases. -->
 
+## Unreleased
+
+### [Improvement]
+
+- The editor shows your dark logo when the site is dark. It showed the light one, though the site showed the
+  dark one.
+
 ## 2026.10.0 (2026-10-03)
 
 ### [Improvement]
