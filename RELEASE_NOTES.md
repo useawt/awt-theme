@@ -1,5 +1,5 @@
-## 2026.10.0 (2026-10-03)
+## 2026.10.1 (2026-10-05)
 
 ### [Improvement]
 
-- No changes in the theme itself. It carries the same version number as the AWT Blocks plugin, which has changes in this release.
+- On a dark site, the editor now shows your dark logo instead of the light one.

@@ -264,6 +264,9 @@ Reports about real barriers are treated as bugs, not feature requests.
 == Changelog ==
 
 <!-- CHANGELOG_START -->
+= 2026.10.1 (2026-10-05) =
+* [Improvement] On a dark site, the editor now shows your dark logo instead of the light one.
+
 = 2026.10.0 (2026-10-03) =
 * [Improvement] No changes in the theme itself. It carries the same version number as the AWT Blocks plugin, which has changes in this release.
 
@@ -294,12 +297,6 @@ Reports about real barriers are treated as bugs, not feature requests.
 
 = 2026.09.35 — 2026-09-23 =
 * [Improvement] No changes in the theme itself. It carries the same version number as the AWT Blocks plugin, which has changes in this release.
-
-= 2026.09.34 — 2026-09-23 =
-* [Improvement] Blog posts now use the same content width as other pages.
-* [Improvement] Featured images keep their own shape. They are no longer cropped to fit a fixed box.
-* [Improvement] The pagination under a list of posts is now centred.
-* [Improvement] A post's categories now show as tags.
 <!-- CHANGELOG_END -->
 
 == Upgrade Notice ==
