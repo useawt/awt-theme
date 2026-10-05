@@ -19,7 +19,7 @@ ROOT="$(cd "$(dirname "$0")/.." && pwd)"
 FAIL=0
 
 # Slugs reserved for AWT Premium — never ship as an implementation here.
-PREMIUM_BLOCKS=("header-search")
+PREMIUM_BLOCKS=("header-search" "chart" "timeline" "timeline-item")
 
 # The theme has no src/build; scan the whole tree minus deps for a block dir.
 for slug in "${PREMIUM_BLOCKS[@]}"; do
