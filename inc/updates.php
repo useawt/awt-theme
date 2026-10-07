@@ -596,7 +596,11 @@ function details( $result, $action, $args ) {
 		return $result;
 	}
 
-	$data = manifest();
+	// Null on every site that does not check for updates: every AWT Premium
+	// site, every free site with updates switched off, and any site whose last
+	// download failed. The window still has to open on all of them, so fall
+	// back to the installed copy's own header.
+	$data = manifest() ?? installed_as_manifest();
 
 	return (object) array(
 		'name'          => 'AWT',
@@ -612,6 +616,31 @@ function details( $result, $action, $args ) {
 			'changelog' => changelog_html(),
 		),
 		'external'      => true,
+	);
+}
+
+/**
+ * What the details window can say about AWT with no manifest to read.
+ *
+ * The manifest describes the newest release. With none to read there is no
+ * newer release to describe, so the four facts the window wants are the ones
+ * in this copy's own `style.css` header, under the names the manifest uses.
+ *
+ * @return array A manifest-shaped array: version, requiresWp, requiresPhp,
+ *               testedWp. Each is '' when the header does not carry it.
+ */
+function installed_as_manifest(): array {
+	return array_map(
+		'strval',
+		get_file_data(
+			get_template_directory() . '/style.css',
+			array(
+				'version'     => 'Version',
+				'requiresWp'  => 'Requires at least',
+				'requiresPhp' => 'Requires PHP',
+				'testedWp'    => 'Tested up to',
+			)
+		)
 	);
 }
 

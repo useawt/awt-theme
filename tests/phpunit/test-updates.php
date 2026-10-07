@@ -804,6 +804,37 @@ class Test_Updates extends WP_UnitTestCase {
 		$this->assertFalse( Updates\package_folder_matches() );
 	}
 
+	/* --------------------------------------------------- the details window */
+
+	/**
+	 * Asking for AWT's details with updates switched off used to stop PHP:
+	 * the window's "tested up to" line was read out of a manifest that was
+	 * null. Every AWT Premium site is in that state, because Premium does its
+	 * own update checking, and so is any free site with updates set to Off.
+	 * The window has to open on all of them, filled from the theme's header.
+	 */
+	public function test_the_details_window_opens_with_no_manifest(): void {
+		add_filter( 'awt_update_check_enabled', '__return_false' );
+
+		$info   = Updates\details( false, 'theme_information', (object) array( 'slug' => Updates\slug() ) );
+		$header = Updates\installed_as_manifest();
+
+		$this->assertIsObject( $info, 'the window answers rather than falling through to WordPress.org' );
+		$this->assertSame( \AWT\Theme\AWT_THEME_VERSION, $info->version );
+		$this->assertSame( $header['requiresWp'], $info->requires );
+		$this->assertSame( $header['requiresPhp'], $info->requires_php );
+		$this->assertNotSame( '', $info->tested );
+	}
+
+	/**
+	 * Another theme's details are still WordPress.org's business.
+	 */
+	public function test_the_details_window_leaves_other_themes_alone(): void {
+		$this->assertFalse(
+			Updates\details( false, 'theme_information', (object) array( 'slug' => 'twentytwentyfive' ) )
+		);
+	}
+
 	// --- helpers ------------------------------------------------------------
 
 	/**

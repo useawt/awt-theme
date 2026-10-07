@@ -21,6 +21,7 @@
 
 - The buttons in the Hero, Home page and Marketing header patterns now link to /contact/ and /docs/.
   Change them to your own pages after inserting.
+- AWT's theme details window now opens on a site that has AWT updates switched off.
 
 ## 2026.10.1 (2026-10-05)
 
