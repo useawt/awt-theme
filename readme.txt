@@ -264,6 +264,10 @@ Reports about real barriers are treated as bugs, not feature requests.
 == Changelog ==
 
 <!-- CHANGELOG_START -->
+= 2026.10.2 (2026-10-07) =
+* [A11y] The Home page and Feature grid patterns no longer repeat each card's heading in its icon for screen readers.
+* [Improvement] AWT's theme details window now opens on a site that has AWT updates switched off.
+
 = 2026.10.1 (2026-10-05) =
 * [Improvement] On a dark site, the editor now shows your dark logo instead of the light one.
 
@@ -294,9 +298,6 @@ Reports about real barriers are treated as bugs, not feature requests.
 = 2026.09.36 (2026-09-26) =
 * [Improvement] Text improvements to admin pages.
 * [Improvement] Other small improvements.
-
-= 2026.09.35 — 2026-09-23 =
-* [Improvement] No changes in the theme itself. It carries the same version number as the AWT Blocks plugin, which has changes in this release.
 <!-- CHANGELOG_END -->
 
 == Upgrade Notice ==
