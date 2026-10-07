@@ -96,12 +96,11 @@ class Test_No_Inline_Comments extends WP_UnitTestCase {
 	}
 
 	/**
-	 * Parts that no tab reaches by default: the colors audit (kept for AWT
-	 * Premium), each wizard step, and the dashboard widget's style.
+	 * Parts that no tab reaches by default: each wizard step, and the
+	 * dashboard widget's style.
 	 */
 	public function test_screens_off_the_default_path_print_no_comments(): void {
 		$renderers = array(
-			'\AWT\Theme\AdminPage\render_tab_colors',
 			'\AWT\Theme\Wizard\render_step_0',
 			'\AWT\Theme\Wizard\render_step_1',
 			'\AWT\Theme\Wizard\render_step_2',

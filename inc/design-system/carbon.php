@@ -472,492 +472,318 @@ SVG;
 	 */
 
 	/**
-	 * Per-scope resolved Carbon palette used by the contrast audit.
+	 * Every Carbon token, per theme, as the compiled CSS sets it.
 	 *
-	 * @return array Scope ('white', 'g10', 'g90', 'g100') => array of token slug => hex.
+	 * Read out of `foundation.min.css`, the Carbon subset the theme ships,
+	 * rather than typed here: the values cannot drift from what the page
+	 * uses. A token that points at another (`layer` is `var(--cds-layer-01,
+	 * …)`) takes that token's value. Values stay as the CSS writes them, in
+	 * lower case: a hex color or an `rgba()`.
+	 *
+	 * @return array<string, array<string, string>> Scope ('white', 'g10', 'g90', 'g100') => token slug (no `--cds-`) => value.
 	 */
 	public function get_resolved_palette(): array {
-		return array(
-			'white' => array(
-				'background'            => '#ffffff',
-				'layer-01'              => '#f4f4f4',
-				'layer-02'              => '#ffffff',
-				'layer-03'              => '#f4f4f4',
-				'field-01'              => '#f4f4f4',
-				'field-02'              => '#ffffff',
-				'field-03'              => '#f4f4f4',
-				'text-primary'          => '#161616',
-				'text-secondary'        => '#525252',
-				'text-placeholder'      => '#a8a8a8',
-				'text-helper'           => '#6f6f6f',
-				'text-error'            => '#da1e28',
-				'text-inverse'          => '#ffffff',
-				'text-on-color'         => '#ffffff',
-				'link-primary'          => '#0f62fe',
-				'link-secondary'        => '#0043ce',
-				'link-visited'          => '#8a3ffc',
-				'border-subtle'         => '#e0e0e0',
-				'border-strong'         => '#8d8d8d',
-				'border-inverse'        => '#161616',
-				'border-interactive'    => '#0f62fe',
-				'focus'                 => '#0f62fe',
-				'interactive'           => '#0f62fe',
-				'support-error'         => '#da1e28',
-				'support-success'       => '#24a148',
-				'support-warning'       => '#f1c21b',
-				'support-info'          => '#0043ce',
-				'button-primary'        => '#0f62fe',
-				'button-secondary'      => '#393939',
-				'button-tertiary'       => '#0f62fe',
-				'button-danger-primary' => '#da1e28',
-			),
-			'g10'   => array(
-				'background'            => '#f4f4f4',
-				'layer-01'              => '#ffffff',
-				'layer-02'              => '#f4f4f4',
-				'layer-03'              => '#ffffff',
-				'field-01'              => '#ffffff',
-				'field-02'              => '#f4f4f4',
-				'field-03'              => '#ffffff',
-				'text-primary'          => '#161616',
-				'text-secondary'        => '#525252',
-				'text-placeholder'      => '#a8a8a8',
-				'text-helper'           => '#6f6f6f',
-				'text-error'            => '#da1e28',
-				'text-inverse'          => '#ffffff',
-				'text-on-color'         => '#ffffff',
-				'link-primary'          => '#0f62fe',
-				'link-secondary'        => '#0043ce',
-				'link-visited'          => '#8a3ffc',
-				'border-subtle'         => '#c6c6c6',
-				'border-strong'         => '#8d8d8d',
-				'border-inverse'        => '#161616',
-				'border-interactive'    => '#0f62fe',
-				'focus'                 => '#0f62fe',
-				'interactive'           => '#0f62fe',
-				'support-error'         => '#da1e28',
-				'support-success'       => '#24a148',
-				'support-warning'       => '#f1c21b',
-				'support-info'          => '#0043ce',
-				'button-primary'        => '#0f62fe',
-				'button-secondary'      => '#393939',
-				'button-tertiary'       => '#0f62fe',
-				'button-danger-primary' => '#da1e28',
-			),
-			'g90'   => array(
-				'background'            => '#262626',
-				'layer-01'              => '#393939',
-				'layer-02'              => '#525252',
-				'layer-03'              => '#6f6f6f',
-				'field-01'              => '#393939',
-				'field-02'              => '#525252',
-				'field-03'              => '#6f6f6f',
-				'text-primary'          => '#f4f4f4',
-				'text-secondary'        => '#c6c6c6',
-				'text-placeholder'      => '#6f6f6f',
-				'text-helper'           => '#a8a8a8',
-				'text-error'            => '#ffb3b8',
-				'text-inverse'          => '#161616',
-				'text-on-color'         => '#ffffff',
-				'link-primary'          => '#78a9ff',
-				'link-secondary'        => '#a6c8ff',
-				'link-visited'          => '#be95ff',
-				'border-subtle'         => '#525252',
-				'border-strong'         => '#a8a8a8',
-				'border-inverse'        => '#f4f4f4',
-				'border-interactive'    => '#4589ff',
-				'focus'                 => '#ffffff',
-				'interactive'           => '#4589ff',
-				'support-error'         => '#ff8389',
-				'support-success'       => '#42be65',
-				'support-warning'       => '#f1c21b',
-				'support-info'          => '#4589ff',
-				'button-primary'        => '#0f62fe',
-				'button-secondary'      => '#6f6f6f',
-				'button-tertiary'       => '#ffffff',
-				'button-danger-primary' => '#da1e28',
-			),
-			'g100'  => array(
-				'background'            => '#161616',
-				'layer-01'              => '#262626',
-				'layer-02'              => '#393939',
-				'layer-03'              => '#525252',
-				'field-01'              => '#262626',
-				'field-02'              => '#393939',
-				'field-03'              => '#525252',
-				'text-primary'          => '#f4f4f4',
-				'text-secondary'        => '#c6c6c6',
-				'text-placeholder'      => '#6f6f6f',
-				'text-helper'           => '#a8a8a8',
-				'text-error'            => '#ff8389',
-				'text-inverse'          => '#161616',
-				'text-on-color'         => '#ffffff',
-				'link-primary'          => '#78a9ff',
-				'link-secondary'        => '#a6c8ff',
-				'link-visited'          => '#be95ff',
-				'border-subtle'         => '#393939',
-				'border-strong'         => '#6f6f6f',
-				'border-inverse'        => '#f4f4f4',
-				'border-interactive'    => '#4589ff',
-				'focus'                 => '#ffffff',
-				'interactive'           => '#4589ff',
-				'support-error'         => '#fa4d56',
-				'support-success'       => '#42be65',
-				'support-warning'       => '#f1c21b',
-				'support-info'          => '#4589ff',
-				'button-primary'        => '#0f62fe',
-				'button-secondary'      => '#6f6f6f',
-				'button-tertiary'       => '#ffffff',
-				'button-danger-primary' => '#da1e28',
-			),
-		);
+		static $palette = null;
+		if ( $palette !== null ) {
+			return $palette;
+		}
+
+		$file = get_theme_file_path( 'assets/css/foundation.min.css' );
+		$css  = is_readable( $file ) ? (string) file_get_contents( $file ) : ''; // phpcs:ignore WordPress.WP.AlternativeFunctions.file_get_contents_file_get_contents -- bundled theme asset.
+
+		$palette = array();
+		foreach ( array( 'white', 'g10', 'g90', 'g100' ) as $scope ) {
+			$tokens = array();
+			// The bare single-scope block, as in editor_scope_tokens().
+			if ( preg_match( '/(?<![\w-])\.cds--' . $scope . '(?![\w-])\s*\{([^}]*)\}/', $css, $m ) ) {
+				foreach ( explode( ';', $m[1] ) as $declaration ) {
+					$parts = explode( ':', $declaration, 2 );
+					$name  = trim( $parts[0] );
+					if ( count( $parts ) === 2 && strpos( $name, '--cds-' ) === 0 ) {
+						$tokens[ substr( $name, 6 ) ] = strtolower( trim( $parts[1] ) );
+					}
+				}
+			}
+			foreach ( $tokens as $slug => $value ) {
+				if ( preg_match( '/^var\(--cds-([a-z0-9-]+)/', $value, $ref ) && isset( $tokens[ $ref[1] ] ) ) {
+					$tokens[ $slug ] = $tokens[ $ref[1] ];
+				}
+			}
+			$palette[ $scope ] = $tokens;
+		}
+		return $palette;
 	}
 
 	/**
-	 * Role taxonomy for the contrast audit: which token pairings are checked, at which threshold.
+	 * Which colors have to contrast with which, and by how much.
 	 *
-	 * @return array Token slug => array with 'role', 'pairings' (each with 'against', 'threshold', 'label', optional 'notes'), and optional 'notes'.
+	 * Keyed by the color in front (text, an icon, a border, a focus ring);
+	 * each pairing names a color it sits on and the level WCAG asks for:
+	 *
+	 *   - `text`: 4.5:1 (1.4.3);
+	 *   - `ui`:   3:1, for interface parts and states (1.4.11), and for a
+	 *             link beside the text around it when links are not
+	 *             underlined (1.4.1);
+	 *   - `info`: measured, with no minimum (the note says why).
+	 *
+	 * A pairing may carry `over` (the color under a see-through one, such as
+	 * a hover tint over the page) and `when`, a setting it depends on:
+	 * `links-not-underlined` counts only on a site that does not underline
+	 * links, `two-tone-button-focus` only where buttons keep Carbon's
+	 * two-tone focus ring (AWT Settings → Focus).
+	 *
+	 * Only pairs Carbon's components actually draw are listed, so a color is
+	 * never failed against a place it never appears.
+	 *
+	 * @return array Token slug => array with 'role', 'pairings' (each with 'against', 'threshold', 'label', and optional 'notes', 'over', 'when'), and optional 'notes'.
 	 */
 	public function get_role_map(): array {
+		$places = array(
+			'background'              => __( 'the page background', 'awt' ),
+			'layer-01'                => __( 'layer 1', 'awt' ),
+			'layer-02'                => __( 'layer 2', 'awt' ),
+			'layer-03'                => __( 'layer 3', 'awt' ),
+			'layer-hover-01'          => __( 'layer 1, hovered', 'awt' ),
+			'layer-hover-02'          => __( 'layer 2, hovered', 'awt' ),
+			'layer-active-01'         => __( 'layer 1, pressed', 'awt' ),
+			'layer-selected-01'       => __( 'layer 1, selected', 'awt' ),
+			'layer-selected-hover-01' => __( 'layer 1, selected and hovered', 'awt' ),
+			'field-01'                => __( 'a field', 'awt' ),
+			'field-02'                => __( 'a field on a layer', 'awt' ),
+			'field-hover-01'          => __( 'a field, hovered', 'awt' ),
+			'background-hover'        => __( 'a hovered row or menu item', 'awt' ),
+			'background-active'       => __( 'a pressed row or menu item', 'awt' ),
+			'background-selected'     => __( 'a selected row or menu item', 'awt' ),
+			'background-inverse'      => __( 'an inverse surface (tooltips)', 'awt' ),
+			'highlight'               => __( 'selected text', 'awt' ),
+			'button-primary'          => __( 'the primary button', 'awt' ),
+			'button-primary-hover'    => __( 'the primary button, hovered', 'awt' ),
+			'button-primary-active'   => __( 'the primary button, pressed', 'awt' ),
+			'button-secondary'        => __( 'the secondary button', 'awt' ),
+			'button-secondary-hover'  => __( 'the secondary button, hovered', 'awt' ),
+			'button-secondary-active' => __( 'the secondary button, pressed', 'awt' ),
+			'button-tertiary-hover'   => __( 'the tertiary button, hovered', 'awt' ),
+			'button-tertiary-active'  => __( 'the tertiary button, pressed', 'awt' ),
+			'button-danger-primary'   => __( 'the danger button', 'awt' ),
+			'button-danger-hover'     => __( 'the danger button, hovered', 'awt' ),
+		);
+		// See-through colors, measured over the page background.
+		$see_through = array( 'background-hover', 'background-active', 'background-selected' );
+
+		$on = static function ( string $threshold, array $against, string $notes = '' ) use ( $places, $see_through ): array {
+			$pairings = array();
+			foreach ( $against as $token ) {
+				$pairing = array(
+					'against'   => $token,
+					'threshold' => $threshold,
+					/* translators: %s: where a color sits, such as "the page background" or "layer 1". */
+					'label'     => sprintf( __( 'on %s', 'awt' ), $places[ $token ] ?? $token ),
+				);
+				if ( in_array( $token, $see_through, true ) ) {
+					$pairing['over'] = 'background';
+				}
+				if ( $notes !== '' ) {
+					$pairing['notes'] = $notes;
+				}
+				$pairings[] = $pairing;
+			}
+			return $pairings;
+		};
+
+		// Layer 3 is left out for text and links: Carbon draws it for a third
+		// nested container, where in Gray 90 its own secondary text already
+		// fails (2.94:1).
+		$surfaces = array( 'background', 'layer-01', 'layer-02' );
+		$edge     = __( 'Not required: the button\'s label tells people it is a button (WCAG 1.4.11).', 'awt' );
+
 		return array(
-			// ----- TEXT (4.5:1 minimum) -----
+			// ----- Text (4.5:1) -----
 			'text-primary'          => array(
-				'role'     => __( 'Text: primary body', 'awt' ),
-				'pairings' => array(
+				'role'     => __( 'Text', 'awt' ),
+				'pairings' => $on(
+					'text',
 					array(
-						'against'   => 'background',
-						'threshold' => 'text',
-						'label'     => __( 'on background', 'awt' ),
-					),
-					array(
-						'against'   => 'layer-01',
-						'threshold' => 'text',
-						'label'     => __( 'on layer-01', 'awt' ),
-					),
-					array(
-						'against'   => 'field-01',
-						'threshold' => 'text',
-						'label'     => __( 'in field input', 'awt' ),
-					),
+						'background',
+						'layer-01',
+						'layer-02',
+						'layer-03',
+						'layer-hover-01',
+						'layer-hover-02',
+						'layer-active-01',
+						'layer-selected-01',
+						'layer-selected-hover-01',
+						'field-01',
+						'field-02',
+						'field-hover-01',
+						'background-hover',
+						'background-active',
+						'background-selected',
+						'highlight',
+					)
 				),
 			),
 			'text-secondary'        => array(
-				'role'     => __( 'Text: secondary', 'awt' ),
-				'pairings' => array(
-					array(
-						'against'   => 'background',
-						'threshold' => 'text',
-						'label'     => __( 'on background', 'awt' ),
-					),
-					array(
-						'against'   => 'layer-01',
-						'threshold' => 'text',
-						'label'     => __( 'on layer-01', 'awt' ),
-					),
-				),
+				'role'     => __( 'Secondary text and labels', 'awt' ),
+				'pairings' => $on( 'text', $surfaces ),
 			),
 			'text-helper'           => array(
-				'role'     => __( 'Text: helper / caption', 'awt' ),
-				'pairings' => array(
-					array(
-						'against'   => 'background',
-						'threshold' => 'text',
-						'label'     => __( 'on background', 'awt' ),
-					),
-					array(
-						'against'   => 'layer-01',
-						'threshold' => 'text',
-						'label'     => __( 'on layer-01', 'awt' ),
-					),
-				),
-			),
-			'text-placeholder'      => array(
-				'role'     => __( 'Text: placeholder', 'awt' ),
-				'pairings' => array(
-					array(
-						'against'   => 'field-01',
-						'threshold' => 'text',
-						'label'     => __( 'in field input', 'awt' ),
-						'notes'     => __( 'Carbon\'s default. We suggest a higher-contrast text-placeholder, e.g. #767676 (4.54:1 on field-01).', 'awt' ),
-					),
-					array(
-						'against'   => 'field-02',
-						'threshold' => 'text',
-						'label'     => __( 'in field input (alt)', 'awt' ),
-						'notes'     => __( 'Carbon\'s default, same as the field-01 row above. We suggest raising it to 4.5:1.', 'awt' ),
-					),
-				),
+				'role'     => __( 'Helper text', 'awt' ),
+				'pairings' => $on( 'text', array( 'background', 'layer-01', 'layer-02' ) ),
 			),
 			'text-error'            => array(
-				'role'     => __( 'Text: error message', 'awt' ),
-				'pairings' => array(
-					array(
-						'against'   => 'background',
-						'threshold' => 'text',
-						'label'     => __( 'on background', 'awt' ),
-					),
-					array(
-						'against'   => 'layer-01',
-						'threshold' => 'text',
-						'label'     => __( 'on layer-01', 'awt' ),
-					),
+				'role'     => __( 'Error message', 'awt' ),
+				'pairings' => $on( 'text', array( 'background', 'layer-01', 'layer-02' ) ),
+			),
+			'text-placeholder'      => array(
+				'role'     => __( 'Placeholder text', 'awt' ),
+				'pairings' => $on(
+					'text',
+					array( 'field-01', 'field-02' ),
+					__( 'WCAG asks 4.5:1 for placeholder text too. Carbon\'s own is lighter, to look unlike a typed value; either way, a placeholder should only repeat or illustrate its label.', 'awt' )
 				),
 			),
 			'text-on-color'         => array(
-				'role'     => __( 'Text: on accent surfaces', 'awt' ),
-				'pairings' => array(
+				'role'     => __( 'Button text', 'awt' ),
+				'pairings' => $on(
+					'text',
 					array(
-						'against'   => 'button-primary',
-						'threshold' => 'text',
-						'label'     => __( 'on Button primary', 'awt' ),
-					),
-					array(
-						'against'   => 'button-secondary',
-						'threshold' => 'text',
-						'label'     => __( 'on Button secondary', 'awt' ),
-					),
-					array(
-						'against'   => 'button-danger-primary',
-						'threshold' => 'text',
-						'label'     => __( 'on Button danger', 'awt' ),
-					),
-					array(
-						'against'   => 'support-error',
-						'threshold' => 'text',
-						'label'     => __( 'on Support error', 'awt' ),
-						'notes'     => __( 'Carbon\'s default. In dark themes (g90/g100), Support error brightens and white text drops to about 3.35:1. Use it only for large text (18pt+), or add an icon that carries the meaning.', 'awt' ),
-					),
-					array(
-						'against'   => 'support-info',
-						'threshold' => 'text',
-						'label'     => __( 'on Support info', 'awt' ),
-						'notes'     => __( 'Carbon\'s default. Same as Support error: in dark themes, white text on #4589ff is below 4.5:1.', 'awt' ),
-					),
+						'button-primary',
+						'button-primary-hover',
+						'button-primary-active',
+						'button-secondary',
+						'button-secondary-hover',
+						'button-secondary-active',
+						'button-danger-primary',
+						'button-danger-hover',
+					)
 				),
 			),
 			'text-inverse'          => array(
-				'role'     => __( 'Text: inverse (light on dark)', 'awt' ),
-				'pairings' => array(
-					array(
-						'against'   => 'border-inverse',
-						'threshold' => 'text',
-						'label'     => __( 'on inverse surface', 'awt' ),
-					),
-				),
-				'notes'    => __( 'For inverted UI like tooltips, which usually use the opposite theme\'s background.', 'awt' ),
+				'role'     => __( 'Inverse text', 'awt' ),
+				'pairings' => $on( 'text', array( 'background-inverse', 'button-tertiary-hover', 'button-tertiary-active' ) ),
 			),
 
-			// ----- LINKS (4.5:1) -----
+			// ----- Links (4.5:1) -----
 			'link-primary'          => array(
-				'role'     => __( 'Link: primary', 'awt' ),
-				'pairings' => array(
+				'role'     => __( 'Link', 'awt' ),
+				'pairings' => array_merge(
+					$on( 'text', $surfaces ),
 					array(
-						'against'   => 'background',
-						'threshold' => 'text',
-						'label'     => __( 'on background', 'awt' ),
-					),
-					array(
-						'against'   => 'layer-01',
-						'threshold' => 'text',
-						'label'     => __( 'on layer-01', 'awt' ),
-					),
+						array(
+							'against'   => 'text-primary',
+							'threshold' => 'ui',
+							'label'     => __( 'beside the text around it', 'awt' ),
+							'when'      => 'links-not-underlined',
+							'notes'     => __( 'Only where links are not underlined: then color alone marks a link (WCAG 1.4.1).', 'awt' ),
+						),
+					)
 				),
+			),
+			'link-primary-hover'    => array(
+				'role'     => __( 'Link, hovered', 'awt' ),
+				'pairings' => $on( 'text', array( 'background', 'layer-01' ) ),
 			),
 			'link-secondary'        => array(
-				'role'     => __( 'Link: hover', 'awt' ),
-				'pairings' => array(
-					array(
-						'against'   => 'background',
-						'threshold' => 'text',
-						'label'     => __( 'on background', 'awt' ),
-					),
-					array(
-						'against'   => 'layer-01',
-						'threshold' => 'text',
-						'label'     => __( 'on layer-01', 'awt' ),
-					),
-				),
+				'role'     => __( 'Secondary link', 'awt' ),
+				'pairings' => $on( 'text', array( 'background', 'layer-01' ) ),
 			),
 			'link-visited'          => array(
-				'role'     => __( 'Link: visited', 'awt' ),
-				'pairings' => array(
-					array(
-						'against'   => 'background',
-						'threshold' => 'text',
-						'label'     => __( 'on background', 'awt' ),
-					),
-					array(
-						'against'   => 'layer-01',
-						'threshold' => 'text',
-						'label'     => __( 'on layer-01', 'awt' ),
-					),
-				),
+				'role'     => __( 'Visited link', 'awt' ),
+				'pairings' => $on( 'text', array( 'background', 'layer-01' ) ),
+			),
+			'link-inverse'          => array(
+				'role'     => __( 'Inverse link', 'awt' ),
+				'pairings' => $on( 'text', array( 'background-inverse' ) ),
 			),
 
-			// ----- BUTTON SURFACES (UI 3:1 — edge of button vs page surface) -----
+			// ----- Buttons -----
+			'button-tertiary'       => array(
+				'role'     => __( 'Tertiary button', 'awt' ),
+				'pairings' => $on( 'text', array( 'background', 'layer-01' ) ),
+			),
 			'button-primary'        => array(
-				'role'     => __( 'Button: primary surface', 'awt' ),
-				'pairings' => array(
-					array(
-						'against'   => 'background',
-						'threshold' => 'ui',
-						'label'     => __( 'button edge on background', 'awt' ),
-					),
-				),
-				'notes'    => __( 'Button-primary IS a surface; the text on top is checked via the "on accent surfaces" text row above.', 'awt' ),
+				'role'     => __( 'Primary button', 'awt' ),
+				'pairings' => $on( 'info', array( 'background' ), $edge ),
 			),
 			'button-secondary'      => array(
-				'role'     => __( 'Button: secondary surface', 'awt' ),
-				'pairings' => array(
-					array(
-						'against'   => 'background',
-						'threshold' => 'ui',
-						'label'     => __( 'button edge on background', 'awt' ),
-					),
-				),
-			),
-			'button-tertiary'       => array(
-				'role'     => __( 'Button: tertiary (outline)', 'awt' ),
-				'pairings' => array(
-					array(
-						'against'   => 'background',
-						'threshold' => 'text',
-						'label'     => __( 'outline/text on background', 'awt' ),
-					),
-				),
-				'notes'    => __( 'Tertiary buttons are outline-only: the same token serves as border and text. Needs full text contrast.', 'awt' ),
+				'role'     => __( 'Secondary button', 'awt' ),
+				'pairings' => $on( 'info', array( 'background' ), $edge ),
 			),
 			'button-danger-primary' => array(
-				'role'     => __( 'Button: danger surface', 'awt' ),
-				'pairings' => array(
-					array(
-						'against'   => 'background',
-						'threshold' => 'ui',
-						'label'     => __( 'button edge on background', 'awt' ),
-					),
-				),
+				'role'     => __( 'Danger button', 'awt' ),
+				'pairings' => $on( 'info', array( 'background' ), $edge ),
 			),
 
-			// ----- STATUS / SUPPORT (UI 3:1 for status icons; text 4.5:1 if pure text) -----
-			'support-error'         => array(
-				'role'     => __( 'Status: error icon / accent', 'awt' ),
-				'pairings' => array(
-					array(
-						'against'   => 'background',
-						'threshold' => 'ui',
-						'label'     => __( 'icon on background', 'awt' ),
-					),
-					array(
-						'against'   => 'layer-01',
-						'threshold' => 'ui',
-						'label'     => __( 'icon on layer-01', 'awt' ),
-					),
-				),
+			// ----- Focus and interface parts (3:1) -----
+			'focus'                 => array(
+				'role'     => __( 'Focus ring', 'awt' ),
+				'pairings' => $on( 'ui', array( 'background', 'layer-01', 'layer-02', 'field-01' ) ),
 			),
-			'support-success'       => array(
-				'role'     => __( 'Status: success icon / accent', 'awt' ),
-				'pairings' => array(
-					array(
-						'against'   => 'background',
-						'threshold' => 'ui',
-						'label'     => __( 'icon on background', 'awt' ),
-					),
-					array(
-						'against'   => 'layer-01',
-						'threshold' => 'ui',
-						'label'     => __( 'icon on layer-01', 'awt' ),
-					),
-				),
-			),
-			'support-warning'       => array(
-				'role'     => __( 'Status: warning icon / accent', 'awt' ),
-				'pairings' => array(
-					array(
-						'against'   => 'background',
-						'threshold' => 'ui',
-						'label'     => __( 'icon on background', 'awt' ),
-						'notes'     => __( 'Carbon Design System default: warning yellow #f1c21b fails the 3:1 UI threshold on light surfaces. We suggest always pairing it with an icon shape so meaning isn\'t conveyed by color alone, or substituting a higher-contrast amber if you use it for non-text UI.', 'awt' ),
-					),
-					array(
-						'against'   => 'layer-01',
-						'threshold' => 'ui',
-						'label'     => __( 'icon on layer-01', 'awt' ),
-						'notes'     => __( 'Same: Carbon\'s default warning yellow fails on every light surface; pair with icon shape or substitute.', 'awt' ),
-					),
-				),
-				'notes'    => __( 'Warning yellow is famously low-contrast. Carbon\'s guidance is to always pair it with an icon shape, never use it for text.', 'awt' ),
-			),
-			'support-info'          => array(
-				'role'     => __( 'Status: info icon / accent', 'awt' ),
-				'pairings' => array(
-					array(
-						'against'   => 'background',
-						'threshold' => 'ui',
-						'label'     => __( 'icon on background', 'awt' ),
-					),
-					array(
-						'against'   => 'layer-01',
-						'threshold' => 'ui',
-						'label'     => __( 'icon on layer-01', 'awt' ),
-					),
-				),
-			),
-
-			// ----- BORDERS / FOCUS (UI 3:1) -----
-			'border-strong'         => array(
-				'role'     => __( 'Border: strong (field borders, dividers)', 'awt' ),
-				'pairings' => array(
-					array(
-						'against'   => 'background',
-						'threshold' => 'ui',
-						'label'     => __( 'on background', 'awt' ),
-					),
-					array(
-						'against'   => 'field-01',
-						'threshold' => 'ui',
-						'label'     => __( 'around field input', 'awt' ),
-					),
+			'background'            => array(
+				'role'     => __( 'Inner focus ring', 'awt' ),
+				'pairings' => array_map(
+					static function ( array $pairing ): array {
+						return $pairing + array( 'when' => 'two-tone-button-focus' );
+					},
+					$on(
+						'ui',
+						array( 'button-primary', 'button-secondary', 'button-danger-primary' ),
+						__( 'Only with the two-tone button focus (AWT Settings → Focus): a ring in the page color inside the focus ring.', 'awt' )
+					)
 				),
 			),
 			'border-interactive'    => array(
-				'role'     => __( 'Border: interactive (focused field)', 'awt' ),
-				'pairings' => array(
-					array(
-						'against'   => 'background',
-						'threshold' => 'ui',
-						'label'     => __( 'on background', 'awt' ),
-					),
-				),
-			),
-			'focus'                 => array(
-				'role'     => __( 'Focus ring', 'awt' ),
-				'pairings' => array(
-					array(
-						'against'   => 'background',
-						'threshold' => 'ui',
-						'label'     => __( 'on background', 'awt' ),
-					),
-					array(
-						'against'   => 'button-primary',
-						'threshold' => 'ui',
-						'label'     => __( 'on primary button', 'awt' ),
-						'notes'     => __( 'Carbon Design System default: focus and button-primary share the same blue (#0f62fe). Carbon\'s CSS mitigates with an inner-shadow + focus-inset (white) double-ring technique on Button. If you change either token, port that technique so the focus ring stays visible on the primary button.', 'awt' ),
-					),
-				),
+				'role'     => __( 'Active border', 'awt' ),
+				'pairings' => $on( 'ui', array( 'background', 'layer-01', 'field-01' ) ),
 			),
 			'interactive'           => array(
-				'role'     => __( 'Interactive: accent for active states', 'awt' ),
-				'pairings' => array(
-					array(
-						'against'   => 'background',
-						'threshold' => 'ui',
-						'label'     => __( 'on background', 'awt' ),
-					),
-					array(
-						'against'   => 'layer-01',
-						'threshold' => 'ui',
-						'label'     => __( 'on layer-01', 'awt' ),
-					),
+				'role'     => __( 'Interactive accent', 'awt' ),
+				'pairings' => $on( 'ui', array( 'background', 'layer-01' ) ),
+			),
+			'border-strong-01'      => array(
+				'role'     => __( 'Field border', 'awt' ),
+				'pairings' => $on( 'ui', array( 'background', 'layer-01', 'field-01' ) ),
+			),
+			'icon-primary'          => array(
+				'role'     => __( 'Icons', 'awt' ),
+				'pairings' => $on( 'ui', array( 'background', 'layer-01' ) ),
+			),
+			'icon-secondary'        => array(
+				'role'     => __( 'Secondary icons', 'awt' ),
+				'pairings' => $on( 'ui', array( 'background', 'layer-01' ) ),
+			),
+			'toggle-off'            => array(
+				'role'     => __( 'Toggle, off', 'awt' ),
+				'pairings' => $on( 'ui', array( 'background', 'layer-01' ) ),
+			),
+			'border-subtle-01'      => array(
+				'role'     => __( 'Subtle border', 'awt' ),
+				'pairings' => $on(
+					'info',
+					array( 'background', 'layer-01' ),
+					__( 'Decorative: a line between items, which their own content already tells apart.', 'awt' )
+				),
+			),
+
+			// ----- Status (3:1) -----
+			'support-error'         => array(
+				'role'     => __( 'Error color (icons, invalid field outline)', 'awt' ),
+				'pairings' => $on( 'ui', array( 'background', 'layer-01', 'field-01' ) ),
+			),
+			'support-success'       => array(
+				'role'     => __( 'Success color (icons, a toggle that is on)', 'awt' ),
+				'pairings' => $on( 'ui', array( 'background', 'layer-01' ) ),
+			),
+			'support-info'          => array(
+				'role'     => __( 'Information color (icons)', 'awt' ),
+				'pairings' => $on( 'ui', array( 'background', 'layer-01' ) ),
+			),
+			'support-warning'       => array(
+				'role'     => __( 'Warning color (icons)', 'awt' ),
+				'pairings' => $on(
+					'info',
+					array( 'background', 'layer-01' ),
+					__( 'Carbon\'s warning icon has a dark mark inside it, and the message beside it says what is wrong, so the yellow itself carries nothing.', 'awt' )
 				),
 			),
 		);

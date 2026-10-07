@@ -152,39 +152,33 @@ function carbon_surface_tokens(): array {
 }
 
 /**
- * Carbon's full palette resolved for each named theme. Used by the
- * role-aware audit to look up the dark-scope value of each palette
- * color (theme.json only carries the light values; Carbon's CSS swaps
- * to dark values at runtime via the cds--g100 / cds--g90 scope classes).
- *
- * Values pulled from Carbon's published theme token tables (v11). Only
- * the tokens role_map() inspects (and the surfaces those tokens pair
- * against) need to be included here.
+ * The active design system's palette for each named theme: every token, as
+ * its compiled CSS sets it (theme.json only carries the light values;
+ * Carbon's CSS swaps to dark values at runtime via the cds--g100 / cds--g90
+ * scope classes).
  */
 function carbon_resolved_palette(): array {
 	return \AWT\Theme\DesignSystem\Registry::get_active()->get_resolved_palette();
 }
 
 /**
- * Role taxonomy. Each entry declares:
+ * Contrast pairs. Each entry declares:
  *
- *   - role:       group label (text / link / button-surface / status / border)
- *   - pairings:   list of `{ against, threshold, label }` — the surface
- *                 tokens this color is INTENDED to render against, with the
- *                 WCAG threshold appropriate to its use:
+ *   - role:       what the color is (text, a link, a focus ring, an icon)
+ *   - pairings:   list of `{ against, threshold, label }` — the colors it
+ *                 is drawn on, with the WCAG threshold for that use:
  *
  *                   text  → 4.5:1 (WCAG 1.4.3 minimum for body text)
  *                   ui    → 3.0:1 (WCAG 1.4.11 minimum for UI components)
- *                   large → 3.0:1 (large text — 18pt or 14pt-bold — exception)
+ *                   info  → measured, no minimum (the notes say why)
  *
- *   - notes:      one-line caveat shown under the row (optional)
+ *                 and optionally `over` (the color under a see-through
+ *                 one) and `when` (a condition, such as links not being
+ *                 underlined)
+ *   - notes:      one-line caveat (optional)
  *
- * Tokens not in this map are surfaces (the canvas) or exempt-by-design
- * (disabled, focus-inset). Those are shown in dedicated sections of the
- * audit page without pass/fail checks.
- *
- * The 'against' slugs are resolved per scope via carbon_resolved_palette()
- * — same role-map drives both the light-scope and dark-scope audits.
+ * The 'against' slugs are resolved per scope via carbon_resolved_palette(),
+ * so the same pairs hold for the light and the dark themes.
  */
 function role_map(): array {
 	return \AWT\Theme\DesignSystem\Registry::get_active()->get_role_map();
@@ -208,13 +202,17 @@ function exempt_tokens(): array {
 }
 
 /**
- * Numeric threshold for a given key. Centralised so the audit and any
- * future caller (linter, Site Editor SlotFill) use identical numbers.
+ * Numeric threshold for a given key, so every caller uses the same numbers.
  *
- * @param string $key Threshold key: 'text' for body text, anything else for UI/large.
- * @return float Required contrast ratio (4.5 or 3.0).
+ * @param string $key Threshold key: 'text' for body text, 'info' for a pair
+ *                    that is measured with no minimum, anything else for
+ *                    UI/large.
+ * @return float Required contrast ratio (4.5, 3.0, or 0.0 for 'info').
  */
 function threshold_value( string $key ): float {
+	if ( $key === 'info' ) {
+		return 0.0;
+	}
 	return $key === 'text' ? 4.5 : 3.0;
 }
 
@@ -230,9 +228,12 @@ function threshold_value( string $key ): float {
  *
  * @param float  $ratio         Measured contrast ratio.
  * @param string $threshold_key Threshold key passed to threshold_value().
- * @return string Either 'pass' or 'fail'.
+ * @return string 'pass' or 'fail', or 'info' for a pair with no minimum.
  */
 function role_verdict( float $ratio, string $threshold_key ): string {
+	if ( $threshold_key === 'info' ) {
+		return 'info';
+	}
 	$required = threshold_value( $threshold_key );
 	return $ratio >= $required ? 'pass' : 'fail';
 }

@@ -315,6 +315,23 @@ function defaults(): array {
 			'afterBodyOpen'   => '',
 			'beforeBodyClose' => '',
 		),
+		// Kept, and read by nothing in this theme, for the same reason: the
+		// brand color editor is AWT Premium's. Per side, a main color ('' for
+		// the design system's own), a grey tint, and single colors the owner
+		// set by hand (token => hex). In dark, an empty main means "same as
+		// light".
+		'brandColors'   => array(
+			'light' => array(
+				'main'   => '',
+				'tint'   => 'none',
+				'colors' => array(),
+			),
+			'dark'  => array(
+				'main'   => '',
+				'tint'   => 'none',
+				'colors' => array(),
+			),
+		),
 		'customCss'     => '',
 	);
 }
@@ -593,9 +610,51 @@ function sanitize( array $settings ): array {
 		'beforeBodyClose' => isset( $cc['beforeBodyClose'] ) ? (string) $cc['beforeBodyClose'] : '',
 	);
 
+	// Brand colors: carried through, never output by this theme. Only their
+	// shape is checked, so nothing but hex colors and token names is kept.
+	$brand              = is_array( $settings['brandColors'] ?? null ) ? $settings['brandColors'] : array();
+	$out['brandColors'] = array(
+		'light' => sanitize_brand_side( $brand['light'] ?? array() ),
+		'dark'  => sanitize_brand_side( $brand['dark'] ?? array() ),
+	);
+
 	$out['customCss'] = isset( $settings['customCss'] ) ? (string) $settings['customCss'] : '';
 
 	return $out;
+}
+
+/**
+ * One side (light or dark) of `brandColors`.
+ *
+ * @param mixed $side What was saved.
+ * @return array{main: string, tint: string, colors: array<string, string>}
+ */
+function sanitize_brand_side( $side ): array {
+	$side   = is_array( $side ) ? $side : array();
+	$colors = array();
+	foreach ( is_array( $side['colors'] ?? null ) ? $side['colors'] : array() as $token => $hex ) {
+		$token = (string) $token;
+		$hex   = brand_hex( $hex );
+		if ( $hex !== '' && preg_match( '/^[a-z0-9-]{1,64}$/', $token ) && count( $colors ) < 200 ) {
+			$colors[ $token ] = $hex;
+		}
+	}
+	$tint = (string) ( $side['tint'] ?? 'none' );
+	return array(
+		'main'   => brand_hex( $side['main'] ?? '' ),
+		'tint'   => in_array( $tint, array( 'none', 'subtle', 'strong' ), true ) ? $tint : 'none',
+		'colors' => $colors,
+	);
+}
+
+/**
+ * A six-digit hex color in lower case, or ''.
+ *
+ * @param mixed $value What was saved.
+ */
+function brand_hex( $value ): string {
+	$value = strtolower( trim( is_string( $value ) ? $value : '' ) );
+	return preg_match( '/^#[0-9a-f]{6}$/', $value ) ? $value : '';
 }
 
 /**

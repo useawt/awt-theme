@@ -206,6 +206,57 @@ class Test_Settings extends WP_UnitTestCase {
 		$this->assertSame( $css, $out['customCss'] );
 	}
 
+	/**
+	 * Brand colors are kept for AWT Premium's editor, which free AWT never
+	 * reads: only hex colors, the three tints and plain token names survive.
+	 */
+	public function test_sanitize_keeps_only_the_shape_of_brand_colors(): void {
+		$out = Settings\sanitize(
+			array(
+				'brandColors' => array(
+					'light' => array(
+						'main'   => ' #0B57D0 ',
+						'tint'   => 'strong',
+						'colors' => array(
+							'link-primary' => '#0a4fc0',
+							'Bad Token'    => '#000000',
+							'focus'        => 'red',
+							'background'   => '#fff',
+						),
+					),
+					'dark'  => array(
+						'main' => 'url(x)',
+						'tint' => 'loud',
+					),
+				),
+			)
+		);
+
+		$this->assertSame(
+			array(
+				'main'   => '#0b57d0',
+				'tint'   => 'strong',
+				'colors' => array( 'link-primary' => '#0a4fc0' ),
+			),
+			$out['brandColors']['light']
+		);
+		$this->assertSame(
+			array(
+				'main'   => '',
+				'tint'   => 'none',
+				'colors' => array(),
+			),
+			$out['brandColors']['dark']
+		);
+	}
+
+	/** A site that never set brand colors reads the empty defaults. */
+	public function test_brand_colors_default_to_the_design_systems_own(): void {
+		$this->assertSame( '', Settings\get( 'brandColors.light.main' ) );
+		$this->assertSame( 'none', Settings\get( 'brandColors.dark.tint' ) );
+		$this->assertSame( array(), Settings\get( 'brandColors.dark.colors' ) );
+	}
+
 	/** Anything not in the registry falls back to Carbon rather than being stored. */
 	public function test_sanitize_rejects_an_unknown_design_system(): void {
 		$out = Settings\sanitize( array( 'designSystem' => array( 'slug' => 'not-a-real-system' ) ) );

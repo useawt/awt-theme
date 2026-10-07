@@ -1081,11 +1081,22 @@ function render_tab_appearance(): void {
 			<?php submit_button( __( 'Save changes', 'awt' ) ); ?>
 		</form>
 		<?php
+	} elseif ( has_action( 'awt_settings_colors_section' ) ) {
+		// Colors, from code that edits them (AWT Premium's brand colors). It
+		// prints its fields inside this form and saves them on
+		// `awt_settings_save_colors`.
+		?>
+		<form method="post" action="<?php echo esc_url( $page_url ); ?>">
+			<?php wp_nonce_field( NONCE_KEY, '_awt_nonce' ); ?>
+			<input type="hidden" name="awt_active_tab" value="appearance" />
+			<input type="hidden" name="awt_section" value="colors" />
+			<?php do_action( 'awt_settings_colors_section' ); ?>
+			<?php submit_button( __( 'Save changes', 'awt' ) ); ?>
+		</form>
+		<?php
 	} else {
-		// Colors. In AWT (free) the role-aware contrast audit is hidden and
-		// reserved for AWT Premium — render_tab_colors() is kept (unused) below.
-		// Free shows a short chooser: recolor via Custom CSS (the supported free
-		// path) or the Premium color editor (disabled).
+		// Colors. Free shows a short chooser: recolor via Custom CSS (the
+		// supported free path) or the Premium color editor (disabled).
 		$premium_url    = 'https://awtpremium.com/';
 		$custom_css_url = admin_url( 'themes.php?page=' . MENU_SLUG . '&tab=custom-css' );
 		?>
@@ -1211,7 +1222,14 @@ function save_tab_appearance(): void {
 		return;
 	}
 
-	// 'colors' is read-only — nothing to save.
+	if ( 'colors' === $section ) {
+		/**
+		 * Fires when the Colors sub-tab is saved, for the code that printed
+		 * its fields on `awt_settings_colors_section`. Free AWT's own Colors
+		 * sub-tab has nothing to save.
+		 */
+		do_action( 'awt_settings_save_colors' );
+	}
 }
 
 /**
@@ -1557,301 +1575,6 @@ function render_tab_typography(): void {
 		<?php esc_html_e( 'Not applied to fields with the label inside the box, where a bigger label would crowd the input.', 'awt' ); ?>
 	</p>
 	<?php
-}
-
-/**
- * Render the Colors tab — a role-aware contrast audit.
- *
- * For each foreground token (text / link / button surface / status icon /
- * border / focus), we look up its INTENDED surface pairings from the role
- * map and check WCAG against the threshold appropriate to that role
- * (text = 4.5:1, ui = 3.0:1). Pairings the token wasn't designed for
- * are not checked — Carbon's tokens are role-specific, and treating every
- * color as if it could land on every surface produces false-positive
- * failures that obscure the real ones.
- *
- * Scopes: shows both the active light scope and the active dark scope,
- * so the user sees how each token behaves under either theme variation.
- *
- * Why here, not in the Site Editor picker: a proper picker integration
- * needs a Gutenberg JS plugin (SlotFill). That's tracked as a Stage 1.x
- * extension. This admin-side audit ships now per spec §5 "Color palette".
- */
-function render_tab_colors(): void {
-	$settings = function_exists( 'wp_get_global_settings' ) ? wp_get_global_settings() : array();
-	$palette  = $settings['color']['palette'] ?? array();
-
-	// Flatten — theme.json's palette can be a flat array or an associative
-	// array of theme/default/custom palettes depending on WP version.
-	$colors = array();
-	if ( isset( $palette[0] ) && is_array( $palette[0] ) ) {
-		$colors = $palette;
-	} elseif ( ! empty( $palette ) ) {
-		foreach ( $palette as $source ) {
-			if ( is_array( $source ) ) {
-				$colors = array_merge( $colors, $source );
-			}
-		}
-	}
-
-	// Index by slug for cross-lookup; preserve name + hex per entry.
-	$by_slug = array();
-	foreach ( $colors as $c ) {
-		if ( ! is_array( $c ) || empty( $c['color'] ) || empty( $c['slug'] ) ) {
-			continue;
-		}
-		$hex = trim( (string) $c['color'] );
-		if ( $hex === '' || $hex[0] !== '#' ) {
-			continue;
-		}
-		$by_slug[ (string) $c['slug'] ] = array(
-			'name' => (string) ( $c['name'] ?? $c['slug'] ),
-			'hex'  => $hex,
-		);
-	}
-
-	$role_map   = \AWT\Theme\Contrast\role_map();
-	$resolved   = \AWT\Theme\Contrast\carbon_resolved_palette();
-	$exempt     = \AWT\Theme\Contrast\exempt_tokens();
-	$surfaces   = \AWT\Theme\Contrast\surface_tokens();
-	$light_slug = (string) ( \AWT\Theme\theme_scopes()['light'] ?? 'white' );
-	$dark_slug  = (string) ( \AWT\Theme\theme_scopes()['dark'] ?? 'g100' );
-
-	?>
-	<p class="awt-field-help">
-		<?php
-		printf(
-			/* translators: %s: link to Site Editor */
-			esc_html__( 'Edit colors in %s. Custom colors you add there appear in this audit alongside Carbon\'s defaults.', 'awt' ),
-			'<a href="' . esc_url( admin_url( 'site-editor.php' ) ) . '">' . esc_html__( 'Site Editor → Styles → Colors', 'awt' ) . '</a>'
-		);
-		?>
-	</p>
-	<p class="awt-field-help">
-		<?php esc_html_e( 'This check tests each color only against the backgrounds it\'s meant to appear on, using the WCAG contrast level its role requires: 4.5:1 for body and link text, 3:1 for interface parts like button edges, icons, focus rings, and borders. Color pairings a color isn\'t meant for aren\'t shown.', 'awt' ); ?>
-	</p>
-
-	<?php
-	// Exempt pills are anchors when an `exempt_url` is set: they open the
-	// relevant WCAG Understanding section in a new tab. The pill styling is
-	// shared with the static Exempt span; a.awt-contrast-link only adds
-	// underline on hover and a small gap before the external icon.
-	?>
-	<style>
-		.awt-roles-table { border-collapse: collapse; margin-block: 0.5em 1.5em; inline-size: 100%; max-inline-size: 92em; }
-		.awt-roles-table th, .awt-roles-table td { padding: 8px 10px; border: 1px solid #c3c4c7; vertical-align: top; text-align: start; font-size: 13px; }
-		.awt-roles-table th { background: #f0f0f1; font-weight: 600; }
-		.awt-roles-table td.awt-roles-token-cell { inline-size: 240px; background: #fafafa; }
-		.awt-roles-table td.awt-roles-pairing-cell { inline-size: 180px; }
-		.awt-roles-table td.awt-roles-numeric { text-align: end; font-variant-numeric: tabular-nums; white-space: nowrap; }
-		.awt-roles-table td.awt-roles-pill-cell { text-align: center; }
-		.awt-roles-table td.awt-roles-notes-cell { max-inline-size: 28em; font-size: 12px; line-height: 1.45; color: #1d2327; }
-		.awt-contrast-swatch { display: inline-block; inline-size: 18px; block-size: 18px; border: 1px solid #c3c4c7; vertical-align: middle; margin-inline-end: 0.5em; border-radius: 2px; }
-		.awt-contrast-badge { display: inline-block; padding: 2px 8px; border-radius: 10px; font-size: 11px; font-weight: 600; line-height: 1.6; letter-spacing: 0.02em; }
-		.awt-contrast-pass    { background: #d4edda; color: #155724; }
-		.awt-contrast-fail    { background: #f8d7da; color: #721c24; }
-		.awt-contrast-exempt  { background: #e7f1ff; color: #003a8c; }
-		.awt-contrast-required{ background: #f0f0f1; color: #1d2327; }
-		a.awt-contrast-link { text-decoration: none; display: inline-flex; align-items: center; gap: 0.35em; }
-		a.awt-contrast-link:hover, a.awt-contrast-link:focus { text-decoration: underline; }
-		a.awt-contrast-link:focus-visible { outline: 2px solid #2271b1; outline-offset: 2px; }
-		.awt-external-icon { vertical-align: -2px; }
-		.awt-roles-row-notes { color: #646970; font-size: 12px; margin-block-start: 0.4em; }
-		details.awt-roles-section { margin-block: 1em; padding: 0.5em 1em; background: #f6f7f7; border-inline-start: 4px solid #c3c4c7; }
-		details.awt-roles-section[open] { background: #f0f0f1; }
-		details.awt-roles-section > summary { font-weight: 600; cursor: pointer; }
-		.awt-roles-summary-stats { font-size: 12px; color: #646970; margin-block: 0.5em 1em; }
-	</style>
-
-	<?php
-	if ( empty( $by_slug ) ) {
-		echo '<p>' . esc_html__( 'No palette colors found.', 'awt' ) . '</p>';
-		return;
-	}
-
-	// Render one block per scope (light + dark) so the same token's
-	// behavior in both themes is visible side-by-side via tabbing.
-	foreach ( array(
-		$light_slug => __( 'Light scope', 'awt' ),
-		$dark_slug  => __( 'Dark scope', 'awt' ),
-	) as $scope_slug => $scope_label ) :
-		$scope_palette = $resolved[ $scope_slug ] ?? $resolved['white'];
-
-		// Tally pass / fail for this scope's summary. Earlier versions of
-		// this audit had an "Exempt" third bucket for placeholder rows
-		// citing WCAG 1.4.3 — but that citation didn't hold up (WCAG
-		// doesn't exempt placeholders). The audit now reports honestly
-		// and the Notes column carries the design-tradeoff context.
-		$pass_count = 0;
-		$fail_count = 0;
-		$rows       = array();
-		foreach ( $role_map as $token_slug => $meta ) {
-			$fg_hex = $scope_palette[ $token_slug ] ?? null;
-			if ( ! $fg_hex ) {
-				continue;
-			}
-			$pair_results = array();
-			foreach ( $meta['pairings'] as $pairing ) {
-				$bg_hex = $scope_palette[ $pairing['against'] ] ?? null;
-				if ( ! $bg_hex ) {
-					continue;
-				}
-				$r              = \AWT\Theme\Contrast\ratio( $fg_hex, $bg_hex );
-				$v              = \AWT\Theme\Contrast\role_verdict( $r, $pairing['threshold'] );
-				$pair_results[] = array(
-					'against'     => $pairing['against'],
-					'against_hex' => $bg_hex,
-					'label'       => $pairing['label'],
-					'threshold'   => $pairing['threshold'],
-					'ratio'       => $r,
-					'verdict'     => $v,
-					'notes'       => $pairing['notes'] ?? '',
-				);
-				if ( $v === 'pass' ) {
-					++$pass_count;
-				} else {
-					++$fail_count; }
-			}
-			$rows[] = array(
-				'slug'  => $token_slug,
-				'meta'  => $meta,
-				'hex'   => $fg_hex,
-				'pairs' => $pair_results,
-			);
-		}
-		?>
-
-		<h2><?php echo esc_html( $scope_label ); ?>: <code><?php echo esc_html( $scope_slug ); ?></code></h2>
-		<p class="awt-roles-summary-stats">
-			<?php
-			printf(
-				/* translators: 1: passing pairings, 2: failing pairings */
-				esc_html__( '%1$d pass · %2$d fail.', 'awt' ),
-				(int) $pass_count,
-				(int) $fail_count
-			);
-			?>
-		</p>
-
-		<table class="awt-roles-table">
-			<thead>
-				<tr>
-					<th scope="col"><?php esc_html_e( 'Token & role', 'awt' ); ?></th>
-					<th scope="col"><?php esc_html_e( 'Pairing', 'awt' ); ?></th>
-					<th scope="col" style="text-align: end;"><?php esc_html_e( 'Required contrast', 'awt' ); ?></th>
-					<th scope="col" style="text-align: end;"><?php esc_html_e( 'Measured contrast', 'awt' ); ?></th>
-					<th scope="col" style="text-align: center;"><?php esc_html_e( 'Outcome', 'awt' ); ?></th>
-					<th scope="col"><?php esc_html_e( 'Notes', 'awt' ); ?></th>
-				</tr>
-			</thead>
-			<tbody>
-				<?php
-				foreach ( $rows as $row ) :
-					$slug       = $row['slug'];
-					$meta       = $row['meta'];
-					$hex        = $row['hex'];
-					$pair_count = count( $row['pairs'] );
-					if ( $pair_count === 0 ) {
-						continue;
-					}
-					foreach ( $row['pairs'] as $i => $pair ) :
-						$th_required   = \AWT\Theme\Contrast\threshold_value( $pair['threshold'] );
-						$outcome_class = $pair['verdict'] === 'pass' ? 'awt-contrast-pass' : 'awt-contrast-fail';
-						$outcome_label = $pair['verdict'] === 'pass' ? __( 'Pass', 'awt' ) : __( 'Fail', 'awt' );
-						?>
-						<tr>
-							<?php if ( $i === 0 ) : ?>
-								<td class="awt-roles-token-cell" rowspan="<?php echo (int) $pair_count; ?>">
-									<span class="awt-contrast-swatch" style="background: <?php echo esc_attr( $hex ); ?>;" aria-hidden="true"></span>
-									<strong><?php echo esc_html( $by_slug[ $slug ]['name'] ?? $slug ); ?></strong>
-									<br /><small><code><?php echo esc_html( $hex ); ?></code> · <?php echo esc_html( $slug ); ?></small>
-									<div style="margin-block-start: 0.4em; color: #646970; font-size: 12px;"><?php echo esc_html( $meta['role'] ); ?></div>
-									<?php if ( ! empty( $meta['notes'] ) ) : ?>
-										<div class="awt-roles-row-notes"><?php echo esc_html( $meta['notes'] ); ?></div>
-									<?php endif; ?>
-								</td>
-							<?php endif; ?>
-							<td class="awt-roles-pairing-cell">
-								<span class="awt-contrast-swatch" style="background: <?php echo esc_attr( $pair['against_hex'] ); ?>;" aria-hidden="true"></span>
-								<?php echo esc_html( $pair['label'] ); ?>
-								<br /><small><code><?php echo esc_html( $pair['against'] ); ?></code></small>
-							</td>
-							<td class="awt-roles-numeric">
-								<?php echo esc_html( number_format( $th_required, 1 ) ); ?>:1
-							</td>
-							<td class="awt-roles-numeric"><?php echo esc_html( number_format( $pair['ratio'], 2 ) ); ?>:1</td>
-							<td class="awt-roles-pill-cell">
-								<span class="awt-contrast-badge <?php echo esc_attr( $outcome_class ); ?>"><?php echo esc_html( $outcome_label ); ?></span>
-							</td>
-							<td class="awt-roles-notes-cell">
-								<?php if ( ! empty( $pair['notes'] ) ) : ?>
-									<?php echo esc_html( $pair['notes'] ); ?>
-								<?php endif; ?>
-							</td>
-						</tr>
-						<?php
-					endforeach;
-				endforeach;
-				?>
-			</tbody>
-		</table>
-
-		<details class="awt-roles-section">
-			<summary><?php esc_html_e( 'Surfaces (no ratio check)', 'awt' ); ?></summary>
-			<p class="awt-roles-row-notes" style="margin-block-start: 0.5em;">
-				<?php esc_html_e( 'Surface colors are backgrounds: the colors that text and icons sit on top of. They aren\'t foreground colors, so there\'s no contrast ratio to check.', 'awt' ); ?>
-			</p>
-			<ul style="list-style: none; padding: 0; margin-block-start: 0.5em; display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 4px;">
-				<?php
-				foreach ( $surfaces as $surface_slug ) :
-					$surface_hex = $scope_palette[ $surface_slug ] ?? null;
-					if ( ! $surface_hex ) {
-						continue; }
-					?>
-					<li>
-						<span class="awt-contrast-swatch" style="background: <?php echo esc_attr( $surface_hex ); ?>;" aria-hidden="true"></span>
-						<small><strong><?php echo esc_html( $by_slug[ $surface_slug ]['name'] ?? $surface_slug ); ?>:</strong> <code><?php echo esc_html( $surface_hex ); ?></code></small>
-					</li>
-				<?php endforeach; ?>
-			</ul>
-		</details>
-
-		<details class="awt-roles-section">
-			<summary><?php esc_html_e( 'Exempt tokens (intentionally low contrast)', 'awt' ); ?></summary>
-			<p class="awt-roles-row-notes" style="margin-block-start: 0.5em;">
-				<?php esc_html_e( 'These colors are skipped. WCAG exempts disabled controls from contrast rules, and other colors depend too much on context (like focus insets) for an automatic check to judge fairly.', 'awt' ); ?>
-			</p>
-			<ul style="list-style: none; padding: 0; margin-block-start: 0.5em; display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 4px;">
-				<?php
-				foreach ( $exempt as $ex_slug ) :
-					$ex_hex = $scope_palette[ $ex_slug ] ?? ( $by_slug[ $ex_slug ]['hex'] ?? null );
-					if ( ! $ex_hex ) {
-						continue; }
-					?>
-					<li>
-						<span class="awt-contrast-swatch" style="background: <?php echo esc_attr( $ex_hex ); ?>;" aria-hidden="true"></span>
-						<small><strong><?php echo esc_html( $by_slug[ $ex_slug ]['name'] ?? $ex_slug ); ?>:</strong> <code><?php echo esc_html( $ex_hex ); ?></code></small>
-					</li>
-				<?php endforeach; ?>
-			</ul>
-		</details>
-
-	<?php endforeach; ?>
-
-	<p class="awt-field-help" style="margin-block-start: 2em;">
-		<strong><?php esc_html_e( 'How to read this audit', 'awt' ); ?></strong><br />
-		<?php esc_html_e( 'Each row shows a color, the backgrounds it\'s designed for, and the contrast level its role needs. Colors are checked only where they\'re actually used: a text color is tested against the backgrounds it appears on; a button color is tested for its edge contrast, while text-on-button readability is checked separately under "Text: on accent surfaces".', 'awt' ); ?><br /><br />
-		<?php esc_html_e( 'If a built-in color fails, it\'s worth investigating. If a color you added yourself fails, reconsider it, or use it only where there\'s no text.', 'awt' ); ?>
-	</p>
-	<?php
-}
-
-/**
- * Save handler for the Colors sub-tab.
- */
-function save_tab_colors(): void {
-	// Read-only audit tab — nothing to save here. Color editing happens
-	// in the Site Editor.
 }
 
 /**

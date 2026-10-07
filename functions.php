@@ -324,6 +324,21 @@ function editor_custom_css( string $css, string $site_cs ): string {
 }
 
 /**
+ * The CSS printed after the theme's own: AWT Settings → Custom CSS, plus
+ * whatever the `awt_custom_css` filter adds to it.
+ *
+ * The front end prints it at the end of the head and the editor canvas
+ * re-roots it (`editor_custom_css()`), so CSS added through the filter is
+ * handled exactly like the owner's. A plugin that adds token overrides
+ * should put them before the owner's CSS, so the owner's still wins. AWT
+ * Premium's brand colors do.
+ */
+function custom_css(): string {
+	$css = function_exists( '\\AWT\\Theme\\Settings\\get' ) ? (string) \AWT\Theme\Settings\get( 'customCss' ) : '';
+	return (string) apply_filters( 'awt_custom_css', $css );
+}
+
+/**
  * Default scheme + honor-system-preference + allow-visitor-override flags.
  *
  * @return array{default: string, honorSystemPreference: bool, allowVisitorOverride: bool}
@@ -1032,7 +1047,8 @@ add_action(
 );
 
 /**
- * Front-end emission of AWT Settings → Custom CSS field.
+ * Front-end emission of AWT Settings → Custom CSS field, with what the
+ * `awt_custom_css` filter adds (`custom_css()`).
  *
  * Priority 999 so it lands at the very end of `<head>`, after every
  * other stylesheet and inline style — ensures site owner overrides win
@@ -1042,10 +1058,7 @@ add_action(
 add_action(
 	'wp_head',
 	static function (): void {
-		if ( ! function_exists( '\\AWT\\Theme\\Settings\\get' ) ) {
-			return;
-		}
-		$css = (string) \AWT\Theme\Settings\get( 'customCss' );
+		$css = custom_css();
 		if ( trim( $css ) === '' ) {
 			return;
 		}
@@ -1131,7 +1144,7 @@ add_filter(
 		// survives the editor's canvas re-renders. Unlike the front end, only the
 		// active scheme's colours apply — the editor previews one scheme at a time.
 		$site_cs    = editor_scheme();
-		$custom_css = function_exists( '\\AWT\\Theme\\Settings\\get' ) ? (string) \AWT\Theme\Settings\get( 'customCss' ) : '';
+		$custom_css = custom_css();
 		if ( trim( $custom_css ) !== '' ) {
 			$editor_css = editor_custom_css( $custom_css, $site_cs );
 			if ( $editor_css !== '' ) {

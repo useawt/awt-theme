@@ -111,6 +111,14 @@ class Test_Contrast extends WP_UnitTestCase {
 		$this->assertSame( 'fail', Contrast\verdict( 1.0 ) );
 	}
 
+	/** A pair marked `info` is measured but never passes or fails. */
+	public function test_an_info_pair_has_no_minimum(): void {
+		$this->assertSame( 0.0, Contrast\threshold_value( 'info' ) );
+		$this->assertSame( 'info', Contrast\role_verdict( 1.0, 'info' ) );
+		$this->assertSame( 'fail', Contrast\role_verdict( 4.49, 'text' ) );
+		$this->assertSame( 'pass', Contrast\role_verdict( 3.0, 'ui' ) );
+	}
+
 	/**
 	 * The helper-text regression of 2026-08-02 in one assertion: 4.49 is not a
 	 * pass. It sat on the marketing site reported as fine because the value was

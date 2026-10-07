@@ -90,10 +90,10 @@ interface DesignSystemInterface {
 
 	/* --- 5. Accessibility audit ----------------------------------------- */
 
-	/** Role taxonomy: token => [ role, pairings[], notes? ]. */
+	/** Contrast pairs: token => [ role, pairings[], notes? ]. */
 	public function get_role_map(): array;
 
-	/** Per-scope resolved palette: scope => [ token => hex ]. */
+	/** Per-scope palette: scope => [ token => value as the CSS sets it ]. */
 	public function get_resolved_palette(): array;
 
 	/** Structural/surface tokens listed without ratio checks. */
