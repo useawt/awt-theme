@@ -586,6 +586,10 @@ function should_auto_update( $update, $item ) {
  * on disk — `build/changelog.json`, written at release — so the window opens
  * with no network call at all.
  *
+ * Name and homepage come from the installed copy's `style.css` header, and
+ * the notes are What's new's, so a build of AWT that brings its own header
+ * and its own notes (AWT Premium does both) is described as itself.
+ *
  * @param mixed  $result Whatever an earlier filter returned.
  * @param string $action The themes_api action being performed.
  * @param object $args   Its arguments.
@@ -600,20 +604,21 @@ function details( $result, $action, $args ) {
 	// site, every free site with updates switched off, and any site whose last
 	// download failed. The window still has to open on all of them, so fall
 	// back to the installed copy's own header.
-	$data = manifest() ?? installed_as_manifest();
+	$data  = manifest() ?? installed_as_manifest();
+	$theme = wp_get_theme( slug() );
 
 	return (object) array(
-		'name'          => 'AWT',
+		'name'          => (string) $theme->get( 'Name' ),
 		'slug'          => slug(),
 		'version'       => (string) ( $data['version'] ?? \AWT\Theme\AWT_THEME_VERSION ),
 		'author'        => author_link(),
 		'requires'      => (string) ( $data['requiresWp'] ?? '' ),
 		'requires_php'  => (string) ( $data['requiresPhp'] ?? '' ),
 		'tested'        => tested_up_to( $data ),
-		'homepage'      => 'https://useawt.com',
+		'homepage'      => (string) $theme->get( 'ThemeURI' ),
 		'download_link' => '',
 		'sections'      => array(
-			'changelog' => changelog_html(),
+			'changelog' => changelog_html( \AWT\Theme\WhatsNew\changelog() ),
 		),
 		'external'      => true,
 	);
@@ -645,17 +650,17 @@ function installed_as_manifest(): array {
 }
 
 /**
- * The bundled changelog as HTML for the details window.
+ * Release notes as HTML for the details window.
  *
- * Reads the same `build/changelog.json` the What's new panel reads.
+ * Given the notes the What's new panel shows (`WhatsNew\changelog()`): the
+ * theme's, its blocks plugin's, and any file added through
+ * `awt_changelog_files`. The window read only the theme's own file until
+ * 2026-10-07, so notes a build of AWT added there never reached it.
+ *
+ * @param array|null $data Merged notes, or null when there are none.
  */
-function changelog_html(): string {
-	$file = get_template_directory() . '/build/changelog.json';
-	if ( ! is_readable( $file ) ) {
-		return '<p>' . esc_html__( 'This copy of AWT has no release notes.', 'awt' ) . '</p>';
-	}
-	$data = json_decode( (string) file_get_contents( $file ), true ); // phpcs:ignore WordPress.WP.AlternativeFunctions.file_get_contents_file_get_contents -- local theme file.
-	if ( ! is_array( $data ) || empty( $data['releases'] ) ) {
+function changelog_html( ?array $data ): string {
+	if ( empty( $data['releases'] ) ) {
 		return '<p>' . esc_html__( 'This copy of AWT has no release notes.', 'awt' ) . '</p>';
 	}
 

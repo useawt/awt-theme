@@ -827,6 +827,56 @@ class Test_Updates extends WP_UnitTestCase {
 	}
 
 	/**
+	 * The window names the installed copy by its own header, so a build of
+	 * AWT that brings its own header is not called "AWT" with useawt.com as
+	 * its homepage.
+	 */
+	public function test_the_details_window_names_the_installed_theme(): void {
+		add_filter( 'awt_update_check_enabled', '__return_false' );
+
+		$info  = Updates\details( false, 'theme_information', (object) array( 'slug' => Updates\slug() ) );
+		$theme = wp_get_theme( Updates\slug() );
+
+		$this->assertNotSame( '', $info->name );
+		$this->assertSame( $theme->get( 'Name' ), $info->name );
+		$this->assertSame( $theme->get( 'ThemeURI' ), $info->homepage );
+	}
+
+	/**
+	 * The window lists What's new's notes, not only the theme's own file:
+	 * notes added through `awt_changelog_files` used to stop at What's new.
+	 */
+	public function test_the_details_window_lists_whats_new_notes(): void {
+		add_filter( 'awt_update_check_enabled', '__return_false' );
+
+		$info = Updates\details( false, 'theme_information', (object) array( 'slug' => Updates\slug() ) );
+		$this->assertSame( Updates\changelog_html( \AWT\Theme\WhatsNew\changelog() ), $info->sections['changelog'] );
+
+		$release = static fn( string $summary ) => array(
+			'currentVersion' => '2026.10.2',
+			'releases'       => array(
+				array(
+					'version' => '2026.10.2',
+					'date'    => '2026-10-07',
+					'entries' => array(
+						array(
+							'severity' => 'New',
+							'summary'  => $summary,
+						),
+					),
+				),
+			),
+		);
+		$html    = Updates\changelog_html(
+			\AWT\Theme\WhatsNew\merge_changelogs( array( $release( 'Added notes' ), $release( 'Theme notes' ) ) )
+		);
+
+		$this->assertStringContainsString( '<h4>2026.10.2, 2026-10-07</h4>', $html );
+		$this->assertMatchesRegularExpression( '/Added notes.*Theme notes/s', $html );
+		$this->assertStringContainsString( 'no release notes', Updates\changelog_html( null ) );
+	}
+
+	/**
 	 * Another theme's details are still WordPress.org's business.
 	 */
 	public function test_the_details_window_leaves_other_themes_alone(): void {
