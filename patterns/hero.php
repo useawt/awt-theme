@@ -25,8 +25,8 @@
 <!-- /wp:paragraph -->
 
 <!-- wp:awt/inline-set -->
-<!-- wp:awt/button {"text":"Get started","kind":"primary","size":"lg"} /-->
-<!-- wp:awt/button {"text":"Read the docs","kind":"tertiary","size":"lg"} /-->
+<!-- wp:awt/button {"text":"Get started","kind":"primary","size":"lg","href":"/contact/"} /-->
+<!-- wp:awt/button {"text":"Read the docs","kind":"tertiary","size":"lg","href":"/docs/"} /-->
 <!-- /wp:awt/inline-set -->
 <!-- /wp:awt/hero -->
 <!-- /wp:awt/section -->

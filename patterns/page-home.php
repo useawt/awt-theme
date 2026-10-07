@@ -25,8 +25,8 @@
 <!-- /wp:paragraph -->
 
 <!-- wp:awt/inline-set -->
-<!-- wp:awt/button {"text":"Get started","kind":"primary","size":"lg"} /-->
-<!-- wp:awt/button {"text":"Read the docs","kind":"tertiary","size":"lg"} /-->
+<!-- wp:awt/button {"text":"Get started","kind":"primary","size":"lg","href":"/contact/"} /-->
+<!-- wp:awt/button {"text":"Read the docs","kind":"tertiary","size":"lg","href":"/docs/"} /-->
 <!-- /wp:awt/inline-set -->
 <!-- /wp:awt/hero -->
 <!-- /wp:awt/section -->
@@ -38,7 +38,7 @@
 
 <!-- wp:awt/feature-grid {"columns":3} -->
 <!-- wp:awt/tile -->
-<!-- wp:awt/icon {"iconName":"checkmark","size":"24","color":"support-success","decorative":false,"label":"Accessible"} /-->
+<!-- wp:awt/icon {"iconName":"checkmark","size":"24","color":"support-success"} /-->
 <!-- wp:heading {"level":3} -->
 <h3 class="wp-block-heading">Accessible</h3>
 <!-- /wp:heading -->
@@ -48,7 +48,7 @@
 <!-- /wp:awt/tile -->
 
 <!-- wp:awt/tile -->
-<!-- wp:awt/icon {"iconName":"information","size":"24","color":"support-info","decorative":false,"label":"Design system"} /-->
+<!-- wp:awt/icon {"iconName":"information","size":"24","color":"support-info"} /-->
 <!-- wp:heading {"level":3} -->
 <h3 class="wp-block-heading">Carbon Design System</h3>
 <!-- /wp:heading -->
@@ -58,7 +58,7 @@
 <!-- /wp:awt/tile -->
 
 <!-- wp:awt/tile -->
-<!-- wp:awt/icon {"iconName":"launch","size":"24","color":"link-primary","decorative":false,"label":"Free"} /-->
+<!-- wp:awt/icon {"iconName":"launch","size":"24","color":"link-primary"} /-->
 <!-- wp:heading {"level":3} -->
 <h3 class="wp-block-heading">Free, forever</h3>
 <!-- /wp:heading -->

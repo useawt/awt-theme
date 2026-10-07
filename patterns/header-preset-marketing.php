@@ -32,6 +32,6 @@
 <!-- wp:awt/header-nav-item {"text":"Customers","href":"#"} /-->
 <!-- /wp:awt/header-nav -->
 <!-- wp:awt/header-global -->
-<!-- wp:awt/button {"text":"Get started","kind":"primary","size":"md","className":"awt-hide-on-mobile"} /-->
+<!-- wp:awt/button {"text":"Get started","kind":"primary","size":"md","href":"/contact/","className":"awt-hide-on-mobile"} /-->
 <!-- wp:awt/color-scheme-toggle {"kind":"icon-only"} /-->
 <!-- /wp:awt/header-global -->

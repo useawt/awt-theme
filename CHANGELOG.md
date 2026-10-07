@@ -10,6 +10,18 @@
      markdownlint enforces the structure in CI. Newest release first.
      The Unreleased section accumulates entries between releases. -->
 
+## Unreleased
+
+### [A11y]
+
+- The Home page and Feature grid patterns no longer repeat each card's heading in its icon for screen
+  readers.
+
+### [Improvement]
+
+- The buttons in the Hero, Home page and Marketing header patterns now link to /contact/ and /docs/.
+  Change them to your own pages after inserting.
+
 ## 2026.10.1 (2026-10-05)
 
 ### [Improvement]
