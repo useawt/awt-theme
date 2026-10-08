@@ -264,6 +264,9 @@ Reports about real barriers are treated as bugs, not feature requests.
 == Changelog ==
 
 <!-- CHANGELOG_START -->
+= 2026.10.4 (2026-10-08) =
+* [Improvement] No changes in the theme itself. It carries the same version number as the AWT Blocks plugin, which has changes in this release.
+
 = 2026.10.3 (2026-10-08) =
 * [Improvement] Colors picked from the palette now take their dark values on a dark page and in a dark section. A palette color you changed in the Site Editor or in CSS keeps your value.
 * [Improvement] AWT's theme details window now lists the AWT Blocks changes too, like What's new does.
@@ -294,10 +297,6 @@ Reports about real barriers are treated as bugs, not feature requests.
 * [Improvement] In the editor, a section with its own theme now shows your Custom CSS colours, as the published page does.
 * [Improvement] Light pages now keep the font you set in Custom CSS or in Styles.
 * [Improvement] The Site Logo block now shows your light-mode or dark-mode logo from AWT Settings, to match the page.
-
-= 2026.09.37 (2026-09-26) =
-* [Improvement] An empty blog or archive page now says "No posts yet."
-* [Improvement] WordPress no longer wrongly says the theme is untested on minor WordPress updates, such as 7.1.2.
 <!-- CHANGELOG_END -->
 
 == Upgrade Notice ==
