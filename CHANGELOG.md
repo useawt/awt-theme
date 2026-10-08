@@ -12,6 +12,10 @@
 
 ## Unreleased
 
+### [New]
+
+- What's new and the AWT box on the dashboard show how you can help spread the word about AWT.
+
 ### [Improvement]
 
 - The steps for updating AWT by hand name the buttons your version of WordPress shows. The theme's

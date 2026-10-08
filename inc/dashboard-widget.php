@@ -74,6 +74,8 @@ function render(): void {
 	$version = \AWT\Theme\AWT_THEME_VERSION;
 	$data    = function_exists( '\\AWT\\Theme\\WhatsNew\\changelog' ) ? WhatsNew\changelog() : null;
 
+	\AWT\Theme\SpreadTheWord\render_line();
+
 	printf(
 		'<p class="awt-dash__version">%s</p>',
 		sprintf(
@@ -128,6 +130,11 @@ function style(): void {
 	$printed = true;
 	?>
 	<style>
+		#awt_dashboard .awt-dash__ask {
+			margin: 0 -12px 12px;
+			padding: 0 12px 12px;
+			border-block-end: 1px solid #dcdcde;
+		}
 		#awt_dashboard .awt-dash__version { margin-block-start: 0; }
 		#awt_dashboard .awt-dash__release {
 			font-size: 12px;
