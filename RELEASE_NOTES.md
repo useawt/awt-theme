@@ -1,5 +1,5 @@
-## 2026.10.4 (2026-10-08)
+## 2026.10.5 (2026-10-08)
 
 ### [Improvement]
 
-- No changes in the theme itself. It carries the same version number as the AWT Blocks plugin, which has changes in this release.
+- The steps for updating AWT by hand name the buttons your version of WordPress shows. The theme's replace button was named wrongly before.

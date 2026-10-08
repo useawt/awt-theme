@@ -10,11 +10,7 @@
      markdownlint enforces the structure in CI. Newest release first.
      The Unreleased section accumulates entries between releases. -->
 
-## Unreleased
-
-### [New]
-
-- What's new and the AWT box on the dashboard show how you can help spread the word about AWT.
+## 2026.10.5 (2026-10-08)
 
 ### [Improvement]
 

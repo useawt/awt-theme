@@ -264,6 +264,9 @@ Reports about real barriers are treated as bugs, not feature requests.
 == Changelog ==
 
 <!-- CHANGELOG_START -->
+= 2026.10.5 (2026-10-08) =
+* [Improvement] The steps for updating AWT by hand name the buttons your version of WordPress shows. The theme's replace button was named wrongly before.
+
 = 2026.10.4 (2026-10-08) =
 * [Improvement] No changes in the theme itself. It carries the same version number as the AWT Blocks plugin, which has changes in this release.
 
@@ -292,11 +295,6 @@ Reports about real barriers are treated as bugs, not feature requests.
 
 = 2026.09.39 (2026-09-28) =
 * [Improvement] No changes in the theme itself. It carries the same version number as the AWT Blocks plugin, which has changes in this release.
-
-= 2026.09.38 (2026-09-27) =
-* [Improvement] In the editor, a section with its own theme now shows your Custom CSS colours, as the published page does.
-* [Improvement] Light pages now keep the font you set in Custom CSS or in Styles.
-* [Improvement] The Site Logo block now shows your light-mode or dark-mode logo from AWT Settings, to match the page.
 <!-- CHANGELOG_END -->
 
 == Upgrade Notice ==
