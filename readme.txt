@@ -264,6 +264,10 @@ Reports about real barriers are treated as bugs, not feature requests.
 == Changelog ==
 
 <!-- CHANGELOG_START -->
+= 2026.10.3 (2026-10-08) =
+* [Improvement] Colors picked from the palette now take their dark values on a dark page and in a dark section. A palette color you changed in the Site Editor or in CSS keeps your value.
+* [Improvement] AWT's theme details window now lists the AWT Blocks changes too, like What's new does.
+
 = 2026.10.2 (2026-10-07) =
 * [A11y] The Home page and Feature grid patterns no longer repeat each card's heading in its icon for screen readers.
 * [Improvement] AWT's theme details window now opens on a site that has AWT updates switched off.
@@ -294,10 +298,6 @@ Reports about real barriers are treated as bugs, not feature requests.
 = 2026.09.37 (2026-09-26) =
 * [Improvement] An empty blog or archive page now says "No posts yet."
 * [Improvement] WordPress no longer wrongly says the theme is untested on minor WordPress updates, such as 7.1.2.
-
-= 2026.09.36 (2026-09-26) =
-* [Improvement] Text improvements to admin pages.
-* [Improvement] Other small improvements.
 <!-- CHANGELOG_END -->
 
 == Upgrade Notice ==
