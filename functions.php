@@ -339,6 +339,111 @@ function custom_css(): string {
 }
 
 /**
+ * Palette colors that follow the light or dark theme they sit in.
+ *
+ * `theme.json` holds the palette as Carbon White's hex values, so the block
+ * color picker has real colors to show and the editor's contrast checks have
+ * numbers to measure. WordPress prints them once, on `:root`, and the classes
+ * it gives a picked color (`.has-text-secondary-color` and the like) read
+ * them from there. Nothing redefined them, so a picked color kept its light
+ * value on a dark page and inside a dark section: "Text secondary" measured
+ * 2.32:1 on #161616, and a "Layer 01" box kept its light grey under light
+ * text, 1.00:1 (awt-workspace #24, 2026-10-07).
+ *
+ * This points each palette color at its Carbon token instead
+ * (`--wp--preset--color--text-secondary: var(--cds-text-secondary)`). It has
+ * to be declared on the scope classes, where the tokens live: a custom
+ * property's `var()` resolves on the element that declares it, and `:root`
+ * has no color tokens at all, so declaring it there would empty every picked
+ * color. Putting `var()` in `theme.json` itself does exactly that, which is
+ * why the hex values stay.
+ *
+ * A color is left alone, keeping its fixed value, when:
+ *
+ * - its Carbon token is missing in any of the four scopes, so the result
+ *   could never be empty;
+ * - the site owner changed it in the Site Editor (Styles → Colors). That
+ *   value is printed on `:root` too, and the scope classes would hide it;
+ * - Custom CSS, or WordPress's Additional CSS, sets it. Those rules are
+ *   usually written on `:root` or `body` and would lose the same way.
+ *
+ * AWT Premium's brand colors set the tokens, not the palette, so palette
+ * colors follow them in both schemes with no help from here.
+ *
+ * With it, the three cases above measure 10.59:1, 13.76:1 and 10.59:1.
+ *
+ * @return string Declarations, e.g. `--wp--preset--color--text-secondary:var(--cds-text-secondary);`, or ''.
+ */
+function palette_scope_declarations(): string {
+	$resolved = DesignSystem\Registry::get_active()->get_resolved_palette();
+	if ( empty( $resolved ) ) {
+		return '';
+	}
+
+	$theme_data = \WP_Theme_JSON_Resolver::get_theme_data()->get_settings();
+	$palette    = $theme_data['color']['palette']['theme'] ?? array();
+
+	// The same palette after the owner's Site Editor edits are merged in.
+	$merged = array();
+	foreach ( (array) wp_get_global_settings( array( 'color', 'palette', 'theme' ) ) as $entry ) {
+		if ( isset( $entry['slug'], $entry['color'] ) ) {
+			$merged[ $entry['slug'] ] = strtolower( (string) $entry['color'] );
+		}
+	}
+
+	$owner_css = custom_css() . "\n" . wp_get_custom_css();
+
+	$out = '';
+	foreach ( (array) $palette as $entry ) {
+		$slug = (string) ( $entry['slug'] ?? '' );
+		if ( ! preg_match( '/^[a-z0-9-]+$/', $slug ) ) {
+			continue;
+		}
+		foreach ( array( 'white', 'g10', 'g90', 'g100' ) as $scope ) {
+			if ( ! isset( $resolved[ $scope ][ $slug ] ) ) {
+				continue 2;
+			}
+		}
+		if ( isset( $merged[ $slug ] ) && strtolower( (string) ( $entry['color'] ?? '' ) ) !== $merged[ $slug ] ) {
+			continue;
+		}
+		if ( preg_match( '/--wp--preset--color--' . preg_quote( $slug, '/' ) . '\s*:/', $owner_css ) ) {
+			continue;
+		}
+		$out .= '--wp--preset--color--' . $slug . ':var(--cds-' . $slug . ');';
+	}
+	return $out;
+}
+
+/**
+ * The palette rule for the front end: one block on the four scope classes,
+ * which is where the page and every themed section get their tokens.
+ */
+function palette_scope_css(): string {
+	$declarations = palette_scope_declarations();
+	return $declarations === '' ? '' : '.cds--white,.cds--g10,.cds--g90,.cds--g100{' . $declarations . '}';
+}
+
+/**
+ * The palette rule for the editor canvas.
+ *
+ * The canvas body carries no scope class; it gets the site's tokens on
+ * `body.editor-styles-wrapper` from `editor_scope_css()`. So the rule goes on
+ * that body as well as on the scope classes, which themed sections in the
+ * canvas do carry. Without the body selector a dark canvas still previewed
+ * "Text secondary" at 2.32:1 (measured 2026-10-07).
+ *
+ * It is the same for both schemes, because `var()` resolves on the canvas body
+ * against whichever tokens are there. That is also why it stays a separate
+ * entry from `editor_scope_css()`: AWT Premium's light/dark switch in the
+ * editor swaps that entry by its exact text, and has nothing to swap here.
+ */
+function editor_palette_scope_css(): string {
+	$declarations = palette_scope_declarations();
+	return $declarations === '' ? '' : 'body.editor-styles-wrapper,.cds--white,.cds--g10,.cds--g90,.cds--g100{' . $declarations . '}';
+}
+
+/**
  * Default scheme + honor-system-preference + allow-visitor-override flags.
  *
  * @return array{default: string, honorSystemPreference: bool, allowVisitorOverride: bool}
@@ -908,6 +1013,12 @@ add_action(
 		wp_enqueue_style( 'awt-theme-carbon', get_template_directory_uri() . '/assets/css/foundation.min.css', array(), (string) filemtime( $carbon_path ) );
 		wp_enqueue_style( 'awt-theme', get_template_directory_uri() . '/assets/css/theme.min.css', array( 'awt-theme-carbon' ), (string) filemtime( $theme_path ) );
 
+		// Palette colors follow the light or dark scope they sit in.
+		$palette_css = palette_scope_css();
+		if ( $palette_css !== '' ) {
+			wp_add_inline_style( 'awt-theme-carbon', $palette_css );
+		}
+
 		$scale_css = type_scale_css();
 		if ( $scale_css !== '' ) {
 			wp_add_inline_style( 'awt-theme', $scale_css );
@@ -1101,6 +1212,16 @@ add_filter(
 		if ( $scope_css !== '' ) {
 			$existing[] = array(
 				'css'            => $scope_css,
+				'__unstableType' => 'theme',
+			);
+		}
+
+		// Palette colors follow the canvas scheme and themed sections, as on
+		// the page. A separate entry: see editor_palette_scope_css().
+		$palette_css = editor_palette_scope_css();
+		if ( $palette_css !== '' ) {
+			$existing[] = array(
+				'css'            => $palette_css,
 				'__unstableType' => 'theme',
 			);
 		}

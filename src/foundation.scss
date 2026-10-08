@@ -22,9 +22,12 @@
 // Reset + base element styles.
 @use '@carbon/styles/scss/reset';
 
-// Token system: :root gets the default (white) theme; the four zone classes
-// (.cds--white / .cds--g10 / .cds--g90 / .cds--g100) re-scope tokens so the
-// style variations and per-section themeScope overrides work.
+// Token system: the four zone classes (.cds--white / .cds--g10 / .cds--g90 /
+// .cds--g100) carry the color tokens, so the style variations and per-section
+// themeScope overrides work. `theme` only defines the mixin and prints nothing:
+// :root has no color tokens. The page gets them from the zone class the theme
+// always puts on <body>, so a var(--cds-…) declared on :root resolves to
+// nothing (found 2026-10-07, awt-workspace #24).
 @use '@carbon/styles/scss/theme';
 @use '@carbon/styles/scss/zone';
 
