@@ -15,7 +15,9 @@
  *   3. Writes build/changelog.json (schemaVersion 1, last 10 releases) —
  *      the What's new panel reads this bundled file.
  *   4. Writes RELEASE_NOTES.md (the GitHub Release body).
- *   5. Stages the outputs in git and prints the coordinator checklist.
+ *   5. Regenerates the translation template (languages/*.pot) with the
+ *      repo's own `i18n:pot` script, stamped with this version.
+ *   6. Stages the outputs in git and prints the coordinator checklist.
  *
  * One copy of this script lives in each repo (kept in sync manually —
  * see the spec). Repo differences are feature-detected: no readme.txt →
@@ -140,6 +142,62 @@ function replaceBetween(haystack, marker, body) {
 		return null;
 	}
 	return haystack.replace(re, `$1\n${body}\n$2`);
+}
+
+/**
+ * Regenerate the translation template, so every release ships one that lists
+ * the strings it actually has. Nothing did this before 2026-10-08 and the
+ * template drifted three times, once by seven weeks (Stage 1 spec). It runs
+ * the repo's own `i18n:pot` script, which knows the text domain, the output
+ * file and what to leave out, so there is one definition of the template.
+ *
+ * The version headers are bumped by hand after this script runs, so make-pot
+ * still reads the previous version; the template's Project-Id-Version is set
+ * to the release here. Needs WP-CLI, and stops the release without it rather
+ * than ship a stale template quietly.
+ *
+ * @param {string}  version Release version.
+ * @param {boolean} dryRun  Report only.
+ * @return {string|null} The template's path, relative to the repo, to stage.
+ */
+function refreshPot(version, dryRun) {
+	const pkg = JSON.parse(
+		fs.readFileSync(path.join(ROOT, 'package.json'), 'utf8')
+	);
+	const script = pkg.scripts && pkg.scripts['i18n:pot'];
+	if (!script) {
+		console.log('→ no i18n:pot script in this repo, so no template.');
+		return null;
+	}
+	const target = script.match(/make-pot\s+\S+\s+(\S+\.pot)/);
+	if (!target) {
+		fail('The i18n:pot script names no .pot file.');
+	}
+	const rel = target[1];
+	if (dryRun) {
+		console.log(`→ would regenerate ${rel}.`);
+		return null;
+	}
+	try {
+		execSync('npm run --silent i18n:pot', { cwd: ROOT, stdio: 'pipe' });
+	} catch (e) {
+		fail(
+			`Regenerating ${rel} failed. It needs WP-CLI (wp i18n make-pot).\n${String(e.stderr || e.message)}`
+		);
+	}
+	const potPath = path.join(ROOT, rel);
+	const pot = fs.readFileSync(potPath, 'utf8');
+	const stamped = pot.replace(
+		/^("Project-Id-Version: .+ )\S+(\\n")$/m,
+		`$1${version}$2`
+	);
+	if (stamped === pot) {
+		fail(`${rel} has no Project-Id-Version line to stamp.`);
+	}
+	fs.writeFileSync(potPath, stamped);
+	const count = (stamped.match(/^msgid "./gm) || []).length;
+	console.log(`→ ${rel} regenerated (${count} strings).`);
+	return rel;
 }
 
 function main() {
@@ -295,6 +353,12 @@ function main() {
 	staged.push('RELEASE_NOTES.md');
 	console.log('→ RELEASE_NOTES.md written.');
 
+	// --- translation template ------------------------------------------------
+	const pot = refreshPot(version, dryRun);
+	if (pot) {
+		staged.push(pot);
+	}
+
 	// --- stage + checklist ---------------------------------------------------
 	if (!dryRun) {
 		execSync(`git add ${staged.join(' ')}`, { cwd: ROOT });
@@ -315,4 +379,4 @@ if (require.main === module) {
 	main();
 }
 
-module.exports = { parseChangelog };
+module.exports = { parseChangelog, refreshPot };
