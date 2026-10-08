@@ -10,6 +10,13 @@
      markdownlint enforces the structure in CI. Newest release first.
      The Unreleased section accumulates entries between releases. -->
 
+## Unreleased
+
+### [Improvement]
+
+- The steps for updating AWT by hand name the buttons your version of WordPress shows. The theme's
+  replace button was named wrongly before.
+
 ## 2026.10.4 (2026-10-08)
 
 ### [Improvement]

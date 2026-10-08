@@ -263,7 +263,8 @@ class Test_Update_Notice extends WP_UnitTestCase {
 
 		$text = UpdateNotice\message( $state )['text'];
 		$this->assertStringContainsString( Updates\slug(), $text );
-		$this->assertStringContainsString( 'Replace current with uploaded', $text );
+		$this->assertStringContainsString( Updates\upload_labels()['replace'], $text );
+		$this->assertStringNotContainsString( 'Replace current with uploaded', $text, 'that is the plugin\'s button, not the theme\'s' );
 		$this->assertStringContainsString( 'rename the folder', $text, 'it must warn against renaming' );
 	}
 

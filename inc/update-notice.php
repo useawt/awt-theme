@@ -467,15 +467,21 @@ function message( array $state ): ?array {
 				'<code>' . esc_html( (string) $state['folder'] ) . '</code>',
 				'<code>' . esc_html( (string) ( $state['expected'] ?? '' ) ) . '</code>'
 			);
-			$text .= ' ';
+			$text   .= ' ';
+			$replace = esc_html( Updates\upload_labels()['replace'] );
 			if ( ! empty( $state['version'] ) ) {
 				$text .= sprintf(
-					/* translators: %s: the new version number. */
-					esc_html__( 'AWT %s is out. Upload it yourself and choose "Replace current with uploaded". It will install in the right folder.', 'awt' ),
-					'<strong>' . esc_html( (string) $state['version'] ) . '</strong>'
+					/* translators: 1: the new version number. 2: WordPress's button that replaces the installed theme. */
+					esc_html__( 'AWT %1$s is out. Upload it yourself and choose "%2$s". It will install in the right folder.', 'awt' ),
+					'<strong>' . esc_html( (string) $state['version'] ) . '</strong>',
+					$replace
 				);
 			} else {
-				$text .= esc_html__( 'When a new version is out, upload it yourself and choose "Replace current with uploaded". It will install in the right folder.', 'awt' );
+				$text .= sprintf(
+					/* translators: %s: WordPress's button that replaces the installed theme. */
+					esc_html__( 'When a new version is out, upload it yourself and choose "%s". It will install in the right folder.', 'awt' ),
+					$replace
+				);
 			}
 			return array(
 				'level' => 'warning',

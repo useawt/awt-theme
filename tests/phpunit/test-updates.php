@@ -332,6 +332,40 @@ class Test_Updates extends WP_UnitTestCase {
 	/* ------------------------------------------- what may install itself */
 
 	/**
+	 * Uploading by hand names the buttons the site's own WordPress shows.
+	 * WordPress 6.8 renamed both; the theme's was never "Replace current with
+	 * uploaded", which is the plugin's.
+	 */
+	public function test_upload_labels_follow_the_wordpress_version(): void {
+		global $wp_version;
+		$saved = $wp_version;
+
+		$wp_version = '6.7.2'; // phpcs:ignore WordPress.WP.GlobalVariablesOverride.Prohibited -- restored below.
+		$before     = Updates\upload_labels();
+		$wp_version = '6.8'; // phpcs:ignore WordPress.WP.GlobalVariablesOverride.Prohibited -- restored below.
+		$after      = Updates\upload_labels();
+		$message    = Updates\explain_manual_update( false, '', null, array( 'theme' => Updates\slug() ) )->get_error_message();
+		$wp_version = $saved; // phpcs:ignore WordPress.WP.GlobalVariablesOverride.Prohibited -- restoring.
+
+		$this->assertSame(
+			array(
+				'add'     => 'Add New Theme',
+				'replace' => 'Replace active with uploaded',
+			),
+			$before
+		);
+		$this->assertSame(
+			array(
+				'add'     => 'Add Theme',
+				'replace' => 'Replace installed with uploaded',
+			),
+			$after
+		);
+		$this->assertStringContainsString( 'Themes → Add Theme → Upload Theme and choose "Replace installed with uploaded"', $message );
+		$this->assertStringContainsString( 'useawt.com/faq/#updating', $message );
+	}
+
+	/**
 	 * "Tested up to 7.1" covers 7.1.2, so WordPress does not call the theme
 	 * untested on a point release. A newer major version still gets the warning.
 	 */

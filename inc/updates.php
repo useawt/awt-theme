@@ -842,6 +842,28 @@ function fix_themes_screen_notice( $prepared ) {
 }
 
 /**
+ * The words on WordPress's own theme upload screens, for the version this
+ * site runs.
+ *
+ * WordPress 6.8 renamed them: the button on the Themes screen went from
+ * "Add New Theme" to "Add Theme", and the one that replaces a theme already
+ * installed went from "Replace active with uploaded" to "Replace installed
+ * with uploaded". Instructions that name a button the screen does not have
+ * leave the reader looking for it, so the notices name the one they will see.
+ * (The plugin's button has always been "Replace current with uploaded"; the
+ * theme's never was, though AWT said so until 2026-10-08.)
+ *
+ * @return array{add: string, replace: string} The two labels.
+ */
+function upload_labels(): array {
+	$renamed = version_compare( get_bloginfo( 'version' ), '6.8-alpha', '>=' );
+	return array(
+		'add'     => $renamed ? __( 'Add Theme', 'awt' ) : __( 'Add New Theme', 'awt' ),
+		'replace' => $renamed ? __( 'Replace installed with uploaded', 'awt' ) : __( 'Replace active with uploaded', 'awt' ),
+	);
+}
+
+/**
  * Say what to do when someone presses "Update" anyway.
  *
  * Dashboard → Updates puts a checkbox beside every theme with an update,
@@ -866,11 +888,14 @@ function explain_manual_update( $reply, $package, $upgrader, $hook_extra = array
 		return $reply;
 	}
 
+	$labels = upload_labels();
 	return new \WP_Error(
 		'awt_manual_update',
 		sprintf(
-			/* translators: %s: URL of the update instructions. */
-			__( 'This version can\'t be downloaded automatically. Download it from the AWT website, then go to Appearance → Themes → Add New Theme → Upload Theme and choose "Replace current with uploaded". Your settings and content are kept. %s', 'awt' ),
+			/* translators: 1: WordPress's "Add Theme" button. 2: WordPress's button that replaces the installed theme. 3: URL of the update instructions. */
+			__( 'This version can\'t be downloaded automatically. Download it from the AWT website, then go to Appearance → Themes → %1$s → Upload Theme and choose "%2$s". Your settings and content are kept. %3$s', 'awt' ),
+			$labels['add'],
+			$labels['replace'],
 			'https://useawt.com/faq/#updating'
 		)
 	);
