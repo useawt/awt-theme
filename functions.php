@@ -502,6 +502,23 @@ function color_scheme_settings(): array {
 }
 
 /**
+ * The colour schemes visitors can see the site in.
+ *
+ * Both when the page follows the visitor's system setting or offers the
+ * toggle, else only the site's own. The editor's contrast checks judge a
+ * block in each of these (AWT Blocks reads it through `awtEditorData`).
+ *
+ * @return string[] 'light' and/or 'dark'.
+ */
+function visitor_schemes(): array {
+	$settings = color_scheme_settings();
+	if ( $settings['honorSystemPreference'] || $settings['allowVisitorOverride'] ) {
+		return array( 'light', 'dark' );
+	}
+	return array( $settings['default'] );
+}
+
+/**
  * Used by awt/color-scheme-toggle's render.php to decide whether to self-remove.
  */
 function color_scheme_allow_visitor_override(): bool {

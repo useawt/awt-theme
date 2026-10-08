@@ -16,6 +16,7 @@ declare( strict_types = 1 );
  * The resolver and its filter.
  *
  * @covers \AWT\Theme\color_scheme_settings
+ * @covers \AWT\Theme\visitor_schemes
  */
 class Test_Color_Scheme_Settings extends WP_UnitTestCase {
 
@@ -80,5 +81,17 @@ class Test_Color_Scheme_Settings extends WP_UnitTestCase {
 		);
 
 		$this->assertSame( 'light', \AWT\Theme\color_scheme_settings()['default'] );
+	}
+
+	/** A site that follows the visitor is seen in both schemes; a pinned one in its own. */
+	public function test_visitor_schemes_follow_the_setting(): void {
+		\AWT\Theme\Settings\set( 'site.colorScheme', 'default' );
+		$this->assertSame( array( 'light', 'dark' ), \AWT\Theme\visitor_schemes() );
+
+		\AWT\Theme\Settings\set( 'site.colorScheme', 'dark' );
+		$this->assertSame( array( 'dark' ), \AWT\Theme\visitor_schemes() );
+
+		\AWT\Theme\Settings\set( 'site.colorScheme', 'light' );
+		$this->assertSame( array( 'light' ), \AWT\Theme\visitor_schemes() );
 	}
 }
