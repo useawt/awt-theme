@@ -151,10 +151,11 @@ function replaceBetween(haystack, marker, body) {
  * the repo's own `i18n:pot` script, which knows the text domain, the output
  * file and what to leave out, so there is one definition of the template.
  *
- * The version headers are bumped by hand after this script runs, so make-pot
- * still reads the previous version; the template's Project-Id-Version is set
- * to the release here. Needs WP-CLI, and stops the release without it rather
- * than ship a stale template quietly.
+ * The version headers are bumped by hand, before or after this script runs,
+ * so make-pot may read the previous version; the template's
+ * Project-Id-Version is set to the release here either way. Needs WP-CLI,
+ * and stops the release without it rather than ship a stale template
+ * quietly.
  *
  * @param {string}  version Release version.
  * @param {boolean} dryRun  Report only.
@@ -187,13 +188,11 @@ function refreshPot(version, dryRun) {
 	}
 	const potPath = path.join(ROOT, rel);
 	const pot = fs.readFileSync(potPath, 'utf8');
-	const stamped = pot.replace(
-		/^("Project-Id-Version: .+ )\S+(\\n")$/m,
-		`$1${version}$2`
-	);
-	if (stamped === pot) {
+	const versionLine = /^("Project-Id-Version: .+ )\S+(\\n")$/m;
+	if (!versionLine.test(pot)) {
 		fail(`${rel} has no Project-Id-Version line to stamp.`);
 	}
+	const stamped = pot.replace(versionLine, `$1${version}$2`);
 	fs.writeFileSync(potPath, stamped);
 	const count = (stamped.match(/^msgid "./gm) || []).length;
 	console.log(`→ ${rel} regenerated (${count} strings).`);
