@@ -42,6 +42,7 @@ class Test_Admin_Bar extends WP_UnitTestCase {
 		delete_site_transient( Updates\CACHE_KEY );
 		remove_all_filters( 'awt_update_environment' );
 		remove_all_filters( 'automatic_updater_disabled' );
+		remove_all_filters( 'awt_theme_update_package' );
 		Settings\flush_cache();
 		parent::tear_down();
 	}
@@ -220,6 +221,21 @@ class Test_Admin_Bar extends WP_UnitTestCase {
 		$this->assertSame( 'auto', AdminBar\update_state() );
 		$this->assertSame( 'Updating automatically', AdminBar\state_label( 'auto' ) );
 		$this->assertSame( '', AdminBar\state_href( 'auto' ), 'nothing to go and do' );
+	}
+
+	/**
+	 * With no package there is nothing to install, so the update is not
+	 * coming on its own, however soaked it is. A build of AWT that withholds
+	 * the package (AWT Premium, with no licence) was told "Updating
+	 * automatically" while nothing would ever arrive.
+	 */
+	public function test_an_update_with_no_package_needs_a_person(): void {
+		add_filter( 'awt_update_environment', static fn () => 'production' );
+		add_filter( 'automatic_updater_disabled', '__return_false', 99 );
+		add_filter( 'awt_theme_update_package', '__return_empty_string' );
+		$this->cache_manifest_with_releases( '2999.01.0', false );
+
+		$this->assertSame( 'update', AdminBar\update_state() );
 	}
 
 	/** One behind a wall still needs a person, and points at the screen. */

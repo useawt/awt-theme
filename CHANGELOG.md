@@ -14,6 +14,8 @@
 
 ### [Improvement]
 
+- The toolbar's AWT menu no longer says "Updating automatically" when the update has nothing to download;
+  it says an update is ready to install.
 - For developers: the `awt_update_package_sources` filter adds a place updates may download from, and
   `awt_theme_manual_update_message` changes the message shown when an update can't be downloaded.
   When the `awt_theme_update_package` filter leaves no package, the theme no longer tries to update

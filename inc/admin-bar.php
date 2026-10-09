@@ -99,10 +99,16 @@ function update_state(): string {
 	}
 
 	// Is it coming on its own? Only then is there nothing for anybody to do.
+	// And only with something to install: a build of AWT can withhold the
+	// package (AWT Premium does, on a site with no licence), and then nothing
+	// arrives however long the site waits.
 	if ( function_exists( '\\AWT\\Theme\\Updates\\automatic_allowed' ) && Updates\automatic_allowed() ) {
 		$target = Updates\auto_install_target( $cached, (string) $installed[0] );
 		if ( is_array( $target ) && (string) $target['version'] === $latest ) {
-			return 'auto';
+			$package = Updates\trusted_package( (string) ( $target['theme']['package'] ?? '' ) );
+			if ( (string) apply_filters( 'awt_theme_update_package', $package, $cached, $latest ) !== '' ) {
+				return 'auto';
+			}
 		}
 	}
 
