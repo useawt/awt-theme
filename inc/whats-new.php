@@ -457,8 +457,6 @@ function render_tab(): void {
 		echo '</div>';
 	}
 
-	\AWT\Theme\SpreadTheWord\render_card();
-
 	$unread_versions = array_column( $unread, 'version' );
 
 	foreach ( array_slice( (array) $data['releases'], 0, 10 ) as $i => $release ) {

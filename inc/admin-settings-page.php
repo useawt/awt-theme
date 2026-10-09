@@ -210,6 +210,8 @@ function render_page(): void {
 			</form>
 			<?php
 		}
+		// The ask to tell others about AWT, at the foot of every tab.
+		\AWT\Theme\SpreadTheWord\render_card();
 		// Unsaved-changes guard. A submit asks for confirmation only when a
 		// destructive choice (style variation or header preset) differs from
 		// what is applied now. A submit counts as leaving, so the tab prompt
@@ -341,8 +343,9 @@ function enqueue_assets( string $hook_suffix ): void {
 	// pill look everywhere (header-widget rows, the color editor). #50575e on
 	// #fff is about 7:1, so the 11px text passes WCAG 1.4.3. Hover and focus
 	// deepen the color and add a surface; focus reuses the WP admin ring.
-	// - The ask on What's new (.awt-share-ask) matches the release cards below
-	// it, so it reads as part of the page rather than as a notice.
+	// - The ask at the foot of every tab (.awt-share-ask) is a plain white card
+	// like What's new's release cards, so it reads as part of the page rather
+	// than as a notice.
 	wp_register_style( 'awt-theme-settings-admin', false, array(), wp_get_theme()->get( 'Version' ) );
 	wp_enqueue_style( 'awt-theme-settings-admin' );
 	wp_add_inline_style(
@@ -362,9 +365,9 @@ function enqueue_assets( string $hook_suffix ): void {
 		.awt-settings-page .awt-whats-new-pinned { margin: 16px 0; padding: 16px; border: 1px solid #b32d2e; border-left-width: 4px; background: #fff; border-radius: 4px; }
 		.awt-settings-page .awt-whats-new-pinned h3 { margin-top: 0; }
 		.awt-settings-page .awt-whats-new-pinned form { margin-top: 12px; }
-		.awt-settings-page .awt-share-ask { display: flex; gap: 14px; align-items: flex-start; margin: 16px 0 20px; padding: 16px 20px; background: #fff; border: 1px solid #c3c4c7; border-radius: 4px; }
+		.awt-settings-page .awt-share-ask { display: flex; gap: 14px; align-items: flex-start; margin: 32px 0 20px; padding: 16px 20px; background: #fff; border: 1px solid #c3c4c7; border-radius: 4px; }
 		.awt-settings-page .awt-share-ask__icon { flex: none; color: #2271b1; margin-block-start: 1px; }
-		.awt-settings-page .awt-share-ask h3 { margin: 0 0 6px; font-size: 14px; }
+		.awt-settings-page .awt-share-ask h2 { margin: 0 0 6px; font-size: 14px; }
 		.awt-settings-page .awt-share-ask p { margin: 0 0 12px; max-width: 50em; }
 		.awt-settings-page .awt-share-ask .awt-share-ask__links { display: flex; flex-wrap: wrap; align-items: center; gap: 16px; margin-block-end: 0; }
 		.awt-settings-page .form-table th { width: 240px; }

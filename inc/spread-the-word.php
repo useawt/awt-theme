@@ -2,15 +2,15 @@
 /**
  * Asking site owners to tell others about AWT.
  *
- * Two quiet places, both on screens an owner opens anyway: the What's new
- * tab, under its heading, and the top of AWT's dashboard box. Never a notice
- * of its own, never on the front end, nothing to dismiss and nothing fetched:
- * two plain links, one to the GitHub repository and one to the page on
- * useawt.com that holds the share text.
+ * Two quiet places, both on screens an owner opens anyway: the foot of AWT
+ * Settings, under every tab, and the top of AWT's dashboard box. Never a
+ * notice of its own, never on the front end, nothing to dismiss and nothing
+ * fetched: two plain links, one to the GitHub repository and one to the page
+ * on useawt.com that holds the share text.
  *
- * On What's new it comes after the notes that ask for action (an edited
- * template part, the "Needs your attention" box), so a request for help never
- * pushes a security note down the screen.
+ * At the foot of the page it comes after everything a tab asks for, so a
+ * request for help never pushes a setting or a security note down the
+ * screen. It sat under the What's new heading until 2026-10-09.
  *
  * The copy says AWT is free and open source, which is only true of the free
  * build. A build that is not the free one turns it off with the
@@ -48,7 +48,12 @@ function enabled(): bool {
 	return (bool) apply_filters( 'awt_spread_the_word', true );
 }
 
-/** The card on the What's new tab. */
+/**
+ * The card at the foot of AWT Settings.
+ *
+ * Its heading is an h2: it follows the tab's content as a section of the page,
+ * not of whichever tab is open.
+ */
 function render_card(): void {
 	if ( ! enabled() ) {
 		return;
@@ -57,7 +62,7 @@ function render_card(): void {
 	<div class="awt-share-ask">
 		<svg class="awt-share-ask__icon" width="24" height="24" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M12 20.5s-7.5-4.6-7.5-10.2A4.3 4.3 0 0 1 12 7.6a4.3 4.3 0 0 1 7.5 2.7c0 5.6-7.5 10.2-7.5 10.2z" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/></svg>
 		<div>
-			<h3><?php esc_html_e( 'Help more WordPress sites become accessible', 'awt' ); ?></h3>
+			<h2><?php esc_html_e( 'Help more WordPress sites become accessible', 'awt' ); ?></h2>
 			<p><?php esc_html_e( 'AWT is free and open source. If it helps you, tell others about it. A post, a review or a word to a colleague helps the next person find it.', 'awt' ); ?></p>
 			<p class="awt-share-ask__links">
 				<a class="button" href="<?php echo esc_url( GITHUB_URL ); ?>"><?php esc_html_e( 'Star AWT on GitHub', 'awt' ); ?></a>
@@ -78,7 +83,7 @@ function render_line(): void {
 		wp_kses(
 			sprintf(
 				/* translators: 1: link to the useawt.com page on sharing AWT. 2: link to AWT's GitHub repository. Keep the <a> tags around the words that are links. */
-				__( 'Like AWT? Help more sites become accessible: <a href="%1$s">tell others about it</a> or <a href="%2$s">star it on GitHub</a>.', 'awt' ),
+				__( 'Like AWT? Help more sites become accessible: <a href="%1$s">tell others</a> or <a href="%2$s">star it on GitHub</a>.', 'awt' ),
 				esc_url( PAGE_URL ),
 				esc_url( GITHUB_URL )
 			),

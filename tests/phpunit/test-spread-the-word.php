@@ -1,6 +1,7 @@
 <?php
 /**
- * The ask to tell others about AWT, on What's new and the dashboard box.
+ * The ask to tell others about AWT, under every AWT Settings tab and in the
+ * dashboard box.
  *
  * @package AWT\Theme
  */
@@ -14,9 +15,10 @@ declare( strict_types = 1 );
  */
 class Test_Spread_The_Word extends WP_UnitTestCase {
 
-	/** Leave the filter as it was. */
+	/** Leave the filter and the query string as they were. */
 	public function tear_down(): void {
 		remove_all_filters( 'awt_spread_the_word' );
+		unset( $_GET['tab'] );
 		parent::tear_down();
 	}
 
@@ -36,7 +38,7 @@ class Test_Spread_The_Word extends WP_UnitTestCase {
 	public function test_the_card_links_to_github_and_the_page(): void {
 		$html = $this->capture( '\\AWT\\Theme\\SpreadTheWord\\render_card' );
 
-		$this->assertStringContainsString( '<h3>Help more WordPress sites become accessible</h3>', $html );
+		$this->assertStringContainsString( '<h2>Help more WordPress sites become accessible</h2>', $html );
 		$this->assertStringContainsString( 'href="https://github.com/useawt/awt-theme"', $html );
 		$this->assertStringContainsString( 'href="https://useawt.com/spread-the-word/"', $html );
 		$this->assertStringContainsString( 'aria-hidden="true"', $html, 'the heart is decoration' );
@@ -46,7 +48,7 @@ class Test_Spread_The_Word extends WP_UnitTestCase {
 	public function test_the_line_links_to_github_and_the_page(): void {
 		$html = $this->capture( '\\AWT\\Theme\\SpreadTheWord\\render_line' );
 
-		$this->assertStringContainsString( '<a href="https://useawt.com/spread-the-word/">tell others about it</a>', $html );
+		$this->assertStringContainsString( '<a href="https://useawt.com/spread-the-word/">tell others</a>', $html );
 		$this->assertStringContainsString( '<a href="https://github.com/useawt/awt-theme">star it on GitHub</a>', $html );
 	}
 
@@ -83,32 +85,41 @@ class Test_Spread_The_Word extends WP_UnitTestCase {
 	}
 
 	/**
-	 * On What's new it sits between the heading and the release notes.
-	 *
-	 * The notes come from `build/changelog.json`, written at release time and
-	 * absent on CI, and the tab says so instead of drawing the panel. Both
-	 * branches are asserted rather than one assumed.
+	 * Every AWT Settings tab ends with it, after the tab's own content.
 	 */
-	public function test_whats_new_shows_it_above_the_notes(): void {
+	public function test_every_settings_tab_ends_with_it(): void {
 		wp_set_current_user( self::factory()->user->create( array( 'role' => 'administrator' ) ) );
 
-		$html = $this->capture( '\\AWT\\Theme\\WhatsNew\\render_tab' );
+		foreach ( array_keys( \AWT\Theme\AdminPage\tabs() ) as $tab ) {
+			$_GET['tab'] = $tab;
+			$html        = $this->capture( '\\AWT\\Theme\\AdminPage\\render_page' );
 
-		if ( ! \AWT\Theme\WhatsNew\changelog() ) {
-			$this->assertStringNotContainsString( 'awt-share-ask', $html );
-			return;
+			$ask = strpos( $html, 'class="awt-share-ask"' );
+			$this->assertIsInt( $ask, "the {$tab} tab shows the ask" );
+			$this->assertSame( 1, substr_count( $html, 'class="awt-share-ask"' ), "the {$tab} tab shows it once" );
+
+			$last_form = strrpos( $html, '</form>' );
+			if ( false !== $last_form ) {
+				$this->assertLessThan( $ask, $last_form, "on the {$tab} tab it follows the tab's forms" );
+			}
 		}
+	}
 
-		$heading = strpos( $html, '<h2>' );
-		$ask     = strpos( $html, 'class="awt-share-ask"' );
-		$notes   = strpos( $html, '<details class="awt-whats-new-release"' );
-		$this->assertIsInt( $ask );
-		$this->assertLessThan( $ask, $heading );
-		$this->assertLessThan( $notes, $ask );
+	/** Turned off, no tab shows it. */
+	public function test_no_settings_tab_shows_it_when_off(): void {
+		wp_set_current_user( self::factory()->user->create( array( 'role' => 'administrator' ) ) );
+		add_filter( 'awt_spread_the_word', '__return_false' );
 
-		$pinned = strpos( $html, 'awt-whats-new-pinned' );
-		if ( false !== $pinned ) {
-			$this->assertLessThan( $ask, $pinned, 'notes that need action stay above the ask' );
+		foreach ( array_keys( \AWT\Theme\AdminPage\tabs() ) as $tab ) {
+			$_GET['tab'] = $tab;
+			$this->assertStringNotContainsString( 'awt-share-ask', $this->capture( '\\AWT\\Theme\\AdminPage\\render_page' ), $tab );
 		}
+	}
+
+	/** What's new no longer carries its own copy. */
+	public function test_whats_new_does_not_show_it_itself(): void {
+		wp_set_current_user( self::factory()->user->create( array( 'role' => 'administrator' ) ) );
+
+		$this->assertStringNotContainsString( 'awt-share-ask', $this->capture( '\\AWT\\Theme\\WhatsNew\\render_tab' ) );
 	}
 }
