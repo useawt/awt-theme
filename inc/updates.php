@@ -96,9 +96,10 @@ const TIMEOUT = 5;
  * Everything a site installs by itself is named by one JSON file on one
  * server, and nothing signs it. That is the whole trust in this channel, so
  * the one thing worth pinning down is the destination: a package URL that is
- * not an AWT release on GitHub is refused, whatever the manifest says. It
- * does not make a tampered manifest harmless — it does stop the simplest
- * version of it, which is pointing a site somewhere else entirely.
+ * not an AWT release on GitHub is refused, whatever the manifest says, unless
+ * code on the site adds another place (see package_sources()). It does not
+ * make a tampered manifest harmless — it does stop the simplest version of
+ * it, which is pointing a site somewhere else entirely.
  *
  * Checked before the `awt_theme_update_package` filter, not after: a filter
  * is code already running on the site and has nothing to gain by lying.
@@ -111,7 +112,7 @@ const PACKAGE_PATH = '/useawt/';
 add_filter( 'site_transient_update_themes', __NAMESPACE__ . '\\offer_update' );
 add_filter( 'auto_update_theme', __NAMESPACE__ . '\\should_auto_update', 10, 2 );
 add_filter( 'themes_api', __NAMESPACE__ . '\\details', 10, 3 );
-add_action( 'in_theme_update_message-awt', __NAMESPACE__ . '\\pair_note', 10, 2 ); // phpcs:ignore WordPress.NamingConventions.ValidHookName.UseUnderscores -- core names this hook after the theme directory.
+add_action( 'in_theme_update_message-' . slug(), __NAMESPACE__ . '\\pair_note', 10, 2 ); // phpcs:ignore WordPress.NamingConventions.ValidHookName.UseUnderscores -- core names this hook after the theme directory.
 add_filter( 'upgrader_pre_download', __NAMESPACE__ . '\\explain_manual_update', 10, 4 );
 add_filter( 'wp_prepare_themes_for_js', __NAMESPACE__ . '\\fix_themes_screen_notice' );
 add_filter( 'wp_prepare_themes_for_js', __NAMESPACE__ . '\\author_opens_new_tab' );
@@ -428,9 +429,47 @@ function tested_up_to( array $data ): string {
 }
 
 /**
+ * The places a package may come from: a host, and the path its packages sit
+ * under.
+ *
+ * AWT's releases on GitHub, unless code on this site adds a place through
+ * `awt_update_package_sources`. AWT Premium does, for its own download
+ * address. A filter is code already running on the site, so it widens
+ * nothing that a tampered manifest could reach by itself. A path has to start
+ * and end with "/", so that "/useawt/" can never match "/useawt-not/".
+ *
+ * @return array<int, array{host: string, path: string}> The allowed places.
+ */
+function package_sources(): array {
+	$sources = apply_filters(
+		'awt_update_package_sources',
+		array(
+			array(
+				'host' => PACKAGE_HOST,
+				'path' => PACKAGE_PATH,
+			),
+		)
+	);
+
+	$valid = array();
+	foreach ( is_array( $sources ) ? $sources : array() as $source ) {
+		$host = strtolower( (string) ( $source['host'] ?? '' ) );
+		$path = (string) ( $source['path'] ?? '' );
+		if ( $host !== '' && str_starts_with( $path, '/' ) && str_ends_with( $path, '/' ) ) {
+			$valid[] = array(
+				'host' => $host,
+				'path' => $path,
+			);
+		}
+	}
+	return $valid;
+}
+
+/**
  * The package URL, or '' when it is not one of ours.
  *
- * See PACKAGE_HOST for what this is and is not worth.
+ * See PACKAGE_HOST for what this is and is not worth, and package_sources()
+ * for where "ours" can be.
  *
  * @param string $url Whatever the manifest named.
  * @return string The same URL, or '' to install nothing.
@@ -446,13 +485,14 @@ function trusted_package( string $url ): string {
 	if ( ( $parts['scheme'] ?? '' ) !== 'https' ) {
 		return '';
 	}
-	if ( strtolower( (string) ( $parts['host'] ?? '' ) ) !== PACKAGE_HOST ) {
-		return '';
+	$host = strtolower( (string) ( $parts['host'] ?? '' ) );
+	$path = (string) ( $parts['path'] ?? '' );
+	foreach ( package_sources() as $source ) {
+		if ( $host === $source['host'] && str_starts_with( $path, $source['path'] ) ) {
+			return $url;
+		}
 	}
-	if ( strpos( (string) ( $parts['path'] ?? '' ), PACKAGE_PATH ) !== 0 ) {
-		return '';
-	}
-	return $url;
+	return '';
 }
 
 /**
@@ -499,27 +539,32 @@ function offer_update( $transient ) {
 		 */
 		$target  = automatic_allowed() ? auto_install_target( $data, $installed ) : null;
 		$package = null === $target ? '' : trusted_package( (string) ( $target['theme']['package'] ?? '' ) );
-		if ( null === $target || '' === $package ) {
-			$transient->no_update[ $slug ] = current_entry( $slug, $installed, $data );
-			unset( $transient->response[ $slug ] );
-			return $transient;
-		}
-		$offer = (string) $target['version'];
+		$offer   = null === $target ? $installed : (string) $target['version'];
+	}
+
+	/*
+	 * Served to everybody since 2026-09-21. It used to be empty on the free
+	 * tier, which made WordPress print "Automatic update is unavailable for
+	 * this theme". The filter stays as the seam an AWT Premium build reaches:
+	 * a Premium site with no licence empties it. It is given the version on
+	 * offer, which during cron is not always the newest.
+	 */
+	$package = (string) apply_filters( 'awt_theme_update_package', $package, $data, $offer );
+
+	// Unattended, no package means nothing to install, so nothing is offered.
+	// An entry with an empty package would have WordPress try, fail, and email
+	// the owner that AWT could not update itself.
+	if ( wp_doing_cron() && '' === $package ) {
+		$transient->no_update[ $slug ] = current_entry( $slug, $installed, $data );
+		unset( $transient->response[ $slug ] );
+		return $transient;
 	}
 
 	$entry = array(
 		'theme'        => $slug,
 		'new_version'  => $offer,
 		'url'          => (string) ( $data['theme']['releaseUrl'] ?? '' ),
-
-		/*
-		 * Served to everybody since 2026-09-21. It used to be empty on the
-		 * free tier, which made WordPress print "Automatic update is
-		 * unavailable for this theme"; the filter stays as the seam an AWT
-		 * Premium build can still reach, but it no longer decides whether a
-		 * free site can update itself.
-		 */
-		'package'      => (string) apply_filters( 'awt_theme_update_package', $package, $data ),
+		'package'      => $package,
 		'requires'     => (string) ( $data['requiresWp'] ?? '' ),
 		'requires_php' => (string) ( $data['requiresPhp'] ?? '' ),
 	);
@@ -875,7 +920,9 @@ function upload_labels(): array {
  * package. What is left is the case where the manifest names a version with
  * no zip attached to its release — which the publisher refuses to do, so it
  * would take a half-published release to get here. The message has to be
- * true in that case rather than describing the old free tier.
+ * true in that case rather than describing the old free tier. A build that
+ * empties the package itself replaces the message through
+ * `awt_theme_manual_update_message`.
  *
  * @param mixed  $reply      False to carry on downloading.
  * @param string $package    The package URL, empty when there is none to get.
@@ -888,15 +935,22 @@ function explain_manual_update( $reply, $package, $upgrader, $hook_extra = array
 		return $reply;
 	}
 
-	$labels = upload_labels();
-	return new \WP_Error(
-		'awt_manual_update',
-		sprintf(
-			/* translators: 1: WordPress's "Add Theme" button. 2: WordPress's button that replaces the installed theme. 3: URL of the update instructions. */
-			__( 'This version can\'t be downloaded automatically. Download it from the AWT website, then go to Appearance → Themes → %1$s → Upload Theme and choose "%2$s". Your settings and content are kept. %3$s', 'awt' ),
-			$labels['add'],
-			$labels['replace'],
-			'https://useawt.com/faq/#updating'
-		)
+	$labels  = upload_labels();
+	$message = sprintf(
+		/* translators: 1: WordPress's "Add Theme" button. 2: WordPress's button that replaces the installed theme. 3: URL of the update instructions. */
+		__( 'This version can\'t be downloaded automatically. Download it from the AWT website, then go to Appearance → Themes → %1$s → Upload Theme and choose "%2$s". Your settings and content are kept. %3$s', 'awt' ),
+		$labels['add'],
+		$labels['replace'],
+		'https://useawt.com/faq/#updating'
 	);
+
+	/**
+	 * Filters what WordPress shows when AWT has no package to download.
+	 *
+	 * A build that empties the package for its own reason (AWT Premium does,
+	 * on a site with no licence) knows the next step better than this does.
+	 *
+	 * @param string $message Plain text, shown as WordPress's update error.
+	 */
+	return new \WP_Error( 'awt_manual_update', (string) apply_filters( 'awt_theme_manual_update_message', $message ) );
 }

@@ -43,6 +43,8 @@ class Test_Updates extends WP_UnitTestCase {
 		remove_all_filters( 'awt_update_check_enabled' );
 		remove_all_filters( 'awt_update_environment' );
 		remove_all_filters( 'awt_deployed_from_source' );
+		remove_all_filters( 'awt_update_package_sources' );
+		remove_all_filters( 'awt_theme_manual_update_message' );
 		parent::tear_down();
 	}
 
@@ -630,6 +632,54 @@ class Test_Updates extends WP_UnitTestCase {
 		$this->assertArrayHasKey( 'awt', $result->no_update );
 	}
 
+	/**
+	 * Unattended, a package the filter empties is the same as no package:
+	 * nothing is offered. This is how an AWT Premium site with no licence
+	 * stays out of background updates without WordPress trying, failing and
+	 * emailing the owner.
+	 */
+	public function test_cron_installs_nothing_when_the_filter_empties_the_package(): void {
+		add_filter( 'awt_update_environment', static fn () => 'production' );
+		add_filter( 'awt_theme_update_package', '__return_empty_string' );
+		$this->cache( '2099.01.1', $this->releases( array( '2099.01.1' => array( 'autoInstall' => true ) ) ) );
+
+		$result = Updates\offer_update( $this->transient() );
+
+		$this->assertArrayNotHasKey( 'awt', $result->response );
+		$this->assertArrayHasKey( 'awt', $result->no_update );
+	}
+
+	/**
+	 * The filter is told which version is on offer. During cron that is the
+	 * target of the walk, not always the newest release.
+	 */
+	public function test_the_package_filter_is_told_the_version_on_offer(): void {
+		add_filter( 'awt_update_environment', static fn () => 'production' );
+		$seen = null;
+		add_filter(
+			'awt_theme_update_package',
+			static function ( $package, $data, $version ) use ( &$seen ) {
+				$seen = $version;
+				return $package;
+			},
+			10,
+			3
+		);
+		$this->cache(
+			'2099.01.2',
+			$this->releases(
+				array(
+					'2099.01.2' => array(),
+					'2099.01.1' => array( 'autoInstall' => true ),
+				)
+			)
+		);
+
+		Updates\offer_update( $this->transient() );
+
+		$this->assertSame( '2099.01.1', $seen );
+	}
+
 	/** A person still sees the newest version, wall or no wall. */
 	public function test_the_admin_still_sees_the_newest_version(): void {
 		remove_all_filters( 'wp_doing_cron' );
@@ -810,6 +860,79 @@ class Test_Updates extends WP_UnitTestCase {
 		$this->assertSame( '', $result->response['awt']['package'], 'but not from there' );
 
 		set_current_screen( 'front' );
+	}
+
+	/**
+	 * Code on the site can add a place packages may come from. AWT Premium
+	 * does, for its own downloads. GitHub stays allowed, and https is still
+	 * required.
+	 */
+	public function test_another_package_source_can_be_added(): void {
+		add_filter(
+			'awt_update_package_sources',
+			static fn ( $sources ) => array_merge(
+				$sources,
+				array(
+					array(
+						'host' => 'Downloads.Example.com',
+						'path' => '/awt/',
+					),
+				)
+			)
+		);
+
+		$this->assertSame( 'https://downloads.example.com/awt/2099.zip', Updates\trusted_package( 'https://downloads.example.com/awt/2099.zip' ) );
+		$this->assertSame( 'https://github.com/useawt/awt-theme/x.zip', Updates\trusted_package( 'https://github.com/useawt/awt-theme/x.zip' ) );
+		$this->assertSame( '', Updates\trusted_package( 'http://downloads.example.com/awt/2099.zip' ), 'plain http' );
+		$this->assertSame( '', Updates\trusted_package( 'https://downloads.example.com/awt-not/2099.zip' ), 'another path' );
+	}
+
+	/**
+	 * A place whose path is not closed with "/" would let "/awt" match
+	 * "/awt-anything", so it is ignored. So is one with no host, and a filter
+	 * that returns something other than a list trusts nothing.
+	 */
+	public function test_a_loose_package_source_is_ignored(): void {
+		add_filter(
+			'awt_update_package_sources',
+			static fn () => array(
+				array(
+					'host' => 'example.com',
+					'path' => '/awt',
+				),
+				array(
+					'host' => '',
+					'path' => '/',
+				),
+			)
+		);
+		$this->assertSame( '', Updates\trusted_package( 'https://example.com/awt-not/x.zip' ) );
+		$this->assertSame( array(), Updates\package_sources() );
+
+		remove_all_filters( 'awt_update_package_sources' );
+		add_filter( 'awt_update_package_sources', '__return_false' );
+		$this->assertSame( '', Updates\trusted_package( 'https://github.com/useawt/awt-theme/x.zip' ) );
+	}
+
+	/**
+	 * A build that empties the package can say what to do instead of "download
+	 * it from the AWT website".
+	 */
+	public function test_the_manual_update_message_can_be_replaced(): void {
+		add_filter( 'awt_theme_manual_update_message', static fn () => 'Add your licence key first.' );
+
+		$result = Updates\explain_manual_update( false, '', null, array( 'theme' => Updates\slug() ) );
+
+		$this->assertSame( 'Add your licence key first.', $result->get_error_message() );
+	}
+
+	/**
+	 * The pair reminder is hooked under the folder the theme is installed in.
+	 * It was hooked under "awt" whatever the folder, so AWT Premium's row never
+	 * showed it.
+	 */
+	public function test_the_pair_note_follows_the_theme_folder(): void {
+		$this->assertSame( 10, has_action( 'in_theme_update_message-' . Updates\slug(), 'AWT\\Theme\\Updates\\pair_note' ) );
 	}
 
 	/**
