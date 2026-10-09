@@ -11,7 +11,7 @@ permissions:
 jobs:
   premium-guard:
     name: No premium code in free repo
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     steps:
       - uses: actions/checkout@v4
       - name: Fail if AWT Premium code leaked in
@@ -19,7 +19,7 @@ jobs:
 
   test-php:
     name: PHPUnit
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
@@ -41,7 +41,7 @@ jobs:
 
   lint:
     name: Lint (ESLint, PHPCS, markdownlint)
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
