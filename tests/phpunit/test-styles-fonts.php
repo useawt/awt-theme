@@ -137,6 +137,98 @@ class Test_Styles_Fonts extends WP_UnitTestCase {
 	}
 
 	/**
+	 * The Code block's font becomes the font for all code. Its own default,
+	 * IBM Plex Mono, prints nothing.
+	 */
+	public function test_code_block_font_sets_the_mono_variable(): void {
+		$this->save_styles( array( 'styles' => array( 'blocks' => array( 'core/code' => array( 'typography' => array( 'fontFamily' => 'var:preset|font-family|plex-serif' ) ) ) ) ) );
+		$this->assertStringContainsString( "--awt-font-mono:'IBM Plex Serif', Georgia", \AWT\Theme\styles_font_css() );
+
+		$this->save_styles( array( 'styles' => array( 'blocks' => array( 'core/code' => array( 'typography' => array( 'fontFamily' => 'var:preset|font-family|plex-mono' ) ) ) ) ) );
+		$this->assertSame( '', \AWT\Theme\styles_font_css() );
+	}
+
+	/**
+	 * The preloads the page head gets.
+	 */
+	private function preloads(): string {
+		ob_start();
+		\AWT\Theme\styles_font_preloads();
+		return (string) ob_get_clean();
+	}
+
+	/**
+	 * A site that kept IBM Plex preloads nothing.
+	 */
+	public function test_no_choice_preloads_nothing(): void {
+		$this->assertSame( '', $this->preloads() );
+	}
+
+	/**
+	 * An added font for text and headings: its regular face is preloaded,
+	 * once, and not its italic or bold.
+	 */
+	public function test_chosen_font_regular_face_is_preloaded_once(): void {
+		$this->save_styles(
+			array(
+				'settings' => array(
+					'typography' => array(
+						'fontFamilies' => array(
+							'custom' => array(
+								array(
+									'slug'       => 'inter',
+									'name'       => 'Inter',
+									'fontFamily' => 'Inter, sans-serif',
+									'fontFace'   => array(
+										array(
+											'fontFamily' => 'Inter',
+											'fontStyle'  => 'italic',
+											'fontWeight' => '400',
+											'src'        => 'https://example.org/fonts/inter-italic.woff2',
+										),
+										array(
+											'fontFamily' => 'Inter',
+											'fontStyle'  => 'normal',
+											'fontWeight' => '700',
+											'src'        => 'https://example.org/fonts/inter-700.woff2',
+										),
+										array(
+											'fontFamily' => 'Inter',
+											'fontStyle'  => 'normal',
+											'fontWeight' => '400',
+											'src'        => array( 'https://example.org/fonts/inter-400.ttf', 'https://example.org/fonts/inter-400.woff2' ),
+										),
+									),
+								),
+							),
+						),
+					),
+				),
+				'styles'   => array(
+					'typography' => array( 'fontFamily' => 'var:preset|font-family|inter' ),
+					'elements'   => array(
+						'heading' => array( 'typography' => array( 'fontFamily' => 'var:preset|font-family|inter' ) ),
+					),
+				),
+			)
+		);
+
+		$html = $this->preloads();
+		$this->assertSame( 1, substr_count( $html, '<link rel="preload"' ) );
+		$this->assertStringContainsString( 'href="https://example.org/fonts/inter-400.woff2" as="font" type="font/woff2" crossorigin', $html );
+	}
+
+	/**
+	 * Headings set to IBM Plex Serif under another text font: the theme's own
+	 * face is preloaded by its address.
+	 */
+	public function test_theme_font_for_headings_is_preloaded(): void {
+		$this->save_styles( array( 'styles' => array( 'elements' => array( 'heading' => array( 'typography' => array( 'fontFamily' => 'var:preset|font-family|plex-serif' ) ) ) ) ) );
+
+		$this->assertStringContainsString( '/assets/fonts/IBMPlexSerif-Light.woff2"', $this->preloads() );
+	}
+
+	/**
 	 * A font that no longer exists, and a value that could end the rule, are
 	 * left out.
 	 */

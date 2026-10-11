@@ -1439,8 +1439,11 @@ function save_tab_focus(): void {
 /**
  * Render the Typography sub-tab: the size-scale picker (Compact / Default /
  * Comfortable) with a live H1-through-body preview.
+ *
+ * @param string $context 'settings' on AWT Settings, 'wizard' in the welcome
+ *                        wizard's Typography step.
  */
-function render_tab_typography(): void {
+function render_tab_typography( string $context = 'settings' ): void {
 	$scale   = (float) Settings\get( 'typography.sizeScale' );
 	$options = array(
 		'0.875' => array(
@@ -1460,9 +1463,21 @@ function render_tab_typography(): void {
 	<p class="awt-field-help">
 		<?php esc_html_e( 'Makes all text on your site larger or smaller by the same amount.', 'awt' ); ?>
 	</p>
-	<p class="awt-field-help">
-		<?php esc_html_e( 'Fonts: IBM Plex Sans for text, IBM Plex Mono for code. To use other fonts, go to Appearance → Editor → Styles → Typography. You can add new fonts there too.', 'awt' ); ?>
-	</p>
+	<?php if ( ! has_action( 'awt_settings_fonts_section' ) ) : ?>
+		<p class="awt-field-help">
+			<?php esc_html_e( 'Fonts: IBM Plex Sans for text, IBM Plex Mono for code.', 'awt' ); ?>
+			<br />
+			<?php
+			// WordPress 6.8 and later forward this address to their own
+			// `p=/styles`, keeping `section`; 6.6 and 6.7 open Styles itself.
+			printf(
+				/* translators: %s: link to Styles → Typography in the Site Editor. */
+				esc_html__( 'To use other fonts, go to %s. You can add new fonts there too.', 'awt' ),
+				'<a href="' . esc_url( admin_url( 'site-editor.php?path=/wp_global_styles&section=/typography' ) ) . '">' . esc_html__( 'Appearance → Editor → Styles → Typography', 'awt' ) . '</a>'
+			);
+			?>
+		</p>
+	<?php endif; ?>
 	<table class="form-table" role="presentation">
 		<tr>
 			<th scope="row"><?php esc_html_e( 'Size scale', 'awt' ); ?></th>
@@ -1588,6 +1603,15 @@ function render_tab_typography(): void {
 		<?php esc_html_e( 'Not applied to fields with the label inside the box, where a bigger label would crowd the input.', 'awt' ); ?>
 	</p>
 	<?php
+	/**
+	 * Prints at the end of the Typography form, for code that edits the
+	 * site's fonts (AWT Premium's font picker). The Fonts sentence above is
+	 * left out while anything is hooked here. Fields printed here are posted
+	 * with the form; save them on `awt_settings_save_fonts`.
+	 *
+	 * @param string $context 'settings' or 'wizard'.
+	 */
+	do_action( 'awt_settings_fonts_section', $context );
 }
 
 /**
@@ -1595,8 +1619,11 @@ function render_tab_typography(): void {
  * it's a Carbon sub-tab (save_tab_appearance dispatches section 'typography'
  * here) — but the welcome wizard's Typography step also calls this directly,
  * so it stays the single source of truth for the save.
+ *
+ * @param string $context 'settings' on AWT Settings, 'wizard' in the welcome
+ *                        wizard's Typography step.
  */
-function save_tab_typography(): void {
+function save_tab_typography( string $context = 'settings' ): void {
 	// phpcs:ignore WordPress.Security.NonceVerification.Missing, WordPress.Security.ValidatedSanitizedInput.InputNotSanitized -- nonce verified in handle_form_submission(); unslashed here, cast to float, and clamped to the allowed set by Settings\sanitize() on save.
 	$input = wp_unslash( (array) ( $_POST['typography'] ?? array() ) );
 	$raw   = (float) ( $input['sizeScale'] ?? 1.0 );
@@ -1611,6 +1638,14 @@ function save_tab_typography(): void {
 	if ( ! empty( $input['formTextPresent'] ) ) {
 		Settings\set( 'typography.formTextBodySize', ! empty( $input['formTextBodySize'] ) );
 	}
+
+	/**
+	 * Fires after the Typography sub-tab is saved, for the code that printed
+	 * its fields on `awt_settings_fonts_section`.
+	 *
+	 * @param string $context 'settings' or 'wizard'.
+	 */
+	do_action( 'awt_settings_save_fonts', $context );
 }
 
 /**

@@ -399,7 +399,7 @@ function render_step_4(): void {
 	<h2><?php esc_html_e( 'Text size', 'awt' ); ?></h2>
 	<?php
 	step_form_open( 4 );
-	AdminPage\render_tab_typography();
+	AdminPage\render_tab_typography( 'wizard' );
 	step_nav_buttons( 4 );
 }
 
@@ -580,7 +580,7 @@ function save_step( int $step ): void {
 			break;
 
 		case 4: // Typography.
-			AdminPage\save_tab_typography();
+			AdminPage\save_tab_typography( 'wizard' );
 			break;
 	}
 }

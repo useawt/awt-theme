@@ -928,6 +928,105 @@ function type_scale_css(): string {
 }
 
 /**
+ * The slug a font preset reference names, or '' for anything else.
+ *
+ * Styles saves `var:preset|font-family|slug`; theme.json writes the var().
+ *
+ * @param string $value A fontFamily value from Styles or theme.json.
+ * @return string The preset's slug, or ''.
+ */
+function font_preset_slug( string $value ): string {
+	$value = trim( $value );
+	if ( preg_match( '/^var:preset\|font-family\|([a-z0-9-]+)$/i', $value, $m )
+		|| preg_match( '/^var\(\s*--wp--preset--font-family--([a-z0-9-]+)\s*\)$/i', $value, $m ) ) {
+		return strtolower( $m[1] );
+	}
+	return '';
+}
+
+/**
+ * The address of a font family's regular face: upright, weight 400 (or a
+ * variable face whose range holds 400), else its first upright face.
+ *
+ * @param array $faces A font family's fontFace entries.
+ * @return string An http(s) address, or '' when there is none.
+ */
+function regular_face_url( array $faces ): string {
+	$pick = null;
+	foreach ( $faces as $face ) {
+		if ( ! is_array( $face ) || 'italic' === strtolower( (string) ( $face['fontStyle'] ?? 'normal' ) ) ) {
+			continue;
+		}
+		$pick    = $pick ?? $face;
+		$weights = array_map( 'intval', preg_split( '/\s+/', trim( (string) ( $face['fontWeight'] ?? '400' ) ) ) );
+		$has_400 = 1 === count( $weights ) ? 400 === $weights[0] : ( $weights[0] <= 400 && 400 <= end( $weights ) );
+		if ( $has_400 ) {
+			$pick = $face;
+			break;
+		}
+	}
+	if ( null === $pick ) {
+		return '';
+	}
+
+	$sources = (array) ( $pick['src'] ?? array() );
+	usort( $sources, static fn( $a, $b ): int => (int) str_ends_with( strtok( (string) $b, '?' ), '.woff2' ) - (int) str_ends_with( strtok( (string) $a, '?' ), '.woff2' ) );
+	$url = (string) ( $sources[0] ?? '' );
+	if ( str_starts_with( $url, 'file:./' ) ) {
+		$url = get_theme_file_uri( substr( $url, 7 ) );
+	}
+	return preg_match( '#^https?://#i', $url ) ? $url : '';
+}
+
+/**
+ * Ask for the fonts chosen in Styles at the top of the page.
+ *
+ * A browser only learns it needs a font after it has read the stylesheets
+ * and laid out text in it. A font chosen in Styles therefore started
+ * downloading late, and a page drawn before it arrived showed its text in a
+ * fallback font first and then changed. A preload starts the download with
+ * the stylesheets instead. It covers the regular face of the text font, and
+ * of the headings font when that is a different one. A site that kept IBM
+ * Plex gets nothing new.
+ */
+function styles_font_preloads(): void {
+	$families = array();
+	foreach ( (array) wp_get_global_settings( array( 'typography', 'fontFamilies' ) ) as $origin ) {
+		foreach ( (array) $origin as $family ) {
+			if ( isset( $family['slug'] ) ) {
+				$families[ (string) $family['slug'] ] = $family;
+			}
+		}
+	}
+
+	$styles = (array) wp_get_global_styles();
+	$chosen = array(
+		array( $styles['typography']['fontFamily'] ?? '', 'plex-sans' ),
+		array( $styles['elements']['heading']['typography']['fontFamily'] ?? '', '' ),
+	);
+	$urls   = array();
+	foreach ( $chosen as list( $value, $default ) ) {
+		$slug = is_string( $value ) ? font_preset_slug( $value ) : '';
+		if ( '' === $slug || $default === $slug || empty( $families[ $slug ]['fontFace'] ) ) {
+			continue;
+		}
+		$url = regular_face_url( (array) $families[ $slug ]['fontFace'] );
+		if ( '' !== $url ) {
+			$urls[ $url ] = true;
+		}
+	}
+
+	foreach ( array_keys( $urls ) as $url ) {
+		printf(
+			'<link rel="preload" href="%s" as="font"%s crossorigin />' . "\n",
+			esc_url( $url ),
+			str_ends_with( strtok( $url, '?' ), '.woff2' ) ? ' type="font/woff2"' : ''
+		);
+	}
+}
+add_action( 'wp_head', __NAMESPACE__ . '\\styles_font_preloads', 1 );
+
+/**
  * The fonts chosen in Styles (Editor → Styles → Typography), as CSS.
  *
  * WordPress prints those choices as `body { font-family }` and element rules
@@ -937,9 +1036,11 @@ function type_scale_css(): string {
  * later, so no choice ever reached the page (awt-theme #3). This hands them
  * back:
  *
- * - The text font becomes --awt-font-sans and the headings font
- *   --awt-font-headings, so the Carbon components follow too, not only the
- *   elements WordPress names.
+ * - The text font becomes --awt-font-sans, the headings font
+ *   --awt-font-headings and the Code block's font --awt-font-mono, so the
+ *   Carbon components and all code follow too, not only what WordPress names.
+ *   (A Code block font already reached Code blocks; this carries it to inline
+ *   code and the Code snippet block.)
  * - Every other element choice (one heading level, links, buttons, captions,
  *   citations, form fields) is printed again with WordPress's own selector,
  *   after the theme's stylesheet and before Custom CSS.
@@ -947,8 +1048,9 @@ function type_scale_css(): string {
  * A preset is written out as its stack, not as var(): the IBM Plex presets
  * read these same variables (theme.css), so `--awt-font-sans:
  * var(--wp--preset--font-family--plex-sans)` would be a cycle and resolve to
- * nothing. Text set to IBM Plex Sans, the theme's own default, prints
- * nothing, so a site that has not chosen a font gets no new CSS.
+ * nothing. Text set to IBM Plex Sans and code set to IBM Plex Mono, the
+ * theme's own defaults, print nothing, so a site that has not chosen a font
+ * gets no new CSS.
  *
  * @return string CSS, or an empty string when no font was chosen.
  */
@@ -966,14 +1068,7 @@ function styles_font_css(): string {
 		}
 	}
 
-	// Styles saves `var:preset|font-family|slug`; theme.json writes the var().
-	$slug_of  = static function ( string $value ): string {
-		if ( preg_match( '/^var:preset\|font-family\|([a-z0-9-]+)$/i', $value, $m )
-			|| preg_match( '/^var\(\s*--wp--preset--font-family--([a-z0-9-]+)\s*\)$/i', $value, $m ) ) {
-			return strtolower( $m[1] );
-		}
-		return '';
-	};
+	$slug_of  = static fn( string $value ): string => font_preset_slug( $value );
 	$stack_of = static function ( $value ) use ( $stacks, $slug_of ): string {
 		if ( ! is_string( $value ) || '' === trim( $value ) ) {
 			return '';
@@ -993,11 +1088,19 @@ function styles_font_css(): string {
 	$vars   = '';
 	$rules  = '';
 
-	$text = $styles['typography']['fontFamily'] ?? '';
-	if ( is_string( $text ) && 'plex-sans' !== $slug_of( trim( $text ) ) ) {
-		$stack = $stack_of( $text );
+	// The text font, and the Code block's font for all code. Each one's own
+	// IBM Plex default prints nothing.
+	$picks = array(
+		'sans' => array( $styles['typography']['fontFamily'] ?? '', 'plex-sans' ),
+		'mono' => array( $styles['blocks']['core/code']['typography']['fontFamily'] ?? '', 'plex-mono' ),
+	);
+	foreach ( $picks as $name => list( $value, $default ) ) {
+		if ( ! is_string( $value ) || $default === $slug_of( trim( $value ) ) ) {
+			continue;
+		}
+		$stack = $stack_of( $value );
 		if ( '' !== $stack ) {
-			$vars .= '--awt-font-sans:' . $stack . ';';
+			$vars .= '--awt-font-' . $name . ':' . $stack . ';';
 		}
 	}
 
