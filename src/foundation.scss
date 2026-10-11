@@ -11,6 +11,41 @@
 // IBM's CDN, which would break AWT's fully-offline posture.
 //
 // Build: npm run build:css  →  assets/css/foundation.min.css
+//
+// Font families. Every font-family Carbon writes reads a CSS variable and
+// falls back to Carbon's own IBM Plex stack, so with no variable set the CSS
+// resolves to exactly what it did before:
+//
+//   --awt-font-sans    text
+//   --awt-font-mono    code
+//   --awt-font-serif   serif type
+//
+// theme.json, theme.css and awt-blocks (src/shared/_carbon-config.scss) read
+// the same three. This has to come before anything else that loads Carbon: a
+// Sass module takes its configuration only the first time it loads. The map
+// replaces Carbon's whole map, so the families the foundation does not use
+// are listed too, unchanged: a family missing from the map would make Carbon
+// drop the font-family line without a word.
+
+@use 'sass:string';
+
+$_plex-fallbacks: "system-ui, -apple-system, BlinkMacSystemFont, '.SFNSText-Regular'";
+
+@use '@carbon/type/scss/font-family' with (
+	$font-families: (
+		'mono': string.unquote("var(--awt-font-mono, 'IBM Plex Mono', #{$_plex-fallbacks}, monospace)"),
+		'sans': string.unquote("var(--awt-font-sans, 'IBM Plex Sans', #{$_plex-fallbacks}, sans-serif)"),
+		'serif': string.unquote("var(--awt-font-serif, 'IBM Plex Serif', #{$_plex-fallbacks}, serif)"),
+		'sans-condensed': string.unquote("'IBM Plex Sans Condensed', #{$_plex-fallbacks}, sans-serif"),
+		'sans-arabic': string.unquote("'IBM Plex Sans Arabic', #{$_plex-fallbacks}, sans-serif"),
+		'sans-devanagari': string.unquote("'IBM Plex Sans Devanagari', #{$_plex-fallbacks}, sans-serif"),
+		'sans-hebrew': string.unquote("'IBM Plex Sans Hebrew', #{$_plex-fallbacks}, sans-serif"),
+		'sans-jp': string.unquote("'IBM Plex Sans JP', #{$_plex-fallbacks}, sans-serif"),
+		'sans-kr': string.unquote("'IBM Plex Sans KR', #{$_plex-fallbacks}, sans-serif"),
+		'sans-thai-looped': string.unquote("'IBM Plex Sans Thai Looped', #{$_plex-fallbacks}, sans-serif"),
+		'sans-thai': string.unquote("'IBM Plex Sans Thai', #{$_plex-fallbacks}, sans-serif"),
+	)
+);
 
 @use '@carbon/styles/scss/config' with (
 	$css--font-face: false,

@@ -722,6 +722,37 @@ body.cds--white {
 	background-color: var(--cds-background, #ffffff);
 }
 
+/* The three font presets read --awt-font-sans, --awt-font-mono and
+   --awt-font-serif, falling back to the stacks theme.json gives them (keep the
+   two in step). This cannot live in theme.json itself: WordPress names each
+   @font-face after the first entry of the preset's stack, so a stack that
+   starts with var( prints `font-family: var(--awt-font-sans` and IBM Plex never
+   loads (2026-10-11, caught by the computed-style gate). WordPress prints its
+   own :root presets before this file on the front end but after it in the
+   editor canvas, so the selector is doubled to win in both. */
+:root:root {
+	--wp--preset--font-family--plex-sans: var(--awt-font-sans, 'IBM Plex Sans', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif);
+	--wp--preset--font-family--plex-mono: var(--awt-font-mono, 'IBM Plex Mono', ui-monospace, SFMono-Regular, Menlo, monospace);
+	--wp--preset--font-family--plex-serif: var(--awt-font-serif, 'IBM Plex Serif', Georgia, 'Times New Roman', serif);
+}
+
+/* Headings take --awt-font-headings when a site sets it. There is no fallback
+   on purpose: an unset variable makes the declaration invalid at computed-value
+   time, and for an inherited property that means `inherit`, so headings keep
+   the font around them exactly as before. The selector is as light as it can
+   be and still win: Carbon's reset in the foundation sets `font-family:
+   inherit` on h1-h6 at (0,0,1), so a :where() rule never applied. Custom CSS
+   prints after this file and a block's own font rule is heavier, so both still
+   beat it. */
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+	font-family: var(--awt-font-headings);
+}
+
 /* --------------------------------------------------------------------------
    UI shell — Carbon header is position: fixed; height: 3rem (z-index 8000).
    The page needs top padding to clear it.
@@ -1241,7 +1272,7 @@ ol.wp-block-list {
 	padding: var(--cds-spacing-05, 1rem);
 	background-color: var(--cds-layer-01, #f4f4f4);
 	color: var(--cds-text-primary, #161616);
-	font-family: var(--cds-code-01-font-family, "IBM Plex Mono", monospace);
+	font-family: var(--cds-code-01-font-family, var(--awt-font-mono, "IBM Plex Mono", monospace));
 	font-size: var(--cds-code-01-font-size, 0.875rem);
 	line-height: 1.4;
 	white-space: pre-wrap;
@@ -2676,7 +2707,7 @@ html.awt-header-collapsed .admin-bar .awt-header-nav__overlay.awt-nav-open {
 .awt-testimonial--mark-none .awt-testimonial__mark { display: none; }
 
 .awt-testimonial__quote {
-	font-family: 'IBM Plex Serif', Georgia, 'Times New Roman', serif;
+	font-family: var(--awt-font-serif, 'IBM Plex Serif', Georgia, 'Times New Roman', serif);
 	font-weight: 300;          /* IBM uses light for body */
 	font-style: normal;        /* explicitly NOT italic */
 	color: var(--cds-text-primary, #161616);
@@ -2708,9 +2739,9 @@ html.awt-header-collapsed .admin-bar .awt-header-nav__overlay.awt-nav-open {
 	align-items: center;
 	gap: 1rem;
 	margin-block-start: 1.5rem;
-	/* Source attribution returns to Plex Sans — the two-typeface contrast
+	/* Source attribution returns to the sans font. The two-typeface contrast
 	   is the typographic move. */
-	font-family: 'IBM Plex Sans', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+	font-family: var(--awt-font-sans, 'IBM Plex Sans', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif);
 }
 
 .awt-testimonial--align-center .awt-testimonial__source {
@@ -4786,7 +4817,7 @@ body.editor-styles-wrapper .wp-block-awt-icon   + .wp-block-awt-icon {
  * destructive variant Carbon expects. */
 
 /* Code snippet */
-.cds--snippet { background: var(--cds-layer-01, #f4f4f4); font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 0.875rem; }
+.cds--snippet { background: var(--cds-layer-01, #f4f4f4); font-family: var(--awt-font-mono, 'IBM Plex Mono', ui-monospace, monospace); font-size: 0.875rem; }
 /* Inline snippet — Carbon leaves this one at `display: inline; padding: 0`
  * and expects the surrounding React component to supply the chip look. Ours
  * is a standalone block with nothing around it, so it draws its own: flex to

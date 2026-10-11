@@ -1497,14 +1497,17 @@ function render_tab_typography(): void {
 	// effect immediately, before saving. Carbon's font-size tokens are
 	// hardcoded here to match `--cds-heading-{06,05,04}-font-size` +
 	// `--cds-body-01-font-size` so the preview is faithful even though the
-	// admin page itself doesn't include the Carbon stylesheet.
+	// admin page itself doesn't include the Carbon stylesheet. The fonts read
+	// the same variables as the front end (--awt-font-sans, and
+	// --awt-font-headings on the headings, inheriting when it is unset), so a
+	// site that sets them on this screen sees them in the preview.
 	?>
 	<h2><?php esc_html_e( 'Preview', 'awt' ); ?></h2>
 	<p class="awt-field-help"><?php esc_html_e( 'Updates as you choose a size. Save to apply it to your site.', 'awt' ); ?></p>
-	<div id="awt-type-preview" style="border: 1px solid #c3c4c7; padding: 1.5em 2em; background: #ffffff; max-inline-size: 60em; font-family: 'IBM Plex Sans', system-ui, sans-serif;">
-		<div data-awt-preview-base="2.625" style="font-size: 2.625rem; font-weight: 300; line-height: 1.199; margin-block: 0 0.5em;"><?php esc_html_e( 'Heading 1: Productive heading 06', 'awt' ); ?></div>
-		<div data-awt-preview-base="1.75" style="font-size: 1.75rem; font-weight: 400; line-height: 1.25; margin-block: 1em 0.5em;"><?php esc_html_e( 'Heading 2: Productive heading 04', 'awt' ); ?></div>
-		<div data-awt-preview-base="1.25" style="font-size: 1.25rem; font-weight: 400; line-height: 1.4; margin-block: 1em 0.5em;"><?php esc_html_e( 'Heading 3: Productive heading 03', 'awt' ); ?></div>
+	<div id="awt-type-preview" style="border: 1px solid #c3c4c7; padding: 1.5em 2em; background: #ffffff; max-inline-size: 60em; font-family: var(--awt-font-sans, 'IBM Plex Sans', system-ui, sans-serif);">
+		<div data-awt-preview-base="2.625" style="font-family: var(--awt-font-headings); font-size: 2.625rem; font-weight: 300; line-height: 1.199; margin-block: 0 0.5em;"><?php esc_html_e( 'Heading 1: Productive heading 06', 'awt' ); ?></div>
+		<div data-awt-preview-base="1.75" style="font-family: var(--awt-font-headings); font-size: 1.75rem; font-weight: 400; line-height: 1.25; margin-block: 1em 0.5em;"><?php esc_html_e( 'Heading 2: Productive heading 04', 'awt' ); ?></div>
+		<div data-awt-preview-base="1.25" style="font-family: var(--awt-font-headings); font-size: 1.25rem; font-weight: 400; line-height: 1.4; margin-block: 1em 0.5em;"><?php esc_html_e( 'Heading 3: Productive heading 03', 'awt' ); ?></div>
 		<p data-awt-preview-base="0.875" style="font-size: 0.875rem; line-height: 1.4286; margin-block: 1em 0;">
 			<?php esc_html_e( 'Body text. The quick brown fox jumps over the lazy dog. 1234567890.', 'awt' ); ?>
 		</p>
