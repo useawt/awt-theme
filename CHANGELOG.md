@@ -10,11 +10,11 @@
      markdownlint enforces the structure in CI. Newest release first.
      The Unreleased section accumulates entries between releases. -->
 
-## Unreleased
+## 2026.10.6 (2026-10-11)
 
 ### [Improvement]
 
-- A font chosen in Appearance → Editor → Styles → Typography shows on the site.
+- Support for WordPress Site Editor's Styles to select a different site font.
 
 ## 2026.10.5 (2026-10-08)
 
