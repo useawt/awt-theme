@@ -928,6 +928,95 @@ function type_scale_css(): string {
 }
 
 /**
+ * The fonts chosen in Styles (Editor → Styles → Typography), as CSS.
+ *
+ * WordPress prints those choices as `body { font-family }` and element rules
+ * such as `h1, h2, h3, h4, h5, h6 { font-family }`, before the theme's
+ * stylesheets. The foundation then sets the body font, and Carbon's reset sets
+ * `font-family: inherit` on nearly every element, at the same weight and
+ * later, so no choice ever reached the page (awt-theme #3). This hands them
+ * back:
+ *
+ * - The text font becomes --awt-font-sans and the headings font
+ *   --awt-font-headings, so the Carbon components follow too, not only the
+ *   elements WordPress names.
+ * - Every other element choice (one heading level, links, buttons, captions,
+ *   citations, form fields) is printed again with WordPress's own selector,
+ *   after the theme's stylesheet and before Custom CSS.
+ *
+ * A preset is written out as its stack, not as var(): the IBM Plex presets
+ * read these same variables (theme.css), so `--awt-font-sans:
+ * var(--wp--preset--font-family--plex-sans)` would be a cycle and resolve to
+ * nothing. Text set to IBM Plex Sans, the theme's own default, prints
+ * nothing, so a site that has not chosen a font gets no new CSS.
+ *
+ * @return string CSS, or an empty string when no font was chosen.
+ */
+function styles_font_css(): string {
+	if ( ! class_exists( 'WP_Theme_JSON' ) ) {
+		return '';
+	}
+
+	$stacks = array();
+	foreach ( (array) wp_get_global_settings( array( 'typography', 'fontFamilies' ) ) as $origin ) {
+		foreach ( (array) $origin as $family ) {
+			if ( isset( $family['slug'], $family['fontFamily'] ) ) {
+				$stacks[ (string) $family['slug'] ] = (string) $family['fontFamily'];
+			}
+		}
+	}
+
+	// Styles saves `var:preset|font-family|slug`; theme.json writes the var().
+	$slug_of  = static function ( string $value ): string {
+		if ( preg_match( '/^var:preset\|font-family\|([a-z0-9-]+)$/i', $value, $m )
+			|| preg_match( '/^var\(\s*--wp--preset--font-family--([a-z0-9-]+)\s*\)$/i', $value, $m ) ) {
+			return strtolower( $m[1] );
+		}
+		return '';
+	};
+	$stack_of = static function ( $value ) use ( $stacks, $slug_of ): string {
+		if ( ! is_string( $value ) || '' === trim( $value ) ) {
+			return '';
+		}
+		$slug  = $slug_of( trim( $value ) );
+		$stack = '' !== $slug ? ( $stacks[ $slug ] ?? '' ) : trim( $value );
+		// A keyword is not a font choice: WordPress's own defaults give buttons
+		// `inherit`, and printing it again would move it past the theme's CSS.
+		if ( preg_match( '/^(inherit|initial|unset|revert|revert-layer)$/i', $stack ) ) {
+			return '';
+		}
+		// Nothing that could close the declaration or the <style> it sits in.
+		return preg_match( '/[;{}<>\\\\]/', $stack ) ? '' : $stack;
+	};
+
+	$styles = (array) wp_get_global_styles();
+	$vars   = '';
+	$rules  = '';
+
+	$text = $styles['typography']['fontFamily'] ?? '';
+	if ( is_string( $text ) && 'plex-sans' !== $slug_of( trim( $text ) ) ) {
+		$stack = $stack_of( $text );
+		if ( '' !== $stack ) {
+			$vars .= '--awt-font-sans:' . $stack . ';';
+		}
+	}
+
+	foreach ( \WP_Theme_JSON::ELEMENTS as $element => $selector ) {
+		$stack = $stack_of( $styles['elements'][ $element ]['typography']['fontFamily'] ?? '' );
+		if ( '' === $stack ) {
+			continue;
+		}
+		if ( 'heading' === $element ) {
+			$vars .= '--awt-font-headings:' . $stack . ';';
+		} else {
+			$rules .= $selector . '{font-family:' . $stack . '}';
+		}
+	}
+
+	return ( '' !== $vars ? ':root{' . $vars . '}' : '' ) . $rules;
+}
+
+/**
  * "Header width" setting (AWT Settings → Appearance → Header). Off by default:
  * Carbon's UI Shell header is `position: fixed; inset-inline: 0`, so it spans
  * the screen and its contents sit at the two edges.
@@ -1040,6 +1129,11 @@ add_action(
 		$scale_css = type_scale_css();
 		if ( $scale_css !== '' ) {
 			wp_add_inline_style( 'awt-theme', $scale_css );
+		}
+
+		$font_css = styles_font_css();
+		if ( $font_css !== '' ) {
+			wp_add_inline_style( 'awt-theme', $font_css );
 		}
 
 		$contain_css = header_contain_css();
@@ -1253,6 +1347,17 @@ add_filter(
 		if ( $scale_css !== '' ) {
 			$existing[] = array(
 				'css'            => str_replace( 'html{', ':root{', $scale_css ),
+				'__unstableType' => 'theme',
+			);
+		}
+
+		// The fonts chosen in Styles. WordPress prints its own rules after the
+		// theme's in the canvas, so they already win there; this carries the
+		// font variables to the Carbon blocks, as on the page.
+		$font_css = styles_font_css();
+		if ( $font_css !== '' ) {
+			$existing[] = array(
+				'css'            => $font_css,
 				'__unstableType' => 'theme',
 			);
 		}

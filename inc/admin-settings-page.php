@@ -1461,7 +1461,7 @@ function render_tab_typography(): void {
 		<?php esc_html_e( 'Makes all text on your site larger or smaller by the same amount.', 'awt' ); ?>
 	</p>
 	<p class="awt-field-help">
-		<?php esc_html_e( 'Fonts: IBM Plex Sans for text, IBM Plex Mono for code. You can\'t change them yet.', 'awt' ); ?>
+		<?php esc_html_e( 'Fonts: IBM Plex Sans for text, IBM Plex Mono for code. To use other fonts, go to Appearance → Editor → Styles → Typography. You can add new fonts there too.', 'awt' ); ?>
 	</p>
 	<table class="form-table" role="presentation">
 		<tr>

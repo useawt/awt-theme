@@ -10,6 +10,12 @@
      markdownlint enforces the structure in CI. Newest release first.
      The Unreleased section accumulates entries between releases. -->
 
+## Unreleased
+
+### [Improvement]
+
+- A font chosen in Appearance → Editor → Styles → Typography shows on the site.
+
 ## 2026.10.5 (2026-10-08)
 
 ### [Improvement]
