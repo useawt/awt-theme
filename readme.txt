@@ -264,6 +264,9 @@ Reports about real barriers are treated as bugs, not feature requests.
 == Changelog ==
 
 <!-- CHANGELOG_START -->
+= 2026.10.7 (2026-10-12) =
+* [Improvement] No changes in the theme itself. It carries the same version number as the AWT Blocks plugin, which has changes in this release.
+
 = 2026.10.6 (2026-10-11) =
 * [Improvement] Support for WordPress Site Editor's Styles to select a different site font.
 
@@ -292,9 +295,6 @@ Reports about real barriers are treated as bugs, not feature requests.
 
 = 2026.09.41 (2026-09-29) =
 * [Improvement] No changes in the theme itself. It carries the same version number as the AWT Blocks plugin, which has changes in this release.
-
-= 2026.09.40 (2026-09-29) =
-* [Improvement] Posts no longer add their own 32px padding under the content, so a section with No gap below now sits flush against the footer.
 <!-- CHANGELOG_END -->
 
 == Upgrade Notice ==

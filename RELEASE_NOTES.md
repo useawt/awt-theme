@@ -1,5 +1,5 @@
-## 2026.10.6 (2026-10-11)
+## 2026.10.7 (2026-10-12)
 
 ### [Improvement]
 
-- Support for WordPress Site Editor's Styles to select a different site font.
+- No changes in the theme itself. It carries the same version number as the AWT Blocks plugin, which has changes in this release.
