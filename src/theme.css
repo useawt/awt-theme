@@ -4775,6 +4775,30 @@ body.editor-styles-wrapper .wp-block-awt-icon   + .wp-block-awt-icon {
 	border-block-end: 0;
 }
 
+/* A disabled tab. Carbon marks it with faded text and nothing else: the
+ * `--disabled` rules colour the item, and in Carbon the item and the link are
+ * one button. Ours are two elements, the <li> and the button inside it, and
+ * the button's own `.cds--tabs .cds--tabs__nav-link` colour beat the colour
+ * the <li> was given, so a disabled tab looked exactly like one you could
+ * open, in every orientation (found 2026-10-13). Inheriting lets each of
+ * Carbon's variants pick the colour: faded text for line and vertical tabs,
+ * the on-colour disabled text for contained ones. The `:hover` half keeps the
+ * hover rule above from darkening it and its line. */
+.cds--tabs .cds--tabs__nav-item--disabled .cds--tabs__nav-link,
+.cds--tabs .cds--tabs__nav-item--disabled .cds--tabs__nav-link:hover {
+	color: inherit;
+	border-block-end-color: var(--cds-border-subtle, #e0e0e0);
+	cursor: not-allowed;
+}
+
+/* Carbon also gives the disabled item the 2px grey line, which in Carbon is
+ * the button's own line. Ours already has it on the button, so line tabs drew
+ * two lines, 4px together, and the disabled tab sat 2px higher than the
+ * others. */
+.cds--tabs:not(.cds--tabs--contained):not(.cds--tabs--vertical) .cds--tab--list > .cds--tabs__nav-item--disabled {
+	border-block-end: 0;
+}
+
 .cds--tabs__nav-item--selected,
 [aria-selected="true"].cds--tabs__nav-link {
 	color: var(--cds-text-primary, #161616);
