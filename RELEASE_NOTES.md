@@ -1,5 +1,5 @@
-## 2026.10.7 (2026-10-12)
+## 2026.10.8 (2026-10-13)
 
-### [Improvement]
+### [A11y]
 
-- No changes in the theme itself. It carries the same version number as the AWT Blocks plugin, which has changes in this release.
+- Improved presentation of disabled tabs.

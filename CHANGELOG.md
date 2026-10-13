@@ -10,6 +10,12 @@
      markdownlint enforces the structure in CI. Newest release first.
      The Unreleased section accumulates entries between releases. -->
 
+## 2026.10.8 (2026-10-13)
+
+### [A11y]
+
+- Improved presentation of disabled tabs.
+
 ## 2026.10.7 (2026-10-12)
 
 ### [Improvement]

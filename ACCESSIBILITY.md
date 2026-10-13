@@ -7,17 +7,16 @@
      Review on every YYYY.MM release (see the Stage 1 spec,
      "Accessibility statement → Maintenance cadence").
 
-     STANDING RULE: when a finding from the outside accessibility review is
-     fixed, add it to "Audit status" below in the SAME session as the fix, and
-     move the "Last reviewed" date. A statement that lags behind the product is
-     the thing this file exists to prevent. The full engineering write-up of
-     each finding belongs in the Stage 1 spec ("Screen-reader audit") and the
-     user-facing wording in CHANGELOG.md; this file gets the short, honest
-     public version.
+     Since 2026-10-13 (owner's call) the findings table on useawt.com's
+     /accessibility/ page is where findings from the outside accessibility
+     review are listed. This file keeps the findings up to 2026-08-07, gives
+     no count (one less thing to maintain), and points to that page. Move the
+     "Last reviewed" date on each review. The full engineering write-up of
+     each finding belongs in the Stage 1 spec and the user-facing wording in
+     CHANGELOG.md.
 
-     The /accessibility/ page on useawt.com is SEPARATE,
-     hand-authored content that paraphrases this file. It does not update
-     itself. Republish it when this file changes materially. -->
+     The /accessibility/ page on useawt.com is SEPARATE, hand-authored
+     content. It does not update itself. -->
 
 ## Our commitment
 
@@ -79,7 +78,8 @@ published third-party audit, and it does not replace one. A formal independent
 audit is still planned before commercial launch, and its report will appear
 here.
 
-**Ten findings received so far. All ten are fixed.** Newest first.
+The findings below are all fixed, newest first. The full list is at
+[useawt.com/accessibility](https://useawt.com/accessibility/).
 
 1. **2026-08-07. A select in error was marked by colour alone, and lost even
    that on focus.** Carbon draws an error icon inside a select that has an
@@ -200,4 +200,4 @@ Reports about real barriers are treated as bugs, not feature requests.
 ## Dates
 
 - Statement prepared: 2026-07-17
-- Last reviewed: 2026-10-03
+- Last reviewed: 2026-10-13

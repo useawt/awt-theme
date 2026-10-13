@@ -137,7 +137,8 @@ published third-party audit, and it does not replace one. A formal independent
 audit is still planned before commercial launch, and its report will appear
 here.
 
-**Ten findings received so far. All ten are fixed.** Newest first.
+The findings below are all fixed, newest first. The full list is at
+[useawt.com/accessibility](https://useawt.com/accessibility/).
 
 1. **2026-08-07. A select in error was marked by colour alone, and lost even
    that on focus.** Carbon draws an error icon inside a select that has an
@@ -258,12 +259,15 @@ Reports about real barriers are treated as bugs, not feature requests.
 ## Dates
 
 - Statement prepared: 2026-07-17
-- Last reviewed: 2026-10-03
+- Last reviewed: 2026-10-13
 <!-- ACCESSIBILITY_END -->
 
 == Changelog ==
 
 <!-- CHANGELOG_START -->
+= 2026.10.8 (2026-10-13) =
+* [A11y] Improved presentation of disabled tabs.
+
 = 2026.10.7 (2026-10-12) =
 * [Improvement] No changes in the theme itself. It carries the same version number as the AWT Blocks plugin, which has changes in this release.
 
@@ -291,9 +295,6 @@ Reports about real barriers are treated as bugs, not feature requests.
 * [Improvement] No changes in the theme itself. It carries the same version number as the AWT Blocks plugin, which has changes in this release.
 
 = 2026.09.42 (2026-09-30) =
-* [Improvement] No changes in the theme itself. It carries the same version number as the AWT Blocks plugin, which has changes in this release.
-
-= 2026.09.41 (2026-09-29) =
 * [Improvement] No changes in the theme itself. It carries the same version number as the AWT Blocks plugin, which has changes in this release.
 <!-- CHANGELOG_END -->
 
