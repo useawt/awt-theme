@@ -3814,6 +3814,7 @@ body.editor-styles-wrapper .wp-block-awt-icon   + .wp-block-awt-icon {
  * chosen at render time and would not survive a different system. */
 .wp-block-awt-pagination { display: flex; justify-content: center; }
 .cds--pagination-nav__list { display: flex; gap: 0; list-style: none; margin: 0; padding: 0; }
+
 .cds--pagination-nav__page {
 	display: inline-flex;
 	align-items: center;
@@ -3836,6 +3837,37 @@ body.editor-styles-wrapper .wp-block-awt-icon   + .wp-block-awt-icon {
 .cds--pagination-nav__page:focus,
 .cds--pagination-nav__page:focus-visible { outline: 2px solid var(--cds-focus, #0f62fe); outline-offset: -2px; }
 
+/* Narrow spaces. Nine 3rem items need 432px, so at 320px (a 1280px window at
+ * 400% zoom) the centred list ran from -56px to 376px: Previous sat off the
+ * left edge where no scrolling reaches, Next off the right, and the page
+ * scrolled sideways; on a 375px phone it was 29px over (reported by the
+ * outside accessibility review, 2026-10-14; WCAG 1.4.10 Reflow).
+ *
+ * Below 30rem of room the items take Carbon's own small height, 2rem (its
+ * `size="sm"`), and share the width: each is 2rem wide where there is room
+ * and gives way down to 1.5rem, the 24px target minimum, so nine stay on one
+ * line in anything from 216px up (at 320px the room is 284px, 4px short of
+ * nine whole 2rem squares). A container query, not a media query, so a
+ * pagination in a narrow column gets the same. Below 216px the list wraps,
+ * and `safe` centring keeps the first row from starting off the left edge. */
+.wp-block-awt-pagination { container-type: inline-size; justify-content: safe center; }
+.cds--pagination-nav { max-inline-size: 100%; }
+.cds--pagination-nav__list { flex-wrap: wrap; justify-content: center; }
+@container (max-width: 30rem) {
+	.cds--pagination-nav__list {
+		inline-size: 100%;
+	}
+	.cds--pagination-nav__list-item {
+		flex: 1 1 1.5rem;
+		max-inline-size: 2rem;
+	}
+	.cds--pagination-nav__page {
+		inline-size: 100%;
+		min-block-size: 2rem;
+		min-inline-size: 0;
+		padding: 0;
+	}
+}
 /* Select — why this restyles a component Carbon already styles.
  *
  * Carbon's Select is a React ListBox; ours is a native `<select>`, so the
