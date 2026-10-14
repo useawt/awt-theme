@@ -2325,6 +2325,16 @@ html.awt-header-collapsed .admin-bar .awt-header-nav__overlay.awt-nav-open {
 	outline-offset: 0;
 }
 
+/* In the editor a tag's label is the text field, and the editor writes
+ * `white-space: pre-wrap` on every text field as an inline style, which beats
+ * Carbon's `nowrap`. A long label then wrapped onto several lines in the
+ * editor while the page kept it on one line, cut off with an ellipsis (found
+ * by the owner, 2026-10-14). Only `!important` outranks an inline style.
+ * While typing, the field scrolls to keep the cursor in view. */
+.editor-styles-wrapper .cds--tag__label.rich-text {
+	white-space: nowrap !important;
+}
+
 /* High-contrast OS preference: Carbon switches the focus indicator to dotted
  * to remain visible under prefers-contrast color overrides. Mirrors Carbon's
  * own @media wrapping (`outline-style: dotted` only fires under this MQ). */
