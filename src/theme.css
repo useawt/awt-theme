@@ -3389,7 +3389,13 @@ body.editor-styles-wrapper .wp-block-awt-tag + .wp-block-awt-tag {
 	align-items: center;
 }
 .awt-inline-set--horizontal { flex-direction: row;    }
-.awt-inline-set--vertical   { flex-direction: column; align-items: stretch; }
+/* Items keep their own width in a vertical set, as in a horizontal one. It
+   used to stretch them, which never reached buttons (Carbon sizes those to
+   their content) but did reach links, tags and icons: a link's box ran the
+   whole row while its text stayed short, so its focus ring outlined the row
+   and a click anywhere on it followed the link (found by the owner on
+   useawt.com/accessibility/, 2026-10-14). */
+.awt-inline-set--vertical   { flex-direction: column; align-items: flex-start; }
 .awt-inline-set--gap-sm     { gap: 0.25rem; }
 .awt-inline-set--gap-md     { gap: 0.5rem;  }
 .awt-inline-set--gap-lg     { gap: 1rem;    }
