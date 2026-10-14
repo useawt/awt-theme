@@ -3718,6 +3718,51 @@ body.editor-styles-wrapper .wp-block-awt-icon   + .wp-block-awt-icon {
 	opacity: 0.85;
 }
 
+/* The toast, laid out as Carbon lays out its own: title, subtitle and caption
+ * stacked, and the close button in the top corner. The rules above are shared
+ * with the inline notification, which runs title and subtitle on one line and
+ * wraps; on a toast that put the subtitle beside the title, sent the close
+ * button to a row of its own at the bottom, and, once the toast widened to
+ * 22rem at Carbon's max breakpoint, lifted the caption up beside the title
+ * (found by the owner, 2026-10-14; the editor canvas is narrower than the
+ * window, so it never showed that). Values measured on Carbon's React toast:
+ * icon and title 1rem from the top, 1rem between subtitle and caption, the
+ * caption in body-compact-01 with 0.5rem above it, 1rem below the text. */
+.cds--toast-notification {
+	flex-wrap: nowrap;
+	gap: 0;
+	padding-block: 0;
+	padding-inline: 0.8125rem 0;
+}
+.cds--toast-notification__details {
+	margin: 0;
+}
+.cds--toast-notification__text-wrapper {
+	flex-direction: column;
+	flex-wrap: nowrap;
+	padding: 0;
+	margin-block-end: 1rem;
+	margin-inline-end: 1rem;
+}
+.cds--toast-notification__title {
+	margin-block-start: 1rem;
+}
+.cds--toast-notification__subtitle {
+	display: block;
+	margin: 0;
+}
+.cds--toast-notification__caption {
+	margin: 1rem 0 0;
+	padding-block-start: 0.5rem;
+	font-size: var(--cds-body-compact-01-font-size, 0.875rem);
+	line-height: var(--cds-body-compact-01-line-height, 1.28572);
+	letter-spacing: var(--cds-body-compact-01-letter-spacing, 0.16px);
+	opacity: 1;
+}
+.cds--toast-notification__close-button {
+	margin-inline-start: auto;
+}
+
 /* Close button — why this restyles a button Carbon already styles.
  *
  * Carbon draws its close button at `padding: 0` inside a fixed 3rem box that
