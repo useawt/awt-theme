@@ -2186,13 +2186,13 @@ html.awt-header-collapsed .admin-bar .awt-header-nav__overlay.awt-nav-open {
 	outline: none;
 }
 
-.cds--menu-button .cds--menu-item[aria-disabled="true"] {
+.cds--menu-button .cds--menu-item--disabled {
 	background: transparent;
 	color: var(--cds-text-disabled, #16161640);
 	cursor: not-allowed;
 }
 
-.cds--menu-button .cds--menu-item[aria-disabled="true"] .cds--menu-item__button {
+.cds--menu-button .cds--menu-item--disabled .cds--menu-item__button {
 	color: var(--cds-text-disabled, #16161640);
 	cursor: not-allowed;
 }
