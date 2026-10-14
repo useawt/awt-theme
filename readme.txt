@@ -259,12 +259,16 @@ Reports about real barriers are treated as bugs, not feature requests.
 ## Dates
 
 - Statement prepared: 2026-07-17
-- Last reviewed: 2026-10-13
+- Last reviewed: 2026-10-14
 <!-- ACCESSIBILITY_END -->
 
 == Changelog ==
 
 <!-- CHANGELOG_START -->
+= 2026.10.9 (2026-10-14) =
+* [A11y] Pagination fits small screens and narrow columns: Previous and Next stay on screen.
+* [Improvement] In the editor, a long tag label stays on one line, as it does on the page.
+
 = 2026.10.8 (2026-10-13) =
 * [A11y] Improved presentation of disabled tabs.
 
@@ -292,9 +296,6 @@ Reports about real barriers are treated as bugs, not feature requests.
 * [Improvement] On a dark site, the editor now shows your dark logo instead of the light one.
 
 = 2026.10.0 (2026-10-03) =
-* [Improvement] No changes in the theme itself. It carries the same version number as the AWT Blocks plugin, which has changes in this release.
-
-= 2026.09.42 (2026-09-30) =
 * [Improvement] No changes in the theme itself. It carries the same version number as the AWT Blocks plugin, which has changes in this release.
 <!-- CHANGELOG_END -->
 
