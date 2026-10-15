@@ -3305,6 +3305,14 @@ a.cds--btn--ghost:visited:active {
 	line-height: 1.3;
 }
 
+/* A dismissed filter tag (its button sets `hidden`, view.js in awt-blocks).
+ * The inline-flex above beats the browser's own [hidden] rule, so the tag
+ * stayed on screen; same fix as the dismissed notification. Removes it from
+ * the accessibility tree too. */
+.cds--tag[hidden] {
+	display: none;
+}
+
 /* Linked tag (awt/tag with a URL) — rendered as <a>. Keep the tag's own
    surface/text colors and drop the global link underline; show a pointer and
    a subtle hover so it reads as interactive (Carbon "clickable tag"). */
