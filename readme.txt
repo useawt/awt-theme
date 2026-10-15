@@ -259,12 +259,16 @@ Reports about real barriers are treated as bugs, not feature requests.
 ## Dates
 
 - Statement prepared: 2026-07-17
-- Last reviewed: 2026-10-14
+- Last reviewed: 2026-10-15
 <!-- ACCESSIBILITY_END -->
 
 == Changelog ==
 
 <!-- CHANGELOG_START -->
+= 2026.10.10 (2026-10-15) =
+* [A11y] In a vertical Inline set, links, tags and icons keep their own width, so a link's focus ring fits the link.
+* [Improvement] Toast notifications are laid out as in Carbon: title, subtitle and caption stacked, and the close button in the top corner, at every screen width.
+
 = 2026.10.9 (2026-10-14) =
 * [A11y] Pagination fits small screens and narrow columns: Previous and Next stay on screen.
 * [Improvement] In the editor, a long tag label stays on one line, as it does on the page.
@@ -294,9 +298,6 @@ Reports about real barriers are treated as bugs, not feature requests.
 
 = 2026.10.1 (2026-10-05) =
 * [Improvement] On a dark site, the editor now shows your dark logo instead of the light one.
-
-= 2026.10.0 (2026-10-03) =
-* [Improvement] No changes in the theme itself. It carries the same version number as the AWT Blocks plugin, which has changes in this release.
 <!-- CHANGELOG_END -->
 
 == Upgrade Notice ==

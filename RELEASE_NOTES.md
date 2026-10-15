@@ -1,9 +1,9 @@
-## 2026.10.9 (2026-10-14)
+## 2026.10.10 (2026-10-15)
 
 ### [A11y]
 
-- Pagination fits small screens and narrow columns: Previous and Next stay on screen.
+- In a vertical Inline set, links, tags and icons keep their own width, so a link's focus ring fits the link.
 
 ### [Improvement]
 
-- In the editor, a long tag label stays on one line, as it does on the page.
+- Toast notifications are laid out as in Carbon: title, subtitle and caption stacked, and the close button in the top corner, at every screen width.
