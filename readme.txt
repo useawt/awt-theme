@@ -259,12 +259,15 @@ Reports about real barriers are treated as bugs, not feature requests.
 ## Dates
 
 - Statement prepared: 2026-07-17
-- Last reviewed: 2026-10-15
+- Last reviewed: 2026-10-16
 <!-- ACCESSIBILITY_END -->
 
 == Changelog ==
 
 <!-- CHANGELOG_START -->
+= 2026.10.11 (2026-10-16) =
+* [A11y] On narrow screens, notifications fit the section they are in, so the page no longer scrolls sideways and the close button stays in view.
+
 = 2026.10.10 (2026-10-15) =
 * [A11y] In a vertical Inline set, links, tags and icons keep their own width, so a link's focus ring fits the link.
 * [Improvement] Toast notifications are laid out as in Carbon: title, subtitle and caption stacked, and the close button in the top corner, at every screen width.
@@ -295,9 +298,6 @@ Reports about real barriers are treated as bugs, not feature requests.
 = 2026.10.2 (2026-10-07) =
 * [A11y] The Home page and Feature grid patterns no longer repeat each card's heading in its icon for screen readers.
 * [Improvement] AWT's theme details window now opens on a site that has AWT updates switched off.
-
-= 2026.10.1 (2026-10-05) =
-* [Improvement] On a dark site, the editor now shows your dark logo instead of the light one.
 <!-- CHANGELOG_END -->
 
 == Upgrade Notice ==
