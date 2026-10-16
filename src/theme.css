@@ -5044,6 +5044,28 @@ body.editor-styles-wrapper .wp-block-awt-icon   + .wp-block-awt-icon {
 .cds--snippet-button:focus-visible { outline: 2px solid var(--cds-focus, #0f62fe); outline-offset: -2px; }
 .cds--snippet-button--copied { color: var(--cds-support-success, #24a148); }
 
+/* The copy button sits in Carbon's tooltip container (awt-blocks render.php),
+ * which opens with "Copied" after a copy. The container takes the button's
+ * place in the corner, and the button sits in it normally, so the tooltip
+ * lines up with the button. Carbon's own rules put the container at the
+ * snippet's very corner (0,0 on a single-line one) and would also lift an
+ * inline snippet's button out of the line; these match where the button has
+ * always been. The selectors carry Carbon's weight (0,3,0) to win on order. */
+.cds--snippet.cds--snippet--single .awt-snippet-copy,
+.cds--snippet.cds--snippet--multi .awt-snippet-copy {
+	position: absolute;
+	inset-block-start: 0.5rem;
+	inset-inline-end: 0.5rem;
+}
+.cds--snippet.cds--snippet--inline .awt-snippet-copy {
+	position: relative;
+	inset: auto;
+}
+.cds--snippet .awt-snippet-copy > .cds--snippet-button {
+	position: relative;
+	inset: auto;
+}
+
 /* Data table.
  *
  * Carbon's compiled CSS covers the bulk of styling — table reset,
