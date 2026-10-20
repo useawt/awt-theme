@@ -5618,6 +5618,18 @@ body.awt-btn-focus-outline .cds--header .cds--btn:focus:not(:disabled):not(.cds-
 	inline-size: 100%;
 }
 
+/* A section link the page being shown sits beneath carries Carbon's
+ * `--current` class and aria-current="true" (awt-blocks current-url.php), and
+ * the current page itself carries aria-current="page". Carbon gives both the
+ * primary text colour in one rule, but its `.cds--header__menu-item--current`
+ * half (0,1,0) loses to `a.cds--header__menu-item` (0,1,1) setting the
+ * secondary colour, so a section link was dimmer than the current page. Until
+ * 2026-10-20 a section link was marked as the current page, so this keeps it
+ * looking as it did. */
+a.cds--header__menu-item.cds--header__menu-item--current {
+	color: var(--cds-text-primary, #161616);
+}
+
 /* Content switcher — same two-tone widening, on the pseudo-element that
  * actually paints it.
  *

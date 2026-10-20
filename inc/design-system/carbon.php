@@ -1276,7 +1276,10 @@ SVG;
 			case 'menu-bar':
 				return 'cds--header__menu-bar';
 			case 'menu-item':
-				return 'cds--header__menu-item';
+				// isActive: a section link the page being shown sits beneath
+				// (aria-current="true"), drawn like the current page, as
+				// Carbon's HeaderMenuItem does.
+				return 'cds--header__menu-item' . ( empty( $v['isActive'] ) ? '' : ' cds--header__menu-item--current' );
 			// Multi-level menu (awt/header-menu) — Carbon HeaderMenu grammar.
 			case 'submenu':
 				return 'cds--header__submenu';
