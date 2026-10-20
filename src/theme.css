@@ -2293,32 +2293,31 @@ html.awt-header-collapsed .admin-bar .awt-header-nav__overlay.awt-nav-open {
 }
 
 /* Carbon's `.cds--toggletip-button:focus` outline is 1px. Draw it at 2px to
- * meet WCAG 2.4.13 (Focus Appearance), matching the tooltip trigger. */
+ * meet WCAG 2.4.13 (Focus Appearance), as everywhere. */
 .cds--toggletip-button:focus,
 .cds--toggletip-button:focus-visible {
 	outline: 2px solid var(--cds-focus, #0f62fe);
 	outline-offset: -2px;
 }
 
-/* Tooltip trigger — keeps the help-cursor visual cue when hovered. Carbon
- * draws the focus indicator as 2px dotted outline inset 2px so it lands
- * inside the trigger element (matching the menu-item + toggletip focus
- * style). Without this, the default browser outline shows. */
-.cds--tooltip__trigger {
-	cursor: help;
+/* The Tooltip block's trigger is a button (Carbon's definition tooltip), and
+ * the browser gives a button its own font, line height and letter spacing.
+ * Inherit them, so the trigger reads like the text it was before it became a
+ * button: as a span it inherited all three, and with the browser's line height
+ * the block grew by about 6px. */
+.cds--tooltip .cds--definition-term {
+	font: inherit;
+	letter-spacing: inherit;
 }
 
-.cds--tooltip__trigger:focus,
-.cds--tooltip__trigger:focus-visible {
-	outline: 2px solid var(--cds-focus, #0f62fe);
-	outline-offset: -2px;
-}
-
-/* The button around a cut-off tag label (Carbon's definition tooltip, added
- * by the Tag block's view.js). Carbon draws its focus at 1px; 2px here, as
- * everywhere. Outside the text, not inset: the button is only as tall as the
- * label, and an inset ring would sit on the letters. The tag's own padding
- * leaves room for it. */
+/* Carbon's definition tooltip button: the Tooltip block's trigger, and the
+ * button around a cut-off tag label (added by the Tag block's view.js).
+ * Carbon draws its focus at 1px; 2px here, as everywhere. Outside the text,
+ * not inset: the button is only as tall as its text, and an inset ring would
+ * sit on the letters. The Tooltip trigger used to be a span with a 2px inset
+ * ring and a help cursor; as a button it takes Carbon's pointer cursor. */
+.cds--tooltip .cds--definition-term:focus,
+.cds--tooltip .cds--definition-term:focus-visible,
 .cds--tag .cds--definition-term:focus,
 .cds--tag .cds--definition-term:focus-visible {
 	outline: 2px solid var(--cds-focus, #0f62fe);
@@ -2340,10 +2339,10 @@ html.awt-header-collapsed .admin-bar .awt-header-nav__overlay.awt-nav-open {
  * own @media wrapping (`outline-style: dotted` only fires under this MQ). */
 @media (prefers-contrast: more) {
 	.cds--menu-button .cds--menu-item:focus-within,
-	.cds--tooltip__trigger:focus,
-	.cds--tooltip__trigger:focus-visible,
 	.cds--toggletip-button:focus,
 	.cds--toggletip-button:focus-visible,
+	.cds--tooltip .cds--definition-term:focus,
+	.cds--tooltip .cds--definition-term:focus-visible,
 	.cds--tag .cds--definition-term:focus,
 	.cds--tag .cds--definition-term:focus-visible {
 		outline-style: dotted;

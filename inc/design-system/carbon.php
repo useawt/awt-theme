@@ -1938,7 +1938,7 @@ SVG;
 	private function classes_tooltip( string $el, array $v ): string {
 		switch ( $el ) {
 			case 'trigger':
-				return 'cds--tooltip__trigger';
+				return 'cds--definition-term';
 			case 'content':
 				return 'cds--tooltip__content';
 			default:
