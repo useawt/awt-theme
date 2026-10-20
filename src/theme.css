@@ -3871,6 +3871,20 @@ body.editor-styles-wrapper .wp-block-awt-icon   + .wp-block-awt-icon {
 	outline-offset: -2px;
 }
 
+/* Each section title sits in a heading (awt-blocks accordion-item, since
+ * 2026-10-20), and the button above takes its font from its parent, so it
+ * took the theme's heading size: 28px with a 36px line height for an h3. The
+ * heading passes the accordion's own text styles through instead, so a title
+ * looks as it did before it had a heading. */
+.awt-accordion-item__heading {
+	margin: 0;
+	font: inherit;
+	letter-spacing: inherit;
+	color: inherit;
+	text-transform: inherit;
+	text-wrap: inherit;
+}
+
 .cds--accordion__content {
 	padding-block: 0.5rem 1rem;
 	padding-inline: 1.5rem 1rem;
