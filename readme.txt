@@ -259,12 +259,16 @@ Reports about real barriers are treated as bugs, not feature requests.
 ## Dates
 
 - Statement prepared: 2026-07-17
-- Last reviewed: 2026-10-16
+- Last reviewed: 2026-10-21
 <!-- ACCESSIBILITY_END -->
 
 == Changelog ==
 
 <!-- CHANGELOG_START -->
+= 2026.10.12 (2026-10-21) =
+* [A11y] In Content switcher blocks, labels use 14px text and are no longer cut off at the bottom.
+* [A11y] Archive and blog pages no longer show a "Read more" link after each post.
+
 = 2026.10.11 (2026-10-16) =
 * [A11y] On narrow screens, notifications fit the section they are in, so the page no longer scrolls sideways and the close button stays in view.
 
@@ -294,10 +298,6 @@ Reports about real barriers are treated as bugs, not feature requests.
 = 2026.10.3 (2026-10-08) =
 * [Improvement] Colors picked from the palette now take their dark values on a dark page and in a dark section. A palette color you changed in the Site Editor or in CSS keeps your value.
 * [Improvement] AWT's theme details window now lists the AWT Blocks changes too, like What's new does.
-
-= 2026.10.2 (2026-10-07) =
-* [A11y] The Home page and Feature grid patterns no longer repeat each card's heading in its icon for screen readers.
-* [Improvement] AWT's theme details window now opens on a site that has AWT updates switched off.
 <!-- CHANGELOG_END -->
 
 == Upgrade Notice ==

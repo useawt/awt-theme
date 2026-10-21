@@ -1,5 +1,6 @@
-## 2026.10.11 (2026-10-16)
+## 2026.10.12 (2026-10-21)
 
 ### [A11y]
 
-- On narrow screens, notifications fit the section they are in, so the page no longer scrolls sideways and the close button stays in view.
+- In Content switcher blocks, labels use 14px text and are no longer cut off at the bottom.
+- Archive and blog pages no longer show a "Read more" link after each post.
