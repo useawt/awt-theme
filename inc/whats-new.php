@@ -401,18 +401,35 @@ function render_entries( array $release ): void {
 /**
  * Turn one changelog entry into safe HTML.
  *
- * Entries are authored in CHANGELOG.md, so they carry Markdown emphasis and
- * code spans. Printing them raw showed people literal `**` and backticks in the
- * admin. Escape first, then convert the two markers we actually use — nothing
- * else is interpreted, so no markup can arrive from the text itself.
+ * Entries are authored in CHANGELOG.md, so they carry Markdown emphasis, code
+ * spans and links. Printing them raw showed people literal `**` and backticks
+ * in the admin, and a link as its address in angle brackets (2026.10.12, found
+ * by the owner). Escape first, then convert the markers we actually use —
+ * nothing else is interpreted, so no markup can arrive from the text itself.
+ *
+ * Links: `[text](https://…)` shows the text, `<https://…>` the address. Only
+ * http and https addresses become links.
  *
  * @param string $text Entry text as written in the changelog.
  * @return string Escaped HTML.
  */
 function format_entry_text( string $text ): string {
-	$out = esc_html( $text );
-	$out = (string) preg_replace( '/\*\*(.+?)\*\*/s', '<strong>$1</strong>', $out );
-	$out = (string) preg_replace( '/`([^`]+)`/', '<code>$1</code>', $out );
+	$out  = esc_html( $text );
+	$out  = (string) preg_replace( '/\*\*(.+?)\*\*/s', '<strong>$1</strong>', $out );
+	$out  = (string) preg_replace( '/`([^`]+)`/', '<code>$1</code>', $out );
+	$link = static function ( string $address, string $label ): string {
+		return '<a href="' . esc_url( wp_specialchars_decode( $address, ENT_QUOTES ) ) . '">' . $label . '</a>';
+	};
+	$out  = (string) preg_replace_callback(
+		'/\[([^\]]+)\]\((https?:\/\/[^\s)]+)\)/',
+		static fn( array $m ): string => $link( $m[2], $m[1] ),
+		$out
+	);
+	$out  = (string) preg_replace_callback(
+		'/&lt;(https?:\/\/\S+?)&gt;/',
+		static fn( array $m ): string => $link( $m[1], $m[1] ),
+		$out
+	);
 	return $out;
 }
 
