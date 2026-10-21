@@ -4181,7 +4181,11 @@ body.editor-styles-wrapper .wp-block-awt-icon   + .wp-block-awt-icon {
 	background: transparent;
 	border: 0;
 	cursor: pointer;
-	font: inherit;
+	/* No `font: inherit` here: it beat Carbon's body-compact-01 on the same
+	 * selector, so the segments took the page's 16px text with a 16px line
+	 * height, and the label (overflow: hidden) cut off descenders such as
+	 * the "g" in "Night" (found by the owner, 2026-10-21). Carbon's own rule
+	 * gives 14px on an 18px line, as Tabs, Button and Dropdown have. */
 	color: var(--cds-text-primary, #161616);
 	/* No per-button top/bottom edges here — the wrapper's outline draws
 	 * the full perimeter (top, bottom, and the outer left/right corners
