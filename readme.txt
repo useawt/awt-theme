@@ -265,6 +265,9 @@ Reports about real barriers are treated as bugs, not feature requests.
 == Changelog ==
 
 <!-- CHANGELOG_START -->
+= 2026.10.13 (2026-10-23) =
+* [Improvement] No changes in the theme itself. It carries the same version number as the AWT Blocks plugin, which has changes in this release.
+
 = 2026.10.12 (2026-10-21) =
 * [A11y] In Content switcher blocks, labels use 14px text and are no longer cut off at the bottom.
 * [A11y] Archive and blog pages no longer show a "Read more" link after each post.
@@ -294,10 +297,6 @@ Reports about real barriers are treated as bugs, not feature requests.
 
 = 2026.10.4 (2026-10-08) =
 * [Improvement] No changes in the theme itself. It carries the same version number as the AWT Blocks plugin, which has changes in this release.
-
-= 2026.10.3 (2026-10-08) =
-* [Improvement] Colors picked from the palette now take their dark values on a dark page and in a dark section. A palette color you changed in the Site Editor or in CSS keeps your value.
-* [Improvement] AWT's theme details window now lists the AWT Blocks changes too, like What's new does.
 <!-- CHANGELOG_END -->
 
 == Upgrade Notice ==
