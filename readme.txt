@@ -265,6 +265,9 @@ Reports about real barriers are treated as bugs, not feature requests.
 == Changelog ==
 
 <!-- CHANGELOG_START -->
+= 2026.10.14 (2026-10-25) =
+* [A11y] Improved focus indicator visibility on tag blocks which are linked
+
 = 2026.10.13 (2026-10-23) =
 * [Improvement] No changes in the theme itself. It carries the same version number as the AWT Blocks plugin, which has changes in this release.
 
@@ -294,9 +297,6 @@ Reports about real barriers are treated as bugs, not feature requests.
 
 = 2026.10.5 (2026-10-08) =
 * [Improvement] The steps for updating AWT by hand name the buttons your version of WordPress shows. The theme's replace button was named wrongly before.
-
-= 2026.10.4 (2026-10-08) =
-* [Improvement] No changes in the theme itself. It carries the same version number as the AWT Blocks plugin, which has changes in this release.
 <!-- CHANGELOG_END -->
 
 == Upgrade Notice ==

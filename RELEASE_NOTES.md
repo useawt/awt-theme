@@ -1,5 +1,5 @@
-## 2026.10.13 (2026-10-23)
+## 2026.10.14 (2026-10-25)
 
-### [Improvement]
+### [A11y]
 
-- No changes in the theme itself. It carries the same version number as the AWT Blocks plugin, which has changes in this release.
+- Improved focus indicator visibility on tag blocks which are linked
