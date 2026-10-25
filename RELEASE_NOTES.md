@@ -1,5 +1,5 @@
-## 2026.10.15 (2026-10-25)
+## 2026.10.16 (2026-10-25)
 
-### [A11y]
+### [Improvement]
 
-- The arrow on Accordion and FAQ blocks points up when a section is open and turns as it opens.
+- No changes in the theme itself. It carries the same version number as the AWT Blocks plugin, which has changes in this release.
