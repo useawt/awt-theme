@@ -3314,7 +3314,8 @@ a.cds--btn--ghost:visited:active {
 
 /* Linked tag (awt/tag with a URL) — rendered as <a>. Keep the tag's own
    surface/text colors and drop the global link underline; show a pointer and
-   a subtle hover so it reads as interactive (Carbon "clickable tag"). */
+   a subtle hover so it reads as interactive (Carbon "clickable tag"). Its
+   focus ring is the link ring, D1 in the focus section below. */
 .cds--tag.awt-tag--link {
 	color: inherit;
 	text-decoration: none;
@@ -5438,9 +5439,15 @@ html body .cds--link {
  * bare `<a>` typed into a paragraph fell through to the browser's own ring,
  * which differs per browser and is outside our control. Anything carrying a
  * `cds--` class is excluded because it has a rule of its own — buttons,
- * breadcrumbs, pagination, the header brand, the skip link. */
+ * breadcrumbs, pagination, the header brand, the skip link.
+ *
+ * A Tag with a URL is the exception to that reasoning: it renders as an `<a>`
+ * carrying `cds--tag`, and Carbon's tag has no focus style for a link (only
+ * for `.cds--tag--interactive` and the close button). So the exclusion left it
+ * with the browser's own 1px ring until it was named here. */
 .cds--link:focus:not(.cds--link--disabled),
-a:not([class*="cds--"]):focus-visible {
+a:not([class*="cds--"]):focus-visible,
+.cds--tag.awt-tag--link:focus-visible {
 	outline: 2px solid var(--cds-focus, #0f62fe);
 	outline-offset: 1px;
 }
@@ -5693,6 +5700,7 @@ a.cds--header__menu-item.cds--header__menu-item--current {
 @media (prefers-contrast: more) {
 	.cds--link:focus:not(.cds--link--disabled),
 	a:not([class*="cds--"]):focus-visible,
+	.cds--tag.awt-tag--link:focus-visible,
 	.cds--tile__summary:focus-visible,
 	.cds--text-input:focus,
 	.cds--text-input:focus-visible,

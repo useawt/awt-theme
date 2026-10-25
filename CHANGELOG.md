@@ -10,6 +10,12 @@
      markdownlint enforces the structure in CI. Newest release first.
      The Unreleased section accumulates entries between releases. -->
 
+## Unreleased
+
+### [A11y]
+
+- If you add a link to a Tag block, your site now shows the same focus ring on it as on other links.
+
 ## 2026.10.13 (2026-10-23)
 
 ### [Improvement]
