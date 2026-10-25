@@ -20,7 +20,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-const AWT_THEME_VERSION = '2026.10.14';
+const AWT_THEME_VERSION = '2026.10.15';
 
 /**
  * The name this theme goes by, from its own header: "AWT", or the name a build

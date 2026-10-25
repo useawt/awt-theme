@@ -265,6 +265,9 @@ Reports about real barriers are treated as bugs, not feature requests.
 == Changelog ==
 
 <!-- CHANGELOG_START -->
+= 2026.10.15 (2026-10-25) =
+* [A11y] The arrow on Accordion and FAQ blocks points up when a section is open and turns as it opens.
+
 = 2026.10.14 (2026-10-25) =
 * [A11y] Improved focus indicator visibility on tag blocks which are linked
 
@@ -294,9 +297,6 @@ Reports about real barriers are treated as bugs, not feature requests.
 
 = 2026.10.6 (2026-10-11) =
 * [Improvement] Support for WordPress Site Editor's Styles to select a different site font.
-
-= 2026.10.5 (2026-10-08) =
-* [Improvement] The steps for updating AWT by hand name the buttons your version of WordPress shows. The theme's replace button was named wrongly before.
 <!-- CHANGELOG_END -->
 
 == Upgrade Notice ==

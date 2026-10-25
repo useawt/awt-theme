@@ -1,5 +1,5 @@
-## 2026.10.14 (2026-10-25)
+## 2026.10.15 (2026-10-25)
 
 ### [A11y]
 
-- Improved focus indicator visibility on tag blocks which are linked
+- The arrow on Accordion and FAQ blocks points up when a section is open and turns as it opens.
