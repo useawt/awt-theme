@@ -3898,6 +3898,16 @@ body.editor-styles-wrapper .wp-block-awt-icon   + .wp-block-awt-icon {
 	transform: rotate(-90deg);
 }
 
+/* The closed angle, restated. Carbon marks both angles `rtl:ignore`, but the
+ * right-to-left build of the block CSS flips them anyway (270deg closed), so a
+ * closed arrow pointed up on a right-to-left site, and with the open rule above
+ * it spun a full circle on opening. This file has no right-to-left build, so
+ * these angles hold in both directions. Two classes, to beat Carbon's one; the
+ * open rule above still wins on its four. */
+.cds--accordion__heading > .cds--accordion__arrow {
+	transform: rotate(-270deg);
+}
+
 /* Carbon animates that turn over 110ms and has no reduced-motion rule for it.
  * Two classes, to beat Carbon's one-class transition whichever file loads last. */
 @media (prefers-reduced-motion: reduce) {
