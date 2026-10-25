@@ -3886,6 +3886,26 @@ body.editor-styles-wrapper .wp-block-awt-icon   + .wp-block-awt-icon {
 	text-wrap: inherit;
 }
 
+/* Carbon turns the arrow of an open item with
+ * `.cds--accordion__item--active > .cds--accordion__heading > .cds--accordion__arrow`,
+ * which needs the button to be a direct child of the item. Ours sits in a
+ * heading (the accordion item since 2026-10-20, the FAQ question since it was
+ * built), so the arrow never turned when a section opened. The same turn,
+ * through the heading. Child combinators as in Carbon's rule, so an open item
+ * does not turn the arrows of an accordion nested inside it. */
+.cds--accordion__item--active > .awt-accordion-item__heading > .cds--accordion__heading > .cds--accordion__arrow,
+.cds--accordion__item--active > .awt-faq-item__question-heading > .cds--accordion__heading > .cds--accordion__arrow {
+	transform: rotate(-90deg);
+}
+
+/* Carbon animates that turn over 110ms and has no reduced-motion rule for it.
+ * Two classes, to beat Carbon's one-class transition whichever file loads last. */
+@media (prefers-reduced-motion: reduce) {
+	.cds--accordion__heading > .cds--accordion__arrow {
+		transition: none;
+	}
+}
+
 .cds--accordion__content {
 	padding-block: 0.5rem 1rem;
 	padding-inline: 1.5rem 1rem;
