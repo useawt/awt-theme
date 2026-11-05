@@ -10,12 +10,11 @@
      markdownlint enforces the structure in CI. Newest release first.
      The Unreleased section accumulates entries between releases. -->
 
-## Unreleased
+## 2026.11.0 (2026-11-05)
 
-### [A11y]
+### [Improvement]
 
-- A header action set to "icon with label" no longer runs over the next action in Chrome and
-  Edge older than version 105.
+- A header action set to "icon with label" no longer runs over the next action in older browsers.
 
 ## 2026.10.16 (2026-10-25)
 

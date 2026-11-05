@@ -1,5 +1,5 @@
-## 2026.10.16 (2026-10-25)
+## 2026.11.0 (2026-11-05)
 
 ### [Improvement]
 
-- No changes in the theme itself. It carries the same version number as the AWT Blocks plugin, which has changes in this release.
+- A header action set to "icon with label" no longer runs over the next action in older browsers.

@@ -259,12 +259,15 @@ Reports about real barriers are treated as bugs, not feature requests.
 ## Dates
 
 - Statement prepared: 2026-07-17
-- Last reviewed: 2026-10-21
+- Last reviewed: 2026-11-05
 <!-- ACCESSIBILITY_END -->
 
 == Changelog ==
 
 <!-- CHANGELOG_START -->
+= 2026.11.0 (2026-11-05) =
+* [Improvement] A header action set to "icon with label" no longer runs over the next action in older browsers.
+
 = 2026.10.16 (2026-10-25) =
 * [Improvement] No changes in the theme itself. It carries the same version number as the AWT Blocks plugin, which has changes in this release.
 
@@ -294,9 +297,6 @@ Reports about real barriers are treated as bugs, not feature requests.
 
 = 2026.10.8 (2026-10-13) =
 * [A11y] Improved presentation of disabled tabs.
-
-= 2026.10.7 (2026-10-12) =
-* [Improvement] No changes in the theme itself. It carries the same version number as the AWT Blocks plugin, which has changes in this release.
 <!-- CHANGELOG_END -->
 
 == Upgrade Notice ==
