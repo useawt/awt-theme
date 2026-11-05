@@ -1225,7 +1225,7 @@ SVG;
 			case 'label':
 				return 'cds--header__action-label';
 			default:
-				return 'cds--header__action';
+				return 'cds--header__action' . ( empty( $v['with_label'] ) ? '' : ' cds--header__action--with-label' );
 		}
 	}
 

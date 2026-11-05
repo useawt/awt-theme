@@ -1777,10 +1777,24 @@ ol.wp-block-list {
  * live site, 2026-09-10: two labelled actions, the first label overlapping the
  * second button by 11px.
  *
- * Scoped with `:has()` so an icon-only action keeps the exact square it has
- * today — releasing the width for every action would nudge every existing
+ * Scoped to labelled actions so an icon-only action keeps the exact square it
+ * has today: releasing the width for every action would nudge every existing
  * header a few pixels wider for a variant it does not use. `min-inline-size`
- * above still holds the square as the floor. */
+ * above still holds the square as the floor.
+ *
+ * The block prints `--with-label` on a labelled action. This used to be
+ * `:has(.cds--header__action-label)` alone, and a browser without `:has()`
+ * (Chrome and Edge before 105) drops that rule whole: on an old Edge the
+ * square stood, "Learn" ran across the next button and "Log in" wrapped onto
+ * two lines. Reported 2026-11-05.
+ *
+ * The `:has()` rule stays, as its own rule, for a blocks plugin older than
+ * the class. Never join the two into one selector list: a browser that does
+ * not understand one selector in a list drops the whole rule, and the class
+ * would stop working exactly where it is needed. */
+.cds--header__action--with-label {
+	inline-size: auto;
+}
 .cds--header__action:has(.cds--header__action-label) {
 	inline-size: auto;
 }
@@ -1796,6 +1810,10 @@ ol.wp-block-list {
 @media (max-width: 671.98px) {
 	.cds--header__action-label {
 		display: none;
+	}
+
+	.cds--header__action--with-label {
+		inline-size: 3rem;
 	}
 
 	.cds--header__action:has(.cds--header__action-label) {
