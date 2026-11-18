@@ -265,6 +265,9 @@ Reports about real barriers are treated as bugs, not feature requests.
 == Changelog ==
 
 <!-- CHANGELOG_START -->
+= 2026.11.1 (2026-11-18) =
+* [Improvement] No changes in the theme itself. It carries the same version number as the AWT Blocks plugin, which has changes in this release.
+
 = 2026.11.0 (2026-11-05) =
 * [Improvement] A header action set to "icon with label" no longer runs over the next action in older browsers.
 
@@ -294,9 +297,6 @@ Reports about real barriers are treated as bugs, not feature requests.
 = 2026.10.9 (2026-10-14) =
 * [A11y] Pagination fits small screens and narrow columns: Previous and Next stay on screen.
 * [Improvement] In the editor, a long tag label stays on one line, as it does on the page.
-
-= 2026.10.8 (2026-10-13) =
-* [A11y] Improved presentation of disabled tabs.
 <!-- CHANGELOG_END -->
 
 == Upgrade Notice ==
